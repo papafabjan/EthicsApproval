@@ -27,22 +27,6 @@ const db = {
   },
 
 };
-// Function to insert a user into the database
-const addUser = (userData, callback) => {
-  const sql = 'INSERT INTO users (username, firstName, lastName) VALUES (?, ?, ?)';
-  const values = [userData.username, userData.firstName, userData.lastName];
-  console.log(sql);
-  console.log(values);
-  dbConnection.query(sql, values, (err, result) => {
-    if (err) {
-      console.error('Error inserting user:', err);
-      callback(err, null);
-    } else {
-      console.log('User inserted successfully');
-      callback(null, result);
-    }
-  });
-};
 
 // Function to retrieve all users from the database
 const getAllUsers = (callback) => {
@@ -60,10 +44,45 @@ const getAllUsers = (callback) => {
 };
 
 
+// Function to insert a user into the database
+const addUser = (userData, callback) => {
+  const sql = 'INSERT INTO users (username, firstName, lastName) VALUES (?, ?, ?)';
+  const values = [userData.username, userData.firstName, userData.lastName];
+  console.log(sql);
+  console.log(values);
+  dbConnection.query(sql, values, (err, result) => {
+    if (err) {
+      console.error('Error inserting user:', err);
+      callback(err, null);
+    } else {
+      console.log('User inserted successfully');
+      callback(null, result);
+    }
+  });
+};
+
+// Function to remove a user by username from the database
+const removeUser = (username, callback) => {
+  const sql = 'DELETE FROM users WHERE username = ?'; // Assuming 'username' is the unique identifier of the user
+  const values = [username];
+
+  dbConnection.query(sql, values, (err, result) => {
+    if (err) {
+      console.error('Error removing user:', err);
+      callback(err, null);
+    } else {
+      console.log('User removed successfully');
+      callback(null, result);
+    }
+  });
+};
+
+
 // Export the functions for use in other parts of the application
 module.exports = {
   addUser,
   getAllUsers,
+  removeUser,
   db
 };
 

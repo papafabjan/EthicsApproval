@@ -40,3 +40,55 @@
 .read-the-docs {
   color: #888;
 }
+
+
+/* Add this CSS for the fixed sidebar */
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  /* Set the height to occupy the entire window */
+  background: linear-gradient(0deg, #FFFFFF 80.26%, #E0290B 111.82%, #313436 143.39%);
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  gap: 48px;
+}
+
+/* Style for individual navbar items */
+.nav-item {
+  text-decoration: none;
+  color: #000;
+  /* Adjust the color as needed */
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+  /* Adjust the margin as needed to separate items */
+}
+
+.nav-item .icon {
+  width: 24px;
+  height: 24px;
+  background: #000;
+  /* Icon background color */
+  border-radius: 50%;
+  /* Make the icon round */
+  /* Add any other icon styling as needed */
+}
+
+.nav-item .text {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 29px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+/* Apply the same structure for other items in the sidebar */

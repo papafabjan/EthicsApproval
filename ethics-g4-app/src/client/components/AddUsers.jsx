@@ -1,21 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from 'react'
 
-function Users() {
-  const [users, setUsers] = useState([]);
+function AddUsers() {
+  const [message, setMessage] = useState(null);
 
-  const [formData, setFormData] = useState({
+
+  const [formData, setFormData] = useState({ // To be added
     username: "",
     firstName: "",
     lastName: "",
   });
 
-  const [message, setMessage] = useState(null);
+  
 
- const handleChange = (e) => {
-  console.log(e.target.name, e.target.value);
-  setFormData({ ...formData, [e.target.name]: e.target.value });
-};
+  const handleChange = (e) => {
+    console.log(e.target.name, e.target.value);
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,32 +43,12 @@ function Users() {
     }
   };
 
-  useEffect(() => {
-    // Fetch users from the backend using the getAllUsers function
-    fetch("http://localhost:3000/getAllUsers")
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-      })
-      .then((jsonRes) => setUsers(jsonRes.users));
-  }, []); // Empty dependency array ensures this effect runs only once, similar to componentDidMount
 
   return (
     <>
+    
     <div>
-      <h2>User List</h2>
-      <ul>
-        {users.map((user, index) => (
-          <li key={index}>
-            <strong>Username:</strong> {user.username}
-            <br />
-            <strong>First Name:</strong> {user.firstName}
-            <br />
-            <strong>Last Name:</strong> {user.lastName}
-          </li>
-        ))}
-      </ul>
+      
     </div>
     <div>
          <h1>Add a New User</h1>
@@ -109,4 +91,4 @@ function Users() {
   );
 }
 
-export default Users;
+export default AddUsers

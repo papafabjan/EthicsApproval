@@ -14,3 +14,4 @@ VALUES
 ('user1', 'john', 'doe'),
 ('user2', 'mario', 'mclyfe'),
 ('user69', 'fab', 'og');
+('user10', 'panos', 'op')

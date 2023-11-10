@@ -46,46 +46,45 @@ function AddUsers() {
 
   return (
     <>
-    
-    <div>
-      
-    </div>
-    <div>
-         <h1>Add a New User</h1>
+    <div className="container mt-5">
+      <h1 className="mb-4">Add a New User</h1>
       <form onSubmit={handleSubmit} method="post">
-        <label>
-          Username:
+        <div className="mb-3">
+          <label className="form-label">Username:</label>
           <input
             type="text"
-            name="username" 
+            className="form-control"
+            name="username"
             value={formData.username}
             onChange={handleChange}
             required
           />
-        </label>
-        <label>
-          First Name:
+        </div>
+        <div className="mb-3">
+          <label className="form-label">First Name:</label>
           <input
             type="text"
-            name="firstName" 
+            className="form-control"
+            name="firstName"
             value={formData.firstName}
             onChange={handleChange}
             required
           />
-        </label>
-        <label>
-          Last Name:
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Last Name:</label>
           <input
             type="text"
-            name="lastName" 
+            className="form-control"
+            name="lastName"
             value={formData.lastName}
             onChange={handleChange}
             required
           />
-        </label>
-        <button type="submit">Add User</button>
+        </div>
+        <button type="submit" className="btn">Add User</button>
       </form>
-      {message && <p>{message}</p>}
+      {message && <p className="mt-3">{message}</p>}
     </div>
     </>
   );

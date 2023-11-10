@@ -1,94 +1,90 @@
 #root {
-  max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  background-color: #ffffff; /*temporarily*/
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
 
 
 /* Add this CSS for the fixed sidebar */
 .sidebar {
   position: fixed;
-  left: 0;
-  top: 0;
-  height: 100%;
-  /* Set the height to occupy the entire window */
-  background: linear-gradient(0deg, #FFFFFF 80.26%, #E0290B 111.82%, #313436 143.39%);
+  left: 2%;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 80%;
+  background: linear-gradient(0deg, #f2edce, #FFA500, #FF6347); /*temporarily*/
   border-radius: 24px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   padding: 2rem;
   gap: 48px;
 }
 
-/* Style for individual navbar items */
-.nav-item {
+
+.text {
+  display: flex;
+  align-items: center;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+box-icon {
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.nav-item a {
+  font-weight: bold;
+  color: black;
   text-decoration: none;
-  color: #000;
-  /* Adjust the color as needed */
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 20px;
-  /* Adjust the margin as needed to separate items */
+  position: relative;
+  display: inline-block;
+  z-index: 1;
 }
 
-.nav-item .icon {
-  width: 24px;
-  height: 24px;
-  background: #000;
-  /* Icon background color */
-  border-radius: 50%;
-  /* Make the icon round */
-  /* Add any other icon styling as needed */
+.nav-item a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%) scaleY(0);
+  width: calc(100% + 20px);
+  /* Adjust the width of the rectangle */
+  height: 100%;
+  /* Spread the rectangle to the full height of nav-item */
+  background-color: rgba(255, 255, 255, 0.5);
+  /* Adjust the opacity here */
+  border-radius: 10px;
+  /* Adjust the border-radius for rounded corners */
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  /* Add fade in/out effect */
+  z-index: -1;
+  /* Place the rectangle behind the text */
 }
 
-.nav-item .text {
-  font-family: 'Montserrat';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 24px;
-  line-height: 29px;
-  display: flex;
-  align-items: center;
-  text-align: center;
+.nav-item a:hover::before {
+  transform: translateX(-50%) scaleY(1);
+  opacity: 1;
+}
+/* Button */
+button[type="submit"] {
+  background-color: #ff7c00;
+  color: #fff;
 }
 
-/* Apply the same structure for other items in the sidebar */
+button[type="submit"]:hover {
+  background-color: #e06600;
+  color: #fff;
+}
+
+/* Adjust the input width */
+.form-control {
+  width: 100%;
+  max-width: 300px;
+  margin-right: auto;
+  margin-left: auto;
+}
+

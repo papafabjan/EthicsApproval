@@ -32,16 +32,20 @@ export default function RemoveUsers() {
   return (
     <>
     <h1>RemoveUsers</h1>
-    <div>
+    <div className="container mt-5">
       <form onSubmit={removeUser}>
-      <label>Enter the username to remove:
+        <div className="mb-3">
+      <label className="form-label">Enter the username to remove:
         <input
           type="text"
+          className="form-control"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          required
         />
       </label>
-      <button type="submit">Remove User</button>
+      </div>
+      <button type="submit" className="btn">Remove User</button>
     </form>
     {message && <p>{message}</p>}
     </div>

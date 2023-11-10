@@ -8,7 +8,7 @@ const UsersDemo = () => {
       <h1>Users Demo</h1>
       <DisplayUsers />
       <AddUsers />
-      < RemoveUsers />
+      <RemoveUsers />
     </>
     
   )

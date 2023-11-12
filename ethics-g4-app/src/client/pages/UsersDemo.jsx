@@ -1,19 +1,19 @@
-import DisplayUsers from '../components/DisplayUsers';
+import DisplayUsers from "../components/DisplayUsers";
 import RemoveUsers from "../components/RemoveUsers";
-import AddUsers from '../components/AddUsers';
+import AddUsers from "../components/AddUsers";
+import StyledUsersDemo from "../styled/UsersDemo.styled";
 
 const UsersDemo = () => {
   return (
     <>
-      <h1>Users Demo</h1>
-      <DisplayUsers />
-      <AddUsers />
-      <RemoveUsers />
+      <StyledUsersDemo>
+        <h1>Users Demo</h1>
+        <DisplayUsers />
+        <AddUsers />
+        <RemoveUsers />
+      </StyledUsersDemo>
     </>
-    
-  )
-
-  ;
+  );
 };
 
 export default UsersDemo;

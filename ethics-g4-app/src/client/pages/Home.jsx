@@ -1,21 +1,15 @@
 import { useState } from "react";
-import ReactDOM from 'react-dom/client';
-
+import ReactDOM from "react-dom/client";
+import StyledHome from "../styled/Home.styled";
 
 const Home = () => {
-
-
   return (
     <>
-      <div>
+      <StyledHome>
         <h1>Home Page Here</h1>
-        
-      </div>
-      <div>
-        
-      </div>
+      </StyledHome>
     </>
-    )
+  );
 };
 
 export default Home;

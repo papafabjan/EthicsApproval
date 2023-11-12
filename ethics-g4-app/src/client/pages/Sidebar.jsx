@@ -1,22 +1,30 @@
-//react-pro-sidebar will be used in a later state to complete the sidebar design
+//react-pro-sidebar could be used in a later state to complete the sidebar design unless we can make the components appropriatly with styled components
 import { Link } from "react-router-dom";
-import 'boxicons';
+
+
+
 
 const Sidebar = () => {
   return (
     <>
-       <div className="sidebar">
-        
-          <div>
-            <Link to="/">
-              <img src="/assets/images/logo-city.png" height="100em" alt="Logo" />
-            </Link>
-          </div>
+        <div>
+          <Link to="/">
+            <img src="/assets/images/logo-city.png" height="100em" alt="Logo" />
+          </Link>
+        </div>
 
         <div className="nav-item">
           <div className="text">
             <Link to="/usersdemo">
-             <box-icon name='user'></box-icon>UsersDemo
+              <i className="fa-solid fa-user"></i>UsersDemo
+            </Link>
+          </div>
+        </div>
+
+        <div className="nav-item">
+          <div className="text">
+            <Link to="/loginpage">
+              <i className="fa-solid fa-right-to-bracket"></i>Login
             </Link>
           </div>
         </div>
@@ -24,15 +32,12 @@ const Sidebar = () => {
         <div className="nav-item">
           <div className="text">
             <Link to="/contact">
-              <box-icon name='envelope'></box-icon>Contact
+              <i className="fa-solid fa-envelope"></i>Contact
             </Link>
           </div>
         </div>
-      </div>
-
-      
     </>
-  )
+  );
 };
 
 export default Sidebar;

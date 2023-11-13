@@ -9,6 +9,10 @@ import Contact from "./pages/Contact";
 import NoPage from "./pages/NoPage";
 import Container from "./pages/Container";
 import LoginPage from "./pages/LoginPage";
+import Guides from "./pages/Guides";
+import Applicant from "./pages/Applicant";
+import Supervisor from "./pages/Supervisor";
+import Reviewer from "./pages/Reviewer";
 
 function App() {
   return (
@@ -22,6 +26,10 @@ function App() {
                   <Route index element={<Home />} />
                   <Route path="usersdemo" element={<UsersDemo />} />
                   <Route path="contact" element={<Contact />} />
+                  <Route path="guides" element={<Guides />} />
+                  <Route path="applicant" element={<Applicant />} />
+                  <Route path="supervisor" element={<Supervisor />} />
+                  <Route path="reviewer" element={<Reviewer />} />
                   <Route path="loginpage" element={<LoginPage />} />
                   <Route path="*" element={<NoPage />} />
                 </Route>

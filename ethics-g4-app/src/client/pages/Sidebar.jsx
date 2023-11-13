@@ -36,6 +36,15 @@ const Sidebar = () => {
             </Link>
           </div>
         </div>
+
+        <div className="nav-item">
+          <div className="text">
+            <Link to="/guides">
+              <i className="fa fa-book" aria-hidden="true"></i>Guides
+            </Link>
+            
+          </div>
+        </div>
     </>
   );
 };

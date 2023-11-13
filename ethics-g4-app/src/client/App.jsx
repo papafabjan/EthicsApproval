@@ -10,6 +10,7 @@ import NoPage from "./pages/NoPage";
 import Container from "./pages/Container";
 import LoginPage from "./pages/LoginPage";
 import Guides from "./pages/Guides";
+import Document_Templates from "./pages/Document_Templates";
 import Applicant from "./pages/Applicant";
 import Supervisor from "./pages/Supervisor";
 import Reviewer from "./pages/Reviewer";
@@ -27,6 +28,7 @@ function App() {
                   <Route path="usersdemo" element={<UsersDemo />} />
                   <Route path="contact" element={<Contact />} />
                   <Route path="guides" element={<Guides />} />
+                  <Route path="Document_Templates" element={<Document_Templates />} />
                   <Route path="applicant" element={<Applicant />} />
                   <Route path="supervisor" element={<Supervisor />} />
                   <Route path="reviewer" element={<Reviewer />} />

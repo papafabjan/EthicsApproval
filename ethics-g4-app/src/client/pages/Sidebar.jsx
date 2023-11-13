@@ -45,6 +45,15 @@ const Sidebar = () => {
             
           </div>
         </div>
+
+        <div className="nav-item">
+          <div className="text">
+            <Link to="/Document_Templates">
+              <i className="fa fa-docs" aria-hidden="true"></i>Document templates
+            </Link>
+            
+          </div>
+        </div>
     </>
   );
 };

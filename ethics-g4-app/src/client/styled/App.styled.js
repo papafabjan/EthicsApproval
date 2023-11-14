@@ -4,6 +4,12 @@ const App = styled.div`
   min-height: 100vh;
   overflow: scroll;
   border: 10px solid grey;
+
+  i {
+    margin-right: 8px;
+    vertical-align: middle;
+    align-items: left;
+  }
 `;
 
 export default App;

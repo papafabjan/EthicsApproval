@@ -3,13 +3,16 @@ import styled from "styled-components";
 
  const Content = styled.div`
    border: 10px solid blue;
-   overflow: auto;
-   float: right;
+   overflow-y: auto;
+   float: bottom;
    width: 80%;
    margin: 0 auto;
+   margin-top: 15vh;
    background-color: white;
    color: black;
    border-radius: 24px;
+   height: 100vh;
+
    /* width */
    &::-webkit-scrollbar {
      width: 10px;

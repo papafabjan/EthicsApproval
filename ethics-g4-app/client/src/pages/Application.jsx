@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Pg1 } from "../components/pages/Pg1";
-import { Pg2 } from "../components/pages/Pg2";
-import { Pg3 } from "../components/pages/Pg3";
+import { Pg1 } from "../components/form-pages/Pg1";
+import { Pg2 } from "../components/form-pages/Pg2";
+import { Pg3 } from "../components/form-pages/Pg3";
 
 const Application = () => {
     const [pgNo, setPgNo] = useState(1);

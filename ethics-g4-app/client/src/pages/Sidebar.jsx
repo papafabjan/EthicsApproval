@@ -20,6 +20,15 @@ const Sidebar = () => {
             </Link>
           </div>
         </div>
+        
+        <div className="nav-item">
+          <div className="text">
+            <Link to="/application">
+              <i className="fa-solid fa-file-pen" aria-hidden="true"></i>Application
+            </Link>
+            
+          </div>
+        </div>
 
         <div className="nav-item">
           <div className="text">
@@ -46,15 +55,7 @@ const Sidebar = () => {
           </div>
         </div>
 
-        <div className="nav-item">
-          <div className="text">
-            <Link to="/application">
-              <i className="fa fa-book" aria-hidden="true"></i>Application
-            </Link>
-            
-          </div>
-        </div>
-
+     
         <div className="nav-item">
           <div className="text">
             <Link to="/Document_Templates">

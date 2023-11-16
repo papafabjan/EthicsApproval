@@ -3,11 +3,6 @@ const { Strategy: GoogleStrategy } = require("passport-google-oauth20");
 require("dotenv").config();
 const pool = require("./db");
 
-// const CLIENT_ID =
-//   "986599063849-p0r69fi86nlqo6auo975ndaic2l7omsj.apps.googleusercontent.com";
-// const CLIENT_SECRET = "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";
-
-// const GOOGLE_CALLBACK_URL = "http://localhost:4000/auth/google/callback";
 
 passport.use(
   new GoogleStrategy(
@@ -44,7 +39,7 @@ passport.use(
         } else {
           // have user
           user = {
-            id: currentUserQuery.rows[0].id,
+            id: currentUserQuery.rows[0].google_id,
             username: currentUserQuery.rows[0].username,
             img: currentUserQuery.rows[0].img,
           };

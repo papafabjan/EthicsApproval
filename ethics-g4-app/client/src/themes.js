@@ -1,4 +1,4 @@
-export const darkTheme = {
+export const cityTheme = {
   body: "#ff8141",
   elevation_1: "#242424",
   elevation_2: "#2f2f2f",

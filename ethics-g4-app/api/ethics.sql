@@ -15,10 +15,9 @@ CREATE TABLE applications (
   applicant_id INT references users(user_id) NOT NULL  
 );
 
-
-INSERT INTO users (username, firstName, lastName)
-VALUES 
-('user1', 'john', 'doe'),
-('user2', 'mario', 'mclyfe'),
-('user69', 'fab', 'og');
-('user10', 'panos', 'op')
+-- INSERT INTO users (username, img, google_id)
+-- VALUES 
+-- ('Fabian Papa', 'example.link.com', '182963416123'),
+-- ('Panagiotis Karalis', 'example.link.com', '786348326542'),
+-- ('Markos Darlas Mandravelis', 'example.link.com', '72346279346992');
+-- ('Marios Polyzoidis', 'example.link.com', '97236469729476')

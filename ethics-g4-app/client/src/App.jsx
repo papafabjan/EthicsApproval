@@ -1,7 +1,7 @@
 import StyledApp from "./styled/App.styled";
 import GlobalStyle from "./styled/GlobalStyles";
 import { ThemeProvider } from "styled-components";
-import { darkTheme } from "./themes";
+import { cityTheme } from "./themes";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import UsersDemo from "./pages/UsersDemo";
@@ -17,41 +17,44 @@ import Reviewer from "./pages/Reviewer";
 import Application from "./pages/Application";
 import { UserContext } from "./components/UserContext";
 import { useContext } from "react";
+import PleaseSignIn from "./pages/PleaseSignIn";
 
 function App() {
 
   const user = useContext(UserContext);
   return (
     <>
-      <ThemeProvider theme={darkTheme}>
+      <ThemeProvider theme={cityTheme}>
         <GlobalStyle />
         <StyledApp>
           {user?.loggedIn === null ? (
             ""
           ) : user?.loggedIn === true ? (
-            "logged in"
+            <Router>
+              <Routes>
+                <Route path="/" element={<Container />}>
+                  <Route index element={<Home />} />
+                  <Route path="usersdemo" element={<UsersDemo />} />
+                  <Route path="contact" element={<Contact />} />
+                  <Route path="guides" element={<Guides />} />
+                  <Route path="application" element={<Application />} />
+                  <Route
+                    path="Document_Templates"
+                    element={<Document_Templates />}
+                  />
+                  <Route path="applicant" element={<Applicant />} />
+                  <Route path="supervisor" element={<Supervisor />} />
+                  <Route path="reviewer" element={<Reviewer />} />
+                  {/* <Route path="loginpage" element={<LoginPage />} /> */}
+                  <Route path="*" element={<NoPage />} />
+                </Route>
+              </Routes>
+            </Router>
           ) : (
-            
-          <Router>
-            <Routes>
-              <Route path="/" element={<Container />}>
-                <Route index element={<Home />} />
-                <Route path="usersdemo" element={<UsersDemo />} />
-                <Route path="contact" element={<Contact />} />
-                <Route path="guides" element={<Guides />} />
-                <Route path="application" element={<Application />} />
-                <Route
-                  path="Document_Templates"
-                  element={<Document_Templates />}
-                />
-                <Route path="applicant" element={<Applicant />} />
-                <Route path="supervisor" element={<Supervisor />} />
-                <Route path="reviewer" element={<Reviewer />} />
-                {/* <Route path="loginpage" element={<LoginPage />} /> */}
-                <Route path="*" element={<NoPage />} />
-              </Route>
-            </Routes>
-          </Router>
+            <>
+              <h1>Please sign in</h1>
+              <PleaseSignIn />
+            </>
           )}
         </StyledApp>
       </ThemeProvider>

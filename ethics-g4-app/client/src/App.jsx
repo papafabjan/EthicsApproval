@@ -14,6 +14,7 @@ import Document_Templates from "./pages/Document_Templates";
 import Applicant from "./pages/Applicant";
 import Supervisor from "./pages/Supervisor";
 import Reviewer from "./pages/Reviewer";
+import Application from "./pages/Application";
 import { UserContext } from "./components/UserContext";
 import { useContext } from "react";
 
@@ -38,6 +39,7 @@ function App() {
                 <Route path="usersdemo" element={<UsersDemo />} />
                 <Route path="contact" element={<Contact />} />
                 <Route path="guides" element={<Guides />} />
+                <Route path="application" element={<Application />} />
                 <Route
                   path="Document_Templates"
                   element={<Document_Templates />}

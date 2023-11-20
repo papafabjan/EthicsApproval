@@ -14,6 +14,7 @@ passport.use(
     async (_, __, profile, done) => {
       const account = profile._json;
       let user = {};
+
       try {
         const currentUserQuery = await pool.query(
           "SELECT * FROM users WHERE google_id=$1",
@@ -21,10 +22,10 @@ passport.use(
         );
 
         if (currentUserQuery.rows.length === 0) {
-          // create user
+          // Create user
           await pool.query(
-            "INSERT INTO users (username, img, google_id) VALUES ($1,$2,$3)",
-            [account.name, account.picture, account.sub]
+            "INSERT INTO users (username, img, email, google_id) VALUES ($1, $2, $3, $4)",
+            [account.name, account.picture, account.email, account.sub]
           );
 
           const id = await pool.query(
@@ -35,13 +36,15 @@ passport.use(
             id: id.rows[0].id,
             username: account.name,
             img: account.picture,
+            email: account.email, // Include the email in the user object
           };
         } else {
-          // have user
+          // User exists
           user = {
             id: currentUserQuery.rows[0].google_id,
             username: currentUserQuery.rows[0].username,
             img: currentUserQuery.rows[0].img,
+            email: currentUserQuery.rows[0].email, // Include the email in the user object
           };
         }
         done(null, user);

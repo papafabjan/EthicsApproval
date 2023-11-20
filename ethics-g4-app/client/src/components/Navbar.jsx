@@ -51,12 +51,11 @@ function Navbar() {
             </button>
           </form>
           <span className="navbar-text">
-            
-              {user?.loggedIn === null ? (
-                ""
-              ) : user?.loggedIn === true ? (
-                <>
-                <Link to="/loginpage">
+            {user?.loggedIn === null ? (
+              ""
+            ) : user?.loggedIn === true ? (
+              <>
+                <Link to={`${import.meta.env.VITE_SERVER_URL}/account`}>
                   <img
                     src={user.img}
                     alt="User Profile Pic"
@@ -64,16 +63,18 @@ function Navbar() {
                     margin-right="5px"
                   />
                   Hi, {user.username}
-                  </Link>
-                  <i onClick={logOut} className="fa-solid fa-right-from-bracket"></i>
-                </>
-              ) : (
-                <>
-                  <i className="fa-solid fa-circle-user"></i>
-                  Login
-                </>
-              )}
-            
+                </Link>
+                <i
+                  onClick={logOut}
+                  className="fa-solid fa-right-from-bracket"
+                ></i>
+              </>
+            ) : (
+              <>
+                <i className="fa-solid fa-circle-user"></i>
+                Login
+              </>
+            )}
           </span>
         </div>
       </nav>

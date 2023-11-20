@@ -45,6 +45,18 @@ export const Pg3 = () => {
                 <p>If <strong>YES</strong>, please specify the institution</p>
                 <input type="text" class="form-control" id="ProjectPlace" placeholder="e.g. Ethics web-site"/>
             </div>
+            <div class="form-group">
+                <label for="ProjectPlace">Involves human tissue?<span style={{ color: 'red' }}>*</span></label>
+                <input type="text" class="form-control" id="ProjectPlace" placeholder="e.g. Ethics web-site"/>
+            </div>
+            <div class="form-group">
+                <label for="ProjectPlace">Clinical trial or a medical device study?<span style={{ color: 'red' }}>*</span></label>
+                <input type="text" class="form-control" id="ProjectPlace" placeholder="e.g. Ethics web-site"/>
+            </div>
+            <div class="form-group">
+                <label for="ProjectPlace">Involves social care services provided by a local authority?<span style={{ color: 'red' }}>*</span></label>
+                <input type="text" class="form-control" id="ProjectPlace" placeholder="e.g. Ethics web-site"/>
+            </div>
         </form>
     </>
     );

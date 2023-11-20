@@ -10,9 +10,29 @@ import { useEffect, useState } from "react";
 function Navbar() {
   const user = useContext(UserContext);
 
-  const logOut = () =>{
-    window.localStorage.clear();
-    window.location.reload();
+  const logOut = async () => {
+    try {
+    const response = await fetch('http://localhost:4000/logout', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.ok) {
+      console.log('Logout successful');
+      // Handle any further actions after successful logout
+    } else {
+      console.error('Logout failed');
+      // Handle logout failure
+    }
+  } catch (error) {
+    console.error('Error during logout', error);
+    // Handle error during logout
+  }
+
+  window.location.reload(true);
   }
 
   return (

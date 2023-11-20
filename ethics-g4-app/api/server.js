@@ -23,12 +23,21 @@ app.use(
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     },
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
   })
 );
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.post("/logout", function (req, res, next) {
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
+});
 
 const indexRouter = require("./routes/indexRouter");
 app.use("/", indexRouter);

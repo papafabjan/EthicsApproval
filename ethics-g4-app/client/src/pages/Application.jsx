@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Pg1 } from "../components/form-pages/Pg1";
 import { Pg2 } from "../components/form-pages/Pg2";
 import { Pg3 } from "../components/form-pages/Pg3";
+import { Pg4 } from "../components/form-pages/Pg4";
 
 const Application = () => {
     const [pgNo, setPgNo] = useState(1);
@@ -9,7 +10,7 @@ const Application = () => {
     return (
         <div>
             <div>
-                {pgNo == 1 ? <Pg1 /> : pgNo == 2 ? <Pg2 /> : <Pg3 />}
+                {pgNo == 1 ? <Pg1 /> : pgNo == 2 ? <Pg2 /> : pgNo == 3 ? <Pg3 /> : <Pg4 />}
                 <center>
                     {pgNo > 1 && (
                         <button
@@ -23,7 +24,7 @@ const Application = () => {
                         Back
                         </button>
                     )}
-                    {pgNo < 3 && (
+                    {pgNo < 4 && (
                         <button
                         className="btn btn-primary mx-4"
                         type="button"
@@ -33,11 +34,11 @@ const Application = () => {
                         }}
                         >
                         Next
-                        </button>
+                        </button>   
                     )}
                 </center>
                 <center>
-                    <p>Page {pgNo} / 3</p>
+                    <p>Page {pgNo} / 4</p>
                 </center>
             </div>
         </div>

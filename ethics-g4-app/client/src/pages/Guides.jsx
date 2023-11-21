@@ -8,39 +8,39 @@ const Guides = () => {
         provided further information for their role regarding Ethics approval.
       </h2>
 
-      <div class="card w-50">
-        <div class="card-body">
-          <h5 class="card-title">Applicant</h5>
-          <p class="card-text">
+      <div className="card w-50">
+        <div className="card-body">
+          <h5 className="card-title">Applicant</h5>
+          <p className="card-text">
             Press below to view more info. regarding Applicant
           </p>
-          <Link to="/applicant" class="btn btn-primary">
+          <Link to="/applicant" className="btn btn-primary">
             {" "}
             Enter
           </Link>
         </div>
       </div>
 
-      <div class="card w-50">
-        <div class="card-body">
-          <h5 class="card-title">Supervisor</h5>
-          <p class="card-text">
+      <div className="card w-50">
+        <div className="card-body">
+          <h5 className="card-title">Supervisor</h5>
+          <p className="card-text">
             Press below to view more info. regarding Supervisor
           </p>
-          <Link to="/supervisor" class="btn btn-primary">
+          <Link to="/supervisor" className="btn btn-primary">
             {" "}
             Enter
           </Link>
         </div>
       </div>
 
-      <div class="card w-50">
-        <div class="card-body">
-          <h5 class="card-title">Reviewers</h5>
-          <p class="card-text">
+      <div className="card w-50">
+        <div className="card-body">
+          <h5 className="card-title">Reviewers</h5>
+          <p className="card-text">
             Press below to view more info. regarding Reviewers
           </p>
-          <Link to="/reviewer" class="btn btn-primary">
+          <Link to="/reviewer" className="btn btn-primary">
             {" "}
             Enter
           </Link>

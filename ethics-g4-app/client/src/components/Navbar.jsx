@@ -12,11 +12,11 @@ function Navbar() {
 
   const logOut = async () => {
     try {
-    const response = await fetch('http://localhost:4000/logout', {
-      method: 'POST',
-      credentials: 'include',
+    const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/logout`, {
+      method: "POST",
+      credentials: "include",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     });
 
@@ -57,6 +57,7 @@ function Navbar() {
               <>
                 <Link to={`${import.meta.env.VITE_SERVER_URL}/account`}>
                   <img
+                    className="rounded-circle shadow-4-strong"
                     src={user.img}
                     alt="User Profile Pic"
                     width="30vh"

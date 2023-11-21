@@ -24,8 +24,8 @@ passport.use(
         if (currentUserQuery.rows.length === 0) {
           // Create user
           await pool.query(
-            "INSERT INTO users (username, img, email, google_id) VALUES ($1, $2, $3, $4)",
-            [account.name, account.picture, account.email, account.sub]
+            "INSERT INTO users (username, img, email, google_id, role) VALUES ($1, $2, $3, $4, $5)",
+            [account.name, account.picture, account.email, account.sub,]
           );
 
           const id = await pool.query(
@@ -37,6 +37,7 @@ passport.use(
             username: account.name,
             img: account.picture,
             email: account.email, // Include the email in the user object
+            role: account.role,
           };
         } else {
           // User exists
@@ -44,7 +45,8 @@ passport.use(
             id: currentUserQuery.rows[0].google_id,
             username: currentUserQuery.rows[0].username,
             img: currentUserQuery.rows[0].img,
-            email: currentUserQuery.rows[0].email, // Include the email in the user object
+            email: currentUserQuery.rows[0].email,
+            role: currentUserQuery.rows[0].role, // Include the email in the user object
           };
         }
         done(null, user);

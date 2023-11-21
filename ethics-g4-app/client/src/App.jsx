@@ -4,7 +4,6 @@ import { ThemeProvider } from "styled-components";
 import { cityTheme } from "./themes";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import UsersDemo from "./pages/UsersDemo";
 import Contact from "./pages/Contact";
 import NoPage from "./pages/NoPage";
 import Container from "./pages/Container";
@@ -18,6 +17,7 @@ import Application from "./pages/Application";
 import { UserContext } from "./components/UserContext";
 import { useContext } from "react";
 import PleaseSignIn from "./pages/PleaseSignIn";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function App() {
 
@@ -34,7 +34,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<Container />}>
                   <Route index element={<Home />} />
-                  <Route path="usersdemo" element={<UsersDemo />} />
+                  <Route path="admindashboard" element={<AdminDashboard />} />
                   <Route path="contact" element={<Contact />} />
                   <Route path="guides" element={<Guides />} />
                   <Route path="application" element={<Application />} />

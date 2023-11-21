@@ -5,6 +5,8 @@ const cors = require("cors");
 const session = require("express-session");
 const passport = require("passport");
 require("./auth.js");
+const userRoutes = require("./routes/userRouter");
+
 
 app.use(express.json());
 
@@ -14,6 +16,9 @@ app.use(
     origin: process.env.CLIENT_URL,
   })
 );
+
+
+app.use("/api", userRoutes);
 
 app.use(
   session({

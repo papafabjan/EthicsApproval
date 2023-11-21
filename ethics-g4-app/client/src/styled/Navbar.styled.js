@@ -22,7 +22,15 @@ const Navbar = styled.div`
 
   button[type="submit"]:hover {
     background-color: aliceblue;
-    color:black
+    color: black;
+  }
+
+  img {
+    border: 2px solid #050906;
+    margin-right: 0.5rem;
+  }
+  i {
+    margin-left: 1rem;
   }
 `;
 

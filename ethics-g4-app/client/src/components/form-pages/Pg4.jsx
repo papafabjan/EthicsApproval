@@ -24,6 +24,11 @@ export const Pg4 = () => {
                 <p>e.g., it includes stimuli designed to be emotive or aversive; It requires participants to ingest substances (e.g., alcohol); It requires participants to give information of a personal nature (e.g., ethnicity, religion, sexual orientation); it uses deception</p>
                 <input type="text" class="form-control" id="StartDate"/>
             </div>
+            <div class="form-group">
+                <label for="StartDate">Sensitive Material/tools <span style={{ color: 'red' }}>*</span></label>
+                <p>Upload up to 5 files (photos, questionnaires, interview questions etc.)  in any format</p>
+                <input type="file" class="form-control" id="StartDate"/>
+            </div>
         </form>
     </>
     );

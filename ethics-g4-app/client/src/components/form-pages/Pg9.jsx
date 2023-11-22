@@ -5,24 +5,19 @@ export const Pg9 = () => {
     <>
         <form>
             <div class="form-group">
-                <label for="ResearchProject">Participant Information Form <span style={{ color: 'red' }}>*</span></label>
-                <p>Upload a doc, docx or pdf. A template of the Adult Information Form is available at this link. For EEG studies the additional information template form can be found at this link. <strong>NOTE:</strong> If you edit your response & resubmit please name the new document indicating the new version (e.g., title_v2.doc)</p>
+                <label for="ResearchProject">Data Processing <span style={{ color: 'red' }}>*</span></label>
+                <p>Will you be processing (i.e. collecting, recording, storing, or otherwise using) personal data as part of this project? (Personal data is any information relating to an identified or identifiable living person). If the intention is to record the participants' voice, or make a photographic record of the participants (either still images or video recordings) then further details on what will be recorded and how they will be managed are required.</p>
                 <input type="text" class="form-control" id="ResearchProject" placeholder="e.g. Ethics web-site"/>
             </div>
             <div class="form-group">
-                <label for="CoApplicantName">Participant Consent Form <span style={{ color: 'red' }}>*</span></label>    
-                <p>Upload a doc, docx or pdf. A template is available at this link. <strong>NOTE:</strong> If you edit your response & resubmit please name the new document indicating the new version (e.g., title_v2.doc)</p>
+                <label for="CoApplicantName">Data Confidentiality <span style={{ color: 'red' }}>*</span></label>    
+                <p>What measures will be put in place to ensure confidentiality of personal data, where appropriate? </p>
                 <input type="text" class="form-control" id="CoApllicantName" placeholder="e.g. Kostas Dimopoulos"/>
             </div>
             <div class="form-group">
-                <label for="CoApplicantEmail">Debriefing Form (optional)</label>
-                <p>If applicable, e.g., the study involves deception or may potentially cause stress or confusion. A template is available at this link. <strong>NOTE:</strong> If you edit your response & resubmit please name the new document indicating the new version (e.g., title_v2.doc) </p>
+                <label for="CoApplicantEmail">Data Storage and Security <span style={{ color: 'red' }}>*</span></label>
+                <p>Who will have access to the data generated at each stage of the research, and in what form? What steps will be taken to ensure the security of data processed during the project, including any identifiable personal data, other than those already described earlier in this form? Indicate if, and when, all identifiable personal data will be destroyed once the project has ended.</p>
                 <input type="text" class="form-control" id="CoApplicantEmail" placeholder="eg. kdimopoulos@york.citycollege.eu"/>
-            </div>
-            <div class="form-group">
-                <label for="StartDate">Accessibility Letter (Optional)</label>
-                <p>Upload a doc, docx or pdf. <strong>NOTE:</strong> If you edit your response & resubmit please name the new document indicating the new version (e.g., title_v2.doc)</p>
-                <input type="text" class="form-control" id="StartDate"/>
             </div>
         </form>
     </>

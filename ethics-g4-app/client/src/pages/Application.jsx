@@ -10,14 +10,20 @@ import { Pg7 } from "../components/form-pages/Pg7";
 import { Pg8 } from "../components/form-pages/Pg8";
 import { Pg9 } from "../components/form-pages/Pg9";
 import { Pg10 } from "../components/form-pages/Pg10";
-import { Pg11 } from "../components/form-pages/Pg11";
 import { UserContext } from "../components/UserContext";
 import { useContext } from "react";
 
+const handleSubmit = () => {
+  // Perform form submission logic here
+  // This function will be triggered when the submit button is clicked on the last page (Pg10)
+  // Example: You can collect all form data from previous pages and submit it
+  // You may use form data state or any other method to collect and submit the form data
+  console.log("Submitting the form...");
+};
 const Application = () => {
     const user = useContext(UserContext);
     const [pgNo, setPgNo] = useState(0);
-
+    const isLastPage = pgNo === 10;
     return (
       <div>
         <div>
@@ -43,12 +49,10 @@ const Application = () => {
                 <Pg7 />
               ) : pgNo == 8 ? (
                 <Pg8 />
-              ) : pgNo == 9 ? (
+              ) : pgNo == 9 ? 
                 <Pg9 />
-              ) : pgNo == 10 ? (
+                 : (
                 <Pg10 />
-              ) : (
-                <Pg11 />
               )}
             </>
           ) : (
@@ -71,7 +75,7 @@ const Application = () => {
                 Back
               </button>
             )}
-            {pgNo < 11 && (
+            {pgNo < 10 && (
               <button
                 className="btn btn-primary mx-4"
                 type="button"
@@ -84,8 +88,21 @@ const Application = () => {
                 Next
               </button>
             )}
+            {isLastPage && (
+              <button
+                  className="btn btn-primary mx-4"
+            type="button"
+            onClick={handleSubmit}
+            style={{ cursor: "pointer" }}
+          >
+            Submit
+          </button>
+            )}
+            
+
+            
           </center>
-          <center>{pgNo > 0 && <p>Page {pgNo} / 11</p>}</center>
+          <center>{pgNo > 0 && <p>Page {pgNo} / 10</p>}</center>
         </div>
       </div>
     );

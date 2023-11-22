@@ -1,39 +1,45 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-
 import { UserContext } from "../components/UserContext";
 import { useContext } from "react";
 import { useEffect, useState } from "react";
 
-
 function Navbar() {
   const user = useContext(UserContext);
 
-  const logOut = async () => {
+  const Login = () => {
+    const str = `${import.meta.env.VITE_SERVER_URL}/auth/google`;
+    window.open(str, "_self");
+  };
+
+  const Logout = async () => {
     try {
-    const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/logout`, {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+      const response = await fetch(
+        `${import.meta.env.VITE_SERVER_URL}/Logout`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-    if (response.ok) {
-      console.log('Logout successful');
-      // Handle any further actions after successful logout
-    } else {
-      console.error('Logout failed');
-      // Handle logout failure
+      if (response.ok) {
+        console.log("Logout successful");
+        // Handle any further actions after successful Logout
+      } else {
+        console.error("Logout failed");
+        // Handle Logout failure
+      }
+    } catch (error) {
+      console.error("Error during Logout", error);
+      // Handle error during Logout
     }
-  } catch (error) {
-    console.error('Error during logout', error);
-    // Handle error during logout
-  }
 
-  window.location.reload(true);
-  }
+    window.location.reload(true);
+  };
 
   return (
     <>
@@ -66,14 +72,17 @@ function Navbar() {
                   Hi, {user.username}
                 </Link>
                 <i
-                  onClick={logOut}
+                  onClick={Logout}
                   className="fa-solid fa-right-from-bracket"
+                  style={{ cursor: "pointer" }}
                 ></i>
               </>
             ) : (
               <>
-                <i className="fa-solid fa-circle-user"></i>
-                Login
+                <div onClick={Login} style={{ cursor: "pointer" }}>
+                  <i className="fa-solid fa-circle-user"></i>
+                  Login
+                </div>
               </>
             )}
           </span>

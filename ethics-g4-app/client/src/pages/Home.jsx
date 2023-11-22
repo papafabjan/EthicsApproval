@@ -28,7 +28,7 @@ const Home = () => {
     };
 
     fetchUserData();
-  }); // Empty dependency array ensures the effect runs only once
+  },[]); // Empty dependency array ensures the effect runs only once
 
  
   
@@ -44,6 +44,7 @@ const Home = () => {
               <h1>Welcome, {userData.username} !</h1>
               <p>Email: {userData.email}</p>
               <p>Google-ID: {userData.id}</p>
+              <p>Role: {userData.role}</p>
 
               {/* Other user details */}
             </div>

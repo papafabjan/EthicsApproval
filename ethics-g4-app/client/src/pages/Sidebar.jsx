@@ -4,8 +4,9 @@ import { UserContext } from "../components/UserContext";
 import React, { useContext } from "react";
 
 const Sidebar = () => {
-  const { user } = useContext(UserContext);
-  const isAdmin = user && user.role === "admin";
+  const user  = useContext(UserContext);
+  const isAdmin = user && user.role === 'admin';
+
   return (
     <>
       <div>
@@ -14,15 +15,15 @@ const Sidebar = () => {
         </Link>
       </div>
 
-        {isAdmin && (
-          <div className="nav-item">
-            <div className="text">
-              <Link to="/admindashboard">
-                <i className="fa-solid fa-user"></i>AdminDashboard
-              </Link>
-            </div>
+      {isAdmin && (
+        <div className="nav-item">
+          <div className="text">
+            <Link to="/admindashboard">
+              <i className="fa-solid fa-user"></i>AdminDashboard
+            </Link>
           </div>
-        )}
+        </div>
+      )}
 
       <div className="nav-item">
         <div className="text">

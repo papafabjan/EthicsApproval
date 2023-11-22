@@ -16,50 +16,52 @@ import Reviewer from "./pages/Reviewer";
 import Application from "./pages/Application";
 import { UserContext } from "./components/UserContext";
 import { useContext } from "react";
-import PleaseSignIn from "./pages/PleaseSignIn";
 import AdminDashboard from "./pages/AdminDashboard";
 
 function App() {
-
   const user = useContext(UserContext);
+  const isAdmin = user && user.role === "admin";
   return (
     <>
       <ThemeProvider theme={cityTheme}>
         <GlobalStyle />
         <StyledApp>
-          {user?.loggedIn === null ? (
-            ""
-          ) : user?.loggedIn === true ? (
-            <Router>
-              <Routes>
-                <Route path="/" element={<Container />}>
-                  <Route index element={<Home />} />
+          <Router>
+            <Routes>
+              <Route path="/" element={<Container />}>
+                <Route index element={<Home />} />
+                {isAdmin && (
                   <Route path="admindashboard" element={<AdminDashboard />} />
-                  <Route path="contact" element={<Contact />} />
-                  <Route path="guides" element={<Guides />} />
-                  <Route path="application" element={<Application />} />
-                  <Route
-                    path="Document_Templates"
-                    element={<Document_Templates />}
-                  />
-                  <Route path="applicant" element={<Applicant />} />
-                  <Route path="supervisor" element={<Supervisor />} />
-                  <Route path="reviewer" element={<Reviewer />} />
-                  {/* <Route path="loginpage" element={<LoginPage />} /> */}
-                  <Route path="*" element={<NoPage />} />
-                </Route>
-              </Routes>
-            </Router>
-          ) : (
-            <>
-              <h1>Please sign in</h1>
-              <PleaseSignIn />
-            </>
-          )}
+                )}
+                <Route path="contact" element={<Contact />} />
+                <Route path="guides" element={<Guides />} />
+                <Route path="application" element={<Application />} />
+                <Route
+                  path="Document_Templates"
+                  element={<Document_Templates />}
+                />
+                <Route path="applicant" element={<Applicant />} />
+                <Route path="supervisor" element={<Supervisor />} />
+                <Route path="reviewer" element={<Reviewer />} />
+                {/* <Route path="loginpage" element={<LoginPage />} /> */}
+                <Route path="*" element={<NoPage />} />
+              </Route>
+            </Routes>
+          </Router>
         </StyledApp>
       </ThemeProvider>
     </>
   );
 }
+
+// {user?.loggedIn === null ? (
+//             ""
+//           ) : user?.loggedIn === true ? (
+//           ) : (
+//             <>
+//               <h1>Please sign in</h1>
+//               <PleaseSignIn />
+//             </>
+//           )}
 
 export default App;

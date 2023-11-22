@@ -38,7 +38,10 @@ const Home = () => {
       <StyledHome>
         <h1>Home Page Here</h1>
         <div>
-          {userData ? (
+
+           {userData === null ? (
+            ""
+          ) : userData.loggedIn === true ? (
             <div>
               <img src={userData.img} alt="User Profile" />
               <h1>Welcome, {userData.username} !</h1>
@@ -49,7 +52,9 @@ const Home = () => {
               {/* Other user details */}
             </div>
           ) : (
-            <p>User not logged in.</p>
+            <>
+              <p>User not logged in.</p>
+            </>
           )}
         </div>
       </StyledHome>

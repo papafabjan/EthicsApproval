@@ -36,14 +36,6 @@ const Sidebar = () => {
 
       <div className="nav-item">
         <div className="text">
-          <Link to="/loginpage">
-            <i className="fa-solid fa-right-to-bracket"></i>Login
-          </Link>
-        </div>
-      </div>
-
-      <div className="nav-item">
-        <div className="text">
           <Link to="/contact">
             <i className="fa-solid fa-envelope"></i>Contact
           </Link>

@@ -11,44 +11,83 @@ import { Pg8 } from "../components/form-pages/Pg8";
 import { Pg9 } from "../components/form-pages/Pg9";
 import { Pg10 } from "../components/form-pages/Pg10";
 import { Pg11 } from "../components/form-pages/Pg11";
+import { UserContext } from "../components/UserContext";
+import { useContext } from "react";
+
 const Application = () => {
+    const user = useContext(UserContext);
     const [pgNo, setPgNo] = useState(0);
 
     return (
+      <div>
         <div>
-            <div>
-                {pgNo == 0 ? <Pg0 /> : pgNo == 1 ? <Pg1 /> : pgNo == 2 ? <Pg2 /> : pgNo == 3 ? <Pg3 /> : pgNo == 4 ? <Pg4 />: pgNo == 5 ? <Pg5 /> : pgNo == 6 ? <Pg6 />: pgNo == 7 ? <Pg7 /> : pgNo == 8 ? <Pg8 /> : pgNo == 9 ? <Pg9 />: pgNo == 10 ? <Pg10 /> : <Pg11 /> }
-                <center>
-                    {pgNo > 1 && (
-                        <button
-                        className="btn btn-primary"
-                        type="button"
-                        onClick={() => {
-                            let pg = pgNo;
-                            setPgNo(pg - 1);
-                        }}
-                        >
-                        Back
-                        </button>
-                    )}
-                    {pgNo < 11 && (
-                        <button
-                        className="btn btn-primary mx-4"
-                        type="button"
-                        onClick={() => {
-                            let pg = pgNo;
-                            setPgNo(pg + 1);
-                        }}
-                        >
-                        Next
-                        </button>   
-                    )}
-                </center>
-                <center>
-                    <p>Page {pgNo} / 11</p>
-                </center>
-            </div>
+          {user?.loggedIn === null ? (
+            ""
+          ) : user?.loggedIn === true ? (
+            <>
+              {pgNo == 0 ? (
+                <Pg0 />
+              ) : pgNo == 1 ? (
+                <Pg1 />
+              ) : pgNo == 2 ? (
+                <Pg2 />
+              ) : pgNo == 3 ? (
+                <Pg3 />
+              ) : pgNo == 4 ? (
+                <Pg4 />
+              ) : pgNo == 5 ? (
+                <Pg5 />
+              ) : pgNo == 6 ? (
+                <Pg6 />
+              ) : pgNo == 7 ? (
+                <Pg7 />
+              ) : pgNo == 8 ? (
+                <Pg8 />
+              ) : pgNo == 9 ? (
+                <Pg9 />
+              ) : pgNo == 10 ? (
+                <Pg10 />
+              ) : (
+                <Pg11 />
+              )}
+            </>
+          ) : (
+            <>
+              <h1>Please sign in</h1>
+              <PleaseSignIn />
+            </>
+          )}
+          <center>
+            {pgNo > 0 && (
+              <button
+                className="btn btn-primary"
+                type="button"
+                onClick={() => {
+                  let pg = pgNo;
+                  setPgNo(pg - 1);
+                }}
+                style={{ cursor: "pointer" }}
+              >
+                Back
+              </button>
+            )}
+            {pgNo < 11 && (
+              <button
+                className="btn btn-primary mx-4"
+                type="button"
+                onClick={() => {
+                  let pg = pgNo;
+                  setPgNo(pg + 1);
+                }}
+                style={{ cursor: "pointer" }}
+              >
+                Next
+              </button>
+            )}
+          </center>
+          <center>{pgNo > 0 && <p>Page {pgNo} / 11</p>}</center>
         </div>
+      </div>
     );
 };
 

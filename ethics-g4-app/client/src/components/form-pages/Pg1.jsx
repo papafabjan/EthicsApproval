@@ -1,13 +1,27 @@
+import OptionsList from "../OptionsList";
 import { UserContext } from "../UserContext";
 import { useContext, useState } from "react";
 
 export const Pg1 = () => {
   const user = useContext(UserContext);
+  // Set the form data based on the user's information
+  const userNames = splitUsername(user.username);
+  const { firstName, middleName, lastName } = userNames;
+  const initialFormData = {
+    firstName,
+    middleName,
+    lastName,
+  };
   const [formData, setFormData] = useState({
     firstName: "",
     middleName: "",
     lastName: "",
+    email: user.email || "", // Set default email
+    studentRegistration: "",
+    program: "",
   });
+const [isProgramOpen, setIsProgramOpen] = useState(false);
+
 
   function splitUsername(username) {
     const names = username.split(" ");
@@ -25,15 +39,6 @@ export const Pg1 = () => {
     }
   }
 
-  // Set the form data based on the user's information
-  const userNames = splitUsername(user.username);
-  const { firstName, middleName, lastName } = userNames;
-  const initialFormData = {
-    firstName,
-    middleName,
-    lastName,
-  };
-
   // Update form data when the user changes
   useState(() => {
     setFormData(initialFormData);
@@ -46,11 +51,17 @@ export const Pg1 = () => {
     });
   };
 
+  const handleProgramToggle = () => {
+    setIsProgramOpen(!isProgramOpen);
+  };
+
   return (
     <>
       <form>
         <div className="form-group">
-          <label htmlFor="FirstName">First Name *</label>
+          <label htmlFor="FirstName">
+            First Name <span style={{ color: "red" }}>*</span>{" "}
+          </label>
           <input
             type="text"
             className="form-control"
@@ -74,7 +85,9 @@ export const Pg1 = () => {
           </div>
         )}
         <div className="form-group">
-          <label htmlFor="LastName">Last Name *</label>
+          <label htmlFor="LastName">
+            Last Name <span style={{ color: "red" }}>*</span>{" "}
+          </label>
           <input
             type="text"
             className="form-control"
@@ -83,6 +96,57 @@ export const Pg1 = () => {
             value={formData.lastName}
             onChange={handleInputChange}
           />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="eMail">
+            Email <span style={{ color: "red" }}>*</span>{" "}
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="eMail"
+            placeholder="example@given.com"
+            value={user.email}
+            onChange={handleInputChange}
+          />
+        </div>
+
+        <div className="form-group">
+          <label for="StudentRegistration">
+            Student registration number <span style={{ color: "red" }}>*</span>
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="StudentRegistration"
+            placeholder="e.g. CSS12345"
+          />
+        </div>
+        <div className="form-group">
+          <div className="collapsible-list">
+            <div className="collapsible-header" onClick={handleProgramToggle}>
+              <label htmlFor="Program">
+                Program you are enrolled at{" "}
+                {isProgramOpen ? (
+                  <>
+                    <i className="fa-solid fa-chevron-up"></i>{" "}
+                    <span style={{ color: "red" }}>*</span>{" "}
+                  </>
+                ) : (
+                  <>
+                    <i className="fa-solid fa-chevron-down"></i>{" "}
+                    <span style={{ color: "red" }}>*</span>{" "}
+                  </>
+                )}{" "}
+              </label>
+            </div>
+            {isProgramOpen && (
+              <div className="collapsible-content">
+                <OptionsList />
+              </div>
+            )}
+          </div>
         </div>
       </form>
     </>

@@ -13,10 +13,16 @@ CREATE TABLE users (
 
 CREATE TABLE applications (
   id SERIAL PRIMARY KEY,
-  body VARCHAR(255) NOT NULL,
+  content references application_content(application_id) NOT NULL,
   status VARCHAR(255) NOT NULL,
   date VARCHAR(255) NOT NULL,
   applicant_id INT references users(user_id) NOT NULL
+);
+
+CREATE TABLE application_content (
+  id SERIAL PRIMARY KEY,
+  application_id references applications(id) NOT NULL,
+  --Markos work here
 );
 
 -- INSERT INTO users (username, img, google_id)

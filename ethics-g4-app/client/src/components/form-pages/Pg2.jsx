@@ -4,8 +4,8 @@ export const Pg2 = () => {
   return (
     <>
       <form>
-        <div class="form-group">
-          <label for="Supervisor">
+        <div className="form-group">
+          <label htmlFor="Supervisor">
             Supervisor <span style={{ color: "red" }}>*</span>
           </label>
           <SupervisorOptionsList />

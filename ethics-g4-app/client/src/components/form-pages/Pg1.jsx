@@ -112,7 +112,7 @@ export const Pg1 = () => {
         </div>
 
         <div className="form-group">
-          <label for="StudentRegistration">
+          <label htmlFor="StudentRegistration">
             Student registration number <span style={{ color: "red" }}>*</span>
           </label>
           <input

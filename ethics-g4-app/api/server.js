@@ -6,6 +6,7 @@ const session = require("express-session");
 const passport = require("passport");
 require("./auth.js");
 const userRoutes = require("./routes/userRouter");
+const applicationsRoutes = require("./routes/applicationsRouter");
 
 
 app.use(express.json());
@@ -19,6 +20,7 @@ app.use(
 
 
 app.use("/api", userRoutes);
+app.use("/api", applicationsRoutes);
 
 app.use(
   session({

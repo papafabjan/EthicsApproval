@@ -37,12 +37,12 @@ function App() {
                 <Route path="contact" element={<Contact />} />
                 <Route path="guides" element={<Guides />} />
                 <Route path="application" element={<Application />} />
-                <Route path="Document_Templates" element={<Document_Templates />}/>
+                <Route path="document_templates" element={<Document_Templates />}/>
                 <Route path="applicant" element={<Applicant />} />
                 <Route path="supervisor" element={<Supervisor />} />
                 <Route path="reviewer" element={<Reviewer />} />
                 {/* <Route path="loginpage" element={<LoginPage />} /> */}
-                <Route path="Dashboard" element={<Dashboard />}/>
+                <Route path="dashboard" element={<Dashboard />}/>
                 <Route path="*" element={<NoPage />} />
 
               </Route>
@@ -63,5 +63,6 @@ function App() {
 //               <PleaseSignIn />
 //             </>
 //           )}
+
 
 export default App;

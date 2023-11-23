@@ -31,4 +31,22 @@ router.put("/users/:userId/edit-role", async (req, res) => {
   }
 });
 
+// Get user by ID
+router.get("/users/:userId", async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const user = await pool.query("SELECT * FROM users WHERE user_id = $1", [userId]);
+
+    if (user.rows.length === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.json(user.rows[0]);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 module.exports = router;

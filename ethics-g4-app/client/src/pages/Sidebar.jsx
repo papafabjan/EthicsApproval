@@ -57,6 +57,13 @@ const Sidebar = () => {
           </Link>
         </div>
       </div>
+      <div className="nav-item">
+        <div className="text">
+          <Link to="/Dashboard">
+            <i className="fa fa-docs" aria-hidden="true"></i>Dashobard
+          </Link>
+        </div>
+      </div>
     </>
   );
 };

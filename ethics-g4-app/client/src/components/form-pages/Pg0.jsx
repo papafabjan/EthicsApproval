@@ -5,7 +5,8 @@ export const Pg0 = () => {
     <>
       <form>
         <div className="form-group">
-          <h1>Computer Science Department Ethics Application Form</h1>
+          <h1 style={{ textAlign: "center" }}>
+          Computer Science Department Ethics Application Form</h1>
           <p>
             Use this form to apply for Ethics Approval.
             <span className="underlined">

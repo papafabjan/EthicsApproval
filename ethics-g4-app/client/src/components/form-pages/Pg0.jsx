@@ -1,5 +1,3 @@
-import OptionsList from "../OptionsList";
-
 export const Pg0 = () => {
   return (
     <>

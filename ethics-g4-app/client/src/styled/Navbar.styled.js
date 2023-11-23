@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const Navbar = styled.div`
-  border: 3px solid red;
+  /* border: 3px solid red; */
   overflow: auto;
   float: top;
   height: 20%;

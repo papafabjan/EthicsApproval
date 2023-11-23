@@ -61,7 +61,6 @@ const Sidebar = styled.div`
     transform: translateX(-50%) scaleY(1);
     opacity: 1;
   }
-  
 `;
 
 export default Sidebar;

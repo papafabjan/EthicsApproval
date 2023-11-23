@@ -20,8 +20,7 @@ export const Pg1 = () => {
     studentRegistration: "",
     program: "",
   });
-const [isProgramOpen, setIsProgramOpen] = useState(false);
-
+  const [isProgramOpen, setIsProgramOpen] = useState(false);
 
   function splitUsername(username) {
     const names = username.split(" ");

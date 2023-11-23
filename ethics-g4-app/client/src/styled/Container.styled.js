@@ -7,9 +7,8 @@ const Container = styled.div`
   justify-content: left;
   align-items: auto;
   margin: 20px;
-  border: 10px solid green;
-  border-radius: 10px;
-  
+  border-radius: 24px;
+  box-shadow: 0 0px 20px 0px rgba(0, 0, 0, 0.6);
 `;
 
 

@@ -1,4 +1,4 @@
-import { Button } from "../../styled/Form.styled";
+
 
 
 function Pg4({ formik }) {
@@ -75,8 +75,7 @@ function Pg4({ formik }) {
         </p>
         <input type="file" className="form-control" id="StartDate" />
       </div>
-      <Button onClick={formik.handleSubmit}>Back</Button>
-      <Button type="submit">Submit</Button>
+
     </>
   );
 }

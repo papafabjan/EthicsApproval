@@ -2,7 +2,7 @@ import { Button } from "../../styled/Form.styled";
 import { UserContext } from "../UserContext";
 import { useContext, useState } from "react";
 
-function Pg1({ formik }) {
+function Pg1({ formik, emphasizeFields }) {
   const user = useContext(UserContext);
 
   function splitUsername(username) {
@@ -39,6 +39,12 @@ function Pg1({ formik }) {
             value={formik.values.firstName}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
+            style={{
+              borderColor:
+                emphasizeFields?.firstName && formik.touched?.firstName
+                  ? "red"
+                  : "",
+            }}
           />
           {formik.touched.firstName && formik.errors.firstName && (
             <div style={{ color: "red" }}>{formik.errors.firstName}</div>
@@ -58,6 +64,12 @@ function Pg1({ formik }) {
             value={formik.values.lastName}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
+            style={{
+              borderColor:
+                emphasizeFields?.lastName && formik.touched?.lastName
+                  ? "red"
+                  : "",
+            }}
           />
           {formik.touched.lastName && formik.errors.lastName && (
             <div style={{ color: "red" }}>{formik.errors.lastName}</div>
@@ -77,6 +89,10 @@ function Pg1({ formik }) {
             value={formik.values.email}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
+            style={{
+              borderColor:
+                emphasizeFields?.email && formik.touched?.email ? "red" : "",
+            }}
           />
           {formik.touched.email && formik.errors.email && (
             <div style={{ color: "red" }}>{formik.errors.email}</div>
@@ -97,6 +113,13 @@ function Pg1({ formik }) {
             value={formik.values.studentRegistration}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
+            style={{
+              borderColor:
+                emphasizeFields?.studentRegistration &&
+                formik.touched?.studentRegistration
+                  ? "red"
+                  : "",
+            }}
           />
         </div>
 
@@ -111,6 +134,12 @@ function Pg1({ formik }) {
             value={formik.values.programme}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
+            style={{
+              borderColor:
+                emphasizeFields?.programme && formik.touched?.programme
+                  ? "red"
+                  : "",
+            }}
           >
             <option value="" label="Select a programme" />
             <option
@@ -139,7 +168,6 @@ function Pg1({ formik }) {
             <div style={{ color: "red" }}>{formik.errors.programme}</div>
           )}
         </div>
-        
       </div>
     </>
   );

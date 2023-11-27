@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [newRole, setNewRole] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   // Fetch users from your API
   useEffect(() => {
@@ -16,7 +15,7 @@ const AdminDashboard = () => {
   }, []);
 
   // Filter users based on search term
-  const filteredUsers = users.filter(user =>
+  const filteredUsers = users.filter((user) =>
     user.username.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -43,7 +42,7 @@ const AdminDashboard = () => {
 
   return (
     <div>
-      <Link to="http://localhost:4000/api/users">
+      <Link to={`${import.meta.env.VITE_SERVER_URL}/api/applications`}>
         <h1>Admin Dashboard</h1>
       </Link>
       <input
@@ -59,15 +58,19 @@ const AdminDashboard = () => {
               <img src={user.img} alt={user.username} />
               <p>{user.username}</p>
               <p>Role: {user.role}</p>
-              <button onClick={() => setNewRole("admin")}>
+              <button onClick={() => updateUserRole(user.user_id, "admin")}>
                 Change to Admin
               </button>
-              <button onClick={() => setNewRole("student")}>
+              <button onClick={() => updateUserRole(user.user_id, "student")}>
                 Change to Student
               </button>
-              {/* Add more role options as needed */}
-              <button onClick={() => updateUserRole(user.user_id, newRole)}>
-                Update Role
+              <button
+                onClick={() => updateUserRole(user.user_id, "supervisor")}
+              >
+                Change to Supervisor
+              </button>
+              <button onClick={() => updateUserRole(user.user_id, "reviewer")}>
+                Change to Reviewer
               </button>
             </div>
           </li>

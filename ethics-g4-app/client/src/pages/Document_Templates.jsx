@@ -1,4 +1,6 @@
 import React from "react";
+import StyledDocument_Templates from "../styled/Document_Templates.styled"
+
 
 const Document_Templates = () => {
   const documents = [
@@ -33,19 +35,24 @@ const Document_Templates = () => {
   ];
 
   return (
+    <>
+    
     <div>
-      <h1>Document Templates</h1>
-      <ul>
-        {documents.map((document, index) => (
-          <li key={index}>
-            {document.name}
-            <a href={document.url} target="_blank" rel="noopener noreferrer">
-              Open
-            </a>
-          </li>
-        ))}
-      </ul>
+      <StyledDocument_Templates>
+        <h1>Document Templates</h1>
+        <ul>
+          {documents.map((document, index) => (
+            <li key={index}>
+              {document.name}
+              <a href={document.url} target="_blank" rel="noopener noreferrer">
+                Open
+              </a>
+            </li>
+          ))}
+        </ul>
+      </StyledDocument_Templates>
     </div>
+          </>
   );
 };
 

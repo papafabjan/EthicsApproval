@@ -52,15 +52,15 @@ const Sidebar = () => {
 
       <div className="nav-item">
         <div className="text">
-          <Link to="/Document_Templates">
-            <i className="fa fa-docs" aria-hidden="true"></i>Document templates
+          <Link to="/document_templates">
+            <i className="fa fa-file" aria-hidden="true"></i>Document templates
           </Link>
         </div>
       </div>
       <div className="nav-item">
         <div className="text">
-          <Link to="/Dashboard">
-            <i className="fa fa-docs" aria-hidden="true"></i>Dashobard
+          <Link to="/dashboard">
+            <i className="fa fa-table-columns" aria-hidden="true"></i>Dashboard
           </Link>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import Form from "../components/Form";
+import Form from "../components/form-pages/Form";
 
 const handleSubmit = () => {
   // Perform form submission logic here

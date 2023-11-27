@@ -11,6 +11,17 @@ CREATE TABLE users (
 );
 
 
+CREATE TABLE applications_test (
+    id SERIAL PRIMARY KEY,
+    firstname VARCHAR(255) NOT NULL,
+    lastname VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    studentregistration VARCHAR(255) NOT NULL,
+    programme VARCHAR(255) NOT NULL,
+    supervisor VARCHAR(255) NOT NULL
+);
+
+
 CREATE TABLE applications (
   id SERIAL PRIMARY KEY,
   content references application_content(application_id) NOT NULL,
@@ -26,7 +37,7 @@ CREATE TABLE application_content (
   middlename VARCHAR(255),
   lastname VARCHAR(255) NOT NULL,
   regnum VARCHAR(255) NOT NULL,
-  programm VARCHAR(255) NOT NULL,
+  programme VARCHAR(255) NOT NULL,
   title VARCHAR(255) NOT NULL,
   co_applicant_names VARCHAR(255) NOT NULL,
   co_applicant_emails VARCHAR(255) NOT NULL,
@@ -63,7 +74,6 @@ CREATE TABLE application_content (
   data_storage_and_security VARCHAR(255) NOT NULL,
   list_of_questions BYTEA,
   additional_forms BYTEA
-  
 );
 
 -- INSERT INTO users (username, img, google_id)

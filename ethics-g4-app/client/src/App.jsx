@@ -1,5 +1,5 @@
 import StyledApp from "./styled/App.styled";
-import GlobalStyle from "./styled/GlobalStyles";
+import GlobalStyle from "./styled/GlobalStyles.styled";
 import { ThemeProvider } from "styled-components";
 import { cityTheme } from "./themes";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";

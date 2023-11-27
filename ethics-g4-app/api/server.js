@@ -7,10 +7,12 @@ const passport = require("passport");
 require("./auth.js");
 const userRoutes = require("./routes/userRouter");
 const applicationsRoutes = require("./routes/applicationsRouter");
+const testapplicationsRoutes = require("./routes/testapplicationsRouter");
 
 
 app.use(express.json());
 
+app.use(cors());
 app.use(
   cors({
     credentials: true,
@@ -21,6 +23,7 @@ app.use(
 
 app.use("/api", userRoutes);
 app.use("/api", applicationsRoutes);
+app.use("/api", testapplicationsRoutes);
 
 app.use(
   session({

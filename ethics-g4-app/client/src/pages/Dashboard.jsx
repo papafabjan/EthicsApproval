@@ -64,11 +64,13 @@ const Dashboard = () => {
   };
 
   // Filter applications based on search term
-  const filteredApplications = applications.filter((application) =>
-    applicantNames[application.applicant_id]
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase())
-  );
+  const filteredApplications = applications.filter((application) => {
+    const applicantName = applicantNames[application.applicant_id];
+    return (
+      applicantName &&
+      applicantName.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  });
 
   return (
     <>

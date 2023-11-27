@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
-const Home = styled.div`
+const Document_Templates = styled.div`
   h1 {
     text-align: center;
   }
 `;
 
-export default Home;
+export default Document_Templates;

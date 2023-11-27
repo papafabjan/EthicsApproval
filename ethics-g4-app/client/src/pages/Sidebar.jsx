@@ -11,7 +11,7 @@ const Sidebar = () => {
     <>
       <div>
         <Link to="/">
-          <img src="../assets/images/logo-city.png" height="100em" alt="Logo" />
+          <img src="../assets/images/logo_city_mobile-removebg-preview.png" height="100em" alt="Logo" />
         </Link>
       </div>
 

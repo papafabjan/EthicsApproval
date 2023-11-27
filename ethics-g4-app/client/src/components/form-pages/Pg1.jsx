@@ -1,5 +1,3 @@
-import SupervisorOptionsList from "../SupervisorOptionsList";
-import { Button } from "../../styled/Form.styled";
 import { UserContext } from "../UserContext";
 import { useContext, useState } from "react";
 

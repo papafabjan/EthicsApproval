@@ -5,32 +5,25 @@ export const Pg8 = ({formik}) => {
     <>
         <form>
             <div className="form-group">
-                <label htmlFor="ParticipantInformationForm">Participant Information Form <span style={{ color: 'red' }}>*</span></label>
-                <p>Upload a doc, docx or pdf. A template of the Adult Information Form is available at this link. For EEG studies the additional information template form can be found at this link. <strong>NOTE:</strong> If you edit your response & resubmit please name the new document indicating the new version (e.g., title_v2.doc)</p>
-                <input type="file" className="form-control" id="ParticipantInformationForm"  value={formik.values.ParticipantInformationForm}
+                <label htmlFor="ResearchProject">Data Processing <span style={{ color: 'red' }}>*</span></label>
+                <p>Will you be processing (i.e. collecting, recording, storing, or otherwise using) personal data as part of this project? (Personal data is any information relating to an identified or identifiable living person). If the intention is to record the participants' voice, or make a photographic record of the participants (either still images or video recordings) then further details on what will be recorded and how they will be managed are required.</p>
+                <input type="text" className="form-control" id="DataProcessing"   value={formik.values.DataProcessing}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur} placeholder="e.g. Ethics web-site"/>
             </div>
             <div className="form-group">
-                <label htmlFor="ParticipantConsentForm">Participant Consent Form <span style={{ color: 'red' }}>*</span></label>    
-                <p>Upload a doc, docx or pdf. A template is available at this link. <strong>NOTE:</strong> If you edit your response & resubmit please name the new document indicating the new version (e.g., title_v2.doc)</p>
-                <input type="file" className="form-control" id="ParticipantConsentForm" value={formik.values.ParticipantConsentForm}
+                <label htmlFor="CoApplicantName">Data Confidentiality <span style={{ color: 'red' }}>*</span></label>    
+                <p>What measures will be put in place to ensure confidentiality of personal data, where appropriate? </p>
+                <input type="text" className="form-control" id="DataConfidentiality"  value={formik.values.DataConfidentiality}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur} placeholder="e.g. Kostas Dimopoulos"/>
             </div>
             <div className="form-group">
-                <label htmlFor="DebriefingForm">Debriefing Form (optional)</label>
-                <p>If applicable, e.g., the study involves deception or may potentially cause stress or confusion. A template is available at this link. <strong>NOTE:</strong> If you edit your response & resubmit please name the new document indicating the new version (e.g., title_v2.doc) </p>
-                <input type="file" className="form-control" id="DebriefingForm" value={formik.values.DebriefingForm}
+                <label htmlFor="CoApplicantEmail">Data Storage and Security <span style={{ color: 'red' }}>*</span></label>
+                <p>Who will have access to the data generated at each stage of the research, and in what form? What steps will be taken to ensure the security of data processed during the project, including any identifiable personal data, other than those already described earlier in this form? Indicate if, and when, all identifiable personal data will be destroyed once the project has ended.</p>
+                <input type="text" className="form-control" id="DataStorageandSecurity"  value={formik.values.DataStorageandSecurity}
           onChange={formik.handleChange}
-          onBlur={formik.handleBlur}  placeholder="eg. kdimopoulos@york.citycollege.eu"/>
-            </div>
-            <div className="form-group">
-                <label htmlFor="AccessibilityLetter">Accessibility Letter (Optional)</label>
-                <p>Upload a doc, docx or pdf. <strong>NOTE:</strong> If you edit your response & resubmit please name the new document indicating the new version (e.g., title_v2.doc)</p>
-                <input type="file" className="form-control" id="AccessibilityLetter" value={formik.values.AccessibilityLetter}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}/>
+          onBlur={formik.handleBlur} placeholder="eg. kdimopoulos@york.citycollege.eu"/>
             </div>
         </form>
     </>

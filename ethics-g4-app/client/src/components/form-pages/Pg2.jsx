@@ -391,4 +391,4 @@ function Pg2({ formik }) {
   );
 }
 
-export default Pg;
+export default Pg2;

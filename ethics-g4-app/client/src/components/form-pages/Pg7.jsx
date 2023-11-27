@@ -5,40 +5,33 @@ export const Pg7 = ({formik}) => {
     <>
         <form>
             <div className="form-group">
-                <label htmlFor="ParentalConsentForm">Parental Consent Form <span style={{ color: 'red' }}>*</span></label>
-                <p>Upload a doc, docx or pdf. A template is available at this link. <strong>NOTE:</strong> If you edit your response & resubmit please name the new document indicating the new version (e.g., title_v2.doc)</p>
-                <input type="file" className="form-control" id="ParentalConsentForm" value={formik.values.ParentalConsentForm}
+                <label htmlFor="ParticipantInformationForm">Participant Information Form <span style={{ color: 'red' }}>*</span></label>
+                <p>Upload a doc, docx or pdf. A template of the Adult Information Form is available at this link. For EEG studies the additional information template form can be found at this link. <strong>NOTE:</strong> If you edit your response & resubmit please name the new document indicating the new version (e.g., title_v2.doc)</p>
+                <input type="file" className="form-control" id="ParticipantInformationForm"  value={formik.values.ParticipantInformationForm}
           onChange={formik.handleChange}
-          onBlur={formik.handleBlur} placeholder="e.g. Ethics web-site" />
+          onBlur={formik.handleBlur} placeholder="e.g. Ethics web-site"/>
             </div>
             <div className="form-group">
-                <label htmlFor="ParentalInformationForm">Parental Information Form <span style={{ color: 'red' }}>*</span></label>    
+                <label htmlFor="ParticipantConsentForm">Participant Consent Form <span style={{ color: 'red' }}>*</span></label>    
                 <p>Upload a doc, docx or pdf. A template is available at this link. <strong>NOTE:</strong> If you edit your response & resubmit please name the new document indicating the new version (e.g., title_v2.doc)</p>
-                <input type="file" className="form-control" id="ParentalInformationForm" value={formik.values.ParentalInformationForm}
+                <input type="file" className="form-control" id="ParticipantConsentForm" value={formik.values.ParticipantConsentForm}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur} placeholder="e.g. Kostas Dimopoulos"/>
             </div>
             <div className="form-group">
-                <label htmlFor="ChildInformationForm">Child/Adolescent Information & Consent/Assent Form (optional)</label>
-                <p>It is strongly recommended that if possible (depending on the child's competence) the child’s or under-age person’s free and voluntary informed consent/assent to participate is obtained.  A template is available at this link. <strong>NOTE:</strong> If you edit your response & resubmit please name the new document indicating the new version (e.g., title_v2.doc)
- </p>
-                <input type="file" className="form-control" id="ChildInformationForm" value={formik.values.ChildInformationForm}
+                <label htmlFor="DebriefingForm">Debriefing Form (optional)</label>
+                <p>If applicable, e.g., the study involves deception or may potentially cause stress or confusion. A template is available at this link. <strong>NOTE:</strong> If you edit your response & resubmit please name the new document indicating the new version (e.g., title_v2.doc) </p>
+                <input type="file" className="form-control" id="DebriefingForm" value={formik.values.DebriefingForm}
           onChange={formik.handleChange}
-          onBlur={formik.handleBlur} placeholder="eg. kdimopoulos@york.citycollege.eu"/>
+          onBlur={formik.handleBlur}  placeholder="eg. kdimopoulos@york.citycollege.eu"/>
             </div>
             <div className="form-group">
-                <label htmlFor="HeadTeacherConsentForm">Head Teacher Consent Form  (optional)</label>
-                <p>Upload a doc, docx or pdf. A template is available at this link. <strong>NOTE:</strong> If you edit your response & resubmit please name the new document indicating the new version (e.g., title_v2.doc)</p>
-                <input type="file" className="form-control" id="HeadTeacherConsentForm" value={formik.values.HeadTeacherConsentForm}
-          onChange={formik.handleChange} onBlur={formik.handleBlur}/>
+                <label htmlFor="AccessibilityLetter">Accessibility Letter (Optional)</label>
+                <p>Upload a doc, docx or pdf. <strong>NOTE:</strong> If you edit your response & resubmit please name the new document indicating the new version (e.g., title_v2.doc)</p>
+                <input type="file" className="form-control" id="AccessibilityLetter" value={formik.values.AccessibilityLetter}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}/>
             </div>
-            <div className="form-group">
-                <label htmlFor="HeadteacherInformationForm">Head Teacher Information Form (optional)</label>
-                <p>Upload a doc, docx, pdf, video or audio file. A template is available at this link. <strong>NOTE:</strong> If you edit your response & resubmit please name the new document indicating the new version (e.g., title_v2.doc)</p>
-                <input type="file" className="form-control" id="HeadteacherInformationForm" value={formik.values.HeadteacherInformationForm}
-          onChange={formik.handleChange} onBlur={formik.handleBlur}/>
-            </div>
-            
         </form>
     </>
     );

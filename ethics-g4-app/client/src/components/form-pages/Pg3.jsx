@@ -1,4 +1,4 @@
-import { Button } from "../../styled/Form.styled";
+
 import React, { useState } from "react";
 
 
@@ -348,8 +348,6 @@ function Pg3({ formik }) {
           </label>
         </li>
       </div>
-      <Button onClick={formik.handleSubmit}>Back</Button>
-      <Button onClick={formik.handleSubmit}>Next</Button>
     </>
   );
 }

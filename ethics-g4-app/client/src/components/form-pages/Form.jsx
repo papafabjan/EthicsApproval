@@ -7,7 +7,16 @@ import { NavigationButtons } from "../../styled/Form.styled";
 import { Button } from "../../styled/Form.styled";
 import Pg0 from "./Pg0";
 import Pg1 from "./Pg1";
-import Pg2 from "./Pg2"; // Import other page components as needed
+import Pg2 from "./Pg2"; 
+import Pg3 from "./Pg3"; 
+import Pg4 from "./Pg4"; 
+import Pg5 from "./Pg5"; 
+import Pg6 from "./Pg6"; 
+import Pg7 from "./Pg7"; 
+import Pg8 from "./Pg8"; 
+import Pg9 from "./Pg9";
+import Pg10 from "./Pg10";  
+// Import other page components as needed
 // ... Import other page components
 
 const validationSchema = yup.object({
@@ -33,10 +42,34 @@ const initialValues = {
   studentRegistration: "",
   programme: "",
   supervisor: "",
+
+  //Page7:
+  ParentalConsentForm:"",
+  ParentalInformationForm:"",
+  HeadTeacherConsentForm:"",
+  HeadteacherInformationForm:"",
+
+  //Page8:
+  ParticipantInformationForm:"",
+  ParticipantConsentForm:"",
+  DebriefingForm:"",
+  AccessibilityLetter:"",
+
+  //Page9
+  DataProcessing:"",
+  DataConfidentiality:"",
+  DataStorageandSecurity:"",
+
+  //Page10:
+  ListofQuestions:"",
+  AdditionalForms:"",
+
+
+
 };
 
 const MyForm = () => {
-  const totalSteps = 4;
+  const totalSteps = 12;
 
   const formik = useFormik({
     initialValues,
@@ -117,10 +150,17 @@ const MyForm = () => {
             {/* Example: */}
             {step === 1 && <Pg1 formik={formik} />}
             {step === 2 && <Pg2 formik={formik} />}
-            {/* {step === 3 && <Pg3 formik={formik} />}
-            {step === 4 && <Pg4 formik={formik} />} */}
-            {/* Render other steps as needed */}
-            {/* ... */}
+            {step === 3 && <Pg3 formik={formik} />}
+            {step === 4 && <Pg4 formik={formik} />}
+            {step === 5 && <Pg5 formik={formik} />}
+            {step === 6 && <Pg6 formik={formik} />}
+            {step === 7 && <Pg7 formik={formik} />}
+            {step === 8 && <Pg8 formik={formik} />}
+            {step === 9 && <Pg9 formik={formik} />}
+            {step === 10 && <Pg10 formik={formik} />}
+            
+              
+            
             <NavigationButtons>
               <Button onClick={handlePrevious} disabled={isFirstStep}>
                 Previous

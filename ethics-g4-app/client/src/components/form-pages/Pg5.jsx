@@ -1,6 +1,6 @@
-import OptionsList from '../OptionsList';
 
-export const Pg5 = () => {
+
+export const Pg5 = ({ formik }) => {
     return (
     <>
         <form>
@@ -32,4 +32,5 @@ export const Pg5 = () => {
         </form>
     </>
     );
-};
+}
+export default Pg5;

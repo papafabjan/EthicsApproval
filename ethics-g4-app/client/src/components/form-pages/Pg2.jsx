@@ -1,6 +1,3 @@
-import SupervisorOptionsList from "../SupervisorOptionsList";
-import { Button } from "../../styled/Form.styled";
-
 function Pg2 ({formik}) {
   return (
     <>

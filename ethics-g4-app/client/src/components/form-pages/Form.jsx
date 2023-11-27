@@ -5,9 +5,12 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { NavigationButtons } from "../../styled/Form.styled";
 import { Button } from "../../styled/Form.styled";
-import Pg0 from "./Pg0";
-import Pg1 from "./Pg1";
-import Pg2 from "./Pg2"; // Import other page components as needed
+import Pg0 from "./Pg1";
+import Pg1 from "./Pg2";
+import Pg2 from "./Pg3";
+import Pg3 from "./Pg4";
+// import Pg4 from "./Pg5";
+// import Pg5 from "./Pg6"; // Import other page components as needed
 // ... Import other page components
 
 const validationSchema = yup.object({
@@ -24,6 +27,10 @@ const validationSchema = yup.object({
     .required("Student registration number is required"),
   programme: yup.string().required("Programme selection is required"),
   supervisor: yup.string().required("Supervisor selection is required"),
+  ResearchProject:yup.string().required("ResearchProject is required"),
+  CoApllicantName:yup.string().required("CoApllicant's Name is required"),
+  CoApllicantEmail:yup.string().required("CoApllicant's Email is required"),
+
 });
 
 const initialValues = {
@@ -33,10 +40,22 @@ const initialValues = {
   studentRegistration: "",
   programme: "",
   supervisor: "",
+  ResearchProject: "",
+  CoApllicantName: "",
+  CoApplicantEmail: "",
+  StartDate: "",
+  EndDate: "",
+  Fund: "",
+  Country:[],
+  ProjectPlace:"",
+  HealthSocialCare: "",
+  AnotherInstitution: "",
+  HumanTissue: "",
+  ClinicalMedical: "",
+  SocialCareServices: "",
 };
-
 const MyForm = () => {
-  const totalSteps = 4;
+  const totalSteps = 6;
 
   const formik = useFormik({
     initialValues,
@@ -117,8 +136,8 @@ const MyForm = () => {
             {/* Example: */}
             {step === 1 && <Pg1 formik={formik} />}
             {step === 2 && <Pg2 formik={formik} />}
-            {/* {step === 3 && <Pg3 formik={formik} />}
-            {step === 4 && <Pg4 formik={formik} />} */}
+            {step === 3 && <Pg3 formik={formik} />}
+            {step === 4 && <Pg4 formik={formik} />}
             {/* Render other steps as needed */}
             {/* ... */}
             <NavigationButtons>

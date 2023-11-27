@@ -1,4 +1,4 @@
-import OptionsList from '../OptionsList';
+
 
 export const Pg6 = () => {
     return (

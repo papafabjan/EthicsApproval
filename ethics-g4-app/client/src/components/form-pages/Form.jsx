@@ -5,20 +5,10 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { NavigationButtons } from "../../styled/Form.styled";
 import { Button } from "../../styled/Form.styled";
-import Pg0 from "./Pg1";
-import Pg1 from "./Pg2";
-import Pg2 from "./Pg3";
-import Pg3 from "./Pg4";
-// import Pg4 from "./Pg5";
-// import Pg5 from "./Pg6"; 
-// import Pg3 from "./Pg3"; 
-// import Pg4 from "./Pg4"; 
-// import Pg5 from "./Pg5"; 
-// import Pg6 from "./Pg6"; 
-// import Pg7 from "./Pg7"; 
-// import Pg8 from "./Pg8"; 
-// import Pg9 from "./Pg9";
-// import Pg10 from "./Pg10";  
+import Pg0 from "./Pg0";
+import Pg1 from "./Pg1";
+import Pg2 from "./Pg2";
+import Pg3 from "./Pg3";
 // Import other page components as needed
 // ... Import other page components
 
@@ -44,6 +34,7 @@ const validationSchema = yup.object({
 });
 
 const initialValues = {
+  //Page 1
   firstName: "",
   lastName: "",
   email: "",
@@ -51,42 +42,41 @@ const initialValues = {
   programme: "",
   supervisor: "",
 
-  //Page7:
-  ParentalConsentForm:"",
-  ParentalInformationForm:"",
-  HeadTeacherConsentForm:"",
-  HeadteacherInformationForm:"",
-
-  //Page8:
-  ParticipantInformationForm:"",
-  ParticipantConsentForm:"",
-  DebriefingForm:"",
-  AccessibilityLetter:"",
-
-  //Page9
-  DataProcessing:"",
-  DataConfidentiality:"",
-  DataStorageandSecurity:"",
-
-  //Page10:
-  ListofQuestions:"",
-  AdditionalForms:"",
-
-
-
+  //Page 2
   ResearchProject: "",
   CoApllicantName: "",
   CoApplicantEmail: "",
   StartDate: "",
   EndDate: "",
   Fund: "",
-  Country:[],
-  ProjectPlace:"",
+  Country: [],
+  ProjectPlace: "",
   HealthSocialCare: "",
   AnotherInstitution: "",
   HumanTissue: "",
   ClinicalMedical: "",
   SocialCareServices: "",
+
+  //Page7:
+  ParentalConsentForm: "",
+  ParentalInformationForm: "",
+  HeadTeacherConsentForm: "",
+  HeadteacherInformationForm: "",
+
+  //Page8:
+  ParticipantInformationForm: "",
+  ParticipantConsentForm: "",
+  DebriefingForm: "",
+  AccessibilityLetter: "",
+
+  //Page9
+  DataProcessing: "",
+  DataConfidentiality: "",
+  DataStorageandSecurity: "",
+
+  //Page10:
+  ListofQuestions: "",
+  AdditionalForms: "",
 };
 const MyForm = () => {
   const totalSteps = 12;
@@ -122,7 +112,8 @@ const MyForm = () => {
         errors.lastName ||
         errors.email ||
         errors.studentRegistration ||
-        errors.programme
+        errors.programme ||
+        errors.supervisor
       ) {
         // There are errors in the current step, handle them as needed
         errorMessage = "Incomplete: ";
@@ -202,10 +193,6 @@ const MyForm = () => {
             <h1>Form Page {step}</h1>
             {/* Import and render the appropriate component for each step */}
             {/* Example: */}
-            {step === 1 && <Pg1 formik={formik} />}
-            {step === 2 && <Pg2 formik={formik} />}
-            {step === 3 && <Pg3 formik={formik} />}
-            {step === 4 && <Pg4 formik={formik} />}
             {step === 1 && (
               <Pg1 formik={formik} emphasizeFields={formik.errors} />
             )}

@@ -41,7 +41,7 @@ const Home = () => {
           ) : userData.loggedIn === true ? (
             <div>
               <img src={userData.img} alt="User Profile" />
-              <h1>Welcome, {userData.username} !</h1>
+              <h1>Welcome, {userData.username}!</h1>
               <p>Email: {userData.email}</p>
               <p>Google-ID: {userData.id}</p>
               <p>Role: {userData.role}</p>

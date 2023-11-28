@@ -4,19 +4,19 @@ import { Formik, Form, Field } from "formik";
 function Pg2({ formik }) {
   const [radioValue, setRadioValue] = useState(true);
 
-  const handleRadioChange = (e) => {
+  const handleRadioChange = (e,radio) => {
     formik.handleChange(e);
 
     // Reset otherOption when a different radio option is selected
     if (e.target.value !== "Other") {
-      formik.setFieldValue("otherOption", "");
+      formik.setFieldValue(radio, "");
     }
   };
 
-  const handleCheckboxChange = (e) => {
+  const handleCheckboxChange = (e, checkbox) => {
     formik.handleChange(e);
     if (!e.target.checked) {
-      formik.setFieldValue("otherCheckboxOption", "");
+      formik.setFieldValue(checkbox, "");
     }
   };
 
@@ -29,7 +29,7 @@ function Pg2({ formik }) {
             name="radioOption"
             value="Option1"
             checked={formik.values.radioOption === "Option1"}
-            onChange={handleRadioChange}
+            onChange={(e) => handleRadioChange(e, "otherOption")}
           />
           Option 1
         </label>
@@ -40,7 +40,7 @@ function Pg2({ formik }) {
             name="radioOption"
             value="Option2"
             checked={formik.values.radioOption === "Option2"}
-            onChange={handleRadioChange}
+            onChange={(e) => handleRadioChange(e, "otherOption")}
           />
           Option 2
         </label>
@@ -51,7 +51,7 @@ function Pg2({ formik }) {
             name="radioOption"
             value="Option3"
             checked={formik.values.radioOption === "Option3"}
-            onChange={handleRadioChange}
+            onChange={(e) => handleRadioChange(e, "otherOption")}
           />
           Option 3
         </label>
@@ -62,7 +62,7 @@ function Pg2({ formik }) {
             name="radioOption"
             value="Other"
             checked={formik.values.radioOption === "Other"}
-            onChange={handleRadioChange}
+            onChange={(e) => handleRadioChange(e, "otherOption")}
           />
           Other
         </label>
@@ -121,7 +121,7 @@ function Pg2({ formik }) {
               Array.isArray(formik.values.checkboxOption) &&
               formik.values.checkboxOption.includes("Other")
             }
-            onChange={handleCheckboxChange}
+            onChange={(e) => handleCheckboxChange(e, "otherCheckboxOption")}
           />
           Other
         </label>
@@ -316,64 +316,6 @@ function Pg2({ formik }) {
                 value={radioValue}
               />{" "}
               Other
-              <div>
-                <input
-                  type="text"
-                  name="Country"
-                  className="form-control"
-                  placeholder=""
-                  disabled={radioValue}
-                  value={formik.values.Country}
-                  onChange={(e) => {
-                    const isChecked = e.target.checked;
-                    const value = e.target.value;
-
-                    if (isChecked) {
-                      formik.setFieldValue("Country", [
-                        ...(formik.values.Country || []),
-                        value,
-                      ]);
-                    } else {
-                      formik.setFieldValue(
-                        "Country",
-                        (formik.values.Country || []).filter(
-                          (country) => country !== value
-                        )
-                      );
-                    }
-                  }}
-                  onBlur={formik.onBlur}
-                />
-              </div>
-              <input
-                type="checkbox"
-                id="Other"
-                className="htmlForm-control"
-                value="Other"
-                onChange={(e) => {
-                  const isChecked = e.target.checked;
-                  const valueChecked = e.target.value;
-
-                  if (isChecked) {
-                    formik.setFieldValue("isOtherChecked", true);
-                  } else {
-                    formik.setFieldValue("isOtherChecked", false);
-                    formik.setFieldValue("OtherCountry", ""); // Clear 'OtherCountry' when unchecked
-                  }
-                }}
-              />
-              Other
-              <div>
-                <input
-                  type="text"
-                  id="OtherCountry"
-                  name="OtherCountry"
-                  className="htmlForm-control"
-                  value={formik.values.OtherCountry}
-                  onChange={formik.handleChange}
-                  placeholder="Please specify other countries"
-                />
-              </div>
             </li>
           </ul>
         </label>

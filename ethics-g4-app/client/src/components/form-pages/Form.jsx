@@ -36,6 +36,7 @@ const validationSchema = yup.object({
 const initialValues = {
   //Page 1
   firstName: "",
+  middlename: "",
   lastName: "",
   email: "",
   studentRegistration: "",
@@ -44,11 +45,11 @@ const initialValues = {
 
   //Page 2
   ResearchProject: "",
-  CoApllicantName: "",
+  CoApplicantName: "",
   CoApplicantEmail: "",
   StartDate: "",
   EndDate: "",
-  Fund: "",
+  Funding: "",
   Country: [],
   ProjectPlace: "",
   HealthSocialCare: "",

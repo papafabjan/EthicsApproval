@@ -9,6 +9,7 @@ import Pg0 from "./Pg0";
 import Pg1 from "./Pg1";
 import Pg2 from "./Pg2";
 import Pg3 from "./Pg3";
+import Pg4 from "./Pg4";
 // Import other page components as needed
 // ... Import other page components
 
@@ -60,6 +61,13 @@ const initialValues = {
   HumanTissue: "",
   ClinicalMedical: "",
   SocialCareServices: "",
+
+  //Page4
+  PotentialParticipants:"",
+RecruitingPotentialParticipants:"",
+Payment:"",
+PotentialHarm:"",
+VulnerableParticipants:"",
 
   //Page7:
   ParentalConsentForm: "",
@@ -203,8 +211,13 @@ const MyForm = () => {
             {step === 2 && (
               <Pg2 formik={formik} emphasizeFields={formik.errors} />
             )}
-            {step === 3 && <Pg3 formik={formik} />}
-            {step === 4 && <Pg4 formik={formik} />}
+            {step === 3 && (
+              <Pg3 formik={formik} emphasizeFields={formik.errors} />
+            )}
+            {step === 4 && (
+              <Pg4 formik={formik} emphasizeFields={formik.errors} />
+            )}
+            
             {/* Render other steps as needed */}
             {/* ... */}
             <NavigationButtons>

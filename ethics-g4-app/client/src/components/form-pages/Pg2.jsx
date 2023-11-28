@@ -8,8 +8,6 @@ function Pg2({ formik }) {
 
   return (
     <>
-      
-      
       <div className="form-group">
         <label htmlFor="ResearchProject">
           Title of the research project <span style={{ color: "red" }}>*</span>
@@ -95,16 +93,18 @@ function Pg2({ formik }) {
       </div>
 
       <div className="form-group">
-        <label htmlFor="Fund">
+        <label htmlFor="Funding">
           Is the project externally funded?{" "}
           <span style={{ color: "red" }}>*</span>
         </label>
-        <p>If YES, please specify the funding body</p>
+        <p>
+          If <strong>YES</strong>, please specify the funding body
+        </p>
         <label>
           <input
             type="radio"
             id="FundNoFunding"
-            name="Fund"
+            name="Funding"
             value="No Funding"
             checked={formik.values.Fund === "No Funding"}
             onChange={formik.handleChange}
@@ -115,7 +115,7 @@ function Pg2({ formik }) {
           <input
             type="radio"
             id="FundOther"
-            name="Fund"
+            name="Funding"
             value="Other"
             checked={formik.values.Fund === "Other"}
             onChange={formik.handleChange}

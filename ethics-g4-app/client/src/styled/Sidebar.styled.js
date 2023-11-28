@@ -1,6 +1,12 @@
 import styled from "styled-components";
 
 const Sidebar = styled.div`
+  i {
+    margin-right: 8px;
+    vertical-align: middle;
+    align-items: left;
+  }
+
   background: linear-gradient(
     0deg,
     #f2edce,
@@ -14,52 +20,67 @@ const Sidebar = styled.div`
   padding: 2rem;
   gap: 2rem;
   height: 100%;
+  max-width: 13%;
+  min-width: 13%;
   float: left;
 
-  .nav-item {
+  /* .nav-item {
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-
+  } */
+  /* 
   i {
     margin-right: 8px;
     vertical-align: middle;
     align-items: left;
-  }
+  } */
 
-  .nav-item a {
+  /* .nav-item a {
+    
+  } */
+
+  .icon-title {
+    display: flex;
+    align-items: right;
     font-weight: bold;
-    color: black;
-    text-decoration: none;
-    position: relative;
-    display: inline-block;
-    z-index: 1;
+    flex-direction: row;
+    > a {
+      color: black;
+      text-decoration: none;
+      position: relative;
+      display: inline-block;
+      z-index: 1;
+    }
   }
 
-  .nav-item a::before {
+  .icon {
+  }
+
+  .title {
+  }
+
+  .icon-title:before {
     content: "";
     position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%) scaleY(0);
-    width: calc(100% + 20px);
-    /* Adjust the width of the rectangle */
-    height: 100%;
-    /* Spread the rectangle to the full height of nav-item */
-    background-color: rgba(255, 255, 255, 0.5);
-    /* Adjust the opacity here */
-    border-radius: 10px;
-    /* Adjust the border-radius for rounded corners */
-    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-    /* Add fade in/out effect */
     z-index: -1;
-    /* Place the rectangle behind the text */
+    left: 51%;
+    right: 51%;
+    bottom: 0;
+    background: #2098d1;
+    height: 4px;
+    -webkit-transition-property: left, right;
+    transition-property: left, right;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-timing-function: ease-out;
+    transition-timing-function: ease-out;
   }
-
-  .nav-item a:hover::before {
-    transform: translateX(-50%) scaleY(1);
-    opacity: 1;
+  .icon-title:hover:before,
+  .icon-title:focus:before,
+  .icon-title:active:before {
+    left: 0;
+    right: 0;
   }
 `;
 

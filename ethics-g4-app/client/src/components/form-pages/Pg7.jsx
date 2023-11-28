@@ -3,7 +3,7 @@
 export const Pg7 = ({formik}) => {
     return (
     <>
-        <form>
+
             <div className="form-group">
                 <label htmlFor="ParticipantInformationForm">Participant Information Form <span style={{ color: 'red' }}>*</span></label>
                 <p>Upload a doc, docx or pdf. A template of the Adult Information Form is available at this link. For EEG studies the additional information template form can be found at this link. <strong>NOTE:</strong> If you edit your response & resubmit please name the new document indicating the new version (e.g., title_v2.doc)</p>
@@ -32,7 +32,7 @@ export const Pg7 = ({formik}) => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}/>
             </div>
-        </form>
+ 
     </>
     );
 }

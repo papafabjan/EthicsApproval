@@ -3,7 +3,6 @@
 export const Pg9 = ({formik}) => {
     return (
     <>
-        <form>
             <div className="form-group">
                 <label htmlFor="ListofQuestions">List of questions <span style={{ color: 'red' }}>*</span></label>
                 <p>Upload your proposed list of questions (e.g., questionnaires, photos, interview questions, etc) in any format.</p>
@@ -18,7 +17,6 @@ export const Pg9 = ({formik}) => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}/>
             </div>
-        </form>
     </>
     );
 }

@@ -3,7 +3,7 @@
 export const Pg8 = ({formik}) => {
     return (
     <>
-        <form>
+
             <div className="form-group">
                 <label htmlFor="ResearchProject">Data Processing <span style={{ color: 'red' }}>*</span></label>
                 <p>Will you be processing (i.e. collecting, recording, storing, or otherwise using) personal data as part of this project? (Personal data is any information relating to an identified or identifiable living person). If the intention is to record the participants' voice, or make a photographic record of the participants (either still images or video recordings) then further details on what will be recorded and how they will be managed are required.</p>
@@ -25,7 +25,7 @@ export const Pg8 = ({formik}) => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur} placeholder="eg. kdimopoulos@york.citycollege.eu"/>
             </div>
-        </form>
+
     </>
     );
 }

@@ -50,6 +50,20 @@ function Pg1({ formik, emphasizeFields }) {
           )}
         </div>
 
+        {userNames.middleName && (
+          <div className="form-group">
+            <label htmlFor="MiddleName">Middle Name</label>
+            <input
+              type="text"
+              className="form-control"
+              id="MiddleName"
+              placeholder="e.g Mary"
+              value={formik.middleName}
+              onChange={handleInputChange}
+            />
+          </div>
+        )}
+
         <div className="form-group">
           <label htmlFor="lastName">
             Last Name <span style={{ color: "red" }}>*</span>

@@ -3,7 +3,7 @@
 export const Pg6 = ({formik}) => {
     return (
     <>
-        <form>
+
             <div className="form-group">
                 <label htmlFor="ParentalConsentForm">Parental Consent Form <span style={{ color: 'red' }}>*</span></label>
                 <p>Upload a doc, docx or pdf. A template is available at this link. <strong>NOTE:</strong> If you edit your response & resubmit please name the new document indicating the new version (e.g., title_v2.doc)</p>
@@ -39,7 +39,7 @@ export const Pg6 = ({formik}) => {
           onChange={formik.handleChange} onBlur={formik.handleBlur}/>
             </div>
             
-        </form>
+
     </>
     );
 }

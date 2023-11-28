@@ -2,14 +2,21 @@
 import React from "react";
 import styled from "styled-components";
 import { useFormik } from "formik";
+
 import * as yup from "yup";
 import { NavigationButtons } from "../../styled/Form.styled";
 import { Button } from "../../styled/Form.styled";
 import Pg0 from "./Pg0";
 import Pg1 from "./Pg1";
 import Pg2 from "./Pg2";
-import Pg3 from "./Pg3";
+// import Pg3 from "./Pg3";
 import Pg4 from "./Pg4";
+import Pg6 from "./Pg6";
+import Pg7 from "./Pg7";
+import Pg8 from "./Pg8";
+import Pg9 from "./Pg9";
+
+
 // Import other page components as needed
 // ... Import other page components
 
@@ -21,17 +28,17 @@ const validationSchema = yup.object({
     .matches(
       /^.+(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
       "Email is invalid."
-    ).required("Email is required"),
+    )
+    .required("Email is required"),
   studentRegistration: yup
     .string()
     .required("Student registration number is required"),
   programme: yup.string().required("Programme selection is required"),
 
   supervisor: yup.string().required("Supervisor selection is required"),
-  ResearchProject:yup.string().required("ResearchProject is required"),
-  CoApllicantName:yup.string().required("CoApllicant's Name is required"),
-  CoApllicantEmail:yup.string().required("CoApllicant's Email is required"),
-
+  ResearchProject: yup.string().required("ResearchProject is required"),
+  CoApllicantName: yup.string().required("CoApllicant's Name is required"),
+  CoApllicantEmail: yup.string().required("CoApllicant's Email is required"),
 });
 
 const initialValues = {
@@ -51,47 +58,52 @@ const initialValues = {
   StartDate: "",
   EndDate: "",
   Funding: "",
-  Country: [
-  ],
+  Country: [],
   OtherCountry: "",
   ProjectPlace: "",
   HealthSocialCare: "",
   AnotherInstitution: "",
-  AnotherInstitutionInput:"",
+  AnotherInstitutionInput: "",
   HumanTissue: "",
   ClinicalMedical: "",
   SocialCareServices: "",
 
-  //Page4
-  PotentialParticipants:"",
-RecruitingPotentialParticipants:"",
-Payment:"",
-PotentialHarm:"",
-VulnerableParticipants:"",
 
-  //Page7:
+  //Page4
+  PotentialParticipants: "",
+  RecruitingPotentialParticipants: "",
+  Payment: "",
+  PotentialHarm: "",
+  VulnerableParticipants: "",
+
+  //Page6:
   ParentalConsentForm: "",
   ParentalInformationForm: "",
   HeadTeacherConsentForm: "",
   HeadteacherInformationForm: "",
 
-  //Page8:
+  //Page7:
   ParticipantInformationForm: "",
   ParticipantConsentForm: "",
   DebriefingForm: "",
   AccessibilityLetter: "",
 
-  //Page9
+  //Page8
   DataProcessing: "",
   DataConfidentiality: "",
   DataStorageandSecurity: "",
 
-  //Page10:
+  //Page9:
   ListofQuestions: "",
   AdditionalForms: "",
+  test:"",
+  radioOption:"",
+  otherOption:"",
+  checkboxOption: [],
+  otherCheckboxOption: "",
 };
 const MyForm = () => {
-  const totalSteps = 12;
+  const totalSteps = 9;
 
   const formik = useFormik({
     initialValues,
@@ -115,10 +127,10 @@ const MyForm = () => {
   const [step, setStep] = React.useState(0);
 
   const handleNext = () => {
-   const errors = formik.errors;
-   let errorMessage = "";
+    const errors = formik.errors;
+    let errorMessage = "";
     // Check for errors in the current step
-    if (step === 1) { 
+    if (step === 1) {
       if (
         errors.firstName ||
         errors.lastName ||
@@ -131,19 +143,18 @@ const MyForm = () => {
         errorMessage = "Incomplete: ";
         errorMessage += Object.values(errors).filter(Boolean).join(", ");
         console.error("Validation error:", errors);
-        alert(errorMessage);
+
       } else {
         // No errors, proceed to the next step
         setStep((prevStep) => prevStep + 1);
       }
     } else if (step === 2) {
-
       if (errors.supervisor) {
         // There are errors in the current step, handle them as needed
         errorMessage = "Incomplete: ";
         errorMessage += Object.values(errors).filter(Boolean).join(", ");
         console.error("Validation error:", errors);
-        alert(errorMessage);
+  
       } else {
         // No errors, proceed to the next step
         setStep((prevStep) => prevStep + 1);
@@ -151,7 +162,6 @@ const MyForm = () => {
     }
     // Add more conditions for other steps as needed
   };
-
 
   const handlePrevious = () => {
     setStep((prevStep) => prevStep - 1);
@@ -176,7 +186,7 @@ const MyForm = () => {
         return (
           <div>
             <Pg0 formik={formik} />
-            <Button onClick={handleStart}>Start</Button>
+            <Button className="btn" onClick={handleStart}>Start</Button>
           </div>
         );
       case totalSteps - 1:
@@ -185,10 +195,10 @@ const MyForm = () => {
             <h1>Last Page</h1>
             {/* ... (other content) */}
             <NavigationButtons>
-              <Button onClick={handlePrevious} disabled={isFirstStep}>
+              <Button className="btn" onClick={handlePrevious} disabled={isFirstStep}>
                 Previous
               </Button>
-              <Button
+              <Button className="btn"
                 onClick={handleSubmit}
                 disabled={!formik.isValid}
                 type="submit"
@@ -208,23 +218,41 @@ const MyForm = () => {
             {step === 1 && (
               <Pg1 formik={formik} emphasizeFields={formik.errors} />
             )}
-            {step === 2 && (
-              <Pg2 formik={formik} emphasizeFields={formik.errors} />
-            )}
-            {step === 3 && (
+            {step === 2 && <Pg2 formik={formik} />}
+            {/* {step === 3 && (
               <Pg3 formik={formik} emphasizeFields={formik.errors} />
-            )}
-            {step === 4 && (
+            )} */}
+            {step === 3 && (
               <Pg4 formik={formik} emphasizeFields={formik.errors} />
             )}
-            
+            {step === 4 && (
+              <Pg6 formik={formik} emphasizeFields={formik.errors} />
+            )}
+            {step === 5 && (
+              <Pg7 formik={formik} emphasizeFields={formik.errors} />
+            )}
+            {step === 6 && (
+              <Pg8 formik={formik} emphasizeFields={formik.errors} />
+            )}
+            {step === 7 && (
+              <Pg9 formik={formik} emphasizeFields={formik.errors} />
+            )}
+
             {/* Render other steps as needed */}
             {/* ... */}
             <NavigationButtons>
-              <Button onClick={handlePrevious} disabled={isFirstStep}>
+              <Button
+                className="btn"
+                onClick={handlePrevious}
+                disabled={isFirstStep}
+              >
                 Previous
               </Button>
-              <Button onClick={handleNext} disabled={isLastStep}>
+              <Button
+                className="btn"
+                onClick={handleNext}
+                disabled={isLastStep}
+              >
                 Next
               </Button>
             </NavigationButtons>

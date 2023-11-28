@@ -3,7 +3,7 @@
 export const Pg4 = ({ formik }) => {
     return (
     <>
-        <form>
+  
             <div className="form-group">
                 <label htmlFor="PotentialParticipants">Potential Participants <span style={{ color: 'red' }}>*</span></label>
                 <p>What sort of participants will you test. Indicate how many participants do you plan to test, and what is the rationale for the intended sample size? (i.e., has a power analysis been carried out?)</p>
@@ -39,7 +39,7 @@ export const Pg4 = ({ formik }) => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur} />
             </div>
-        </form>
+
     </>
     );
 }

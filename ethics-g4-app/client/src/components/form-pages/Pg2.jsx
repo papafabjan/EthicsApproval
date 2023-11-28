@@ -1,13 +1,142 @@
-
 import React, { useState } from "react";
-
-
+import { Formik, Form, Field } from "formik";
 
 function Pg2({ formik }) {
+  const [radioValue, setRadioValue] = useState(true);
 
+  const handleRadioChange = (e) => {
+    formik.handleChange(e);
+
+    // Reset otherOption when a different radio option is selected
+    if (e.target.value !== "Other") {
+      formik.setFieldValue("otherOption", "");
+    }
+  };
+
+  const handleCheckboxChange = (e) => {
+    formik.handleChange(e);
+    if (!e.target.checked) {
+      formik.setFieldValue("otherCheckboxOption", "");
+    }
+  };
 
   return (
     <>
+      <div className="radio-example">
+        <label>
+          <input
+            type="radio"
+            name="radioOption"
+            value="Option1"
+            checked={formik.values.radioOption === "Option1"}
+            onChange={handleRadioChange}
+          />
+          Option 1
+        </label>
+
+        <label>
+          <input
+            type="radio"
+            name="radioOption"
+            value="Option2"
+            checked={formik.values.radioOption === "Option2"}
+            onChange={handleRadioChange}
+          />
+          Option 2
+        </label>
+
+        <label>
+          <input
+            type="radio"
+            name="radioOption"
+            value="Option3"
+            checked={formik.values.radioOption === "Option3"}
+            onChange={handleRadioChange}
+          />
+          Option 3
+        </label>
+
+        <label>
+          <input
+            type="radio"
+            name="radioOption"
+            value="Other"
+            checked={formik.values.radioOption === "Other"}
+            onChange={handleRadioChange}
+          />
+          Other
+        </label>
+
+        {formik.values.radioOption === "Other" && (
+          <input
+            type="text"
+            name="otherOption"
+            placeholder="Enter other option"
+            value={formik.values.otherOption}
+            onChange={formik.handleChange}
+          />
+        )}
+      </div>
+
+      <div className="checkbox-example">
+        <label>
+          <input
+            type="checkbox"
+            name="checkboxOption"
+            value="Checkbox1"
+            checked={formik.values.checkboxOption.includes("Checkbox1")}
+            onChange={formik.handleChange}
+          />
+          Checkbox 1
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            name="checkboxOption"
+            value="Checkbox2"
+            checked={formik.values.checkboxOption.includes("Checkbox2")}
+            onChange={formik.handleChange}
+          />
+          Checkbox 2
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            name="checkboxOption"
+            value="Checkbox3"
+            checked={formik.values.checkboxOption.includes("Checkbox3")}
+            onChange={formik.handleChange}
+          />
+          Checkbox 3
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            name="checkboxOption"
+            value="Other"
+            checked={
+              Array.isArray(formik.values.checkboxOption) &&
+              formik.values.checkboxOption.includes("Other")
+            }
+            onChange={handleCheckboxChange}
+          />
+          Other
+        </label>
+
+        {formik.values.checkboxOption.includes("Other") && (
+          <input
+            type="text"
+            name="otherCheckboxOption"
+            placeholder="Enter other option"
+            value={formik.values.otherCheckboxOption}
+            onChange={formik.handleChange}
+          />
+        )}
+      </div>
+
       <div className="form-group">
         <label htmlFor="ResearchProject">
           Title of the research project <span style={{ color: "red" }}>*</span>
@@ -93,7 +222,7 @@ function Pg2({ formik }) {
       </div>
 
       <div className="form-group">
-        <label htmlFor="Funding">
+        <label>
           Is the project externally funded?{" "}
           <span style={{ color: "red" }}>*</span>
         </label>
@@ -134,17 +263,15 @@ function Pg2({ formik }) {
         </div>
       </div>
       <div className="htmlForm-group">
-        <label htmlFor="ProjectPlace">
+        <label>
           Where does the project take place?{" "}
           <span style={{ color: "red" }}>*</span>
-        </label>
-        <p>
-          Select all that apply. If the country(ies) is not listed, please add
-          them at the end
-        </p>
-        <ul>
-          <li>
-            <label>
+          <p>
+            Select all that apply. If the country(ies) is not listed, please add
+            them at the end
+          </p>
+          <ul>
+            <li>
               <input
                 type="checkbox"
                 id="Bulgaria"
@@ -175,12 +302,49 @@ function Pg2({ formik }) {
                 }
               />
               Bulgaria
-            </label>
-          </li>
-          {/* Repeat similar structure for Greece and Romania */}
-          {/* ... */}
-          <li>
-            <label>
+            </li>
+            {/* Repeat similar structure for Greece and Romania */}
+            {/* ... */}
+            <li>
+              <input
+                type="checkbox"
+                name="Country"
+                onClick={(e) => {
+                  setRadioValue(!radioValue);
+                  console.log(e.target.value);
+                }}
+                value={radioValue}
+              />{" "}
+              Other
+              <div>
+                <input
+                  type="text"
+                  name="Country"
+                  className="form-control"
+                  placeholder=""
+                  disabled={radioValue}
+                  value={formik.values.Country}
+                  onChange={(e) => {
+                    const isChecked = e.target.checked;
+                    const value = e.target.value;
+
+                    if (isChecked) {
+                      formik.setFieldValue("Country", [
+                        ...(formik.values.Country || []),
+                        value,
+                      ]);
+                    } else {
+                      formik.setFieldValue(
+                        "Country",
+                        (formik.values.Country || []).filter(
+                          (country) => country !== value
+                        )
+                      );
+                    }
+                  }}
+                  onBlur={formik.onBlur}
+                />
+              </div>
               <input
                 type="checkbox"
                 id="Other"
@@ -199,88 +363,76 @@ function Pg2({ formik }) {
                 }}
               />
               Other
-            </label>
-            <div>
-              <input
-                type="text"
-                id="OtherCountry"
-                name="OtherCountry"
-                className="htmlForm-control"
-                value={formik.values.OtherCountry}
-                onChange={formik.handleChange}
-                placeholder="Please specify other countries"
-              />
-            </div>
-          </li>
-        </ul>
+              <div>
+                <input
+                  type="text"
+                  id="OtherCountry"
+                  name="OtherCountry"
+                  className="htmlForm-control"
+                  value={formik.values.OtherCountry}
+                  onChange={formik.handleChange}
+                  placeholder="Please specify other countries"
+                />
+              </div>
+            </li>
+          </ul>
+        </label>
       </div>
 
       <div className="form-group">
-        <label htmlFor="HealthSocialCare">
+        <label>
           Is it a health and/or social care human-interventional study?{" "}
           <span style={{ color: "red" }}>*</span>
+          <li>
+            <input
+              type="radio"
+              id="HealthSocialCareYes"
+              name="HealthSocialCare"
+              value="Yes"
+              onChange={formik.handleChange}
+              checked={formik.values.HealthSocialCare === "Yes"}
+            />{" "}
+            Yes
+          </li>
+          <li>
+            <input
+              type="radio"
+              id="HealthSocialCareNo"
+              name="HealthSocialCare"
+              value="No"
+              onChange={formik.handleChange}
+              checked={formik.values.HealthSocialCare === "No"}
+            />{" "}
+            No
+          </li>
         </label>
-        <div>
-          <li>
-            <label>
-              <input
-                type="radio"
-                id="HealthSocialCareYes"
-                name="HealthSocialCare"
-                value="Yes"
-                onChange={formik.handleChange}
-                checked={formik.values.HealthSocialCare === "Yes"}
-              />{" "}
-              Yes
-            </label>
-          </li>
-          <li>
-            <label>
-              <input
-                type="radio"
-                id="HealthSocialCareNo"
-                name="HealthSocialCare"
-                value="No"
-                onChange={formik.handleChange}
-                checked={formik.values.HealthSocialCare === "No"}
-              />{" "}
-              No
-            </label>
-          </li>
-        </div>
       </div>
 
       <div className="form-group">
-        <label htmlFor="AnotherInstitution">
+        <label>
           Is it led by an institution other than the University of York Europe
           Campus? <span style={{ color: "red" }}>*</span>
-        </label>
-        <div>
           <li>
-            <label>
-              <input
-                type="radio"
-                id="AnotherInstitutionNo"
-                name="AnotherInstitution"
-                value="No"
-                onChange={formik.handleChange}
-                checked={formik.values.AnotherInstitution === "No"}
-              />{" "}
-              No
-            </label>
+            <input
+              type="radio"
+              id="AnotherInstitutionNo"
+              name="AnotherInstitution"
+              value="No"
+              onChange={formik.handleChange}
+              checked={formik.values.AnotherInstitution === "No"}
+            />{" "}
+            No
           </li>
           <li>
-            <label>
-              <input
-                type="radio"
-                id="AnotherInstitutionOther"
-                name="AnotherInstitution"
-                value="Other"
-                onChange={formik.handleChange}
-                checked={formik.values.AnotherInstitution === "Other"}
-              />{" "}
-              Other
-            </label>
+            <input
+              type="radio"
+              id="AnotherInstitutionOther"
+              name="AnotherInstitution"
+              value="Other"
+              onChange={formik.handleChange}
+              checked={formik.values.AnotherInstitution === "Other"}
+            />{" "}
+            Other
             {formik.values.AnotherInstitution === "Other" && (
               <div>
                 <input
@@ -294,15 +446,13 @@ function Pg2({ formik }) {
               </div>
             )}
           </li>
-        </div>
+        </label>
       </div>
 
       <div className="htmlForm-group">
-        <label htmlFor="HumanTissue">
+        <label>
           Involves human tissue?<span style={{ color: "red" }}>*</span>
-        </label>
-        <li>
-          <label>
+          <li>
             <input
               type="radio"
               id="HumanTissueYes"
@@ -312,10 +462,8 @@ function Pg2({ formik }) {
               checked={formik.values.HumanTissue === "Yes"}
             />{" "}
             Yes
-          </label>
-        </li>
-        <li>
-          <label>
+          </li>
+          <li>
             <input
               type="radio"
               id="HumanTissueNo"
@@ -325,16 +473,15 @@ function Pg2({ formik }) {
               checked={formik.values.HumanTissue === "No"}
             />{" "}
             No
-          </label>
-        </li>
+          </li>
+        </label>
       </div>
+
       <div className="htmlForm-group">
-        <label htmlFor="ClinicalMedical">
+        <label>
           Clinical trial or a medical device study?{" "}
           <span style={{ color: "red" }}>*</span>
-        </label>
-        <li>
-          <label>
+          <li>
             <input
               type="radio"
               id="ClinicalMedicalYes"
@@ -344,10 +491,8 @@ function Pg2({ formik }) {
               checked={formik.values.ClinicalMedical === "Yes"}
             />{" "}
             Yes
-          </label>
-        </li>
-        <li>
-          <label>
+          </li>
+          <li>
             <input
               type="radio"
               id="ClinicalMedicalNo"
@@ -357,45 +502,40 @@ function Pg2({ formik }) {
               checked={formik.values.ClinicalMedical === "No"}
             />{" "}
             No
-          </label>
-        </li>
+          </li>
+        </label>
       </div>
 
       <div className="form-group">
-        <label htmlFor="SocialCareServices">
+        <label>
           Involves social care services provided by a local authority?
           <span style={{ color: "red" }}>*</span>
+          <li>
+            <input
+              type="radio"
+              id="SocialCareServicesYes"
+              name="SocialCareServices"
+              value="Yes"
+              checked={formik.values.SocialCareServices === "Yes"}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />{" "}
+            Yes
+          </li>
+          <li>
+            <input
+              type="radio"
+              id="SocialCareServicesNo"
+              name="SocialCareServices"
+              value="No"
+              checked={formik.values.SocialCareServices === "No"}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />{" "}
+            No
+          </li>
         </label>
-        <div>
-          <li>
-            <label>
-              <input
-                type="radio"
-                id="SocialCareServices"
-                name="SocialCareServices"
-                value="Yes"
-                checked={formik.values.SocialCareServices === "Yes"}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />{" "}
-              Yes
-            </label>
-          </li>
-          <li>
-            <label>
-              <input
-                type="radio"
-                id="SocialCareServices"
-                name="SocialCareServices"
-                value="No"
-                checked={formik.values.SocialCareServices === "No"}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />{" "}
-              No
-            </label>
-          </li>
-        </div>
+
         {formik.touched.SocialCareServices &&
           formik.errors.SocialCareServices && (
             <div style={{ color: "red" }}>

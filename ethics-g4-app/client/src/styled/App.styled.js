@@ -14,11 +14,7 @@ const App = styled.div`
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
   font-family: 'Roboto', sans-serif; 
 
-  i {
-    margin-right: 8px;
-    vertical-align: middle;
-    align-items: left;
-  }
+  
 
   button.btn {
     background-color: darkorange;

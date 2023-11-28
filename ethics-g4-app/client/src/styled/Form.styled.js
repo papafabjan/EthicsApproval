@@ -59,7 +59,6 @@ export const NavigationButtons = styled.div`
 `;
 
 export const Button = styled.button`
-  background-color: #007bff;
   color: #fff;
   padding: 10px 15px;
   border: none;

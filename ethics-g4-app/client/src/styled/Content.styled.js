@@ -15,6 +15,12 @@ import styled from "styled-components";
    height: 100vh;
    box-shadow: 0 0px 20px 0px rgba(0, 0, 0, 0.6);
 
+   background: linear-gradient(
+    0deg,
+    #fdd5b1,
+    #fff
+  ); 
+
    /* width */
    &::-webkit-scrollbar {
      width: 10px;

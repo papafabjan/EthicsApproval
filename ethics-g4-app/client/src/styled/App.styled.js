@@ -19,5 +19,15 @@ const App = styled.div`
     vertical-align: middle;
     align-items: left;
   }
+
+  button.btn {
+    background-color: darkorange;
+    color: #fff;
+    padding: 8px 16px;
+    margin-right: 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
 `;
 export default App;

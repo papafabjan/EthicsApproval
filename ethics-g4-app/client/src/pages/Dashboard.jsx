@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import StyledDashboard from "../styled/Dashboard.styled"
 
 const Dashboard = () => {
   const [applications, setApplications] = useState([]);
@@ -74,68 +75,66 @@ const Dashboard = () => {
 
   return (
     <>
-      <div>
-        <Link to={`${import.meta.env.VITE_SERVER_URL}/api/applications`}>
-          <h1>General Dashboard</h1>
-        </Link>
-        <input
-          type="text"
-          placeholder="Search by applicant name"
-          value={searchTerm}
-          onChange={handleSearch}
-        />
-        <ul>
-          {filteredApplications.map((application) => (
-            <li key={application.id}>
+      <StyledDashboard>
+        <div>
+          <Link to={`${import.meta.env.VITE_SERVER_URL}/api/applications`}>
+            <h1>Dashboard</h1>
+          </Link>
+          <input
+            type="text"
+            placeholder="Search by applicant name"
+            value={searchTerm}
+            onChange={handleSearch}
+          />
+          <div>
+  <div className="header">
+    <p>Applicant Name</p>
+    <div className="status-date">
+      <p>Status</p>
+      <p>Date</p>
+    </div>
+  </div>
+  <table>
+    <tbody>
+      {filteredApplications.map((application) => (
+        <tr key={application.id}>
+          <td>
+            <div className="application">
+              <div className="applicant">
+                <p>{applicantNames[application.applicant_id]}</p>
+              </div>
+              <div className="status-date">
+                <div className="status">
+                  <span>{application.status}</span>
+                </div>
+                <div className="date">
+                  <span>{application.date}</span>
+                </div>
+              </div>
               <div>
-                <p>Applicant: {applicantNames[application.applicant_id]}</p>
-                <p>Status: {application.status}</p>
-                <p>Date of Submission: {application.date}</p>
-                <button onClick={() => console.log("Comment")}>Comment</button>
-                <button onClick={() => console.log("Assign Reviewers")}>
+                <button
+                  className="btn"
+                  onClick={() => console.log("Comment")}
+                >
+                  Comment
+                </button>
+                <button
+                  className="btn"
+                  onClick={() => console.log("Assign Reviewers")}
+                >
                   Assign Reviewers
                 </button>
               </div>
-            </li>
-          ))}
-        </ul>
-      </div>
+            </div>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+        </div>
+      </StyledDashboard>
     </>
-    // <div>
-    //   <h1>Applicant Dashboard</h1>
-    //   <input
-    //     type="text"
-    //     placeholder="Search by name"
-    //     value={searchTerm}
-    //     onChange={handleSearch}
-    //   />
-    //   <table>
-    //     <thead>
-    //       <tr>
-    //         <th>Name</th>
-    //         <th>Status</th>
-    //         <th>Date</th>
-    //       </tr>
-    //     </thead>
-    //     <tbody>
-    //       {filteredApplicants.map((applicant) => (
-    //         <tr key={applicant.id}>
-    //           <td>{applicant.name}</td>
-    //           <td>{applicant.status}</td>
-    //           <td>{applicant.dateOfSubmission}</td>
-    //         </tr>
-    //       ))}
-    //       z
-    //     </tbody>
-    //   </table>
-    // </div>
-
-    // {/* <button onClick={() => /* Handle comment functionality */}>
-    //                   Comment
-    //                 </button>
-    //                 <button onClick={() => /* Handle assigning reviewers functionality */}>
-    //                   Assign Reviewers
-    //                 </button> */}
   );
 };
 

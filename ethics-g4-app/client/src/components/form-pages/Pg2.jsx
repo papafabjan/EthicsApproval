@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import { Formik, Form, Field } from "formik";
 
 function Pg2({ formik }) {
-  const [radioValue, setRadioValue] = useState(true);
-
-  const handleRadioChange = (e,radio) => {
+  const handleRadioChange = (e, radio) => {
     formik.handleChange(e);
 
     // Reset otherOption when a different radio option is selected
@@ -262,7 +260,8 @@ function Pg2({ formik }) {
           />
         </div>
       </div>
-      <div className="htmlForm-group">
+
+      <div className="form-group">
         <label>
           Where does the project take place?{" "}
           <span style={{ color: "red" }}>*</span>
@@ -270,55 +269,71 @@ function Pg2({ formik }) {
             Select all that apply. If the country(ies) is not listed, please add
             them at the end
           </p>
-          <ul>
-            <li>
+        </label>
+
+        <ul>
+          <li>
+            <label>
               <input
                 type="checkbox"
-                id="Bulgaria"
-                className="htmlForm-control"
-                value="Bulgaria"
                 name="Country"
-                onChange={(e) => {
-                  const isChecked = e.target.checked;
-                  const value = e.target.value;
-
-                  if (isChecked) {
-                    formik.setFieldValue("Country", [
-                      ...(formik.values.Country || []),
-                      value,
-                    ]);
-                  } else {
-                    formik.setFieldValue(
-                      "Country",
-                      (formik.values.Country || []).filter(
-                        (country) => country !== value
-                      )
-                    );
-                  }
-                }}
-                checked={
-                  formik.values.Country &&
-                  formik.values.Country.includes("Bulgaria")
-                }
+                value="Greece"
+                checked={formik.values.Country.includes("Greece")}
+                onChange={formik.handleChange}
+              />
+              Greece
+            </label>
+          </li>
+          <li>
+            <label>
+              <input
+                type="checkbox"
+                name="Country"
+                value="Bulgaria"
+                checked={formik.values.Country.includes("Bulgaria")}
+                onChange={formik.handleChange}
               />
               Bulgaria
-            </li>
-            {/* Repeat similar structure for Greece and Romania */}
-            {/* ... */}
-            <li>
+            </label>
+          </li>
+          <li>
+            <label>
               <input
                 type="checkbox"
                 name="Country"
-                onClick={(e) => {
-                  setRadioValue(!radioValue);
-                  console.log(e.target.value);
-                }}
-                value={radioValue}
-              />{" "}
+                value="Romania"
+                checked={formik.values.Country.includes("Romania")}
+                onChange={formik.handleChange}
+              />
+              Romania
+            </label>
+          </li>
+          <li>
+            <label>
+              <input
+                type="checkbox"
+                name="Country"
+                value="Other"
+                checked={
+                  Array.isArray(formik.values.Country) &&
+                  formik.values.Country.includes("Other")
+                }
+                onChange={(e) => handleCheckboxChange(e, "OtherCountry")}
+              />
               Other
-            </li>
-          </ul>
-        </label>
+            </label>
+
+            {formik.values.Country.includes("Other") && (
+              <input
+                type="text"
+                name="OtherCountry"
+                placeholder="Enter other option"
+                value={formik.values.OtherCountry}
+                onChange={formik.handleChange}
+              />
+            )}
+          </li>
+        </ul>
       </div>
 
       <div className="form-group">

@@ -83,22 +83,91 @@ export const Pg4 = ({ formik }) => {
             value={formik.values.otherPaymentOption}
             onChange={formik.handleChange}
           />
+          
+        )}
+        {formik.touched.Payment && formik.errors.Payment && (
+          <div style={{ color: "red" }}>{formik.errors.Payment}</div>
         )}
       </div>
             <div className="form-group">
                 <label htmlFor="PotentialHarm">Potential Harm to Participants <span style={{ color: 'red' }}>*</span></label>
                 <p>What is the potential for physical and/or psychological harm/distress to the participants?  How will this be managed to ensure appropriate protection and well-being of the participants?</p>
-                <input type="text" className="form-control" id="PotentialHarm" value={formik.values.PotentialHarm}
+                <input type="text" name="PotentialHarm" className="form-control" id="PotentialHarm" value={formik.values.PotentialHarm}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur} />
+
+            {formik.touched.PotentialHarm && formik.errors.PotentialHarm && (
+            <div style={{ color: "red" }}>{formik.errors.PotentialHarm}</div>
+        )}
             </div>
+
             <div className="form-group">
                 <label htmlFor="VulnerableParticipants">Involves potentially vulnerable participants? <span style={{ color: 'red' }}>*</span></label>
                 <p>e.g., those who are ill, ethnic or racial minorities, those who do not speak the language used for the research, children, those economically disadvantaged, adults with diminished capacity</p>
-                <input type="text" className="form-control" id="VulnerableParticipants" value={formik.values.VulnerableParticipants}
+            <ul>
+            <li>
+            
+<label>
+          <input
+            type="radio"
+            name="VulnerableParticipants"
+            value="YesChildren_adolescents"
+            checked={formik.values.VulnerableParticipants === "YesChildren_adolescents"}
+            onChange={(e) => handleRadioChange(e, "otherVulnerableParticipantsOptions")}
+          />
+          Yes, it involves children and/or adolescents
+        </label>
+        </li>
+        <li>
+        <label>
+          <input
+            type="radio"
+            name="VulnerableParticipants"
+            value="YesAdultsMental"
+            checked={formik.values.VulnerableParticipants === "YesAdultsMental"}
+            onChange={(e) => handleRadioChange(e, "otherVulnerableParticipantsOptions")}
+          />
+          Yes, it involve adults lacking mental capability
+        </label>
+        </li>
+        <li>
+        <label>
+          <input
+            type="radio"
+            name="VulnerableParticipants"
+            value="NoAdults"
+            checked={formik.values.VulnerableParticipants === "NoAdults"}
+            onChange={(e) => handleRadioChange(e, "otherVulnerableParticipantsOptions")}
+          />
+          No, it involves adults with no vulnerabilities
+        </label>
+        </li>
+        <li>
+        <label>
+          <input
+            type="radio"
+            name="VulnerableParticipants"
+            value="Other"
+            checked={formik.values.VulnerableParticipants === "Other"}
+            onChange={(e) => handleRadioChange(e, "otherVulnerableParticipantsOptions")}
+          />
+          Other
+        </label>
+        </li>
+        </ul>
+        {formik.values.VulnerableParticipants === "Other" && (
+          <input
+            type="text"
+            name="otherVulnerableParticipantsOptions"
+            placeholder="Your answer"
+            value={formik.values.otherVulnerableParticipantsOptions}
             onChange={formik.handleChange}
-            onBlur={formik.handleBlur} />
-            </div>
+          />
+        )}
+        {formik.touched.VulnerableParticipants && formik.errors.VulnerableParticipants && (
+            <div style={{ color: "red" }}>{formik.errors.VulnerableParticipants}</div>
+        )}
+      </div>
 
     </>
     );

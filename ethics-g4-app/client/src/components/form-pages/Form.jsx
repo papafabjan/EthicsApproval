@@ -76,15 +76,14 @@ const initialValues = {
   SensitiveTopicsFiles:"",
 
 
-
-
-
   //Page4
   PotentialParticipants: "",
   RecruitingPotentialParticipants: "",
   Payment: "",
+  otherPaymentOption:"",
   PotentialHarm: "",
   VulnerableParticipants: "",
+  otherVulnerableParticipantsOptions:"",
 
   //Page6:
   ParentalConsentForm: "",

@@ -73,7 +73,7 @@ const initialValues = {
   Methodology:"",
   SafetyConcerns:"",
   SensitiveTopics:"",
-  
+
 
 
 
@@ -112,7 +112,7 @@ const initialValues = {
   otherCheckboxOption: "",
 };
 const MyForm = () => {
-  const totalSteps = 9;
+  const totalSteps = 10;
 
   const formik = useFormik({
     initialValues,
@@ -158,7 +158,22 @@ const MyForm = () => {
         setStep((prevStep) => prevStep + 1);
       }
     } else if (step === 2) {
-      if (errors.supervisor) {
+      if  (errors.supervisor) {
+        // There are errors in the current step, handle them as needed
+        errorMessage = "Incomplete: ";
+        errorMessage += Object.values(errors).filter(Boolean).join(", ");
+        console.error("Validation error:", errors);
+  
+      } else {
+        // No errors, proceed to the next step
+        setStep((prevStep) => prevStep + 1);
+      }
+    }
+    else if (step === 3) {
+      if  (errors.AimsObjectives ||
+    errors.Methodology ||
+    errors.SafetyConcerns ||
+    errors.SensitiveTopics) {
         // There are errors in the current step, handle them as needed
         errorMessage = "Incomplete: ";
         errorMessage += Object.values(errors).filter(Boolean).join(", ");

@@ -2,10 +2,6 @@
 
 
 function Pg3({ formik }) {
-  const handleRadioChange = (e, radio) => {
-    formik.handleChange(e);
-
-  };
   
   return (
     <>
@@ -27,7 +23,11 @@ function Pg3({ formik }) {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
         />
+        {formik.touched.ResearchProject && formik.errors.ResearchProject && (
+          <div style={{ color: "red" }}>{formik.errors.ResearchProject}</div>
+        )}
       </div>
+      
       <div className="form-group">
         <label htmlFor="Methodology">
           Methodology <span style={{ color: "red" }}>*</span>
@@ -48,6 +48,9 @@ function Pg3({ formik }) {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
         />
+        {formik.touched.ResearchProject && formik.errors.ResearchProject && (
+          <div style={{ color: "red" }}>{formik.errors.ResearchProject}</div>
+        )}
       </div>
       <div className="form-group">
         <label htmlFor="SafetyConcerns">
@@ -68,6 +71,9 @@ function Pg3({ formik }) {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
         />
+        {formik.touched.ResearchProject && formik.errors.ResearchProject && (
+          <div style={{ color: "red" }}>{formik.errors.ResearchProject}</div>
+        )}
       </div>
     
       <div className="form-group">
@@ -88,7 +94,7 @@ function Pg3({ formik }) {
             name="SensitiveTopics"
             value="Yes"
             checked={formik.values.SensitiveTopics === "Yes"}
-            onChange={(e) => handleRadioChange(e, "otherOption")}
+            onChange={formik.handleChange}
           />
           Yes
         </label>
@@ -99,11 +105,13 @@ function Pg3({ formik }) {
             name="SensitiveTopics"
             value="No"
             checked={formik.values.SensitiveTopics === "No"}
-            onChange={(e) => handleRadioChange(e)}
+            onChange={formik.handleChange}
           />
           No
         </label>
-
+        {formik.touched.ResearchProject && formik.errors.ResearchProject && (
+          <div style={{ color: "red" }}>{formik.errors.ResearchProject}</div>
+        )}
       </div>
       
     </>

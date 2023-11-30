@@ -9,7 +9,7 @@ import { Button } from "../../styled/Form.styled";
 import Pg0 from "./Pg0";
 import Pg1 from "./Pg1";
 import Pg2 from "./Pg2";
-// import Pg3 from "./Pg3";
+import Pg3 from "./Pg3";
 import Pg4 from "./Pg4";
 import Pg6 from "./Pg6";
 import Pg7 from "./Pg7";
@@ -67,6 +67,15 @@ const initialValues = {
   HumanTissue: "",
   ClinicalMedical: "",
   SocialCareServices: "",
+
+  //Page 3
+  AimsObjectives: "",
+  Methodology:"",
+  SafetyConcerns:"",
+  SensitiveTopics:"",
+  
+
+
 
 
   //Page4
@@ -219,22 +228,22 @@ const MyForm = () => {
               <Pg1 formik={formik} emphasizeFields={formik.errors} />
             )}
             {step === 2 && <Pg2 formik={formik} />}
-            {/* {step === 3 && (
-              <Pg3 formik={formik} emphasizeFields={formik.errors} />
-            )} */}
             {step === 3 && (
-              <Pg4 formik={formik} emphasizeFields={formik.errors} />
+              <Pg3 formik={formik} emphasizeFields={formik.errors} />
             )}
             {step === 4 && (
-              <Pg6 formik={formik} emphasizeFields={formik.errors} />
+              <Pg4 formik={formik} emphasizeFields={formik.errors} />
             )}
             {step === 5 && (
-              <Pg7 formik={formik} emphasizeFields={formik.errors} />
+              <Pg6 formik={formik} emphasizeFields={formik.errors} />
             )}
             {step === 6 && (
-              <Pg8 formik={formik} emphasizeFields={formik.errors} />
+              <Pg7 formik={formik} emphasizeFields={formik.errors} />
             )}
             {step === 7 && (
+              <Pg8 formik={formik} emphasizeFields={formik.errors} />
+            )}
+            {step === 8 && (
               <Pg9 formik={formik} emphasizeFields={formik.errors} />
             )}
 

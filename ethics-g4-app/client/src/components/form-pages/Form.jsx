@@ -11,10 +11,10 @@ import Pg1 from "./Pg1";
 import Pg2 from "./Pg2";
 import Pg3 from "./Pg3";
 import Pg4 from "./Pg4";
+import Pg5 from "./Pg5";
 import Pg6 from "./Pg6";
 import Pg7 from "./Pg7";
-import Pg8 from "./Pg8";
-import Pg9 from "./Pg9";
+
 
 
 // Import other page components as needed
@@ -85,24 +85,27 @@ const initialValues = {
   VulnerableParticipants: "",
   otherVulnerableParticipantsOptions:"",
 
-  //Page6:
-  ParentalConsentForm: "",
-  ParentalInformationForm: "",
-  HeadTeacherConsentForm: "",
-  HeadteacherInformationForm: "",
+  //Page5:
+  //Yes child
+  ParentalConsent: "",
+  ParentalInformation: "",
+  HeadTeacherConsent: "",
+  HeadteacherInformation: "",
 
-  //Page7:
+  //Yes adults mental
+
+  //No or other option
   ParticipantInformationForm: "",
   ParticipantConsentForm: "",
   DebriefingForm: "",
   AccessibilityLetter: "",
-
-  //Page8
+  
+  //Page6
   DataProcessing: "",
   DataConfidentiality: "",
   DataStorageandSecurity: "",
 
-  //Page9:
+  //Page7:
   ListofQuestions: "",
   AdditionalForms: "",
   test:"",
@@ -184,6 +187,24 @@ const MyForm = () => {
         setStep((prevStep) => prevStep + 1);
       }
     }
+    else if (step === 4) {
+      if  (errors.PotentialParticipants ||
+        errors.RecruitingPotentialParticipants ||
+        errors.Payment ||
+        errors.otherPaymentOption ||
+        errors.PotentialHarm ||
+        errors.VulnerableParticipants ||
+        errors.otherVulnerableParticipantsOptions) {
+        // There are errors in the current step, handle them as needed
+        errorMessage = "Incomplete: ";
+        errorMessage += Object.values(errors).filter(Boolean).join(", ");
+        console.error("Validation error:", errors);
+  
+      } else {
+        // No errors, proceed to the next step
+        setStep((prevStep) => prevStep + 1);
+      }
+    }
     // Add more conditions for other steps as needed
   };
 
@@ -250,16 +271,13 @@ const MyForm = () => {
               <Pg4 formik={formik} emphasizeFields={formik.errors} />
             )}
             {step === 5 && (
-              <Pg6 formik={formik} emphasizeFields={formik.errors} />
+              <Pg5 formik={formik} emphasizeFields={formik.errors} />
             )}
             {step === 6 && (
-              <Pg7 formik={formik} emphasizeFields={formik.errors} />
+              <Pg6 formik={formik} emphasizeFields={formik.errors} />
             )}
             {step === 7 && (
-              <Pg8 formik={formik} emphasizeFields={formik.errors} />
-            )}
-            {step === 8 && (
-              <Pg9 formik={formik} emphasizeFields={formik.errors} />
+              <Pg7 formik={formik} emphasizeFields={formik.errors} />
             )}
 
             {/* Render other steps as needed */}

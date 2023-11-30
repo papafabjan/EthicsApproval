@@ -3,43 +3,31 @@
 export const Pg6 = ({formik}) => {
     return (
     <>
-
-            <div className="form-group">
-                <label htmlFor="ParentalConsentForm">Parental Consent Form <span style={{ color: 'red' }}>*</span></label>
-                <p>Upload a doc, docx or pdf. A template is available at this link. <strong>NOTE:</strong> If you edit your response & resubmit please name the new document indicating the new version (e.g., title_v2.doc)</p>
-                <input type="file" className="form-control" id="ParentalConsentForm" value={formik.values.ParentalConsentForm}
+       
+       <div className="form-group">
+                <label htmlFor="DataProcessing">Data Processing <span style={{ color: 'red' }}>*</span></label>
+                <p>Will you be processing (i.e. collecting, recording, storing, or otherwise using) personal data as part of this project? (Personal data is any information relating to an identified or identifiable living person). If the intention is to record the participants' voice, or make a photographic record of the participants (either still images or video recordings) then further details on what will be recorded and how they will be managed are required.</p>
+                <input type="text" name="DataProcessing" className="form-control" id="DataProcessing"   value={formik.values.DataProcessing}
           onChange={formik.handleChange}
-          onBlur={formik.handleBlur} placeholder="e.g. Ethics web-site" />
+          onBlur={formik.handleBlur} placeholder="e.g. Ethics web-site"/>
             </div>
             <div className="form-group">
-                <label htmlFor="ParentalInformationForm">Parental Information Form <span style={{ color: 'red' }}>*</span></label>    
-                <p>Upload a doc, docx or pdf. A template is available at this link. <strong>NOTE:</strong> If you edit your response & resubmit please name the new document indicating the new version (e.g., title_v2.doc)</p>
-                <input type="file" className="form-control" id="ParentalInformationForm" value={formik.values.ParentalInformationForm}
+                <label htmlFor="DataConfidentiality">Data Confidentiality <span style={{ color: 'red' }}>*</span></label>    
+                <p>What measures will be put in place to ensure confidentiality of personal data, where appropriate? </p>
+                <input type="text" name="DataConfidentiality" className="form-control" id="DataConfidentiality"  value={formik.values.DataConfidentiality}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur} placeholder="e.g. Kostas Dimopoulos"/>
             </div>
             <div className="form-group">
-                <label htmlFor="ChildInformationForm">Child/Adolescent Information & Consent/Assent Form (optional)</label>
-                <p>It is strongly recommended that if possible (depending on the child's competence) the child’s or under-age person’s free and voluntary informed consent/assent to participate is obtained.  A template is available at this link. <strong>NOTE:</strong> If you edit your response & resubmit please name the new document indicating the new version (e.g., title_v2.doc)
- </p>
-                <input type="file" className="form-control" id="ChildInformationForm" value={formik.values.ChildInformationForm}
+                <label htmlFor="DataStorageandSecurity">Data Storage and Security <span style={{ color: 'red' }}>*</span></label>
+                <p>Who will have access to the data generated at each stage of the research, and in what form? What steps will be taken to ensure the security of data processed during the project, including any identifiable personal data, other than those already described earlier in this form? Indicate if, and when, all identifiable personal data will be destroyed once the project has ended.</p>
+                <input type="text" name="DataStorageandSecurity" className="form-control" id="DataStorageandSecurity"  value={formik.values.DataStorageandSecurity}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur} placeholder="eg. kdimopoulos@york.citycollege.eu"/>
             </div>
-            <div className="form-group">
-                <label htmlFor="HeadTeacherConsentForm">Head Teacher Consent Form  (optional)</label>
-                <p>Upload a doc, docx or pdf. A template is available at this link. <strong>NOTE:</strong> If you edit your response & resubmit please name the new document indicating the new version (e.g., title_v2.doc)</p>
-                <input type="file" className="form-control" id="HeadTeacherConsentForm" value={formik.values.HeadTeacherConsentForm}
-          onChange={formik.handleChange} onBlur={formik.handleBlur}/>
-            </div>
-            <div className="form-group">
-                <label htmlFor="HeadteacherInformationForm">Head Teacher Information Form (optional)</label>
-                <p>Upload a doc, docx, pdf, video or audio file. A template is available at this link. <strong>NOTE:</strong> If you edit your response & resubmit please name the new document indicating the new version (e.g., title_v2.doc)</p>
-                <input type="file" className="form-control" id="HeadteacherInformationForm" value={formik.values.HeadteacherInformationForm}
-          onChange={formik.handleChange} onBlur={formik.handleBlur}/>
-            </div>
-            
 
+
+            
     </>
     );
 }

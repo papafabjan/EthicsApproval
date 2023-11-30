@@ -87,42 +87,41 @@ const Dashboard = () => {
             onChange={handleSearch}
           />
           <div>
-  <div className="header">
-    <p>Applicant Name</p>
-    <div className="status-date">
-      <p>Status</p>
-      <p>Date</p>
-    </div>
-  </div>
-  <table>
-    <tbody>
-      {filteredApplications.map((application) => (
-        <tr key={application.id}>
-          <td>
-            <div className="application">
-              <div className="applicant">
-                <p>{applicantNames[application.applicant_id]}</p>
-              </div>
-              <div className="status-date">
-                <div className="status">
-                  <span>{application.status}</span>
-                </div>
-                <div className="date">
-                  <span>{application.date}</span>
-                </div>
-              </div>
-              <div>
-                <button
-                  className="btn"
-                  onClick={() => console.log("Comment")}
-                >
-                  Comment
-                </button>
-                <button
-                  className="btn"
-                  onClick={() => console.log("Assign Reviewers")}
-                >
-                  Assign Reviewers
+            <div className="header">
+              <p>Applicant Name</p>
+              <p>Status</p>
+              <p>Date</p>
+              <p className="actions">Actions</p>
+            </div>
+            <table>
+              <tbody>
+                {filteredApplications.map((application) => (
+                  <tr key={application.id}>
+                    <td>
+                      <div className="application">
+                        <div className="applicant">
+                          <p>{applicantNames[application.applicant_id]}</p>
+                        </div>
+                        <div className="status-date">
+                          <div className="status">
+                            <span>{application.status}</span>
+                          </div>
+                          <div className="date">
+                            <span>{application.date}</span>
+                          </div>
+                        </div>
+                        <div className="actions">
+                          <button
+                            className="btn"
+                            onClick={() => console.log("Comment")}
+                          >
+                            Comment
+                          </button>
+                          <button
+                            className="btn"
+                            onClick={() => console.log("Assign Reviewers")}
+                          >
+                            Assign Reviewers
                 </button>
               </div>
             </div>

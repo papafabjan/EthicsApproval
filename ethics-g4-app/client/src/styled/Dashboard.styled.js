@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 const Dashboard = styled.div`
-
   ul {
     list-style: none;
     padding: 0;
@@ -14,8 +13,9 @@ const Dashboard = styled.div`
   .header {
     display: flex;
     justify-content: space-between;
+    flex-grow: 1;
     padding: 10px;
-    color: grey; 
+    color: grey;
   }
 
   .header p {
@@ -23,7 +23,7 @@ const Dashboard = styled.div`
   }
 
   .table-container {
-    margin-top: 20px; /* Adjust as needed */
+    margin-top: 20px;
   }
 
   table {
@@ -43,26 +43,26 @@ const Dashboard = styled.div`
   }
 
   .applicant {
-    flex-grow: 1;
+    flex-basis: 30%;
   }
 
-  .status-date {
+  .status-date,
+  .actions {
+    flex-basis: 30%;
     display: flex;
-    justify-content: space-between;  /* Adjusted to space-between */
-    flex-direction: column;
-    align-items: flex-end;
+    justify-content: space-between;
+    align-items: center;
   }
 
   .status,
   .date {
-    margin-bottom: 5px;
+    text-align: center;
   }
 
   .btn {
     background-color: darkorange;
     color: #fff;
     padding: 8px 16px;
-    margin-right: 8px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -74,7 +74,14 @@ const Dashboard = styled.div`
     border: 1px solid #ccc;
     border-radius: 4px;
   }
+
+  @media (max-width: 768px) {
+    .applicant,
+    .status-date,
+    .actions {
+      flex-basis: 100%;
+    }
+  }
 `;
 
 export default Dashboard;
-

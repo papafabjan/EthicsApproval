@@ -57,9 +57,10 @@ function Pg1({ formik, emphasizeFields }) {
               type="text"
               className="form-control"
               id="MiddleName"
-              placeholder="e.g Mary"
+              placeholder={userNames.middleName}
               value={formik.middleName}
-              onChange={formik.handleChange}φ
+              onChange={formik.handleChange}
+              φ
             />
           </div>
         )}

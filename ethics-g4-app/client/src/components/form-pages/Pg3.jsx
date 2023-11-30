@@ -23,8 +23,8 @@ function Pg3({ formik }) {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
         />
-        {formik.touched.ResearchProject && formik.errors.ResearchProject && (
-          <div style={{ color: "red" }}>{formik.errors.ResearchProject}</div>
+        {formik.touched.AimsObjectives && formik.errors.AimsObjectives && (
+          <div style={{ color: "red" }}>{formik.errors.AimsObjectives}</div>
         )}
       </div>
       
@@ -48,8 +48,8 @@ function Pg3({ formik }) {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
         />
-        {formik.touched.ResearchProject && formik.errors.ResearchProject && (
-          <div style={{ color: "red" }}>{formik.errors.ResearchProject}</div>
+        {formik.touched.Methodology && formik.errors.Methodology && (
+          <div style={{ color: "red" }}>{formik.errors.Methodology}</div>
         )}
       </div>
       <div className="form-group">
@@ -71,8 +71,8 @@ function Pg3({ formik }) {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
         />
-        {formik.touched.ResearchProject && formik.errors.ResearchProject && (
-          <div style={{ color: "red" }}>{formik.errors.ResearchProject}</div>
+        {formik.touched.SafetyConcerns && formik.errors.SafetyConcerns && (
+          <div style={{ color: "red" }}>{formik.errors.SafetyConcerns}</div>
         )}
       </div>
     
@@ -87,7 +87,8 @@ function Pg3({ formik }) {
           requires participants to give information of a personal nature (e.g.,
           ethnicity, religion, sexual orientation); it uses deception
         </p>
-
+        <ul>
+        <li>
         <label>
           <input
             type="radio"
@@ -98,7 +99,8 @@ function Pg3({ formik }) {
           />
           Yes
         </label>
-
+        </li>
+        <li>
         <label>
           <input
             type="radio"
@@ -109,8 +111,30 @@ function Pg3({ formik }) {
           />
           No
         </label>
-        {formik.touched.ResearchProject && formik.errors.ResearchProject && (
-          <div style={{ color: "red" }}>{formik.errors.ResearchProject}</div>
+        </li>
+        </ul>
+        {formik.touched.SensitiveTopics && formik.errors.SensitiveTopics && (
+          <div style={{ color: "red" }}>{formik.errors.SensitiveTopics}</div>
+        )}
+      </div>
+      
+      <div className="form-group">
+        <label htmlFor="SensitiveTopicsFiles">
+        Sensitive Material/tools<span style={{ color: "red" }}>*</span>
+        </label>
+        <p>
+        Upload up to 5 files (photos, questionnaires, interview questions etc.)  in any format
+        </p>
+
+        <label>
+          <input
+            type="file"
+            name="SensitiveTopicsFiles"
+            onChange={formik.handleChange}
+          />
+        </label>
+        {formik.touched.SensitiveTopicsFiles && formik.errors.SensitiveTopicsFiles && (
+          <div style={{ color: "red" }}>{formik.errors.SensitiveTopicsFiles}</div>
         )}
       </div>
       

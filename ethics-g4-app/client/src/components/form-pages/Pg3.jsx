@@ -1,4 +1,10 @@
 function Pg3({ formik }) {
+
+  const handleFileChange = (event, initialValuesName) => {
+    const file = event.target.files[0];
+    formik.setFieldValue(initialValuesName, file);
+    console.log(file)
+  };
   
   return (
     <>

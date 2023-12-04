@@ -1,8 +1,4 @@
-
-
-
 function Pg3({ formik }) {
-  
   return (
     <>
       <div className="form-group">
@@ -27,7 +23,7 @@ function Pg3({ formik }) {
           <div style={{ color: "red" }}>{formik.errors.AimsObjectives}</div>
         )}
       </div>
-      
+
       <div className="form-group">
         <label htmlFor="Methodology">
           Methodology <span style={{ color: "red" }}>*</span>
@@ -75,11 +71,11 @@ function Pg3({ formik }) {
           <div style={{ color: "red" }}>{formik.errors.SafetyConcerns}</div>
         )}
       </div>
-    
+
       <div className="form-group">
         <label htmlFor="SensitiveTopics">
-        Does the research involve potentially highly sensitive topics?<span style={{ color: "red" }}>*</span>
-  
+          Does the research involve potentially highly sensitive topics?
+          <span style={{ color: "red" }}>*</span>
         </label>
         <p>
           e.g., it includes stimuli designed to be emotive or aversive; It
@@ -88,42 +84,43 @@ function Pg3({ formik }) {
           ethnicity, religion, sexual orientation); it uses deception
         </p>
         <ul>
-        <li>
-        <label>
-          <input
-            type="radio"
-            name="SensitiveTopics"
-            value="Yes"
-            checked={formik.values.SensitiveTopics === "Yes"}
-            onChange={formik.handleChange}
-          />
-          Yes
-        </label>
-        </li>
-        <li>
-        <label>
-          <input
-            type="radio"
-            name="SensitiveTopics"
-            value="No"
-            checked={formik.values.SensitiveTopics === "No"}
-            onChange={formik.handleChange}
-          />
-          No
-        </label>
-        </li>
+          <li>
+            <label>
+              <input
+                type="radio"
+                name="SensitiveTopics"
+                value="Yes"
+                checked={formik.values.SensitiveTopics === "Yes"}
+                onChange={formik.handleChange}
+              />
+              Yes
+            </label>
+          </li>
+          <li>
+            <label>
+              <input
+                type="radio"
+                name="SensitiveTopics"
+                value="No"
+                checked={formik.values.SensitiveTopics === "No"}
+                onChange={formik.handleChange}
+              />
+              No
+            </label>
+          </li>
         </ul>
         {formik.touched.SensitiveTopics && formik.errors.SensitiveTopics && (
           <div style={{ color: "red" }}>{formik.errors.SensitiveTopics}</div>
         )}
       </div>
-      
+
       <div className="form-group">
         <label htmlFor="SensitiveTopicsFiles">
-        Sensitive Material/tools<span style={{ color: "red" }}>*</span>
+          Sensitive Material/tools<span style={{ color: "red" }}>*</span>
         </label>
         <p>
-        Upload up to 5 files (photos, questionnaires, interview questions etc.)  in any format
+          Upload up to 5 files (photos, questionnaires, interview questions
+          etc.) in any format
         </p>
 
         <label>
@@ -133,11 +130,13 @@ function Pg3({ formik }) {
             onChange={formik.handleChange}
           />
         </label>
-        {formik.touched.SensitiveTopicsFiles && formik.errors.SensitiveTopicsFiles && (
-          <div style={{ color: "red" }}>{formik.errors.SensitiveTopicsFiles}</div>
-        )}
+        {formik.touched.SensitiveTopicsFiles &&
+          formik.errors.SensitiveTopicsFiles && (
+            <div style={{ color: "red" }}>
+              {formik.errors.SensitiveTopicsFiles}
+            </div>
+          )}
       </div>
-      
     </>
   );
 }

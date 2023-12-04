@@ -497,18 +497,17 @@ function Pg2({ formik }) {
         </label>
         <li>
           <label>
-
-          <input
-            type="radio"
-            id="SocialCareServicesYes"
-            name="SocialCareServices"
-            value="Yes"
-            checked={formik.values.SocialCareServices === "Yes"}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
+            <input
+              type="radio"
+              id="SocialCareServicesYes"
+              name="SocialCareServices"
+              value="Yes"
+              checked={formik.values.SocialCareServices === "Yes"}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
             />{" "}
-          Yes
-            </label>
+            Yes
+          </label>
         </li>
         <li>
           <label>

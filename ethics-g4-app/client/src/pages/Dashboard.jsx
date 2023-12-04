@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import StyledDashboard from "../styled/Dashboard.styled"
+import StyledDashboard from "../styled/Dashboard.styled";
 
 const Dashboard = () => {
   const [applications, setApplications] = useState([]);
@@ -122,15 +122,15 @@ const Dashboard = () => {
                             onClick={() => console.log("Assign Reviewers")}
                           >
                             Assign Reviewers
-                </button>
-              </div>
-            </div>
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
-</div>
+                          </button>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </StyledDashboard>
     </>

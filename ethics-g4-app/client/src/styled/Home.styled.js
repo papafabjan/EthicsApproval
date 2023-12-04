@@ -1,15 +1,14 @@
 import styled from "styled-components";
 
 const Home = styled.div`
-  
   padding: 2rem;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
-  font-family: 'Roboto', sans-serif; 
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  font-family: "Roboto", sans-serif;
 
   h1 {
     text-align: center;
-    color: #333; 
+    color: #333;
   }
 
   div {
@@ -27,12 +26,12 @@ const Home = styled.div`
 
     h1 {
       margin-top: 1rem;
-      font-size: 24px; 
+      font-size: 24px;
     }
 
     p {
       margin: 0.5rem 0;
-      font-size: 16px; 
+      font-size: 16px;
     }
   }
 `;

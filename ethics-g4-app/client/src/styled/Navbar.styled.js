@@ -16,15 +16,6 @@ const Navbar = styled.div`
     margin-left: 10vh;
   }
 
-  button[type="submit"] {
-    background-color: whitesmoke;
-  }
-
-  button[type="submit"]:hover {
-    background-color: aliceblue;
-    color: black;
-  }
-
   img {
     border: 2px solid #050906;
     margin-right: 0.5rem;

@@ -40,7 +40,11 @@ const Home = () => {
             ""
           ) : userData.loggedIn === true ? (
             <div>
-              <img src={userData.img} alt="User Profile" />
+              <img
+                src={userData.img}
+                alt="User Profile"
+                referrerPolicy="no-referrer"
+              />
               <h1>Welcome, {userData.username}!</h1>
               <p>Email: {userData.email}</p>
               <p>Google-ID: {userData.id}</p>

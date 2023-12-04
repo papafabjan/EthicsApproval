@@ -74,7 +74,7 @@ const initialValues = {
   Methodology:"",
   SafetyConcerns:"",
   SensitiveTopics:"",
-  SensitiveTopicsFiles:"",
+  SensitiveTopicsFiles: [],
 
 
   //Page4

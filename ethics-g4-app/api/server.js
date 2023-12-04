@@ -9,7 +9,6 @@ const userRoutes = require("./routes/userRouter");
 const applicationsRoutes = require("./routes/applicationsRouter");
 const testapplicationsRoutes = require("./routes/testapplicationsRouter");
 
-
 app.use(express.json());
 
 app.use(cors());
@@ -19,7 +18,6 @@ app.use(
     origin: process.env.CLIENT_URL,
   })
 );
-
 
 app.use("/api", userRoutes);
 app.use("/api", applicationsRoutes);

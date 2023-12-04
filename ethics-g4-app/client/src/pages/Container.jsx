@@ -6,7 +6,7 @@ import Navbar from "../components/Navbar";
 import StyledNavbar from "../styled/Navbar.styled";
 import StyledContainer from "../styled/Container.styled";
 import StyledContent from "../styled/Content.styled";
-import StyledContentContainer from "../styled/ContentContainer.styled" 
+import StyledContentContainer from "../styled/ContentContainer.styled";
 
 const Container = () => {
   return (

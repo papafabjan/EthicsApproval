@@ -116,7 +116,7 @@ const initialValues = {
   otherCheckboxOption: "",
 };
 const MyForm = () => {
-  const totalSteps = 10;
+  const totalSteps = 9;
 
   const formik = useFormik({
     initialValues,

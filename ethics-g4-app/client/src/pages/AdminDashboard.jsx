@@ -54,22 +54,36 @@ const AdminDashboard = () => {
       <ul>
         {filteredUsers.map((user) => (
           <li key={user.user_id}>
-            <div>
-              <img src={user.img} alt={user.username} />
+            <div style={{ border: "2px solid black" }}>
+              <img
+                src={user.img}
+                alt={user.username}
+                referrerPolicy="no-referrer"
+              />
               <p>{user.username}</p>
               <p>Role: {user.role}</p>
-              <button onClick={() => updateUserRole(user.user_id, "admin")}>
+              <button
+                className="btn"
+                onClick={() => updateUserRole(user.user_id, "admin")}
+              >
                 Change to Admin
               </button>
-              <button onClick={() => updateUserRole(user.user_id, "student")}>
+              <button
+                className="btn"
+                onClick={() => updateUserRole(user.user_id, "student")}
+              >
                 Change to Student
               </button>
               <button
+                className="btn"
                 onClick={() => updateUserRole(user.user_id, "supervisor")}
               >
                 Change to Supervisor
               </button>
-              <button onClick={() => updateUserRole(user.user_id, "reviewer")}>
+              <button
+                className="btn"
+                onClick={() => updateUserRole(user.user_id, "reviewer")}
+              >
                 Change to Reviewer
               </button>
             </div>

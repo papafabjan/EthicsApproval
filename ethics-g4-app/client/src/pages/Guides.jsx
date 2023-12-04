@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import StyledGuides from "../styled/Guides.styled"
+import StyledGuides from "../styled/Guides.styled";
 
 const Guides = () => {
   return (
@@ -15,9 +15,9 @@ const Guides = () => {
           <div className="card-body">
             <h5 className="card-title">Applicant</h5>
             <p className="card-text">
-              Press below to view more info. regarding Applicant
+              Press below to view more info. regarding Applicants
             </p>
-            <Link to="/applicant" className="btn btn-primary">
+            <Link to="/guides/applicant" className="btn btn-primary">
               {" "}
               Enter
             </Link>
@@ -28,9 +28,9 @@ const Guides = () => {
           <div className="card-body">
             <h5 className="card-title">Supervisor</h5>
             <p className="card-text">
-              Press below to view more info. regarding Supervisor
+              Press below to view more info. regarding Supervisors
             </p>
-            <Link to="/supervisor" className="btn btn-primary">
+            <Link to="/guides/supervisor" className="btn btn-primary">
               {" "}
               Enter
             </Link>
@@ -39,11 +39,11 @@ const Guides = () => {
 
         <div className="card w-50">
           <div className="card-body">
-            <h5 className="card-title">Reviewers</h5>
+            <h5 className="card-title">Reviewer</h5>
             <p className="card-text">
               Press below to view more info. regarding Reviewers
             </p>
-            <Link to="/reviewer" className="btn btn-primary">
+            <Link to="/guides/reviewer" className="btn btn-primary">
               {" "}
               Enter
             </Link>

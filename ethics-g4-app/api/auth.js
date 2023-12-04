@@ -3,7 +3,6 @@ const { Strategy: GoogleStrategy } = require("passport-google-oauth20");
 require("dotenv").config();
 const pool = require("./db");
 
-
 passport.use(
   new GoogleStrategy(
     {
@@ -25,7 +24,13 @@ passport.use(
           // Create user
           await pool.query(
             "INSERT INTO users (username, img, email, google_id, role) VALUES ($1, $2, $3, $4, $5)",
-            [account.name, account.picture, account.email, account.sub, account.role="student"]
+            [
+              account.name,
+              account.picture,
+              account.email,
+              account.sub,
+              (account.role = "student"),
+            ]
           );
 
           const id = await pool.query(

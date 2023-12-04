@@ -37,14 +37,16 @@ function App() {
                 <Route path="contact" element={<Contact />} />
                 <Route path="guides" element={<Guides />} />
                 <Route path="application" element={<Application />} />
-                <Route path="document_templates" element={<Document_Templates />}/>
-                <Route path="applicant" element={<Applicant />} />
-                <Route path="supervisor" element={<Supervisor />} />
-                <Route path="reviewer" element={<Reviewer />} />
+                <Route
+                  path="document_templates"
+                  element={<Document_Templates />}
+                />
+                <Route path="guides/applicant" element={<Applicant />} />
+                <Route path="guides/supervisor" element={<Supervisor />} />
+                <Route path="guides/reviewer" element={<Reviewer />} />
                 {/* <Route path="loginpage" element={<LoginPage />} /> */}
-                <Route path="dashboard" element={<Dashboard />}/>
+                <Route path="dashboard" element={<Dashboard />} />
                 <Route path="*" element={<NoPage />} />
-
               </Route>
             </Routes>
           </Router>
@@ -63,6 +65,5 @@ function App() {
 //               <PleaseSignIn />
 //             </>
 //           )}
-
 
 export default App;

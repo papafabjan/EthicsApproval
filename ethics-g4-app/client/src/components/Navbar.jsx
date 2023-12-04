@@ -53,7 +53,7 @@ function Navbar() {
               aria-label="Search"
             />
             <button className="btn" type="submit">
-              Search
+              <i className="fa-solid fa-search" />
             </button>
           </form>
           <span className="navbar-text">
@@ -68,6 +68,7 @@ function Navbar() {
                     alt="User Profile Pic"
                     width="30vh"
                     margin-right="5px"
+                    referrerPolicy="no-referrer"
                   />
                   Hi, {user.username}
                 </Link>

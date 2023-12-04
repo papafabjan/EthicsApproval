@@ -1,14 +1,5 @@
-
-
-
 function Pg3({ formik }) {
-
-  const handleFileChange = (event, initialValuesName) => {
-    const file = event.target.files[0];
-    formik.setFieldValue(initialValuesName, file);
-    console.log(file)
-  };
-
+  
   return (
     <>
       <div className="form-group">
@@ -84,8 +75,8 @@ function Pg3({ formik }) {
 
       <div className="form-group">
         <label htmlFor="SensitiveTopics">
-          Does the research involve potentially highly sensitive topics?<span style={{ color: "red" }}>*</span>
-
+        Does the research involve potentially highly sensitive topics?<span style={{ color: "red" }}>*</span>
+  
         </label>
         <p>
           e.g., it includes stimuli designed to be emotive or aversive; It
@@ -129,7 +120,7 @@ function Pg3({ formik }) {
           Sensitive Material/tools<span style={{ color: "red" }}>*</span>
         </label>
         <p>
-          Upload up to 5 files (photos, questionnaires, interview questions etc.)  in any format
+        Upload up to 5 files (photos, questionnaires, interview questions etc.)  in any format
         </p>
 
         <label>
@@ -140,11 +131,14 @@ function Pg3({ formik }) {
             onChange={(e) => handleFileChange(e, "SensitiveTopicsFiles")}
           />
         </label>
-        {formik.touched.SensitiveTopicsFiles && formik.errors.SensitiveTopicsFiles && (
-          <div style={{ color: "red" }}>{formik.errors.SensitiveTopicsFiles}</div>
-        )}
+        {formik.touched.SensitiveTopicsFiles &&
+          formik.errors.SensitiveTopicsFiles && (
+            <div style={{ color: "red" }}>
+              {formik.errors.SensitiveTopicsFiles}
+            </div>
+          )}
       </div>
-
+      
     </>
   );
 }

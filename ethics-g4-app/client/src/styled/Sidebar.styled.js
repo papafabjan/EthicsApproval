@@ -1,18 +1,11 @@
 import styled from "styled-components";
 
 const Sidebar = styled.div`
-  i {
-    margin-right: 8px;
-    vertical-align: middle;
-    align-items: left;
-  }
-
   background: linear-gradient(
-    0deg,
-    #f2edce,
-    #ffa500,
-    #ff6347
-  ); /* temporarily */
+    5deg,
+    rgb(245, 200, 27) 0%,
+    rgb(255, 169, 27) 100%
+  );
   border-radius: 24px;
   display: flex;
   flex-direction: column;
@@ -23,64 +16,48 @@ const Sidebar = styled.div`
   max-width: 13%;
   min-width: 13%;
   float: left;
+  overflow: hidden;
 
-  /* .nav-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  } */
-  /* 
   i {
     margin-right: 8px;
     vertical-align: middle;
     align-items: left;
-  } */
-
-  /* .nav-item a {
-    
-  } */
-
+  }
   .icon-title {
     display: flex;
     align-items: right;
     font-weight: bold;
     flex-direction: row;
-    > a {
-      color: black;
-      text-decoration: none;
-      position: relative;
-      display: inline-block;
-      z-index: 1;
-    }
   }
 
-  .icon {
+  .icon-title > a {
+    color: #333; /* Dark gray for link color */
+    text-decoration: none;
+    position: relative;
+    display: inline-block;
   }
 
-  .title {
-  }
-
-  .icon-title:before {
+  .icon-title > a:before {
     content: "";
     position: absolute;
     z-index: -1;
-    left: 51%;
-    right: 51%;
-    bottom: 0;
-    background: #2098d1;
-    height: 4px;
-    -webkit-transition-property: left, right;
-    transition-property: left, right;
-    -webkit-transition-duration: 0.3s;
-    transition-duration: 0.3s;
-    -webkit-transition-timing-function: ease-out;
-    transition-timing-function: ease-out;
-  }
-  .icon-title:hover:before,
-  .icon-title:focus:before,
-  .icon-title:active:before {
     left: 0;
     right: 0;
+    bottom: 0;
+    background-color: darkorange;
+    height: 4px;
+    width: 0;
+    transition: width 0.3s ease-out;
+  }
+
+  .icon-title > a:hover:before,
+  .icon-title > a:focus:before,
+  .icon-title > a:active:before {
+    width: 100%;
+  }
+
+  .icon-title:hover > a {
+    transform: scale(0.95);
   }
 `;
 

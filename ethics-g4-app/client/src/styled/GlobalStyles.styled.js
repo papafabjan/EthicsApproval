@@ -5,12 +5,20 @@ const GlobalStyle = createGlobalStyle`
 * {
   margin: 0;
 }
+*::selection{
+  background: pink;
+  color: whitesmoke;
+}
 
 body {
   
   color: ${({ theme }) => theme.text};
   margin: 0;
-  background-color: ${({ theme }) => theme.body};
+  background: linear-gradient(
+    45deg,
+    rgb(248, 94, 0) 0%,
+    rgb(249, 212, 35) 100%
+  );
   font-family: "Montserrat", 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fikura Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;

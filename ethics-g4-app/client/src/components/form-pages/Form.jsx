@@ -1,6 +1,5 @@
 // MyForm.jsx
 import React from "react";
-import styled from "styled-components";
 import { useFormik } from "formik";
 
 import * as yup from "yup";
@@ -142,6 +141,7 @@ const MyForm = () => {
   const handleNext = () => {
     const errors = formik.errors;
     let errorMessage = "";
+
     // Check for errors in the current step
     if (step === 1) {
       if (
@@ -156,51 +156,116 @@ const MyForm = () => {
         errorMessage = "Incomplete: ";
         errorMessage += Object.values(errors).filter(Boolean).join(", ");
         console.error("Validation error:", errors);
-
       } else {
         // No errors, proceed to the next step
         setStep((prevStep) => prevStep + 1);
       }
     } else if (step === 2) {
-      if  (errors.supervisor) {
+      if (
+        errors.ResearchProject ||
+        errors.CoApplicantName ||
+        errors.CoApplicantEmail ||
+        errors.StartDate ||
+        errors.EndDate ||
+        errors.Funding ||
+        errors.FundingOther ||
+        errors.Country ||
+        errors.ProjectPlace ||
+        errors.HealthSocialCare ||
+        errors.AnotherInstitution ||
+        errors.AnotherInstitutionOther ||
+        errors.HumanTissue ||
+        errors.ClinicalMedical ||
+        errors.SocialCareServices
+      ) {
         // There are errors in the current step, handle them as needed
         errorMessage = "Incomplete: ";
         errorMessage += Object.values(errors).filter(Boolean).join(", ");
         console.error("Validation error:", errors);
-  
       } else {
         // No errors, proceed to the next step
         setStep((prevStep) => prevStep + 1);
       }
-    }
-    else if (step === 3) {
-      if  (errors.AimsObjectives ||
-    errors.Methodology ||
-    errors.SafetyConcerns ||
-    errors.SensitiveTopics) {
+    } else if (step === 3) {
+      if (
+        errors.AimsObjectives ||
+        errors.Methodology ||
+        errors.SafetyConcerns ||
+        errors.SensitiveTopics
+      ) {
         // There are errors in the current step, handle them as needed
         errorMessage = "Incomplete: ";
         errorMessage += Object.values(errors).filter(Boolean).join(", ");
         console.error("Validation error:", errors);
-  
       } else {
         // No errors, proceed to the next step
         setStep((prevStep) => prevStep + 1);
       }
-    }
-    else if (step === 4) {
-      if  (errors.PotentialParticipants ||
+    } else if (step === 4) {
+      if (
+        errors.PotentialParticipants ||
         errors.RecruitingPotentialParticipants ||
         errors.Payment ||
         errors.otherPaymentOption ||
         errors.PotentialHarm ||
         errors.VulnerableParticipants ||
-        errors.otherVulnerableParticipantsOptions) {
+        errors.otherVulnerableParticipantsOptions
+      ) {
         // There are errors in the current step, handle them as needed
         errorMessage = "Incomplete: ";
         errorMessage += Object.values(errors).filter(Boolean).join(", ");
         console.error("Validation error:", errors);
-  
+      } else {
+        // No errors, proceed to the next step
+        setStep((prevStep) => prevStep + 1);
+      }
+    } else if (step === 5) {
+      if (
+        errors.ParentalConsent ||
+        errors.ParentalInformation ||
+        errors.HeadTeacherConsent ||
+        errors.HeadteacherInformation ||
+        errors.ParticipantInformationForm ||
+        errors.ParticipantConsentForm ||
+        errors.DebriefingForm ||
+        errors.AccessibilityLetter
+      ) {
+        // There are errors in the current step, handle them as needed
+        errorMessage = "Incomplete: ";
+        errorMessage += Object.values(errors).filter(Boolean).join(", ");
+        console.error("Validation error:", errors);
+      } else {
+        // No errors, proceed to the next step
+        setStep((prevStep) => prevStep + 1);
+      }
+    } else if (step === 6) {
+      if (
+        errors.DataProcessing ||
+        errors.DataConfidentiality ||
+        errors.DataStorageandSecurity
+      ) {
+        // There are errors in the current step, handle them as needed
+        errorMessage = "Incomplete: ";
+        errorMessage += Object.values(errors).filter(Boolean).join(", ");
+        console.error("Validation error:", errors);
+      } else {
+        // No errors, proceed to the next step
+        setStep((prevStep) => prevStep + 1);
+      }
+    } else if (step === 7) {
+      if (
+        errors.ListofQuestions ||
+        errors.AdditionalForms ||
+        errors.test ||
+        errors.radioOption ||
+        errors.otherOption ||
+        errors.checkboxOption ||
+        errors.otherCheckboxOption
+      ) {
+        // There are errors in the current step, handle them as needed
+        errorMessage = "Incomplete: ";
+        errorMessage += Object.values(errors).filter(Boolean).join(", ");
+        console.error("Validation error:", errors);
       } else {
         // No errors, proceed to the next step
         setStep((prevStep) => prevStep + 1);
@@ -208,6 +273,7 @@ const MyForm = () => {
     }
     // Add more conditions for other steps as needed
   };
+
 
   const handlePrevious = () => {
     setStep((prevStep) => prevStep - 1);
@@ -266,19 +332,19 @@ const MyForm = () => {
             )}
             {step === 2 && <Pg2 formik={formik} />}
             {step === 3 && (
-              <Pg3 formik={formik} emphasizeFields={formik.errors} />
+              <Pg3 formik={formik}  />
             )}
             {step === 4 && (
-              <Pg4 formik={formik} emphasizeFields={formik.errors} />
+              <Pg4 formik={formik}  />
             )}
             {step === 5 && (
-              <Pg5 formik={formik} emphasizeFields={formik.errors} />
+              <Pg5 formik={formik} />
             )}
             {step === 6 && (
-              <Pg6 formik={formik} emphasizeFields={formik.errors} />
+              <Pg6 formik={formik}  />
             )}
             {step === 7 && (
-              <Pg7 formik={formik} emphasizeFields={formik.errors} />
+              <Pg7 formik={formik}  />
             )}
 
             {/* Render other steps as needed */}

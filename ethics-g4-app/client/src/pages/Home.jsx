@@ -34,7 +34,6 @@ const Home = () => {
   return (
     <>
       <StyledHome>
-        <h1>Home Page Here</h1>
         <div>
           {userData === null ? (
             ""

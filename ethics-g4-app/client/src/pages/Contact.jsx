@@ -1,3 +1,5 @@
+import StyledContact from '../styled/Contact.styled'
+
 const Contact = () => {
   const supportEmails = [
     { email: "fpapa@york.citycollege.eu", role: "Technical Support" },
@@ -10,15 +12,17 @@ const Contact = () => {
 
   return (
     <>
-      <h1>Contact Support</h1>
-      <ul>
-        {supportEmails.map((contact, index) => (
-          <li key={index}>
-            <strong>Email:</strong> {contact.email} -{" "}
-            <span>{contact.role}</span>
-          </li>
-        ))}
-      </ul>
+      <StyledContact>
+        <h1>Contact Support</h1>
+        <ul>
+          {supportEmails.map((contact, index) => (
+            <li key={index}>
+              <strong>Email:</strong> {contact.email} -{" "}
+              <span>{contact.role}</span>
+            </li>
+          ))}
+        </ul>
+      </StyledContact>
     </>
   );
 };

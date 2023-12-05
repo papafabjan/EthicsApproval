@@ -14,7 +14,6 @@ const Sidebar = () => {
           <img
             src="../assets/images/logo_city_black.png"
             height="120em"
-            border="5px"
             alt="Logo"
           />
         </Link>

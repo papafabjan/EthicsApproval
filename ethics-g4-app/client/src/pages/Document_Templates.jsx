@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import StyledDocument_Templates from "../styled/Document_Templates.styled";
 
 const Document_Templates = () => {
@@ -42,13 +43,9 @@ const Document_Templates = () => {
             {documents.map((document, index) => (
               <li key={index}>
                 {document.name}
-                <a
-                  href={document.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Open
-                </a>
+                <Link to={document.url}>
+                  <button className="btn">Open</button>
+                </Link>
               </li>
             ))}
           </ul>

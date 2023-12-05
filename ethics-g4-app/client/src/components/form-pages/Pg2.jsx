@@ -462,6 +462,8 @@ function Pg2({ formik }) {
           Clinical trial or a medical device study?{" "}
           <span style={{ color: "red" }}>*</span>
         </label>
+        <ul>
+
         <li>
           <label>
             <input
@@ -488,6 +490,7 @@ function Pg2({ formik }) {
             No
           </label>
         </li>
+            </ul>
       </div>
 
       <div className="form-group">
@@ -495,6 +498,8 @@ function Pg2({ formik }) {
           Involves social care services provided by a local authority?
           <span style={{ color: "red" }}>*</span>
         </label>
+        <ul>
+
         <li>
           <label>
             <input
@@ -524,6 +529,7 @@ function Pg2({ formik }) {
           </label>
         </li>
 
+        </ul>
         {formik.touched.SocialCareServices &&
           formik.errors.SocialCareServices && (
             <div style={{ color: "red" }}>

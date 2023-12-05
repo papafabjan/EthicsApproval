@@ -17,9 +17,8 @@ const Guides = () => {
             <p className="card-text">
               Press below to view more info. regarding Applicants
             </p>
-            <Link to="/guides/applicant" className="btn btn-primary">
-              {" "}
-              Enter
+            <Link to="/guides/applicant">
+              <button className="btn">Read</button>
             </Link>
           </div>
         </div>
@@ -30,9 +29,8 @@ const Guides = () => {
             <p className="card-text">
               Press below to view more info. regarding Supervisors
             </p>
-            <Link to="/guides/supervisor" className="btn btn-primary">
-              {" "}
-              Enter
+            <Link to="/guides/supervisor">
+              <button className="btn">Read</button>
             </Link>
           </div>
         </div>
@@ -43,9 +41,8 @@ const Guides = () => {
             <p className="card-text">
               Press below to view more info. regarding Reviewers
             </p>
-            <Link to="/guides/reviewer" className="btn btn-primary">
-              {" "}
-              Enter
+            <Link to="/guides/reviewer">
+              <button className="btn">Read</button>
             </Link>
           </div>
         </div>

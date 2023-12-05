@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const Container = styled.div`
-  height: 90vh;
+  height: 85vh;
   display: flex;
   justify-content: left;
   align-items: auto;

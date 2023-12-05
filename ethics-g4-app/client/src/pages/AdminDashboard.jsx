@@ -5,9 +5,8 @@ const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Fetch users from your API
+  // Fetch users from API
   useEffect(() => {
-    // Replace 'api/users' with your actual API endpoint
     fetch(`${import.meta.env.VITE_SERVER_URL}/api/users`)
       .then((response) => response.json())
       .then((data) => setUsers(data))
@@ -54,7 +53,7 @@ const AdminDashboard = () => {
       <ul>
         {filteredUsers.map((user) => (
           <li key={user.user_id}>
-            <div style={{ border: "2px solid black" }}>
+            <div>
               <img
                 src={user.img}
                 alt={user.username}

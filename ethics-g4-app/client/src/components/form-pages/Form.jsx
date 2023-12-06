@@ -21,7 +21,8 @@ import Pg7 from "./Pg7";
 
 const validationSchema = yup.object({
   firstName: yup.string().required("First Name is required"),
-  lastName: yup.string().required("Last Name is required"),
+    lastName: yup.string().required("Last Name is required"),
+    middleName: yup.string().required("Middle Name is required"),
   email: yup
     .string()
     .matches(
@@ -36,8 +37,11 @@ const validationSchema = yup.object({
 
   supervisor: yup.string().required("Supervisor selection is required"),
   ResearchProject: yup.string().required("ResearchProject is required"),
-  CoApllicantName: yup.string().required("CoApllicant's Name is required"),
-  CoApllicantEmail: yup.string().required("CoApllicant's Email is required"),
+  CoApplicantName: yup.string().required("CoApllicant's Name is required"),
+  CoApplicantEmail: yup.string().required("CoApllicant's Email is required"),
+  StartDate: yup.string().required("Start Date is required"),
+  FundingOther: yup.string().required("FundingOther  is required"),
+  
 });
 
 const initialValues = {
@@ -330,21 +334,21 @@ const MyForm = () => {
             {step === 1 && (
               <Pg1 formik={formik} emphasizeFields={formik.errors} />
             )}
-            {step === 2 && <Pg2 formik={formik} />}
+            {step === 2 && <Pg2 formik={formik } emphasizeFields={formik.errors} />}
             {step === 3 && (
-              <Pg3 formik={formik}  />
+              <Pg3 formik={formik} emphasizeFields={formik.errors} />
             )}
             {step === 4 && (
-              <Pg4 formik={formik}  />
+              <Pg4 formik={formik} emphasizeFields={formik.errors} />
             )}
             {step === 5 && (
-              <Pg5 formik={formik} />
+              <Pg5 formik={formik}emphasizeFields={formik.errors} />
             )}
             {step === 6 && (
-              <Pg6 formik={formik}  />
+              <Pg6 formik={formik}  emphasizeFields={formik.errors}/>
             )}
             {step === 7 && (
-              <Pg7 formik={formik}  />
+              <Pg7 formik={formik}  emphasizeFields={formik.errors}/>
             )}
 
             {/* Render other steps as needed */}

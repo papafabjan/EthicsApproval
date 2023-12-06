@@ -1,4 +1,14 @@
+import Thumb from "../Thumb";
+
 export const Pg5 = ({ formik }) => {
+
+  const handleFileChange = (event, initialValuesName) => {
+    const file = event.target.files[0];
+    formik.setFieldValue(initialValuesName, file);
+    console.log(file)
+  };
+
+
   return (
     <>
       {formik.values.VulnerableParticipants === "YesChildren_adolescents" ? (
@@ -20,9 +30,9 @@ export const Pg5 = ({ formik }) => {
               type="file"
               className="form-control"
               id="ParentalConsent"
-              value={formik.values.ParentalConsent}
-              onChange={formik.handleChange}
+              onChange={(e) => handleFileChange(e, "ParentalConsent")}
             />
+            <Thumb file={formik.values.ParentalConsent} />
           </div>
           <div className="form-group">
             <label htmlFor="ParentalInformation">
@@ -41,9 +51,9 @@ export const Pg5 = ({ formik }) => {
               type="file"
               className="form-control"
               id="ParentalInformation"
-              value={formik.values.ParentalInformation}
-              onChange={formik.handleChange}
+              onChange={(e) => handleFileChange(e, "ParentalInformation")}
             />
+            <Thumb file={formik.values.ParentalInformation} />
           </div>
           <div className="form-group">
             <label htmlFor="ChildInformation">
@@ -63,9 +73,9 @@ export const Pg5 = ({ formik }) => {
               type="file"
               className="form-control"
               id="ChildInformation"
-              value={formik.values.ChildInformation}
-              onChange={formik.handleChange}
+              onChange={(e) => handleFileChange(e, "ChildInformation")}
             />
+            <Thumb file={formik.values.ChildInformation} />
           </div>
           <div className="form-group">
             <label htmlFor="HeadTeacherConsent">
@@ -81,8 +91,9 @@ export const Pg5 = ({ formik }) => {
               type="file"
               className="form-control"
               id="HeadTeacherConsent"
-              value={formik.values.HeadTeacherConsent}
+              onChange={(e) => handleFileChange(e, "HeadTeacherConsent")}
             />
+            <Thumb file={formik.values.HeadTeacherConsent} />
           </div>
           <div className="form-group">
             <label htmlFor="HeadteacherInformation">
@@ -98,9 +109,9 @@ export const Pg5 = ({ formik }) => {
               type="file"
               className="form-control"
               id="HeadteacherInformation"
-              value={formik.values.HeadteacherInformation}
-              onChange={formik.handleChange}
+              onChange={(e) => handleFileChange(e, "HeadteacherInformation")}
             />
+            <Thumb file={formik.values.HeadteacherInformation} />
           </div>
         </>
       ) : formik.values.VulnerableParticipants === "YesAdultsMental" ? (
@@ -127,9 +138,9 @@ export const Pg5 = ({ formik }) => {
               name="AccessibleConsentMaterial"
               className="form-control"
               id="AccessibleConsentMaterial"
-              value={formik.values.AccessibleConsentMaterial}
-              onChange={formik.handleChange}
+              onChange={(e) => handleFileChange(e, "AccessibleConsentMaterial")}
             />
+            <Thumb file={formik.values.AccessibleConsentMaterial} />
           </div>
           <div className="form-group">
             <label htmlFor="ProxyConsentProcedures">
@@ -150,9 +161,9 @@ export const Pg5 = ({ formik }) => {
               name="ProxyConsentProcedures"
               className="form-control"
               id="ProxyConsentProcedures"
-              value={formik.values.ProxyConsentProcedures}
-              onChange={formik.handleChange}
+              onChange={(e) => handleFileChange(e, "ProxyConsentProcedures")}
             />
+            <Thumb file={formik.values.ProxyConsentProcedures} />
           </div>
         </>
       ) : formik.values.VulnerableParticipants === "" ? (
@@ -179,9 +190,9 @@ export const Pg5 = ({ formik }) => {
               type="file"
               className="form-control"
               id="ParticipantInformation"
-              value={formik.values.ParticipantInformation}
-              onChange={formik.handleChange}
+              onChange={(e) => handleFileChange(e, "ParticipantInformation")}
             />
+            <Thumb file={formik.values.ParticipantInformation} />
           </div>
           <div className="form-group">
             <label htmlFor="ParticipantConsent">
@@ -199,9 +210,9 @@ export const Pg5 = ({ formik }) => {
               type="file"
               className="form-control"
               id="ParticipantConsent"
-              value={formik.values.ParticipantConsent}
-              onChange={formik.handleChange}
+              onChange={(e) => handleFileChange(e, "ParticipantConsent")}
             />
+            <Thumb file={formik.values.ParticipantConsent} />
           </div>
           <div className="form-group">
             <label htmlFor="ParticipantDebriefing">
@@ -218,9 +229,9 @@ export const Pg5 = ({ formik }) => {
               type="file"
               className="form-control"
               id="ParticipantDebriefing"
-              value={formik.values.ParticipantDebriefing}
-              onChange={formik.handleChange}
+              onChange={(e) => handleFileChange(e, "ParticipantDebriefing")}
             />
+            <Thumb file={formik.values.ParticipantDebriefing} />
           </div>
           <div className="form-group">
             <label htmlFor="AccessibilityLetter">
@@ -235,9 +246,9 @@ export const Pg5 = ({ formik }) => {
               type="file"
               className="form-control"
               id="AccessibilityLetter"
-              value={formik.values.AccessibilityLetter}
-              onChange={formik.handleChange}
+              onChange={(e) => handleFileChange(e, "AccessibilityLetter")}
             />
+            <Thumb file={formik.values.AccessibilityLetter} />
           </div>
         </>
       )}

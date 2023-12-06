@@ -87,10 +87,17 @@ const initialValues = {
 
   //Page5:
   //Yes child
-  ParentalConsent: "",
-  ParentalInformation: "",
-  HeadTeacherConsent: "",
-  HeadteacherInformation: "",
+  ParentalConsent: [],
+  ParentalInformation: [],
+  ChildInformation: [],
+  HeadTeacherConsent: [],
+  HeadteacherInformation: [],
+  AccessibleConsentMaterial: [],
+  ProxyConsentProcedure: [],
+  ParticipantInformation: [],
+  ParticipantConsent: [],
+  ParticipantDebriefing: [],
+  AccessibilityLetter: [],
 
   //Yes adults mental
 
@@ -98,7 +105,6 @@ const initialValues = {
   ParticipantInformationForm: "",
   ParticipantConsentForm: "",
   DebriefingForm: "",
-  AccessibilityLetter: "",
   
   //Page6
   DataProcessing: "",

@@ -18,6 +18,7 @@ import { UserContext } from "./components/UserContext";
 import { useContext } from "react";
 import AdminDashboard from "./pages/AdminDashboard";
 import Dashboard from "./pages/Dashboard";
+import MyApplications from "./pages/MyApplications";
 
 function App() {
   const user = useContext(UserContext);
@@ -46,7 +47,9 @@ function App() {
                 <Route path="guides/reviewer" element={<Reviewer />} />
                 <Route path="UsersApplication" element={<UsersApplication />} />
                 <Route path="dashboard" element={<Dashboard />} />
-                <Route path="*" element={<NoPage />} />
+                <Route path="*" element={<NoPage />} 
+                />
+                <Route path="myapplications" element={<MyApplications />} />
               </Route>
             </Routes>
           </Router>

@@ -51,6 +51,7 @@ function Navbar() {
               type="search"
               placeholder="Search"
               aria-label="Search"
+              name="searchSite"
             />
             <button className="btn" type="submit">
               <i className="fa-solid fa-search" />

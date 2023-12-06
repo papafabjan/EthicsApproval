@@ -30,6 +30,13 @@ CREATE TABLE applications (
   applicant_id INT references users(user_id) NOT NULL
 );
 
+CREATE TABLE comments (
+  id SERIAL PRIMARY KEY,
+  content VARCHAR(255) NOT NULL,
+  field VARCHAR(255) NOT NULL,
+  application_id references applications(id) NOT NULL,
+);
+
 CREATE TABLE application_content (
   id SERIAL PRIMARY KEY,
   application_id references applications(id) NOT NULL,

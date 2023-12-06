@@ -15,14 +15,11 @@ import Pg6 from "./Pg6";
 import Pg7 from "./Pg7";
 
 
-
-// Import other page components as needed
-// ... Import other page components
-
 const validationSchema = yup.object({
+  // Page 1
   firstName: yup.string().required("First Name is required"),
-    lastName: yup.string().required("Last Name is required"),
-    middleName: yup.string().required("Middle Name is required"),
+  lastName: yup.string().required("Last Name is required"),
+  middleName: yup.string().required("Middle Name is required"),
   email: yup
     .string()
     .matches(
@@ -36,16 +33,25 @@ const validationSchema = yup.object({
   programme: yup.string().required("Programme selection is required"),
 
   supervisor: yup.string().required("Supervisor selection is required"),
+  // Page 2
   ResearchProject: yup.string().required("ResearchProject is required"),
   CoApplicantName: yup.string().required("CoApllicant's Name is required"),
   CoApplicantEmail: yup.string().required("CoApllicant's Email is required"),
   StartDate: yup.string().required("Start Date is required"),
-  FundingOther: yup.string().required("FundingOther  is required"),
-  
+  Funding: yup
+    .string()
+    .required("Please select a funding option")
+    .oneOf(["Other", "No"], "Please select a funding option"),
+  FundingOther: yup.string().when("Funding", {
+    is: (value) => value === "Other",
+    then: yup
+      .string()
+      .required("FundingOther is required when selecting 'Yes'"),
+  }),
 });
 
 const initialValues = {
-  //Page 1
+  // Page 1
   firstName: "",
   middlename: "",
   lastName: "",
@@ -54,7 +60,7 @@ const initialValues = {
   programme: "",
   supervisor: "",
 
-  //Page 2
+  // Page 2
   ResearchProject: "",
   CoApplicantName: "",
   CoApplicantEmail: "",
@@ -72,7 +78,7 @@ const initialValues = {
   ClinicalMedical: "",
   SocialCareServices: "",
 
-  //Page 3
+  // Page 3
   AimsObjectives: "",
   Methodology:"",
   SafetyConcerns:"",
@@ -80,7 +86,7 @@ const initialValues = {
   SensitiveTopicsFiles: [],
 
 
-  //Page4
+  // Page4
   PotentialParticipants: "",
   RecruitingPotentialParticipants: "",
   Payment: "",
@@ -89,7 +95,7 @@ const initialValues = {
   VulnerableParticipants: "",
   otherVulnerableParticipantsOptions:"",
 
-  //Page5:
+  // Page5:
   //Yes child
   ParentalConsent: [],
   ParentalInformation: [],
@@ -110,12 +116,12 @@ const initialValues = {
   ParticipantConsentForm: "",
   DebriefingForm: "",
   
-  //Page6
+  // Page6
   DataProcessing: "",
   DataConfidentiality: "",
   DataStorageandSecurity: "",
 
-  //Page7:
+  // Page7:
   ListofQuestions: "",
   AdditionalForms: "",
   test:"",
@@ -132,6 +138,7 @@ const MyForm = () => {
     validationSchema,
     onSubmit: (values) => {
       console.log(values);
+      
       // Handle form submission logic here
       fetch(`${import.meta.env.VITE_SERVER_URL}/api/testapplications/add`, {
         method: "POST",
@@ -147,13 +154,34 @@ const MyForm = () => {
   });
 
   const [step, setStep] = React.useState(0);
+  
+  const handleStart = () => {
+    setStep(1);
+  };
+  const handlePrevious = () => {
+    setStep((prevStep) => prevStep - 1);
+  };
+  
+  
+  const isLastStep = step === totalSteps - 1;
+  const isFirstStep = step === 0;
+  
+  const handleNext = async () => {
 
-  const handleNext = () => {
     const errors = formik.errors;
     let errorMessage = "";
 
     // Check for errors in the current step
     if (step === 1) {
+      // Validate a specific field (e.g., firstName)
+      try {
+        await yup
+          .reach(validationSchema, `firstName`)
+          .validate(formik.values.firstName, { abortEarly: false });
+      } catch (error) {
+        // Handle the validation error
+        console.error("Validation error for firstName:", error.message);
+      }
       if (
         errors.firstName ||
         errors.lastName ||
@@ -283,23 +311,15 @@ const MyForm = () => {
     }
     // Add more conditions for other steps as needed
   };
-
-
-  const handlePrevious = () => {
-    setStep((prevStep) => prevStep - 1);
-  };
-
-  const handleStart = () => {
-    setStep(1);
-  };
-
-  const isLastStep = step === totalSteps - 1;
-  const isFirstStep = step === 0;
+  
 
   const handleSubmit = () => {
-    if (formik.isValid) {
-      formik.handleSubmit();
+    // Don't submit if the form is currently submitting or has errors
+    if (!formik.isValid) {
+      return;
     }
+
+    formik.handleSubmit();
   };
 
   const renderFormStep = () => {
@@ -372,7 +392,7 @@ const MyForm = () => {
                 onClick={handleNext}
                 disabled={isLastStep}
               >
-                Next
+               Next
               </Button>
             </NavigationButtons>
             <pre>{JSON.stringify(formik.values, null, 3)}</pre>
@@ -385,3 +405,4 @@ const MyForm = () => {
 };
 
 export default MyForm;
+//mandilara 1

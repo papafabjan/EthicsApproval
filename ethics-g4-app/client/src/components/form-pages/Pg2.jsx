@@ -166,9 +166,10 @@ function Pg2({ formik, emphasizeFields  }) {
             }}
               />
             )}
-            
+            {formik.values.Funding === "Other" && formik.touched.FundingOther && formik.errors.FundingOther && (
+  <div style={{ color: "red" }}>{formik.errors.FundingOther}</div>
+)}
           </li>
-
           <li>
             <label>
               <input

@@ -60,6 +60,12 @@ const Sidebar = () => {
           <i className="fa fa-table-columns" aria-hidden="true"></i>Dashboard
         </Link>
       </div>
+
+      <div className="icon-title">
+        <Link to="/myapplications">
+          <i className="fa fa-users" aria-hidden="true"></i>My Applications
+        </Link>
+      </div>
     </>
   );
 };

@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import StyledDashboard from "../styled/Dashboard.styled";
+import { useNavigate } from "react-router-dom";
 
+
+// {navigate('../pages/Application.jsx', element={<Application/>}, {replace: true})}
 const Dashboard = () => {
   const [applications, setApplications] = useState([]);
   const [applicantNames, setApplicantNames] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
-
+  const navigate = useNavigate();
+  
   // Fetch applications from your API
   useEffect(() => {
     const fetchApplications = async () => {
@@ -57,6 +61,10 @@ const Dashboard = () => {
       console.error(error.message);
       return "Unknown";
     }
+  };
+  const handleComment = () => {
+    // Redirect to the application page
+    navigate(`/UsersApplication`);
   };
 
   // Function to handle search term changes
@@ -113,9 +121,9 @@ const Dashboard = () => {
                         <div className="actions">
                           <button
                             className="btn"
-                            onClick={() => console.log("Comment")}
+                            onClick={() => handleComment(application.id)}
                           >
-                            Comment
+                            Comment/View
                           </button>
                           <button
                             className="btn"
@@ -123,6 +131,15 @@ const Dashboard = () => {
                           >
                             Assign Reviewers
                           </button>
+
+                          
+                          <button
+                            className="btn"
+                            onClick={() => console.log("Approve")}
+                          >
+                            Approve
+                          </button>
+                          
                         </div>
                       </div>
                     </td>

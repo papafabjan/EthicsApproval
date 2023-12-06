@@ -7,7 +7,7 @@ import Home from "./pages/Home";
 import Contact from "./pages/Contact";
 import NoPage from "./pages/NoPage";
 import Container from "./pages/Container";
-// import LoginPage from "./pages/LoginPage";
+import UsersApplication from "./pages/UsersApplication";
 import Guides from "./pages/Guides";
 import Document_Templates from "./pages/Document_Templates";
 import Applicant from "./pages/Applicant";
@@ -18,6 +18,7 @@ import { UserContext } from "./components/UserContext";
 import { useContext } from "react";
 import AdminDashboard from "./pages/AdminDashboard";
 import Dashboard from "./pages/Dashboard";
+import MyApplications from "./pages/MyApplications";
 
 function App() {
   const user = useContext(UserContext);
@@ -44,9 +45,11 @@ function App() {
                 <Route path="guides/applicant" element={<Applicant />} />
                 <Route path="guides/supervisor" element={<Supervisor />} />
                 <Route path="guides/reviewer" element={<Reviewer />} />
-                {/* <Route path="loginpage" element={<LoginPage />} /> */}
+                <Route path="UsersApplication" element={<UsersApplication />} />
                 <Route path="dashboard" element={<Dashboard />} />
-                <Route path="*" element={<NoPage />} />
+                <Route path="*" element={<NoPage />} 
+                />
+                <Route path="myapplications" element={<MyApplications />} />
               </Route>
             </Routes>
           </Router>

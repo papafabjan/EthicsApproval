@@ -74,6 +74,7 @@ CREATE TABLE application_content (
   data_storage_and_security VARCHAR(255) NOT NULL,
   list_of_questions BYTEA,
   additional_forms BYTEA
+
 );
 
 -- INSERT INTO users (username, img, google_id)

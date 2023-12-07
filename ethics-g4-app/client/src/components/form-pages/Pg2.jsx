@@ -16,6 +16,7 @@ function Pg2({ formik, emphasizeFields  }) {
       formik.setFieldValue(checkbox, "");
     }
   };
+  
   return (
     <>
           <div className="form-group">

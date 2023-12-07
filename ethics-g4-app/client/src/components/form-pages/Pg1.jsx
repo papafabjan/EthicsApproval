@@ -19,8 +19,10 @@ function Pg1({ formik, emphasizeFields }) {
     }
   }
 
-  // Set the form data based on the user's information
-  const userNames = splitUsername(user.username);
+
+    // Set the form data based on the user's information
+    const userNames = splitUsername(user.username);
+
 
   return (
     <>
@@ -52,7 +54,8 @@ function Pg1({ formik, emphasizeFields }) {
 
         {userNames.middleName && (
           <div className="form-group">
-            <label htmlFor="MiddleName">Middle Name <span style={{ color: "red" }}>*</span> 
+            <label htmlFor="MiddleName">
+              Middle Name <span style={{ color: "red" }}>*</span>
             </label>
             <input
               type="text"
@@ -64,15 +67,15 @@ function Pg1({ formik, emphasizeFields }) {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               style={{
-              borderColor:
-                emphasizeFields?.middleName && formik.touched?.middleName
-                  ? "red"
-                  : "",
-            }}
-          />
-          {formik.touched.middleName && formik.errors.middleName && (
-            <div style={{ color: "red" }}>{formik.errors.middleName}</div>
-          )}
+                borderColor:
+                  emphasizeFields?.middleName && formik.touched?.middleName
+                    ? "red"
+                    : "",
+              }}
+            />
+            {formik.touched.middleName && formik.errors.middleName && (
+              <div style={{ color: "red" }}>{formik.errors.middleName}</div>
+            )}
           </div>
         )}
 

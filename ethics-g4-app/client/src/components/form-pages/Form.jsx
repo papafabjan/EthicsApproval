@@ -19,7 +19,6 @@ const validationSchema = yup.object({
   // Page 1
   firstName: yup.string().required("First Name is required"),
   lastName: yup.string().required("Last Name is required"),
-  middleName: yup.string().required("Middle Name is required"),
   email: yup
     .string()
     .matches(
@@ -38,16 +37,6 @@ const validationSchema = yup.object({
   CoApplicantName: yup.string().required("CoApllicant's Name is required"),
   CoApplicantEmail: yup.string().required("CoApllicant's Email is required"),
   StartDate: yup.string().required("Start Date is required"),
-  Funding: yup
-    .string()
-    .required("Please select a funding option")
-    .oneOf(["Other", "No"], "Please select a funding option"),
-  FundingOther: yup.string().when("Funding", {
-    is: (value) => value === "Other",
-    then: yup
-      .string()
-      .required("FundingOther is required when selecting 'Yes'"),
-  }),
 });
 
 const initialValues = {
@@ -83,7 +72,7 @@ const initialValues = {
   Methodology:"",
   SafetyConcerns:"",
   SensitiveTopics:"",
-  SensitiveMaterialFiles: [],
+  // SensitiveTopicsFiles: [],
 
 
   // Page4
@@ -95,40 +84,33 @@ const initialValues = {
   VulnerableParticipants: "",
   otherVulnerableParticipantsOptions:"",
 
-  // Page5:
-  //Yes child
-  ParentalConsent: [],
-  ParentalInformation: [],
-  ChildInformation: [],
-  HeadTeacherConsent: [],
-  HeadteacherInformation: [],
-  AccessibleConsentMaterial: [],
-  ProxyConsentProcedure: [],
-  ParticipantInformation: [],
-  ParticipantConsent: [],
-  ParticipantDebriefing: [],
-  AccessibilityLetter: [],
-
-  //Yes adults mental
-
-  //No or other option
-  ParticipantInformationForm: "",
-  ParticipantConsentForm: "",
-  DebriefingForm: "",
+  // // Page5:
+  // //Yes child
+  // ParentalConsent: [],
+  // ParentalInformation: [],
+  // ChildInformation: [],
+  // HeadTeacherConsent: [],
+  // HeadteacherInformation: [],
   
+  // //Yes adults mental
+  // AccessibleConsentMaterial: [],
+  // ProxyConsentProcedure: [],
+  
+  // //No or other option
+  // ParticipantInformation: [],
+  // ParticipantConsent: [],
+  // ParticipantDebriefing: [],
+  // AccessibilityLetter: [],
+
+
   // Page6
   DataProcessing: "",
   DataConfidentiality: "",
   DataStorageandSecurity: "",
 
-  // Page7:
-  ListofQuestions: [],
-  AdditionalForms: [],
-  test:"",
-  radioOption:"",
-  otherOption:"",
-  checkboxOption: [],
-  otherCheckboxOption: "",
+  // // Page7:
+  // ListofQuestions: "",
+  // AdditionalForms: "",
 };
 const MyForm = () => {
   const totalSteps = 9;
@@ -149,7 +131,7 @@ const MyForm = () => {
       })
         .then((response) => response.json())
         .catch((error) => console.error("Error posting application:", error));
-      window.location.reload(true);
+      // window.location.reload(true);
     },
   });
 
@@ -160,6 +142,7 @@ const MyForm = () => {
   };
   const handlePrevious = () => {
     setStep((prevStep) => prevStep - 1);
+    console.log(formik.isValid);
   };
   
   
@@ -315,10 +298,9 @@ const MyForm = () => {
 
   const handleSubmit = () => {
     // Don't submit if the form is currently submitting or has errors
-    if (!formik.isValid) {
-      return;
-    }
-
+    // if (!formik.isValid) {
+    //   return;
+    // }
     formik.handleSubmit();
   };
 
@@ -342,7 +324,7 @@ const MyForm = () => {
               </Button>
               <Button className="btn"
                 onClick={handleSubmit}
-                disabled={!formik.isValid}
+                // disabled={!formik.isValid}
                 type="submit"
               >
                 Submit
@@ -368,7 +350,7 @@ const MyForm = () => {
               <Pg4 formik={formik} emphasizeFields={formik.errors} />
             )}
             {step === 5 && (
-              <Pg5 formik={formik}emphasizeFields={formik.errors} />
+              <Pg5 formik={formik} emphasizeFields={formik.errors} />
             )}
             {step === 6 && (
               <Pg6 formik={formik}  emphasizeFields={formik.errors}/>
@@ -377,8 +359,6 @@ const MyForm = () => {
               <Pg7 formik={formik}  emphasizeFields={formik.errors}/>
             )}
 
-            {/* Render other steps as needed */}
-            {/* ... */}
             <NavigationButtons>
               <Button
                 className="btn"

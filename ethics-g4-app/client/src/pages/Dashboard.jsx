@@ -123,7 +123,7 @@ const Dashboard = () => {
                             className="btn"
                             onClick={() => handleComment(application.id)}
                           >
-                            Comment/View
+                            View/Comment
                           </button>
                           <button
                             className="btn"

@@ -47,9 +47,8 @@ function App() {
                 <Route path="guides/reviewer" element={<Reviewer />} />
                 <Route path="UsersApplication" element={<UsersApplication />} />
                 <Route path="dashboard" element={<Dashboard />} />
-                <Route path="*" element={<NoPage />} 
-                />
                 <Route path="myapplications" element={<MyApplications />} />
+                <Route path="*" element={<NoPage />} />
               </Route>
             </Routes>
           </Router>

@@ -122,8 +122,8 @@ const initialValues = {
   DataStorageandSecurity: "",
 
   // Page7:
-  ListofQuestions: "",
-  AdditionalForms: "",
+  ListofQuestions: [],
+  AdditionalForms: [],
   test:"",
   radioOption:"",
   otherOption:"",

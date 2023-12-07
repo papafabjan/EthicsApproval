@@ -10,7 +10,7 @@ const dropzoneStyle = {
   borderRadius: 5,
 }
 
-function Pg3({ formik }) {
+function Pg3({ formik, emphasizeFields }) {
 
   return (
     <>
@@ -31,10 +31,16 @@ function Pg3({ formik }) {
           value={formik.values.AimsObjectives}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
+          style={{
+              borderColor:
+                emphasizeFields?.AimsObjectives && formik.touched?.AimsObjectives
+                  ? "red"
+                  : "",
+            }}
         />
-        {formik.touched.AimsObjectives && formik.errors.AimsObjectives && (
-          <div style={{ color: "red" }}>{formik.errors.AimsObjectives}</div>
-        )}
+            {formik.touched.AimsObjectives && formik.errors.AimsObjectives && (
+            <div style={{ color: "red" }}>{formik.errors.AimsObjectives}</div>
+          )}
       </div>
 
       <div className="form-group">
@@ -56,10 +62,16 @@ function Pg3({ formik }) {
           value={formik.values.Methodology}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
+          style={{
+              borderColor:
+                emphasizeFields?.Methodology && formik.touched?.Methodology
+                  ? "red"
+                  : "",
+            }}
         />
-        {formik.touched.Methodology && formik.errors.Methodology && (
-          <div style={{ color: "red" }}>{formik.errors.Methodology}</div>
-        )}
+         {formik.touched.Methodology && formik.errors.Methodology && (
+            <div style={{ color: "red" }}>{formik.errors.Methodology}</div>
+          )}
       </div>
       <div className="form-group">
         <label htmlFor="SafetyConcerns">
@@ -79,10 +91,16 @@ function Pg3({ formik }) {
           value={formik.values.SafetyConcerns}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
+          style={{
+              borderColor:
+                emphasizeFields?.SafetyConcerns && formik.touched?.SafetyConcerns
+                  ? "red"
+                  : "",
+            }}
         />
-        {formik.touched.SafetyConcerns && formik.errors.SafetyConcerns && (
-          <div style={{ color: "red" }}>{formik.errors.SafetyConcerns}</div>
-        )}
+         {formik.touched.SafetyConcerns && formik.errors.SafetyConcerns && (
+            <div style={{ color: "red" }}>{formik.errors.SafetyConcerns}</div>
+          )}
       </div>
 
       <div className="form-group">
@@ -117,6 +135,7 @@ function Pg3({ formik }) {
                 value="No"
                 checked={formik.values.SensitiveTopics === "No"}
                 onChange={formik.handleChange}
+                
               />
               No
             </label>

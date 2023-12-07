@@ -36,12 +36,20 @@ const validationSchema = yup.object({
   programme: yup.string().required("Programme selection is required"),
 
   supervisor: yup.string().required("Supervisor selection is required"),
-  ResearchProject: yup.string().required("ResearchProject is required"),
+  ResearchProject: yup.string().required("Research Project is required"),
   CoApplicantName: yup.string().required("CoApllicant's Name is required"),
   CoApplicantEmail: yup.string().required("CoApllicant's Email is required"),
   StartDate: yup.string().required("Start Date is required"),
-  FundingOther: yup.string().required("FundingOther  is required"),
-  
+  FundingOther: yup.string().required("Funding Other  is required"),
+  OtherCountry: yup.string().required("Other is required"),
+  AimsObjectives: yup.string().required("Aims & Objectives  is required"),
+  Methodology: yup.string().required("Methodology  is required"),
+  SafetyConcerns: yup.string().required("Safety Concerns  is required"),
+  PotentialParticipants: yup.string().required("Potential Participants  is required"),
+  RecruitingPotentialParticipants: yup.string().required(" Recruiting Potential Participants  is required"),
+  otherPaymentOption: yup.string().required("Other  is required"),
+  PotentialHarm: yup.string().required("Potential Harm is required"),
+  otherVulnerableParticipantsOptions: yup.string().required("Potential Harm is required"),
 });
 
 const initialValues = {

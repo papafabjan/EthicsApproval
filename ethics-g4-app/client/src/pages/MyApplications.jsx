@@ -22,6 +22,17 @@ const MyApplications = () =>{
         const data = await response.json();
         setApplications(data);
 
+        // Fetch and store applicant names
+        const namesPromises = data.map(async (application) => {
+            const applicantName = await fetchApplicantName(
+              application.applicant_id
+            );
+            setApplicantNames((prevNames) => ({
+              ...prevNames,
+              [application.applicant_id]: applicantName,
+            }));
+          });
+
         // Wait for all names to be fetched
         await Promise.all(namesPromises);
       } catch (error) {
@@ -75,7 +86,7 @@ const MyApplications = () =>{
               />
               <div>
                 <div className="header">
-                  <p>Applicant Name</p>
+                  <p>ㅤ</p>
                   <p>Status</p>
                   <p>Sub Date</p>
                   <p className="actions">Actions</p>

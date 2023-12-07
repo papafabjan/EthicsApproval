@@ -63,7 +63,7 @@ const Sidebar = () => {
 
       <div className="icon-title">
         <Link to="/myapplications">
-          <i className="fa fa-users" aria-hidden="true"></i>My Applications
+          <i className="fa fa-pen-to-square" aria-hidden="true"></i>My Applications
         </Link>
       </div>
     </>

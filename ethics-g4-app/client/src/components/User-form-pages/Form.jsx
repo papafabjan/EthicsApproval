@@ -83,7 +83,7 @@ const initialValues = {
   Methodology:"",
   SafetyConcerns:"",
   SensitiveTopics:"",
-  SensitiveMaterialFiles: [],
+  SensitiveTopicsFiles: [],
 
 
   // Page4

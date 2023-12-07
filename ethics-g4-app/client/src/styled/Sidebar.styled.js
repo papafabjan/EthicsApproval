@@ -47,7 +47,7 @@ const Sidebar = styled.div`
     background-color: darkorange;
     height: 4px;
     width: 0;
-    transition: width 0.3s ease-out;
+    transition: transform 0.3s ease-out;
   }
 
   .icon-title > a:hover:before,
@@ -57,8 +57,10 @@ const Sidebar = styled.div`
   }
 
   .icon-title:hover > a {
-    transform: scale(0.95);
+    transform: scale(1.05);
   }
 `;
+
+
 
 export default Sidebar;

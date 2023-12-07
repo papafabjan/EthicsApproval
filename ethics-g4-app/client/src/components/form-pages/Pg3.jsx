@@ -147,7 +147,7 @@ function Pg3({ formik, emphasizeFields }) {
       </div>
 
       <div className="form-group">
-        <label htmlFor="SensitiveTopicsFiles">
+        <label htmlFor="SensitiveMaterialFiles">
           Sensitive Material/tools<span style={{ color: "red" }}>*</span>
         </label>
 
@@ -160,9 +160,9 @@ function Pg3({ formik, emphasizeFields }) {
 
           // on drop we add to the existing files
           //Doesn't work yet
-          formik.setFieldValue("SensitiveTopicsFiles", formik.values.SensitiveTopicsFiles.concat(acceptedFiles));
+          formik.setFieldValue("SensitiveMaterialFiles", formik.values.SensitiveMaterialFiles.concat(acceptedFiles));
 
-          return formik.values.SensitiveTopicsFiles.map((file, i) => (<Thumb key={i} file={file} />));
+          return formik.values.SensitiveMaterialFiles.map((file, i) => (<Thumb key={i} file={file} />));
         }}>
           {({ getRootProps, getInputProps }) => (
             <section>
@@ -175,10 +175,10 @@ function Pg3({ formik, emphasizeFields }) {
 
         </Dropzone>
 
-        {formik.touched.SensitiveTopicsFiles &&
-          formik.errors.SensitiveTopicsFiles && (
+        {formik.touched.SensitiveMaterialFiles &&
+          formik.errors.SensitiveMaterialFiles && (
             <div style={{ color: "red" }}>
-              {formik.errors.SensitiveTopicsFiles}
+              {formik.errors.SensitiveMaterialFiles}
             </div>
           )}
       </div>

@@ -254,8 +254,19 @@ function Pg2({ formik, emphasizeFields  }) {
                 placeholder="Enter other option"
                 value={formik.values.OtherCountry}
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                style={{
+                borderColor:
+                emphasizeFields?.OtherCountry && formik.touched?.OtherCountry
+                  ? "red"
+                  : "",
+            }}
               />
             )}
+            {formik.values.Country.includes("Other") && formik.touched.OtherCountry && formik.errors.OtherCountry && (
+  <div style={{ color: "red" }}>{formik.errors.OtherCountry}</div>
+)}
+
           </li>
         </ul>
       </div>

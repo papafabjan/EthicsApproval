@@ -52,27 +52,16 @@ function Pg1({ formik, emphasizeFields }) {
 
         {userNames.middleName && (
           <div className="form-group">
-            <label htmlFor="MiddleName">Middle Name <span style={{ color: "red" }}>*</span> 
-            </label>
+            <label htmlFor="MiddleName">Middle Name</label>
             <input
               type="text"
               className="form-control"
-              name="middleName"
               id="MiddleName"
               placeholder={userNames.middleName}
-              value={formik.values.middleName}
+              value={formik.middleName}
               onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              style={{
-              borderColor:
-                emphasizeFields?.middleName && formik.touched?.middleName
-                  ? "red"
-                  : "",
-            }}
-          />
-          {formik.touched.middleName && formik.errors.middleName && (
-            <div style={{ color: "red" }}>{formik.errors.middleName}</div>
-          )}
+              φ
+            />
           </div>
         )}
 

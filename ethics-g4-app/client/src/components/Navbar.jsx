@@ -1,9 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 
 import { UserContext } from "../components/UserContext";
-import { useContext } from "react";
-import { useEffect, useState } from "react";
 
 function Navbar() {
   const user = useContext(UserContext);
@@ -51,6 +49,7 @@ function Navbar() {
               type="search"
               placeholder="Search"
               aria-label="Search"
+              name="searchSite"
             />
             <button className="btn" type="submit">
               <i className="fa-solid fa-search" />

@@ -76,55 +76,62 @@ const MyApplications = () =>{
       return (
         <>
           <StyledMyApplications>
-            <div>
-                <h1>My Applications</h1>
-              <input
-                type="text"
-                placeholder="Search applications"
-                value={searchTerm}
-                onChange={handleSearch}
-              />
-              <div>
-                <div className="header">
-                  <p>ㅤ</p>
-                  <p>Status</p>
-                  <p>Sub Date</p>
-                  <p className="actions">Actions</p>
-                </div>
-                <table>
-                  <tbody>
-                    {filteredApplications.map((application) => (
-                      <tr key={application.id}>
-                        <td>
-                          <div className="application">
-                            <div className="applicant">
-                              <p>{applicantNames[application.applicant_id]}</p>
-                            </div>
-                            <div className="status-date">
-                              <div className="status">
-                                <span>{application.status}</span>
-                              </div>
-                              <div className="date">
-                                <span>{application.date}</span>
-                              </div>
-                            </div>
-                            <div className="actions">
-                              <button
-                                className="btn"
-                                onClick={() => console.log("Edit Application")}
-                              >
-                                Edit Application
-                              </button>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </StyledMyApplications>
+  <div>
+    <h1>My Applications</h1>
+    <input
+      type="text"
+      placeholder="Search applications"
+      value={searchTerm}
+      onChange={handleSearch}
+    />
+    <div>
+      <div className="header">
+        <p className="application">Application Name</p>
+        <p className="date">Submission Date</p>
+        <p className="status">Status</p>
+        <p className="actions">Actions</p>
+      </div>
+      <table>
+        <tbody>
+          {filteredApplications.map((application) => (
+            <tr key={application.id}>
+              <td>
+                <div className="row">
+                <div className="application">
+                    <p>{applicantNames[application.applicant_id]}</p>
+                  </div>
+
+                  <div className="date">
+                    <p>{application.date}</p>
+                  </div>
+                  
+                  <div className="status">
+                    <p>{application.status}</p>
+                  </div>
+
+                  <div className="actions">
+                    <button
+                      className="btn"
+                      onClick={() => console.log("View Application")}
+                    >
+                      View Application
+                    </button>
+                    <button
+                      className="btn"
+                      onClick={() => console.log("Edit Application")}
+                    >
+                      Edit Application
+                    </button>
+                  </div>
+                  </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</StyledMyApplications>
         </>
       );
 };

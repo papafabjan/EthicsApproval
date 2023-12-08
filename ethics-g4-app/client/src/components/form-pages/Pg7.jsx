@@ -3,13 +3,15 @@ import Thumb from "../Thumb";
 
 
 const dropzoneStyle = {
-  width: "100%",
-  height: "auto",
-  borderWidth: 2,
-  borderColor: "rgb(102, 102, 102)",
-  borderStyle: "dashed",
-  borderRadius: 5,
-}
+  width: '100%',
+  minHeight: '100px',
+  border: '2px dashed #ccc',
+  borderRadius: '4px',
+  padding: '20px',
+  textAlign: 'center',
+  cursor: 'pointer',
+};
+
 
 
 export const Pg7 = ({ formik }) => {
@@ -40,33 +42,38 @@ export const Pg7 = ({ formik }) => {
         />
         <Thumb file={formik.values.ListofQuestions} />
       </div>
+
       <div className="form-group">
         <label htmlFor="AdditionalForms">
           Any additional forms /documents you need to submit (optional)
         </label>
 
         <Dropzone style={dropzoneStyle} onDrop={acceptedFiles => {
+          console.log(acceptedFiles);
 
-          console.log(acceptedFiles)
+          if (acceptedFiles.length === 0) {
+            return;
+          }
 
-          // do nothing if no files
-          if (acceptedFiles.length === 0) { return; }
-
-          // on drop we add to the existing files
-          //Doesn't work yet
-          formik.setFieldValue("AdditionalForms", formik.values.AdditionalForms.concat(acceptedFiles));
-
-          return formik.values.AdditionalForms.map((file, i) => (<Thumb key={i} file={file} />));
+          formik.setFieldValue(
+            "AdditionalForms",
+            formik.values.AdditionalForms.concat(acceptedFiles)
+          );
         }}>
           {({ getRootProps, getInputProps }) => (
             <section>
               <div {...getRootProps()}>
                 <input {...getInputProps()} />
-                <p>Upload up to 10 files (e.g., questionnaires, photos, interview questions, etc) in any format.{" "}</p>
+                <p>Upload up to 10 files (e.g., questionnaires, photos, interview questions, etc) in any format.</p>
               </div>
             </section>
           )}
         </Dropzone>
+
+        {formik.values.AdditionalForms.map((file, i) => (
+          <Thumb key={i} file={file} />
+        ))}
+
       </div>
     </>
   );

@@ -10,7 +10,8 @@ const Dashboard = () => {
   const [applicantNames, setApplicantNames] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
-  
+  const [showComments, setShowComments] = useState(false); // State for showing comments
+
   // Fetch applications from your API
   useEffect(() => {
     const fetchApplications = async () => {
@@ -62,11 +63,12 @@ const Dashboard = () => {
       return "Unknown";
     }
   };
-  const handleComment = () => {
-    // Redirect to the application page
-    navigate(`/UsersApplication`);
+  const handleComment = (applicationId) => {
+    // Redirect to the application page with the application ID and showComments prop
+    navigate(`/Application`, { state: { showComments: true } });
+    setShowComments(true);
   };
-
+ 
   // Function to handle search term changes
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -121,7 +123,7 @@ const Dashboard = () => {
                         <div className="actions">
                           <button
                             className="btn"
-                            onClick={() => handleComment(application.id)}
+                            onClick={() => handleComment()}
                           >
                             View/Comment
                           </button>
@@ -139,7 +141,6 @@ const Dashboard = () => {
                           >
                             Approve
                           </button>
-                          
                         </div>
                       </div>
                     </td>

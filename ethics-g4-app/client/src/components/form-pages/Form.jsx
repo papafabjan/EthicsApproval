@@ -1,7 +1,6 @@
 // MyForm.jsx
 import React from "react";
 import { useFormik } from "formik";
-
 import * as yup from "yup";
 import { NavigationButtons } from "../../styled/Form.styled";
 import { Button } from "../../styled/Form.styled";
@@ -114,7 +113,6 @@ const initialValues = {
 };
 const MyForm = () => {
   const totalSteps = 9;
-
   const formik = useFormik({
     initialValues,
     validationSchema,

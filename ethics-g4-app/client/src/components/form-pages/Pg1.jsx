@@ -1,9 +1,19 @@
 import { UserContext } from "../UserContext";
 import { useContext, useState } from "react";
 
-function Pg1({ formik, emphasizeFields }) {
+function Pg1({ formik, emphasizeFields, showComments }) {
   const user = useContext(UserContext);
 
+  const [comments, setComments] = useState({
+    firstName: '',
+    middleName: '',
+    lastName: '',
+    email: '',
+    studentRegistration: '',
+    programme: '',
+    supervisor: ''
+  });
+  
   function splitUsername(username) {
     const names = username.split(" ");
     // If there are 2 or more names, assume the first is the first name,
@@ -47,6 +57,19 @@ function Pg1({ formik, emphasizeFields }) {
                   : "",
             }}
           />
+              {/* Comment section for First Name */}
+          {showComments && (
+            <div>
+              <label>Comments:</label>
+              <textarea
+                value={comments.firstName}
+                onChange={(e) =>
+                  setComments({ ...comments, firstName: e.target.value })
+                }
+                readOnly={!showComments}
+              />
+            </div>
+          )}
           {formik.touched.firstName && formik.errors.firstName && (
             <div style={{ color: "red" }}>{formik.errors.firstName}</div>
           )}

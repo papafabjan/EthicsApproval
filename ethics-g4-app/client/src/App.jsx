@@ -7,7 +7,6 @@ import Home from "./pages/Home";
 import Contact from "./pages/Contact";
 import NoPage from "./pages/NoPage";
 import Container from "./pages/Container";
-import UsersApplication from "./pages/UsersApplication";
 import Guides from "./pages/Guides";
 import Document_Templates from "./pages/Document_Templates";
 import Applicant from "./pages/Applicant";
@@ -45,7 +44,6 @@ function App() {
                 <Route path="guides/applicant" element={<Applicant />} />
                 <Route path="guides/supervisor" element={<Supervisor />} />
                 <Route path="guides/reviewer" element={<Reviewer />} />
-                <Route path="UsersApplication" element={<UsersApplication />} />
                 <Route path="dashboard" element={<Dashboard />} />
                 <Route path="myapplications" element={<MyApplications />} />
                 <Route path="*" element={<NoPage />} />

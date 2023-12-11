@@ -5,6 +5,7 @@ import { UserContext } from "../UserContext";
 import * as yup from "yup";
 import { NavigationButtons } from "../../styled/Form.styled";
 import { Button } from "../../styled/Form.styled";
+import Dashboard from '../../pages/Dashboard';
 import Pg0 from "./Pg0";
 import Pg1 from "./Pg1";
 import Pg2 from "./Pg2";
@@ -109,7 +110,8 @@ const initialValues = {
   ListofQuestions: "",
   AdditionalForms: "",
 };
-const MyForm = () => {
+const MyForm = ({ showComments }) => {
+
   const totalSteps = 9;
 
   const sessionUser = useContext(UserContext);
@@ -189,7 +191,24 @@ const MyForm = () => {
 
   const isLastStep = step === totalSteps - 1;
   const isFirstStep = step === 0;
-
+  {showComments && (
+    <div>
+      {/* Render input fields for comments here */}
+      {/* Example text area */}
+      <textarea
+        placeholder="Type your comments here..."
+        rows={4}
+        cols={50}
+        // You can handle the input changes as per your logic
+      />
+      {/* Example input field */}
+      {/* <input
+        type="text"
+        placeholder="Type your comments here..."
+        // You can handle the input changes as per your logic
+      /> */}
+    </div>
+  )}
   const handleNext = async () => {
     const errors = formik.errors;
     let errorMessage = "";
@@ -386,7 +405,7 @@ const MyForm = () => {
             {/* Import and render the appropriate component for each step */}
             {/* Example: */}
             {step === 1 && (
-              <Pg1 formik={formik} emphasizeFields={formik.errors} />
+              <Pg1 formik={formik} emphasizeFields={formik.errors} showComments={showComments}/>
             )}
             {step === 2 && (
               <Pg2 formik={formik} emphasizeFields={formik.errors} />
@@ -426,6 +445,7 @@ const MyForm = () => {
             <pre>{JSON.stringify(formik.values, null, 3)}</pre>
           </div>
         );
+        
     }
   };
 

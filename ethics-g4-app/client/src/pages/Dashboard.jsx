@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import StyledDashboard from "../styled/Dashboard.styled";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
+import MyForm from "../components/form-pages/Form";
 
 // {navigate('../pages/Application.jsx', element={<Application/>}, {replace: true})}
 const Dashboard = () => {
@@ -10,7 +11,7 @@ const Dashboard = () => {
   const [applicantNames, setApplicantNames] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
-  const [showComments, setShowComments] = useState(false); // State for showing comments
+  const [showComments, setShowComments] = useState(false);
 
   // Fetch applications from your API
   useEffect(() => {
@@ -64,6 +65,7 @@ const Dashboard = () => {
       return "Unknown";
     }
   };
+  <MyForm showComments={showComments} />
   const handleComment = (applicationId) => {
     // Redirect to the application page with the application ID and showComments prop
     navigate(`/Application`, { state: { showComments: true } });
@@ -81,6 +83,7 @@ const Dashboard = () => {
     return (
       applicantName &&
       applicantName.toLowerCase().includes(searchTerm.toLowerCase())
+
     );
   });
 

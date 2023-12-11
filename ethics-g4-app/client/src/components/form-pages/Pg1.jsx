@@ -1,18 +1,10 @@
 import { UserContext } from "../UserContext";
 import { useContext, useState } from "react";
 
+
 function Pg1({ formik, emphasizeFields, showComments }) {
   const user = useContext(UserContext);
 
-  const [comments, setComments] = useState({
-    firstName: '',
-    middleName: '',
-    lastName: '',
-    email: '',
-    studentRegistration: '',
-    programme: '',
-    supervisor: ''
-  });
   
   function splitUsername(username) {
     const names = username.split(" ");
@@ -62,10 +54,8 @@ function Pg1({ formik, emphasizeFields, showComments }) {
             <div>
               <label>Comments:</label>
               <textarea
-                value={comments.firstName}
-                onChange={(e) =>
-                  setComments({ ...comments, firstName: e.target.value })
-                }
+                value={formik.values.comments.firstName}
+                onChange={(e) => formik.setFieldValue('comments.firstName', e.target.value)}
                 readOnly={!showComments}
               />
             </div>

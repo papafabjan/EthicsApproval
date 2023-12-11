@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import StyledDashboard from "../styled/Dashboard.styled";
 import { useNavigate } from "react-router-dom";
-
+import { format } from "date-fns";
 
 // {navigate('../pages/Application.jsx', element={<Application/>}, {replace: true})}
 const Dashboard = () => {
@@ -52,7 +52,7 @@ const Dashboard = () => {
     try {
       console.log(applicantId);
       const response = await fetch(
-        `${import.meta.env.VITE_SERVER_URL}/api/users/${applicantId}`
+        `${import.meta.env.VITE_SERVER_URL}/api/users/userID/${applicantId}`
       );
       if (!response.ok) {
         throw new Error(`Error fetching user: ${response.statusText}`);
@@ -88,9 +88,7 @@ const Dashboard = () => {
     <>
       <StyledDashboard>
         <div>
-          <Link to={`${import.meta.env.VITE_SERVER_URL}/api/applications`}>
-            <h1>Dashboard</h1>
-          </Link>
+          <h1>Dashboard</h1>
           <input
             type="text"
             placeholder="Search by applicant name"
@@ -99,9 +97,9 @@ const Dashboard = () => {
           />
           <div>
             <div className="header">
-              <p>Applicant Name</p>
-              <p>Status</p>
-              <p>Date</p>
+              <p className="application">Applicant Name</p>
+              <p className="date">Date</p>
+              <p className="status">Status</p>
               <p className="actions">Actions</p>
             </div>
             <table>
@@ -109,22 +107,22 @@ const Dashboard = () => {
                 {filteredApplications.map((application) => (
                   <tr key={application.id}>
                     <td>
-                      <div className="application">
-                        <div className="applicant">
+                      <div className="row">
+                        <div className="application">
                           <p>{applicantNames[application.applicant_id]}</p>
                         </div>
-                        <div className="status-date">
-                          <div className="status">
-                            <span>{application.status}</span>
-                          </div>
-                          <div className="date">
-                            <span>{application.date}</span>
-                          </div>
+                        <div className="date">
+                          <p>
+                            {format(new Date(application.date), "dd/MM/yyyy")}
+                          </p>
+                        </div>
+                        <div className="status">
+                          <p>{application.status}</p>
                         </div>
                         <div className="actions">
                           <button
                             className="btn"
-                            onClick={() => handleComment()}
+                            onClick={() => handleComment(application.id)}
                           >
                             View/Comment
                           </button>
@@ -134,8 +132,6 @@ const Dashboard = () => {
                           >
                             Assign Reviewers
                           </button>
-
-                          
                           <button
                             className="btn"
                             onClick={() => console.log("Approve")}
@@ -154,6 +150,7 @@ const Dashboard = () => {
       </StyledDashboard>
     </>
   );
+
 };
 
 export default Dashboard;

@@ -1,58 +1,78 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
+import { UserContext } from "../components/UserContext";
 import { Link } from "react-router-dom";
-import StyledMyApplications from '../styled/MyApplications.styled';
+import StyledMyApplications from "../styled/MyApplications.styled";
+import { format } from "date-fns";
 
-const MyApplications = () =>{
+const MyApplications = () => {
   const [applications, setApplications] = useState([]);
-  const [applicantNames, setApplicantNames] = useState({});
+  const [applicationTitles, setApplicationTitles] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
+  const sessionUser = useContext(UserContext);
+  const [userData, setUserData] = useState(null);
+  const userId = sessionUser.id;
 
   // Fetch applications from your API
   useEffect(() => {
+    wait = async() =>{
+      fetchUserData();
+    }
+    
     const fetchApplications = async () => {
       try {
         const response = await fetch(
           `${import.meta.env.VITE_SERVER_URL}/api/applications`
         );
+
         if (!response.ok) {
           throw new Error(
             `Error fetching applications: ${response.statusText}`
           );
         }
+
         const data = await response.json();
-        setApplications(data);
 
-        // Fetch and store applicant names
-        const namesPromises = data.map(async (application) => {
-            const applicantName = await fetchApplicantName(
-              application.applicant_id
-            );
-            setApplicantNames((prevNames) => ({
-              ...prevNames,
-              [application.applicant_id]: applicantName,
-            }));
-          });
+        // Filter applications that belong to the logged-in user
+        const userApplications = data.filter(
+          (application) => application.applicant_id === userData.user_id
+        );
 
-        // Wait for all names to be fetched
-        await Promise.all(namesPromises);
+        setApplications(userApplications);
+
+        // Fetch and store titles
+        const titlesPromises = userApplications.map(async (application) => {
+          const title = await fetchApplicationTitle(application.id);
+          setApplicationTitles((prevTitles) => ({
+            ...prevTitles,
+            [application.id]: title,
+          }));
+        });
+
+        // Wait for all titles to be fetched
+        await Promise.all(titlesPromises);
       } catch (error) {
         console.error(error.message);
       }
     };
 
     fetchApplications();
-  }, []);
+    console.log(userData);
+  }, [userId]);
 
-  const fetchApplicantName = async (applicantId) => {
+  const fetchApplicationTitle = async (applicationId) => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_SERVER_URL}/api/users/${applicantId}`
+        `${
+          import.meta.env.VITE_SERVER_URL
+        }/api/applications/title/${applicationId}`
       );
+
       if (!response.ok) {
-        throw new Error(`Error fetching user: ${response.statusText}`);
+        throw new Error(`Error fetching title: ${response.statusText}`);
       }
-      const userData = await response.json();
-      return userData.username;
+
+      const data = await response.json();
+      return data.title;
     } catch (error) {
       console.error(error.message);
       return "Unknown";
@@ -66,74 +86,94 @@ const MyApplications = () =>{
 
   // Filter applications based on search term
   const filteredApplications = applications.filter((application) => {
-    const applicantName = applicantNames[application.applicant_id];
+    const applicationTitle = applicationTitles[application.id];
     return (
-      applicantName &&
-      applicantName.toLowerCase().includes(searchTerm.toLowerCase())
+      applicationTitle &&
+      applicationTitle.toLowerCase().includes(searchTerm.toLowerCase())
     );
   });
-
-      return (
-        <>
-          <StyledMyApplications>
-  <div>
-    <h1>My Applications</h1>
-    <input
-      type="text"
-      placeholder="Search applications"
-      value={searchTerm}
-      onChange={handleSearch}
-    />
-    <div>
-      <div className="header">
-        <p className="application">Application Name</p>
-        <p className="date">Submission Date</p>
-        <p className="status">Status</p>
-        <p className="actions">Actions</p>
-      </div>
-      <table>
-        <tbody>
-          {filteredApplications.map((application) => (
-            <tr key={application.id}>
-              <td>
-                <div className="row">
-                <div className="application">
-                    <p>{applicantNames[application.applicant_id]}</p>
-                  </div>
-
-                  <div className="date">
-                    <p>{application.date}</p>
-                  </div>
-                  
-                  <div className="status">
-                    <p>{application.status}</p>
-                  </div>
-
-                  <div className="actions">
-                    <button
-                      className="btn"
-                      onClick={() => console.log("View Application")}
-                    >
-                      View Application
-                    </button>
-                    <button
-                      className="btn"
-                      onClick={() => console.log("Edit Application")}
-                    >
-                      Edit Application
-                    </button>
-                  </div>
-                  </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  </div>
-</StyledMyApplications>
-        </>
+  // Function to fetch user data by user ID
+  const fetchUserData = async () => {
+    try {
+      console.log(userId);
+      const response = await fetch(
+        `${import.meta.env.VITE_SERVER_URL}/api/users/${userId}`
       );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch user data");
+      }
+
+      const user = await response.json();
+      setUserData(user); // Set the user data in the state
+    } catch (error) {
+      console.error("Error:", error.message);
+      // Handle errors as needed
+    }
+  };
+
+  
+
+  return (
+    <>
+      <StyledMyApplications>
+        <div>
+          <h1>My Applications</h1>
+          <input
+            type="text"
+            placeholder="Search applications"
+            value={searchTerm}
+            onChange={handleSearch}
+          />
+          <div>
+            <div className="header">
+              <p className="application">Application Name</p>
+              <p className="date">Submission Date</p>
+              <p className="status">Status</p>
+              <p className="actions">Actions</p>
+            </div>
+            <table>
+              <tbody>
+                {filteredApplications.map((application) => (
+                  <tr key={application.id}>
+                    <td>
+                      <div className="row">
+                        <div className="application">
+                          <p>{applicationTitles[application.id]}</p>
+                        </div>
+                        <div className="date">
+                          <p>
+                            {format(new Date(application.date), "dd/MM/yyyy")}
+                          </p>
+                        </div>
+                        <div className="status">
+                          <p>{application.status}</p>
+                        </div>
+                        <div className="actions">
+                          <button
+                            className="btn"
+                            onClick={() => console.log("View Application")}
+                          >
+                            View Application
+                          </button>
+                          <button
+                            className="btn"
+                            onClick={() => console.log("Edit Application")}
+                          >
+                            Edit Application
+                          </button>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </StyledMyApplications>
+    </>
+  );
 };
 
 export default MyApplications;

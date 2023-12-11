@@ -1,13 +1,8 @@
 import styled from "styled-components";
 
 const Dashboard = styled.div`
-  ul {
-    list-style: none;
-    padding: 0;
-  }
-
-  li {
-    margin-bottom: 20px;
+  h1 {
+    margin-bottom: 10px;
   }
 
   .header {
@@ -18,10 +13,6 @@ const Dashboard = styled.div`
     color: grey;
   }
 
-  .header p {
-    margin: 0;
-  }
-
   .table-container {
     margin-top: 20px;
   }
@@ -29,33 +20,22 @@ const Dashboard = styled.div`
   table {
     width: 100%;
     border-collapse: collapse;
+    margin-top: 20px;
   }
 
-  td {
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 10px;
     border: 1px solid #ccc;
   }
 
-  .application {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .applicant {
-    flex-basis: 30%;
-  }
-
-  .status-date,
-  .actions {
-    flex-basis: 30%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
+  .application,
+  .date,
   .status,
-  .date {
+  .actions {
+    flex-basis: 25%; /* Equal width for each column */
     text-align: center;
   }
 
@@ -68,6 +48,14 @@ const Dashboard = styled.div`
     cursor: pointer;
   }
 
+  .btn {
+    background-color: darkorange;
+    color: #fff;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
   input {
     padding: 8px;
     margin-bottom: 16px;
@@ -76,10 +64,9 @@ const Dashboard = styled.div`
   }
 
   @media (max-width: 768px) {
-    .applicant,
-    .status-date,
-    .actions {
-      flex-basis: 100%;
+    .row {
+      flex-direction: column;
+      align-items: flex-start;
     }
   }
 `;

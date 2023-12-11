@@ -12,6 +12,28 @@ CREATE TABLE users (
 
 
 
+CREATE TABLE applications (
+  id SERIAL PRIMARY KEY,
+  status VARCHAR(255) NOT NULL,
+  date TIMESTAMP NOT NULL,
+  applicant_id INT REFERENCES users(user_id) NOT NULL
+);
+
+
+CREATE TABLE application_content (
+  id SERIAL PRIMARY KEY,
+  application_id INTEGER REFERENCES applications(id) NOT NULL,
+  field_name VARCHAR(255) NOT NULL,
+  field_value TEXT
+);
+
+
+CREATE TABLE comments (
+  id SERIAL PRIMARY KEY,
+  field VARCHAR(255) NOT NULL,
+  content VARCHAR(255) NOT NULL,
+  application_id references applications(id) NOT NULL,
+);
 
 
 
@@ -57,65 +79,6 @@ CREATE TABLE applications_test (
 );
 
 
-
-CREATE TABLE applications (
-  id SERIAL PRIMARY KEY,
-  content references application_content(application_id) NOT NULL,
-  status VARCHAR(255) NOT NULL,
-  date VARCHAR(255) NOT NULL,
-  applicant_id INT references users(user_id) NOT NULL
-);
-
-CREATE TABLE comments (
-  id SERIAL PRIMARY KEY,
-  content VARCHAR(255) NOT NULL,
-  field VARCHAR(255) NOT NULL,
-  application_id references applications(id) NOT NULL,
-);
-
-CREATE TABLE application_content (
-  id SERIAL PRIMARY KEY,
-  application_id INTEGER REFERENCES applications(id) NOT NULL,
-  first_name VARCHAR(255) NOT NULL,
-  middle_name VARCHAR(255),
-  last_name VARCHAR(255) NOT NULL,
-  email VARCHAR(255) NOT NULL,
-  student_registration VARCHAR(255) NOT NULL,
-  programme VARCHAR(255) NOT NULL,
-  supervisor VARCHAR(255) NOT NULL,
-  research_project VARCHAR(255) NOT NULL,
-  co_applicant_name VARCHAR(255) NOT NULL,
-  co_applicant_email VARCHAR(255) NOT NULL,
-  start_date VARCHAR(255) NOT NULL,
-  end_date VARCHAR(255) NOT NULL,
-  funding VARCHAR(255) NOT NULL,
-  funding_other VARCHAR(255),
-  country VARCHAR(255) ARRAY,
-  other_country VARCHAR(255),
-  project_place VARCHAR(255) NOT NULL,
-  health_social_care VARCHAR(255) NOT NULL,
-  another_institution VARCHAR(255) NOT NULL,
-  another_institution_other VARCHAR(255),
-  human_tissue VARCHAR(255) NOT NULL,
-  clinical_medical VARCHAR(255) NOT NULL,
-  social_care_services VARCHAR(255) NOT NULL,
-  aims_objectives TEXT NOT NULL,
-  methodology TEXT NOT NULL,
-  safety_concerns TEXT NOT NULL,
-  sensitive_topics TEXT NOT NULL,
-  potential_participants TEXT NOT NULL,
-  recruiting_potential_participants TEXT NOT NULL,
-  payment VARCHAR(255) NOT NULL,
-  other_payment_option VARCHAR(255),
-  potential_harm TEXT NOT NULL,
-  vulnerable_participants TEXT NOT NULL,
-  other_vulnerable_participants_options TEXT,
-  data_processing TEXT NOT NULL,
-  data_confidentiality TEXT NOT NULL,
-  data_storage_and_security TEXT NOT NULL,
-  list_of_questions TEXT NOT NULL,
-  additional_forms TEXT NOT NULL
-);
 
 -- INSERT INTO users (username, img, google_id)
 -- VALUES 

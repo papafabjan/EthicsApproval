@@ -70,9 +70,9 @@ export const Pg7 = ({ formik }) => {
           )}
         </Dropzone>
 
-        {formik.values.AdditionalForms.map((file, i) => (
+        {/* {formik.values.AdditionalForms.map((file, i) => (
           <Thumb key={i} file={file} />
-        ))}
+        ))} */}
 
       </div>
     </>

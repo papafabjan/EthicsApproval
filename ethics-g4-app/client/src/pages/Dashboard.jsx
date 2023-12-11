@@ -50,6 +50,7 @@ const Dashboard = () => {
 
   const fetchApplicantName = async (applicantId) => {
     try {
+      console.log(applicantId);
       const response = await fetch(
         `${import.meta.env.VITE_SERVER_URL}/api/users/${applicantId}`
       );

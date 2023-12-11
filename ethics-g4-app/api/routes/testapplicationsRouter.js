@@ -3,7 +3,7 @@ const router = express.Router();
 const pool = require("../db");
 const cors = require("cors");
 
-router.options("/api/testapplications/add", cors());
+// router.options("/api/applications/add", cors());
 
 // Get all test applications
 router.get("/testapplications", async (req, res) => {
@@ -18,143 +18,49 @@ router.get("/testapplications", async (req, res) => {
   }
 });
 
-// Add a new test application
-router.post("/testapplications/add", async (req, res) => {
+// Add a new application
+router.post("/applications/add", async (req, res) => {
   try {
-    const {
-      firstName,
-      middleName,
-      lastName,
-      email,
-      studentRegistration,
-      programme,
-      supervisor,
-      ResearchProject,
-      CoApplicantName,
-      CoApplicantEmail,
-      StartDate,
-      EndDate,
-      Funding,
-      FundingOther,
-      Country,
-      OtherCountry,
-      ProjectPlace,
-      HealthSocialCare,
-      AnotherInstitution,
-      AnotherInstitutionOther,
-      HumanTissue,
-      ClinicalMedical,
-      SocialCareServices,
-      AimsObjectives,
-      Methodology,
-      SafetyConcerns,
-      SensitiveTopics,
-      PotentialParticipants,
-      RecruitingPotentialParticipants,
-      Payment,
-      otherPaymentOption,
-      PotentialHarm,
-      VulnerableParticipants,
-      otherVulnerableParticipantsOptions,
-      DataProcessing,
-      DataConfidentiality,
-      DataStorageandSecurity,
-    } = req.body.values;
-    console.log(req.body.values);
+    const { userID, values } = req.body;
+    console.log("Received userID:", userID);
 
-    const newTestApplication = await pool.query(
+    // Insert application
+    const newApplication = await pool.query(
       `
-      INSERT INTO applications_test (
-        firstname,
-        middlename,
-        lastname,
-        email,
-        studentregistration,
-        programme,
-        supervisor,
-        researchproject,
-        coapplicantname,
-        coapplicantemail,
-        startdate,
-        enddate,
-        funding,
-        fundingother,
-        country,
-        othercountry,
-        projectplace,
-        healthsocialcare,
-        anotherinstitution,
-        anotherinstitutionother,
-        humantissue,
-        clinicalmedical,
-        socialcareservices,
-        aimsobjectives,
-        methodology,
-        safetyconcerns,
-        sensitivetopics,
-        potentialparticipants,
-        recruitingpotentialparticipants,
-        payment,
-        otherpaymentoption,
-        potentialharm,
-        vulnerableparticipants,
-        othervulnerableparticipantsoptions,
-        dataprocessing,
-        dataconfidentiality,
-        datastorageandsecurity
-      ) VALUES (
-        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21,
-        $22, $23, $24, $25, $26, $27, $28, $29, $30, $31, $32, $33, $34, $35, $36, $37
-      ) RETURNING *;
+      INSERT INTO applications (status, date, applicant_id) 
+      VALUES ($1, $2, $3) 
+      RETURNING *;
       `,
-      [
-        firstName,
-        middleName,
-        lastName,
-        email,
-        studentRegistration,
-        programme,
-        supervisor,
-        ResearchProject,
-        CoApplicantName,
-        CoApplicantEmail,
-        StartDate,
-        EndDate,
-        Funding,
-        FundingOther,
-        Country,
-        OtherCountry,
-        ProjectPlace,
-        HealthSocialCare,
-        AnotherInstitution,
-        AnotherInstitutionOther,
-        HumanTissue,
-        ClinicalMedical,
-        SocialCareServices,
-        AimsObjectives,
-        Methodology,
-        SafetyConcerns,
-        SensitiveTopics,
-        PotentialParticipants,
-        RecruitingPotentialParticipants,
-        Payment,
-        otherPaymentOption,
-        PotentialHarm,
-        VulnerableParticipants,
-        otherVulnerableParticipantsOptions,
-        DataProcessing,
-        DataConfidentiality,
-        DataStorageandSecurity,
-      ]
+      ["pending", new Date(), userID]
     );
 
-    res.json(newTestApplication.rows);
+    const applicationId = newApplication.rows[0].id;
+
+    // Insert application content
+    const contentEntries = Object.entries(values);
+
+    for (const [fieldName, fieldValue] of contentEntries) {
+      if (
+        !(
+          fieldValue === "" ||
+          (Array.isArray(fieldValue) && fieldValue.length === 0)
+        )
+      ) {
+        await pool.query(
+          `
+          INSERT INTO application_content (application_id, field_name, field_value) 
+          VALUES ($1, $2, $3);
+          `,
+          [applicationId, fieldName, fieldValue]
+        );
+      }
+    }
+
+    res.json({ success: true, applicationId });
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Server Error");
   }
 });
-
-
 
 module.exports = router;

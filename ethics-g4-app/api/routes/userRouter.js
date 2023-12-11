@@ -36,7 +36,7 @@ router.get("/users/:userId", async (req, res) => {
   const { userId } = req.params;
 
   try {
-    const user = await pool.query("SELECT * FROM users WHERE user_id = $1", [
+    const user = await pool.query("SELECT * FROM users WHERE google_id = $1", [
       userId,
     ]);
 
@@ -50,5 +50,7 @@ router.get("/users/:userId", async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+
+
 
 module.exports = router;

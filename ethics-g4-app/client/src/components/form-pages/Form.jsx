@@ -1,6 +1,7 @@
 // MyForm.jsx
-import React from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useFormik } from "formik";
+import { UserContext } from "../UserContext";
 import * as yup from "yup";
 import { NavigationButtons } from "../../styled/Form.styled";
 import { Button } from "../../styled/Form.styled";
@@ -12,7 +13,6 @@ import Pg4 from "./Pg4";
 import Pg5 from "./Pg5";
 import Pg6 from "./Pg6";
 import Pg7 from "./Pg7";
-
 
 const validationSchema = yup.object({
   // Page 1
@@ -33,8 +33,8 @@ const validationSchema = yup.object({
   supervisor: yup.string().required("Supervisor selection is required"),
   // Page 2
   ResearchProject: yup.string().required("ResearchProject is required"),
-  CoApplicantName: yup.string().required("CoApllicant's Name is required"),
-  CoApplicantEmail: yup.string().required("CoApllicant's Email is required"),
+  // CoApplicantName: yup.string().required("CoApllicant's Name is required"),
+  // CoApplicantEmail: yup.string().required("CoApllicant's Email is required"),
   StartDate: yup.string().required("Start Date is required"),
 });
 
@@ -68,39 +68,37 @@ const initialValues = {
 
   // Page 3
   AimsObjectives: "",
-  Methodology:"",
-  SafetyConcerns:"",
-  SensitiveTopics:"",
-  // SensitiveTopicsFiles: [],
-
+  Methodology: "",
+  SafetyConcerns: "",
+  SensitiveTopics: "",
+  SensitiveTopicsFiles: [],
 
   // Page4
   PotentialParticipants: "",
   RecruitingPotentialParticipants: "",
   Payment: "",
-  otherPaymentOption:"",
+  otherPaymentOption: "",
   PotentialHarm: "",
   VulnerableParticipants: "",
-  otherVulnerableParticipantsOptions:"",
+  otherVulnerableParticipantsOptions: "",
 
   // // Page5:
   // //Yes child
-  // ParentalConsent: [],
-  // ParentalInformation: [],
-  // ChildInformation: [],
-  // HeadTeacherConsent: [],
-  // HeadteacherInformation: [],
-  
-  // //Yes adults mental
-  // AccessibleConsentMaterial: [],
-  // ProxyConsentProcedure: [],
-  
-  // //No or other option
-  // ParticipantInformation: [],
-  // ParticipantConsent: [],
-  // ParticipantDebriefing: [],
-  // AccessibilityLetter: [],
+  ParentalConsent: [],
+  ParentalInformation: [],
+  ChildInformation: [],
+  HeadTeacherConsent: [],
+  HeadteacherInformation: [],
 
+  // //Yes adults mental
+  AccessibleConsentMaterial: [],
+  ProxyConsentProcedure: [],
+
+  // //No or other option
+  ParticipantInformation: [],
+  ParticipantConsent: [],
+  ParticipantDebriefing: [],
+  AccessibilityLetter: [],
 
   // Page6
   DataProcessing: "",
@@ -108,33 +106,79 @@ const initialValues = {
   DataStorageandSecurity: "",
 
   // // Page7:
-  // ListofQuestions: "",
-  // AdditionalForms: "",
+  ListofQuestions: "",
+  AdditionalForms: "",
 };
 const MyForm = () => {
   const totalSteps = 9;
+
+  const sessionUser = useContext(UserContext);
+  const [userData, setUserData] = useState(null);
+  const userId = sessionUser.id;
+
+  useEffect(() => {
+    // Function to fetch user data by user ID
+    const fetchUserData = async () => {
+      try {
+        console.log(userId);
+        const response = await fetch(
+          
+          `${import.meta.env.VITE_SERVER_URL}/api/users/${userId}`
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch user data");
+        }
+
+        const user = await response.json();
+        setUserData(user); // Set the user data in the state
+      } catch (error) {
+        console.error("Error:", error.message);
+        // Handle errors as needed
+      }
+    };
+
+    // Call the fetchUserData function
+    fetchUserData();
+    console.log(userData);
+  }, [userId]);
+
   const formik = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
-      
-      // Handle form submission logic here
-      fetch(`${import.meta.env.VITE_SERVER_URL}/api/testapplications/add`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ values }),
-      })
-        .then((response) => response.json())
-        .catch((error) => console.error("Error posting application:", error));
-      // window.location.reload(true);
+    onSubmit: async (values) => {
+      try {
+        const userID = userData.user_id;
+        const response = await fetch(
+          `${import.meta.env.VITE_SERVER_URL}/api/applications/add`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ userID, values }),
+          }
+        );
+
+        if (!response.ok) {
+          console.log({userID, values});
+          throw new Error("Failed to submit application");
+        }
+
+        const responseData = await response.json();
+        console.log("Application submitted successfully:", responseData);
+      } catch (error) {
+        console.error("Error:", error.message);
+        // Handle errors as needed
+      }
+
+      window.location.reload(true);
+
     },
   });
 
   const [step, setStep] = React.useState(0);
-  
+
   const handleStart = () => {
     setStep(1);
   };
@@ -142,13 +186,11 @@ const MyForm = () => {
     setStep((prevStep) => prevStep - 1);
     console.log(formik.isValid);
   };
-  
-  
+
   const isLastStep = step === totalSteps - 1;
   const isFirstStep = step === 0;
-  
-  const handleNext = async () => {
 
+  const handleNext = async () => {
     const errors = formik.errors;
     let errorMessage = "";
 
@@ -292,7 +334,6 @@ const MyForm = () => {
     }
     // Add more conditions for other steps as needed
   };
-  
 
   const handleSubmit = () => {
     // Don't submit if the form is currently submitting or has errors
@@ -308,7 +349,9 @@ const MyForm = () => {
         return (
           <div>
             <Pg0 formik={formik} />
-            <Button className="btn" onClick={handleStart}>Start</Button>
+            <Button className="btn" onClick={handleStart}>
+              Start
+            </Button>
           </div>
         );
       case totalSteps - 1:
@@ -317,10 +360,15 @@ const MyForm = () => {
             <h1>Last Page</h1>
             {/* ... (other content) */}
             <NavigationButtons>
-              <Button className="btn" onClick={handlePrevious} disabled={isFirstStep}>
+              <Button
+                className="btn"
+                onClick={handlePrevious}
+                disabled={isFirstStep}
+              >
                 Previous
               </Button>
-              <Button className="btn"
+              <Button
+                className="btn"
                 onClick={handleSubmit}
                 // disabled={!formik.isValid}
                 type="submit"
@@ -340,7 +388,9 @@ const MyForm = () => {
             {step === 1 && (
               <Pg1 formik={formik} emphasizeFields={formik.errors} />
             )}
-            {step === 2 && <Pg2 formik={formik } emphasizeFields={formik.errors} />}
+            {step === 2 && (
+              <Pg2 formik={formik} emphasizeFields={formik.errors} />
+            )}
             {step === 3 && (
               <Pg3 formik={formik} emphasizeFields={formik.errors} />
             )}
@@ -351,10 +401,10 @@ const MyForm = () => {
               <Pg5 formik={formik} emphasizeFields={formik.errors} />
             )}
             {step === 6 && (
-              <Pg6 formik={formik}  emphasizeFields={formik.errors}/>
+              <Pg6 formik={formik} emphasizeFields={formik.errors} />
             )}
             {step === 7 && (
-              <Pg7 formik={formik}  emphasizeFields={formik.errors}/>
+              <Pg7 formik={formik} emphasizeFields={formik.errors} />
             )}
 
             <NavigationButtons>
@@ -370,7 +420,7 @@ const MyForm = () => {
                 onClick={handleNext}
                 disabled={isLastStep}
               >
-               Next
+                Next
               </Button>
             </NavigationButtons>
             <pre>{JSON.stringify(formik.values, null, 3)}</pre>

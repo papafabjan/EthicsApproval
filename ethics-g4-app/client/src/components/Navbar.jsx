@@ -81,7 +81,7 @@ function Navbar() {
               <>
                 <div onClick={Login} style={{ cursor: "pointer" }}>
                   <i className="fa-solid fa-circle-user"></i>
-                  Login
+                  {" Login"}
                 </div>
               </>
             )}

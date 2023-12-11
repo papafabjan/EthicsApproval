@@ -1,11 +1,21 @@
+import React, { useState } from "react";
+import Comment from "../Comment";
 import { UserContext } from "../UserContext";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 
-
-function Pg1({ formik, emphasizeFields, showComments }) {
+function Pg1({ formik, emphasizeFields, mode }) {
   const user = useContext(UserContext);
 
-  
+  const [comment, setComment] = useState("");
+
+  const handleCommentSave = (fieldName) => {
+    // Save the comment to formik or perform any other actions as needed
+    formik.setValues({
+      ...formik.values,
+      [fieldName]: comment,
+    });
+  };
+
   function splitUsername(username) {
     const names = username.split(" ");
     // If there are 2 or more names, assume the first is the first name,
@@ -21,10 +31,8 @@ function Pg1({ formik, emphasizeFields, showComments }) {
     }
   }
 
-
-    // Set the form data based on the user's information
-    const userNames = splitUsername(user.username);
-
+  // Set the form data based on the user's information
+  const userNames = splitUsername(user.username);
 
   return (
     <>
@@ -48,20 +56,21 @@ function Pg1({ formik, emphasizeFields, showComments }) {
                   ? "red"
                   : "",
             }}
+            disabled={mode === "view"}
           />
-              {/* Comment section for First Name */}
-          {showComments && (
-            <div>
-              <label>Comments:</label>
-              <textarea
-                value={formik.values.comments.firstName}
-                onChange={(e) => formik.setFieldValue('comments.firstName', e.target.value)}
-                readOnly={!showComments}
-              />
-            </div>
-          )}
+
           {formik.touched.firstName && formik.errors.firstName && (
             <div style={{ color: "red" }}>{formik.errors.firstName}</div>
+          )}
+          {/* Comment component for the "firstName" field */}
+          {mode === "view" && (
+            <Comment
+              fieldName="firstName"
+              comment={formik.values.firstNameComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
           )}
         </div>
 
@@ -277,6 +286,16 @@ function Pg1({ formik, emphasizeFields, showComments }) {
         {formik.touched.supervisor && formik.errors.supervisor && (
           <div style={{ color: "red" }}>{formik.errors.supervisor}</div>
         )}
+        {/* Comment section for Supervisor */}
+          {mode === "view" && (
+            <Comment
+              fieldName="supervisor"
+              comment={formik.values.supervisorComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
       </div>
     </>
   );

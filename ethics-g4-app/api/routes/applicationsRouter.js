@@ -13,7 +13,6 @@ router.get("/applications", async (req, res) => {
   }
 });
 
-// Add this endpoint to your server
 // Get application title by ID
 router.get("/applications/title/:applicationId", async (req, res) => {
   const { applicationId } = req.params;
@@ -33,6 +32,45 @@ router.get("/applications/title/:applicationId", async (req, res) => {
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Server Error");
+  }
+});
+
+// Endpoint to fetch application content by application ID
+router.get("/applications/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const applicationQuery = await pool.query(
+      "SELECT * FROM applications WHERE id = $1",
+      [id]
+    );
+
+    const application = applicationQuery.rows[0];
+
+    if (!application) {
+      return res.status(404).json({ error: "Application not found" });
+    }
+
+    const contentQuery = await pool.query(
+      "SELECT * FROM application_content WHERE application_id = $1",
+      [id]
+    );
+
+    const content = contentQuery.rows.reduce((acc, row) => {
+      acc[row.field_name] = row.field_value;
+      return acc;
+    }, {});
+
+    // Combine application data and content data
+    const applicationData = {
+      ...application,
+      application_content: content,
+    };
+
+    res.json(applicationData);
+  } catch (error) {
+    console.error("Error:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 

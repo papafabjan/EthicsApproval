@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 
-function Pg2({ formik, emphasizeFields  }) {
+function Pg2({ formik, emphasizeFields}) {
   const handleRadioChange = (e, radio) => {
     formik.handleChange(e);
 
@@ -16,55 +16,60 @@ function Pg2({ formik, emphasizeFields  }) {
       formik.setFieldValue(checkbox, "");
     }
   };
-  
+
   return (
     <>
-          <div className="form-group">
-          <label htmlFor="ResearchProject">
-          Title of the research project <span style={{ color: "red" }}>*</span>
-          </label>
-          <input
-            type="text"
-            id="ResearchProject"
-            name="ResearchProject"
-            className="form-control"
-            placeholder="ResearchProject"
-            value={formik.values.ResearchProject}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            style={{
-              borderColor:
-                emphasizeFields?.ResearchProject && formik.touched?.ResearchProject
-                  ? "red"
-                  : "",
-            }}
-          />
-            {formik.touched.ResearchProject && formik.errors.ResearchProject && (
-              <div style={{ color: "red" }}>{formik.errors.ResearchProject}</div>
-            )}
-        </div>
-
       <div className="form-group">
-        <label htmlFor="CoApplicantName">Co-Applicant Name(s) If there are others who will do the research with you, comma-separated</label>
+        <label htmlFor="ResearchProject">
+          Title of the research project <span style={{ color: "red" }}>*</span>
+        </label>
         <input
           type="text"
-            id="CoApplicantName"
-            name="CoApplicantName"
-            className="form-control"
-            placeholder="CoApplicantName"
-            value={formik.values.CoApplicantName}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
+          id="ResearchProject"
+          name="ResearchProject"
+          className="form-control"
+          placeholder="ResearchProject"
+          value={formik.values.ResearchProject}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
           style={{
-              borderColor:
-                emphasizeFields?.CoApplicantName && formik.touched?.CoApplicantName
-                  ? "red"
-                  : "",
-            }}
+            borderColor:
+              emphasizeFields?.ResearchProject &&
+              formik.touched?.ResearchProject
+                ? "red"
+                : "",
+          }}
+        />
+        {formik.touched.ResearchProject && formik.errors.ResearchProject && (
+          <div style={{ color: "red" }}>{formik.errors.ResearchProject}</div>
+        )}
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="CoApplicantName">
+          Co-Applicant Name(s) If there are others who will do the research with
+          you, comma-separated
+        </label>
+        <input
+          type="text"
+          id="CoApplicantName"
+          name="CoApplicantName"
+          className="form-control"
+          placeholder="CoApplicantName"
+          value={formik.values.CoApplicantName}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          style={{
+            borderColor:
+              emphasizeFields?.CoApplicantName &&
+              formik.touched?.CoApplicantName
+                ? "red"
+                : "",
+          }}
         />
         {formik.touched.CoApplicantName && formik.errors.CoApplicantName && (
-            <div style={{ color: "red" }}>{formik.errors.CoApplicantName}</div>
-          )}
+          <div style={{ color: "red" }}>{formik.errors.CoApplicantName}</div>
+        )}
       </div>
 
       <div className="form-group">
@@ -81,16 +86,17 @@ function Pg2({ formik, emphasizeFields  }) {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           style={{
-              borderColor:
-                emphasizeFields?.CoApplicantEmail && formik.touched?.CoApplicantEmail
-                  ? "red"
-                  : "",
-            }}
-          />
-          {formik.touched.CoApplicantEmail && formik.errors.CoApplicantEmail && (
-              <div style={{ color: "red" }}>{formik.errors.CoApplicantName}</div>
-            )}
-         </div>
+            borderColor:
+              emphasizeFields?.CoApplicantEmail &&
+              formik.touched?.CoApplicantEmail
+                ? "red"
+                : "",
+          }}
+        />
+        {formik.touched.CoApplicantEmail && formik.errors.CoApplicantEmail && (
+          <div style={{ color: "red" }}>{formik.errors.CoApplicantName}</div>
+        )}
+      </div>
 
       <div className="form-group">
         <label htmlFor="StartDate">
@@ -105,15 +111,15 @@ function Pg2({ formik, emphasizeFields  }) {
           onChange={formik.handleChange}
           name="StartDate"
           style={{
-              borderColor:
-                emphasizeFields?.StartDate && formik.touched?.StartDate
-                  ? "red"
-                  : "",
-            }}
+            borderColor:
+              emphasizeFields?.StartDate && formik.touched?.StartDate
+                ? "red"
+                : "",
+          }}
         />
         {formik.touched.StartDate && formik.errors.StartDate && (
-              <div style={{ color: "red" }}>{formik.errors.StartDate}</div>
-            )}
+          <div style={{ color: "red" }}>{formik.errors.StartDate}</div>
+        )}
       </div>
 
       <div className="form-group">
@@ -160,16 +166,19 @@ function Pg2({ formik, emphasizeFields  }) {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 style={{
-                borderColor:
-                emphasizeFields?.FundingOther && formik.touched?.FundingOther
-                  ? "red"
-                  : "",
-            }}
+                  borderColor:
+                    emphasizeFields?.FundingOther &&
+                    formik.touched?.FundingOther
+                      ? "red"
+                      : "",
+                }}
               />
             )}
-            {formik.values.Funding === "Other" && formik.touched.FundingOther && formik.errors.FundingOther && (
-  <div style={{ color: "red" }}>{formik.errors.FundingOther}</div>
-)}
+            {formik.values.Funding === "Other" &&
+              formik.touched.FundingOther &&
+              formik.errors.FundingOther && (
+                <div style={{ color: "red" }}>{formik.errors.FundingOther}</div>
+              )}
           </li>
           <li>
             <label>
@@ -257,17 +266,19 @@ function Pg2({ formik, emphasizeFields  }) {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 style={{
-                borderColor:
-                emphasizeFields?.OtherCountry && formik.touched?.OtherCountry
-                  ? "red"
-                  : "",
-            }}
+                  borderColor:
+                    emphasizeFields?.OtherCountry &&
+                    formik.touched?.OtherCountry
+                      ? "red"
+                      : "",
+                }}
               />
             )}
-            {formik.values.Country.includes("Other") && formik.touched.OtherCountry && formik.errors.OtherCountry && (
-  <div style={{ color: "red" }}>{formik.errors.OtherCountry}</div>
-)}
-
+            {formik.values.Country.includes("Other") &&
+              formik.touched.OtherCountry &&
+              formik.errors.OtherCountry && (
+                <div style={{ color: "red" }}>{formik.errors.OtherCountry}</div>
+              )}
           </li>
         </ul>
       </div>
@@ -395,34 +406,33 @@ function Pg2({ formik, emphasizeFields  }) {
           <span style={{ color: "red" }}>*</span>
         </label>
         <ul>
-
-        <li>
-          <label>
-            <input
-              type="radio"
-              id="ClinicalMedicalYes"
-              name="ClinicalMedical"
-              value="Yes"
-              onChange={formik.handleChange}
-              checked={formik.values.ClinicalMedical === "Yes"}
-            />{" "}
-            Yes
-          </label>
-        </li>
-        <li>
-          <label>
-            <input
-              type="radio"
-              id="ClinicalMedicalNo"
-              name="ClinicalMedical"
-              value="No"
-              onChange={formik.handleChange}
-              checked={formik.values.ClinicalMedical === "No"}
-            />{" "}
-            No
-          </label>
-        </li>
-            </ul>
+          <li>
+            <label>
+              <input
+                type="radio"
+                id="ClinicalMedicalYes"
+                name="ClinicalMedical"
+                value="Yes"
+                onChange={formik.handleChange}
+                checked={formik.values.ClinicalMedical === "Yes"}
+              />{" "}
+              Yes
+            </label>
+          </li>
+          <li>
+            <label>
+              <input
+                type="radio"
+                id="ClinicalMedicalNo"
+                name="ClinicalMedical"
+                value="No"
+                onChange={formik.handleChange}
+                checked={formik.values.ClinicalMedical === "No"}
+              />{" "}
+              No
+            </label>
+          </li>
+        </ul>
       </div>
 
       <div className="form-group">
@@ -431,36 +441,34 @@ function Pg2({ formik, emphasizeFields  }) {
           <span style={{ color: "red" }}>*</span>
         </label>
         <ul>
-
-        <li>
-          <label>
-            <input
-              type="radio"
-              id="SocialCareServicesYes"
-              name="SocialCareServices"
-              value="Yes"
-              checked={formik.values.SocialCareServices === "Yes"}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />{" "}
-            Yes
-          </label>
-        </li>
-        <li>
-          <label>
-            <input
-              type="radio"
-              id="SocialCareServicesNo"
-              name="SocialCareServices"
-              value="No"
-              checked={formik.values.SocialCareServices === "No"}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />{" "}
-            No
-          </label>
-        </li>
-
+          <li>
+            <label>
+              <input
+                type="radio"
+                id="SocialCareServicesYes"
+                name="SocialCareServices"
+                value="Yes"
+                checked={formik.values.SocialCareServices === "Yes"}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />{" "}
+              Yes
+            </label>
+          </li>
+          <li>
+            <label>
+              <input
+                type="radio"
+                id="SocialCareServicesNo"
+                name="SocialCareServices"
+                value="No"
+                checked={formik.values.SocialCareServices === "No"}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />{" "}
+              No
+            </label>
+          </li>
         </ul>
         {formik.touched.SocialCareServices &&
           formik.errors.SocialCareServices && (

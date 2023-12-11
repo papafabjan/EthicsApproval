@@ -11,7 +11,6 @@ const dropzoneStyle = {
 }
 
 function Pg3({ formik, emphasizeFields }) {
-
   return (
     <>
       <div className="form-group">
@@ -32,15 +31,15 @@ function Pg3({ formik, emphasizeFields }) {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           style={{
-              borderColor:
-                emphasizeFields?.AimsObjectives && formik.touched?.AimsObjectives
-                  ? "red"
-                  : "",
-            }}
+            borderColor:
+              emphasizeFields?.AimsObjectives && formik.touched?.AimsObjectives
+                ? "red"
+                : "",
+          }}
         />
-            {formik.touched.AimsObjectives && formik.errors.AimsObjectives && (
-            <div style={{ color: "red" }}>{formik.errors.AimsObjectives}</div>
-          )}
+        {formik.touched.AimsObjectives && formik.errors.AimsObjectives && (
+          <div style={{ color: "red" }}>{formik.errors.AimsObjectives}</div>
+        )}
       </div>
 
       <div className="form-group">
@@ -63,15 +62,15 @@ function Pg3({ formik, emphasizeFields }) {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           style={{
-              borderColor:
-                emphasizeFields?.Methodology && formik.touched?.Methodology
-                  ? "red"
-                  : "",
-            }}
+            borderColor:
+              emphasizeFields?.Methodology && formik.touched?.Methodology
+                ? "red"
+                : "",
+          }}
         />
-         {formik.touched.Methodology && formik.errors.Methodology && (
-            <div style={{ color: "red" }}>{formik.errors.Methodology}</div>
-          )}
+        {formik.touched.Methodology && formik.errors.Methodology && (
+          <div style={{ color: "red" }}>{formik.errors.Methodology}</div>
+        )}
       </div>
       <div className="form-group">
         <label htmlFor="SafetyConcerns">
@@ -92,21 +91,21 @@ function Pg3({ formik, emphasizeFields }) {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           style={{
-              borderColor:
-                emphasizeFields?.SafetyConcerns && formik.touched?.SafetyConcerns
-                  ? "red"
-                  : "",
-            }}
+            borderColor:
+              emphasizeFields?.SafetyConcerns && formik.touched?.SafetyConcerns
+                ? "red"
+                : "",
+          }}
         />
-         {formik.touched.SafetyConcerns && formik.errors.SafetyConcerns && (
-            <div style={{ color: "red" }}>{formik.errors.SafetyConcerns}</div>
-          )}
+        {formik.touched.SafetyConcerns && formik.errors.SafetyConcerns && (
+          <div style={{ color: "red" }}>{formik.errors.SafetyConcerns}</div>
+        )}
       </div>
 
       <div className="form-group">
         <label htmlFor="SensitiveTopics">
-          Does the research involve potentially highly sensitive topics?<span style={{ color: "red" }}>*</span>
-
+          Does the research involve potentially highly sensitive topics?
+          <span style={{ color: "red" }}>*</span>
         </label>
         <p>
           e.g., it includes stimuli designed to be emotive or aversive; It
@@ -135,7 +134,6 @@ function Pg3({ formik, emphasizeFields }) {
                 value="No"
                 checked={formik.values.SensitiveTopics === "No"}
                 onChange={formik.handleChange}
-                
               />
               No
             </label>
@@ -151,28 +149,39 @@ function Pg3({ formik, emphasizeFields }) {
           Sensitive Material/tools<span style={{ color: "red" }}>*</span>
         </label>
 
-        <Dropzone style={dropzoneStyle} onDrop={acceptedFiles => {
+        <Dropzone
+          style={dropzoneStyle}
+          onDrop={(acceptedFiles) => {
+            console.log(acceptedFiles);
 
-          console.log(acceptedFiles)
+            // do nothing if no files
+            if (acceptedFiles.length === 0) {
+              return;
+            }
 
-          // do nothing if no files
-          if (acceptedFiles.length === 0) { return; }
+            // on drop we add to the existing files
+            //Doesn't work yet
+            formik.setFieldValue(
+              "SensitiveMaterialFiles",
+              formik.values.SensitiveMaterialFiles.concat(acceptedFiles)
+            );
 
-          // on drop we add to the existing files
-          //Doesn't work yet
-          formik.setFieldValue("SensitiveMaterialFiles", formik.values.SensitiveMaterialFiles.concat(acceptedFiles));
-
-          return formik.values.SensitiveMaterialFiles.map((file, i) => (<Thumb key={i} file={file} />));
-        }}>
+            return formik.values.SensitiveMaterialFiles.map((file, i) => (
+              <Thumb key={i} file={file} />
+            ));
+          }}
+        >
           {({ getRootProps, getInputProps }) => (
             <section>
               <div {...getRootProps()}>
                 <input {...getInputProps()} />
-                <p>Upload up to 5 files (photos, questionnaires, interview questions etc.)  in any format</p>
+                <p>
+                  Upload up to 5 files (photos, questionnaires, interview
+                  questions etc.) in any format
+                </p>
               </div>
             </section>
           )}
-
         </Dropzone>
 
         {formik.touched.SensitiveMaterialFiles &&
@@ -182,7 +191,6 @@ function Pg3({ formik, emphasizeFields }) {
             </div>
           )}
       </div>
-
     </>
   );
 }

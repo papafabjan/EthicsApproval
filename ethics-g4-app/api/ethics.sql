@@ -30,9 +30,10 @@ CREATE TABLE application_content (
 
 CREATE TABLE comments (
   id SERIAL PRIMARY KEY,
+  commenter_id INTEGER REFERENCES users(user_id),--google-id
   field VARCHAR(255) NOT NULL,
   content VARCHAR(255) NOT NULL,
-  application_id references applications(id) NOT NULL,
+  application_id INTEGER REFERENCES applications(id) NOT NULL
 );
 
 

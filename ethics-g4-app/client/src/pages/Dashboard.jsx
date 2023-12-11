@@ -11,7 +11,6 @@ const Dashboard = () => {
   const [applicantNames, setApplicantNames] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
-  const [showComments, setShowComments] = useState(false);
 
   // Fetch applications from your API
   useEffect(() => {
@@ -65,12 +64,7 @@ const Dashboard = () => {
       return "Unknown";
     }
   };
-  <MyForm showComments={showComments} />
-  const handleComment = (applicationId) => {
-    // Redirect to the application page with the application ID and showComments prop
-    navigate(`/Application`, { state: { showComments: true } });
-    setShowComments(true);
-  };
+  
  
   // Function to handle search term changes
   const handleSearch = (event) => {
@@ -125,7 +119,11 @@ const Dashboard = () => {
                         <div className="actions">
                           <button
                             className="btn"
-                            onClick={() => handleComment(application.id)}
+                            onClick={() =>
+                              navigate(`/application/${application.id}`, {
+                                state: { mode: "view" },
+                              })
+                            }
                           >
                             View/Comment
                           </button>

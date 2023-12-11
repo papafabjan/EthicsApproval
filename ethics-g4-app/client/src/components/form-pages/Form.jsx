@@ -1,11 +1,12 @@
 // MyForm.jsx
 import React, { useContext, useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import { UserContext } from "../UserContext";
 import * as yup from "yup";
 import { NavigationButtons } from "../../styled/Form.styled";
 import { Button } from "../../styled/Form.styled";
-import Dashboard from '../../pages/Dashboard';
+import { useLocation } from "react-router-dom";
 import Pg0 from "./Pg0";
 import Pg1 from "./Pg1";
 import Pg2 from "./Pg2";
@@ -110,72 +111,194 @@ const initialValues = {
   ListofQuestions: "",
   AdditionalForms: "",
 };
-const MyForm = ({ showComments }) => {
 
-  const totalSteps = 9;
+const Form = () => {
+  //apply mode
+  // Get the application_id from the URL params
+  const { applicationId } = useParams();
+  const location = useLocation();
+  const mode = location.state?.mode || "apply";
 
+  //view mode
   const sessionUser = useContext(UserContext);
   const [userData, setUserData] = useState(null);
   const userId = sessionUser.id;
 
+  const totalSteps = 9;
+
+  console.log(mode);
+  console.log(applicationId);
   useEffect(() => {
-    // Function to fetch user data by user ID
-    const fetchUserData = async () => {
-      try {
-        console.log(userId);
-        const response = await fetch(
-          
-          `${import.meta.env.VITE_SERVER_URL}/api/users/${userId}`
-        );
+    if (mode === "view" && applicationId) {
+      const fetchApplicationData = async () => {
+        try {
+          const response = await fetch(
+            `${
+              import.meta.env.VITE_SERVER_URL
+            }/api/applications/${applicationId}`
+          );
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch user data");
+          if (!response.ok) {
+            throw new Error("Failed to fetch application data");
+          }
+
+          const { application, application_content: content } =
+            await response.json();
+
+          // Update formik values with the fetched content data
+          formik.setValues((prevValues) => {
+            const updatedValues = { ...prevValues, ...content };
+            return updatedValues;
+          });
+
+          console.log("Successfully fetched application data");
+          // You may also update other parts of the form if needed
+        } catch (error) {
+          console.error("Error:", error.message);
+          // Handle errors as needed
         }
+      };
 
-        const user = await response.json();
-        setUserData(user); // Set the user data in the state
-      } catch (error) {
-        console.error("Error:", error.message);
-        // Handle errors as needed
-      }
-    };
+      // Call the fetchApplicationData function
+      fetchApplicationData();
+    } else {
+      // Function to fetch user data by user ID
+      const fetchUserData = async () => {
+        try {
+          // Check if userId is truthy before attempting to fetch user data
+          if (userId) {
+            const response = await fetch(
+              `${import.meta.env.VITE_SERVER_URL}/api/users/${userId}`
+            );
 
-    // Call the fetchUserData function
-    fetchUserData();
-    console.log(userData);
-  }, [userId]);
+            if (!response.ok) {
+              throw new Error("Failed to fetch user data");
+            }
+
+            const user = await response.json();
+            setUserData(user); // Set the user data in the state
+          }
+        } catch (error) {
+          console.error("Error:", error.message);
+          // Handle errors as needed
+        }
+      };
+
+      // Call the fetchUserData function
+      fetchUserData();
+    }
+  }, [mode, applicationId, userId]);
 
   const formik = useFormik({
     initialValues,
     validationSchema,
     onSubmit: async (values) => {
-      try {
-        const userID = userData.user_id;
-        const response = await fetch(
-          `${import.meta.env.VITE_SERVER_URL}/api/applications/add`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ userID, values }),
+      if (mode === "view" && applicationId) {
+        //get user_id through the google_id stored in session
+        // Assuming this is an asynchronous function in an async context (e.g., within an async function or using await)
+        const fetchUserIdByGoogleId = async (googleId) => {
+          try {
+            const response = await fetch(
+              `${import.meta.env.VITE_SERVER_URL}/api/users/${googleId}`
+            );
+
+            // Check if the response is successful (status code 2xx)
+            if (!response.ok) {
+              throw new Error(`Error: ${response.statusText}`);
+            }
+
+            const data = await response.json();
+
+            // Assuming the response has a property named user_id
+            const userID = data.user_id;
+
+            // Use userID as needed
+            console.log("User ID:", userID);
+
+            return userID;
+          } catch (error) {
+            // Handle errors
+            console.error("Error fetching user ID:", error.message);
+            throw error; // You can choose to handle or propagate the error
           }
-        );
+        };
 
-        if (!response.ok) {
-          console.log({userID, values});
-          throw new Error("Failed to submit application");
+        const sendCommentsToServer = async () => {
+          try {
+            // Assuming this is an asynchronous function in an async context (e.g., within an async function or using await)
+            const userID = await fetchUserIdByGoogleId(userId);
+
+            // Use userID as needed
+            console.log("User ID:", userID);
+
+            const commentFields = Object.keys(formik.values).filter((key) =>
+              key.toLowerCase().includes("comment")
+            );
+
+            const comments = commentFields.map((field) => ({
+              field,
+              content: formik.values[field],
+            }));
+
+            console.log(
+              "Sending comments to server" + JSON.stringify(comments, null, 2)
+            );
+
+            const response = await fetch(
+              `${import.meta.env.VITE_SERVER_URL}/api/comments/add`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  comments,
+                  applicationId,
+                  userId: parseInt(userID),
+                }),
+              }
+            );
+
+            if (!response.ok) {
+              throw new Error("Failed to save comments");
+            }
+
+            console.log("Comments saved successfully");
+          } catch (error) {
+            console.error("Error:", error.message);
+            // Handle errors as needed
+          }
+        };
+
+        sendCommentsToServer();
+      } else {
+        try {
+          const userID = userData.user_id;
+          const response = await fetch(
+            `${import.meta.env.VITE_SERVER_URL}/api/applications/add`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ userID, values }),
+            }
+          );
+
+          if (!response.ok) {
+            console.log({ userID, values });
+            throw new Error("Failed to submit application");
+          }
+
+          const responseData = await response.json();
+          console.log("Application submitted successfully:", responseData);
+        } catch (error) {
+          console.error("Error:", error.message);
+          // Handle errors as needed
         }
-
-        const responseData = await response.json();
-        console.log("Application submitted successfully:", responseData);
-      } catch (error) {
-        console.error("Error:", error.message);
-        // Handle errors as needed
       }
 
       window.location.reload(true);
-
     },
   });
 
@@ -191,24 +314,6 @@ const MyForm = ({ showComments }) => {
 
   const isLastStep = step === totalSteps - 1;
   const isFirstStep = step === 0;
-  {showComments && (
-    <div>
-      {/* Render input fields for comments here */}
-      {/* Example text area */}
-      <textarea
-        placeholder="Type your comments here..."
-        rows={4}
-        cols={50}
-        // You can handle the input changes as per your logic
-      />
-      {/* Example input field */}
-      {/* <input
-        type="text"
-        placeholder="Type your comments here..."
-        // You can handle the input changes as per your logic
-      /> */}
-    </div>
-  )}
   const handleNext = async () => {
     const errors = formik.errors;
     let errorMessage = "";
@@ -359,6 +464,8 @@ const MyForm = ({ showComments }) => {
     // if (!formik.isValid) {
     //   return;
     // }
+    // Change the mode to 'apply' before submitting
+    const submitMode = mode === "view" ? "apply" : mode;
     formik.handleSubmit();
   };
 
@@ -377,7 +484,6 @@ const MyForm = ({ showComments }) => {
         return (
           <div>
             <h1>Last Page</h1>
-            {/* ... (other content) */}
             <NavigationButtons>
               <Button
                 className="btn"
@@ -389,7 +495,7 @@ const MyForm = ({ showComments }) => {
               <Button
                 className="btn"
                 onClick={handleSubmit}
-                // disabled={!formik.isValid}
+                disabled={!formik.isValid}
                 type="submit"
               >
                 Submit
@@ -405,25 +511,53 @@ const MyForm = ({ showComments }) => {
             {/* Import and render the appropriate component for each step */}
             {/* Example: */}
             {step === 1 && (
-              <Pg1 formik={formik} emphasizeFields={formik.errors} showComments={showComments}/>
+              <Pg1
+                formik={formik}
+                emphasizeFields={formik.errors}
+                mode={mode}
+              />
             )}
             {step === 2 && (
-              <Pg2 formik={formik} emphasizeFields={formik.errors} />
+              <Pg2
+                formik={formik}
+                emphasizeFields={formik.errors}
+                mode={mode}
+              />
             )}
             {step === 3 && (
-              <Pg3 formik={formik} emphasizeFields={formik.errors} />
+              <Pg3
+                formik={formik}
+                emphasizeFields={formik.errors}
+                mode={mode}
+              />
             )}
             {step === 4 && (
-              <Pg4 formik={formik} emphasizeFields={formik.errors} />
+              <Pg4
+                formik={formik}
+                emphasizeFields={formik.errors}
+                mode={mode}
+              />
             )}
             {step === 5 && (
-              <Pg5 formik={formik} emphasizeFields={formik.errors} />
+              <Pg5
+                formik={formik}
+                emphasizeFields={formik.errors}
+                mode={mode}
+              />
             )}
             {step === 6 && (
-              <Pg6 formik={formik} emphasizeFields={formik.errors} />
+              <Pg6
+                formik={formik}
+                emphasizeFields={formik.errors}
+                mode={mode}
+              />
             )}
             {step === 7 && (
-              <Pg7 formik={formik} emphasizeFields={formik.errors} />
+              <Pg7
+                formik={formik}
+                emphasizeFields={formik.errors}
+                mode={mode}
+              />
             )}
 
             <NavigationButtons>
@@ -445,11 +579,10 @@ const MyForm = ({ showComments }) => {
             <pre>{JSON.stringify(formik.values, null, 3)}</pre>
           </div>
         );
-        
     }
   };
 
   return <>{renderFormStep()}</>;
 };
 
-export default MyForm;
+export default Form;

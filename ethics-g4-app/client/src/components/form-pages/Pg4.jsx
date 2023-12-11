@@ -1,3 +1,4 @@
+
 export const Pg4 = ({ formik, emphasizeFields }) => {
   const handleRadioChange = (e, radio) => {
     formik.handleChange(e);
@@ -28,14 +29,18 @@ export const Pg4 = ({ formik, emphasizeFields }) => {
           onBlur={formik.handleBlur}
           placeholder="Your answer"
           style={{
-              borderColor:
-                emphasizeFields?.PotentialParticipants && formik.touched?.PotentialParticipants
-                  ? "red"
-                  : "",
-            }}
+            borderColor:
+              emphasizeFields?.PotentialParticipants &&
+              formik.touched?.PotentialParticipants
+                ? "red"
+                : "",
+          }}
         />
-         {formik.touched.PotentialParticipants && formik.errors.PotentialParticipants && (
-            <div style={{ color: "red" }}>{formik.errors.PotentialParticipants}</div>
+        {formik.touched.PotentialParticipants &&
+          formik.errors.PotentialParticipants && (
+            <div style={{ color: "red" }}>
+              {formik.errors.PotentialParticipants}
+            </div>
           )}
       </div>
 
@@ -58,14 +63,18 @@ export const Pg4 = ({ formik, emphasizeFields }) => {
           onBlur={formik.handleBlur}
           placeholder="Your answer"
           style={{
-              borderColor:
-                emphasizeFields?.RecruitingPotentialParticipants && formik.touched?.RecruitingPotentialParticipants
-                  ? "red"
-                  : "",
-            }}
+            borderColor:
+              emphasizeFields?.RecruitingPotentialParticipants &&
+              formik.touched?.RecruitingPotentialParticipants
+                ? "red"
+                : "",
+          }}
         />
-         {formik.touched.RecruitingPotentialParticipants && formik.errors.RecruitingPotentialParticipants && (
-            <div style={{ color: "red" }}>{formik.errors.RecruitingPotentialParticipants}</div>
+        {formik.touched.RecruitingPotentialParticipants &&
+          formik.errors.RecruitingPotentialParticipants && (
+            <div style={{ color: "red" }}>
+              {formik.errors.RecruitingPotentialParticipants}
+            </div>
           )}
       </div>
       <div className="form-group">
@@ -98,7 +107,7 @@ export const Pg4 = ({ formik, emphasizeFields }) => {
               No
             </label>
           </li>
-          
+
           <li>
             <label>
               <input
@@ -112,28 +121,33 @@ export const Pg4 = ({ formik, emphasizeFields }) => {
             </label>
 
             {formik.values.Payment === "Other" && (
-          <input
-            type="text"
-            name="otherPaymentOption"
-            placeholder="Enter other option"
-            value={formik.values.otherPaymentOption}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            style={{
-                borderColor:
-                emphasizeFields?.otherPaymentOption && formik.touched?.otherPaymentOption
-                  ? "red"
-                  : "",
-            }}
+              <input
+                type="text"
+                name="otherPaymentOption"
+                placeholder="Enter other option"
+                value={formik.values.otherPaymentOption}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                style={{
+                  borderColor:
+                    emphasizeFields?.otherPaymentOption &&
+                    formik.touched?.otherPaymentOption
+                      ? "red"
+                      : "",
+                }}
               />
-            )} 
-            {formik.values.Payment === "Other" && formik.touched.otherPaymentOption && formik.errors.otherPaymentOption && (
-            <div style={{ color: "red" }}>{formik.errors.otherPaymentOption}</div>
             )}
+            {formik.values.Payment === "Other" &&
+              formik.touched.otherPaymentOption &&
+              formik.errors.otherPaymentOption && (
+                <div style={{ color: "red" }}>
+                  {formik.errors.otherPaymentOption}
+                </div>
+              )}
           </li>
-        </ul> 
+        </ul>
       </div>
-      
+
       <div className="form-group">
         <label htmlFor="PotentialHarm">
           Potential Harm to Participants <span style={{ color: "red" }}>*</span>
@@ -152,15 +166,15 @@ export const Pg4 = ({ formik, emphasizeFields }) => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           style={{
-              borderColor:
-                emphasizeFields?.PotentialHarm && formik.touched?.PotentialHarm
-                  ? "red"
-                  : "",
-            }}
+            borderColor:
+              emphasizeFields?.PotentialHarm && formik.touched?.PotentialHarm
+                ? "red"
+                : "",
+          }}
         />
-         {formik.touched.PotentialHarm && formik.errors.PotentialHarm && (
-            <div style={{ color: "red" }}>{formik.errors.PotentialHarm}</div>
-          )}
+        {formik.touched.PotentialHarm && formik.errors.PotentialHarm && (
+          <div style={{ color: "red" }}>{formik.errors.PotentialHarm}</div>
+        )}
       </div>
 
       <div className="form-group">
@@ -235,24 +249,29 @@ export const Pg4 = ({ formik, emphasizeFields }) => {
               Other
             </label>
             {formik.values.VulnerableParticipants === "Other" && (
-          <input
-            type="text"
-            name="otherVulnerableParticipantsOptions"
-            placeholder="Your answer"
-            value={formik.values.otherVulnerableParticipantsOptions}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            style={{
-                borderColor:
-                emphasizeFields?.otherVulnerableParticipantsOptions && formik.touched?.otherVulnerableParticipantsOptions
-                  ? "red"
-                  : "",
-            }}
+              <input
+                type="text"
+                name="otherVulnerableParticipantsOptions"
+                placeholder="Your answer"
+                value={formik.values.otherVulnerableParticipantsOptions}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                style={{
+                  borderColor:
+                    emphasizeFields?.otherVulnerableParticipantsOptions &&
+                    formik.touched?.otherVulnerableParticipantsOptions
+                      ? "red"
+                      : "",
+                }}
               />
-            )} 
-            {formik.values.Payment === "Other" && formik.touched.otherVulnerableParticipantsOptions && formik.errors.otherVulnerableParticipantsOptions && (
-            <div style={{ color: "red" }}>{formik.errors.otherVulnerableParticipantsOptions}</div>
             )}
+            {formik.values.Payment === "Other" &&
+              formik.touched.otherVulnerableParticipantsOptions &&
+              formik.errors.otherVulnerableParticipantsOptions && (
+                <div style={{ color: "red" }}>
+                  {formik.errors.otherVulnerableParticipantsOptions}
+                </div>
+              )}
           </li>
         </ul>
       </div>

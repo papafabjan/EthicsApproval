@@ -12,7 +12,7 @@ import Document_Templates from "./pages/Document_Templates";
 import Applicant from "./pages/Applicant";
 import Supervisor from "./pages/Supervisor";
 import Reviewer from "./pages/Reviewer";
-import Application from "./pages/Application";
+import Form from "./components/form-pages/Form";
 import { UserContext } from "./components/UserContext";
 import { useContext } from "react";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -36,7 +36,8 @@ function App() {
                 )}
                 <Route path="contact" element={<Contact />} />
                 <Route path="guides" element={<Guides />} />
-                <Route path="application" element={<Application />} />
+                <Route path="application" element={<Form />} />
+                <Route path="/application/:applicationId" element={<Form />} />
                 <Route
                   path="document_templates"
                   element={<Document_Templates />}

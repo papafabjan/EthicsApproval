@@ -12,53 +12,56 @@ const MyApplications = () => {
   const [userData, setUserData] = useState(null);
   const userId = sessionUser.id;
 
-  // Fetch applications from your API
   useEffect(() => {
-    wait = async() =>{
-      fetchUserData();
-    }
-    
-    const fetchApplications = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch(
-          `${import.meta.env.VITE_SERVER_URL}/api/applications`
-        );
-
-        if (!response.ok) {
-          throw new Error(
-            `Error fetching applications: ${response.statusText}`
+        // Check if userId is truthy before attempting to fetch user data
+        if (userId) {
+          const userResponse = await fetch(
+            `${import.meta.env.VITE_SERVER_URL}/api/users/${userId}`
           );
+
+          if (!userResponse.ok) {
+            throw new Error("Failed to fetch user data");
+          }
+
+          const user = await userResponse.json();
+          setUserData(user);
+
+          const applicationsResponse = await fetch(
+            `${import.meta.env.VITE_SERVER_URL}/api/applications`
+          );
+
+          if (!applicationsResponse.ok) {
+            throw new Error(
+              `Error fetching applications: ${applicationsResponse.statusText}`
+            );
+          }
+
+          const data = await applicationsResponse.json();
+          const userApplications = data.filter(
+            (application) => application.applicant_id === user.user_id
+          );
+
+          setApplications(userApplications);
+
+          const titlesPromises = userApplications.map(async (application) => {
+            const title = await fetchApplicationTitle(application.id);
+            setApplicationTitles((prevTitles) => ({
+              ...prevTitles,
+              [application.id]: title,
+            }));
+          });
+
+          await Promise.all(titlesPromises);
         }
-
-        const data = await response.json();
-
-        // Filter applications that belong to the logged-in user
-        const userApplications = data.filter(
-          (application) => application.applicant_id === userData.user_id
-        );
-
-        setApplications(userApplications);
-
-        // Fetch and store titles
-        const titlesPromises = userApplications.map(async (application) => {
-          const title = await fetchApplicationTitle(application.id);
-          setApplicationTitles((prevTitles) => ({
-            ...prevTitles,
-            [application.id]: title,
-          }));
-        });
-
-        // Wait for all titles to be fetched
-        await Promise.all(titlesPromises);
       } catch (error) {
         console.error(error.message);
       }
     };
 
-    fetchApplications();
-    console.log(userData);
+    fetchData();
   }, [userId]);
-
   const fetchApplicationTitle = async (applicationId) => {
     try {
       const response = await fetch(
@@ -92,27 +95,6 @@ const MyApplications = () => {
       applicationTitle.toLowerCase().includes(searchTerm.toLowerCase())
     );
   });
-  // Function to fetch user data by user ID
-  const fetchUserData = async () => {
-    try {
-      console.log(userId);
-      const response = await fetch(
-        `${import.meta.env.VITE_SERVER_URL}/api/users/${userId}`
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch user data");
-      }
-
-      const user = await response.json();
-      setUserData(user); // Set the user data in the state
-    } catch (error) {
-      console.error("Error:", error.message);
-      // Handle errors as needed
-    }
-  };
-
-  
 
   return (
     <>

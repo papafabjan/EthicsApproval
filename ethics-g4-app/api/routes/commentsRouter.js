@@ -22,7 +22,7 @@ router.post("/comments/add", async (req, res) => {
         flattenedComments.map((_, index) => `($${index * 4 + 1}, $${index * 4 + 2}, $${index * 4 + 3}, $${index * 4 + 4})`).join(", "),
       flattenedComments.flat()
     );
-console.log(userId, applicationId);
+    console.log(userId, applicationId);
     res.status(201).json({ message: "Comments saved successfully" });
   } catch (error) {
     console.error("Error:", error.message);

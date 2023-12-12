@@ -120,6 +120,11 @@ router.post("/applications/add", async (req, res) => {
   }
 });
 
+// Add a new application
+router.post("/applications/add", async (req, res) => {
+  
+});
+
 // Update application body
 // router.put("/applications/:applicationId/edit-body", async (req, res) => {
 //   const { applicationId } = req.params;

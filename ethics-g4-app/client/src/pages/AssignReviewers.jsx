@@ -3,6 +3,24 @@ import React, { useState, useEffect } from "react";
 function AssignReviewers({applicationId}) {
   const [selectedReviewers, setSelectedReviewers] = useState([]);
   const [riskLevel, setRiskLevel] = useState("");
+  const [existingReviewers, setExistingReviewers] = useState([]);
+
+
+  useEffect(() => {
+    // Fetch existing reviewers for the application
+    fetch(
+      `${import.meta.env.VITE_SERVER_URL}/api/reviewer/existing-reviewers?applicationId=${applicationId}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        // Set the existing reviewers in state
+        setExistingReviewers(data.reviewers);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [applicationId]);
+
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -14,7 +32,7 @@ function AssignReviewers({applicationId}) {
     }
 
     // Send request to endpoint with selectedReviewers
-    fetch(`${import.meta.env.VITE_SERVER_URL}/api/users/assign-reviewer`, {
+    fetch(`${import.meta.env.VITE_SERVER_URL}/api/reviewer/assign-reviewer`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -35,7 +53,7 @@ function AssignReviewers({applicationId}) {
         console.error(error);
       });
 
-    window.location.reload(true);
+    // window.location.reload(true);
   };
 
   useEffect(() => {
@@ -45,6 +63,15 @@ function AssignReviewers({applicationId}) {
 
   return (
     <>
+      {existingReviewers.length>0 && (
+        <div>
+          <h2>Existing Reviewers:</h2>
+          {existingReviewers.map((reviewer) => (
+            <div key={reviewer.id}>{reviewer.username}</div>
+          ))}
+        <br/><br/>
+        </div>
+      )}
       <div>
         <div className="form-group">
           <label htmlFor="riskLevel">Select High or Low risk</label>

@@ -13,7 +13,6 @@ router.get("/users", async (req, res) => {
   }
 });
 
-
 // Get user by Google-ID
 router.get("/users/:userId", async (req, res) => {
   const { userId } = req.params;
@@ -24,7 +23,7 @@ router.get("/users/:userId", async (req, res) => {
     ]);
 
     if (user.rows.length === 0) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(501).json({ error: "User not found" });
     }
 
     res.json(user.rows[0]);
@@ -44,7 +43,7 @@ router.get("/users/userID/:userId", async (req, res) => {
     ]);
 
     if (user.rows.length === 0) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(500).json({ error: "User not found" });
     }
 
     res.json(user.rows[0]);
@@ -53,8 +52,6 @@ router.get("/users/userID/:userId", async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
-
-
 
 // Update user role
 router.put("/users/:userId/edit-role", async (req, res) => {
@@ -74,44 +71,5 @@ router.put("/users/:userId/edit-role", async (req, res) => {
   }
 });
 
-// POST route to assign reviewers
-router.post("/users/assign-reviewer", async (req, res) => {
-  try {
-    const { applicationId, reviewers, role } = req.body;
-
-    for (const reviewer of reviewers) {
-      // Search for the user with the specified email in the users table
-      const userQuery = await pool.query(
-        "SELECT user_id FROM users WHERE email = $1",
-        [reviewer]
-      );
-
-      // Check if the query returned any results
-      if (userQuery.rows.length === 0) {
-        return res
-          .status(400)
-          .json({ error: `User with email ${reviewer} not found` });
-      }
-
-      const userId = userQuery.rows[0].user_id;
-
-      // Insert the data into the user_roles table
-      await pool.query(
-        "INSERT INTO user_roles (user_id, role, application_id) VALUES ($1, $2, $3)",
-        [userId, role, applicationId]
-      );
-    }
-    //Update the status of the application to Reviewers Assigned
-    await pool.query(
-      "UPDATE applications SET status = 'Reviewers Assigned' WHERE id = $1",
-      [applicationId]
-    );
-    res.status(200).json({ message: "Reviewers assigned successfully" });
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).json({ error: "Internal server error" });
-  }
-  
-});
 
 module.exports = router;

@@ -64,8 +64,35 @@ const Dashboard = () => {
       return "Unknown";
     }
   };
+  const approve = async (applicationId) => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_SERVER_URL}/api/applications/update-status/${applicationId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ status: "Approved" }), // Update the status as needed
+        }
+      );
   
- 
+      if (!response.ok) {
+        throw new Error(`Error updating status: ${response.statusText}`);
+      }
+  
+      // Assuming the status is updated successfully, update the UI accordingly
+      const updatedApplications = applications.map((app) =>
+        app.id === applicationId ? { ...app, status: "Approved" } : app
+      );
+      setApplications(updatedApplications);
+    } catch (error) {
+      console.error(error.message);
+      // Handle error or show notification to the user
+    }
+  };
+  
+
   // Function to handle search term changes
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -133,9 +160,10 @@ const Dashboard = () => {
                           >
                             Assign Reviewers
                           </button>
+
                           <button
                             className="btn"
-                            onClick={() => console.log("Approve")}
+                         onClick={() => approve(application.id)}
                           >
                             Approve
                           </button>

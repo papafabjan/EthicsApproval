@@ -472,6 +472,10 @@ const Form = () => {
   const renderFormStep = () => {
     switch (step) {
       case 0:
+        //if application is being reviewed there is no reason to show the explanation page
+        if (mode === "view") {
+          setStep(1);
+        }
         return (
           <div>
             <Pg0 formik={formik} />

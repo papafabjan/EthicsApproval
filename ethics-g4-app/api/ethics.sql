@@ -36,6 +36,12 @@ CREATE TABLE comments (
   application_id INTEGER REFERENCES applications(id) NOT NULL
 );
 
+CREATE TABLE user_roles (
+  user_id INTEGER REFERENCES users (user_id),
+  role VARCHAR(255) NOT NULL,
+  application_id INTEGER  REFERENCES applications (id)
+);
+
 
 
 CREATE TABLE applications_test (
@@ -87,6 +93,13 @@ CREATE TABLE applications_test (
 -- ('Panagiotis Karalis', 'example.link.com', '786348326542'),
 -- ('Markos Darlas Mandravelis', 'example.link.com', '72346279346992'),
 -- ('Marios Polyzoidis', 'example.link.com', '97236469729476');
+
+INSERT INTO users (username, img, google_id, email, role)
+VALUES
+  ('Kostas Dimopoulos', 'img_url_1', '123', 'k.dimopoulos@york.citycollege.eu', 'role_1'),
+  ('Dimitris Dranidis', 'img_url_2', '1234', 'dranidis@york.citycollege.eu', 'role_2'),
+  ('Odysseas Efremidis', 'img_url_3', '12345', 'oefremidis@athtech.gr', 'role_3'),
+  ('Dimitris Irakleous', 'img_url_4', '123456', 'diracleous@athtech.gr', 'role_4');
 
 
 INSERT INTO applications ( body, status, date, applicant_id)

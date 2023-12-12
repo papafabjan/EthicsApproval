@@ -101,12 +101,17 @@ router.post("/users/assign-reviewer", async (req, res) => {
         [userId, role, applicationId]
       );
     }
-
+    //Update the status of the application to Reviewers Assigned
+    await pool.query(
+      "UPDATE applications SET status = 'Reviewers Assigned' WHERE id = $1",
+      [applicationId]
+    );
     res.status(200).json({ message: "Reviewers assigned successfully" });
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ error: "Internal server error" });
   }
+  
 });
 
 module.exports = router;

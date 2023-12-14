@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
 import { UserContext } from "../components/UserContext";
-import { Link } from "react-router-dom";
 import StyledMyApplications from "../styled/MyApplications.styled";
 import { format } from "date-fns";
 

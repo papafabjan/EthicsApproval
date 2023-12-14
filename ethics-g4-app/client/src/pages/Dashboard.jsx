@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect, useContext } from "react";
 import StyledDashboard from "../styled/Dashboard.styled";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
-import MyForm from "../components/form-pages/Form";
 import AssignReviewers from "./AssignReviewers";
+import { UserContext } from "../components/UserContext";
 
-// {navigate('../pages/Application.jsx', element={<Application/>}, {replace: true})}
 const Dashboard = () => {
   const [applications, setApplications] = useState([]);
   const [applicantNames, setApplicantNames] = useState({});
@@ -15,41 +13,100 @@ const Dashboard = () => {
   const [showAssignReviewers, setShowAssignReviewers] = useState(false);
   const [selectedApplicationId, setSelectedApplicationId] = useState(null);
 
-  // Fetch applications from your API
-  useEffect(() => {
-    const fetchApplications = async () => {
-      try {
-        const response = await fetch(
-          `${import.meta.env.VITE_SERVER_URL}/api/applications`
+  const sessionUser = useContext(UserContext);
+
+ if (sessionUser.role === "staff") {
+   // Fetch applications from the API
+   useEffect(() => {
+     const fetchApplications = async () => {
+       try {
+         await fetchSupervisorApplications();
+   
+         // Fetch and store applicant names for the supervisor applications
+         const namesPromises = applications.map(async (application) => {
+           const applicantName = await fetchApplicantName(
+             application.applicant_id
+           );
+           setApplicantNames((prevNames) => ({
+             ...prevNames,
+             [application.applicant_id]: applicantName,
+           }));
+         });
+   
+         // Wait for all names to be fetched
+         await Promise.all(namesPromises);
+       } catch (error) {
+         console.error(error.message);
+       }
+     };
+   
+     const delay = 1000; // Delay in milliseconds (adjust as needed)
+     const timeoutId = setTimeout(() => {
+       fetchApplications();
+     }, delay);
+   
+     return () => {
+       clearTimeout(timeoutId); // Clean up the timeout on component unmount
+     };
+   }, [applications]); // Add applications as a dependency
+ }
+
+  //fetch applications where user is a supervisor
+  const fetchSupervisorApplications = async () => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_SERVER_URL}/api/supervisor/applications/${sessionUser.id}`
+      );
+      if (!response.ok) {
+        throw new Error(
+          `Error fetching supervisor applications: ${response.statusText}`
         );
-        if (!response.ok) {
-          throw new Error(
-            `Error fetching applications: ${response.statusText}`
-          );
-        }
-        const data = await response.json();
-        setApplications(data);
-
-        // Fetch and store applicant names
-        const namesPromises = data.map(async (application) => {
-          const applicantName = await fetchApplicantName(
-            application.applicant_id
-          );
-          setApplicantNames((prevNames) => ({
-            ...prevNames,
-            [application.applicant_id]: applicantName,
-          }));
-        });
-
-        // Wait for all names to be fetched
-        await Promise.all(namesPromises);
-      } catch (error) {
-        console.error(error.message);
       }
-    };
+      const data = await response.json();
+      setApplications(data);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
 
-    fetchApplications();
-  }, []);
+  if (sessionUser.role === "admin") {
+    // Fetch applications from your API
+    useEffect(() => {
+      const fetchApplications = async () => {
+        try {
+          const response = await fetch(
+            `${import.meta.env.VITE_SERVER_URL}/api/applications`
+          );
+          if (!response.ok) {
+            throw new Error(
+              `Error fetching applications: ${response.statusText}`
+            );
+          }
+          const data = await response.json();
+          setApplications(data);
+
+          // Fetch and store applicant names
+          const namesPromises = data.map(async (application) => {
+            const applicantName = await fetchApplicantName(
+              application.applicant_id
+            );
+            setApplicantNames((prevNames) => ({
+              ...prevNames,
+              [application.applicant_id]: applicantName,
+            }));
+          });
+
+          // Wait for all names to be fetched
+          await Promise.all(namesPromises);
+        } catch (error) {
+          console.error(error.message);
+        }
+      };
+
+      fetchApplications();
+    }, []);
+  }
+  
 
   const fetchApplicantName = async (applicantId) => {
     try {
@@ -68,37 +125,34 @@ const Dashboard = () => {
     }
   };
 
+  const deleteApplication = async (applicationId) => {
+    try {
+      const response = await fetch(
+        `${
+          import.meta.env.VITE_SERVER_URL
+        }/api/applications/delete/${applicationId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-
-const deleteApplication = async (applicationId) => {
-  try {
-    const response = await fetch(
-      `${
-        import.meta.env.VITE_SERVER_URL
-      }/api/applications/delete/${applicationId}`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
+      if (!response.ok) {
+        throw new Error(`Error deleting application: ${response.statusText}`);
       }
-    );
-
-    if (!response.ok) {
-      throw new Error(`Error deleting application: ${response.statusText}`);
+    } catch (error) {
+      console.error("Error deleting application:", error.message);
     }
-  } catch (error) {
-    console.error("Error deleting application:", error.message);
-
-  }
-};
-
-
+  };
 
   const approve = async (applicationId) => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_SERVER_URL}/api/applications/update-status/${applicationId}`,
+        `${
+          import.meta.env.VITE_SERVER_URL
+        }/api/applications/update-status/${applicationId}`,
         {
           method: "PUT",
           headers: {
@@ -107,11 +161,11 @@ const deleteApplication = async (applicationId) => {
           body: JSON.stringify({ status: "Approved" }), // Update the status as needed
         }
       );
-  
+
       if (!response.ok) {
         throw new Error(`Error updating status: ${response.statusText}`);
       }
-  
+
       // Assuming the status is updated successfully, update the UI accordingly
       const updatedApplications = applications.map((app) =>
         app.id === applicationId ? { ...app, status: "Approved" } : app
@@ -123,21 +177,20 @@ const deleteApplication = async (applicationId) => {
     }
   };
 
-
   // Function to handle search term changes
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
-
+  
   // Filter applications based on search term
   const filteredApplications = applications.filter((application) => {
     const applicantName = applicantNames[application.applicant_id];
     return (
       applicantName &&
       applicantName.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  });
-
+      );
+    });
+    
   return (
     <>
       <StyledDashboard>

@@ -21,7 +21,10 @@ import MyApplications from "./pages/MyApplications";
 
 function App() {
   const user = useContext(UserContext);
+  const loggedIn = user && user.loggedIn;
   const isAdmin = user && user.role === "admin";
+  const showDashboard =
+    user && (user.role === "admin" || user.role === "staff");
   return (
     <>
       <ThemeProvider theme={cityTheme}>
@@ -33,7 +36,7 @@ function App() {
                 <Route index element={<Home />} />
                 {isAdmin && (
                   <Route path="admindashboard" element={<AdminDashboard />} />
-                )}
+                  )}
                 <Route path="contact" element={<Contact />} />
                 <Route path="guides" element={<Guides />} />
                 <Route path="application" element={<Form />} />
@@ -41,12 +44,16 @@ function App() {
                 <Route
                   path="document_templates"
                   element={<Document_Templates />}
-                />
+                  />
                 <Route path="guides/applicant" element={<Applicant />} />
                 <Route path="guides/supervisor" element={<Supervisor />} />
                 <Route path="guides/reviewer" element={<Reviewer />} />
-                <Route path="dashboard" element={<Dashboard />} />
-                <Route path="myapplications" element={<MyApplications />} />
+                  {showDashboard && (
+                    <Route path="dashboard" element={<Dashboard />} />
+                    )}
+                    {loggedIn && (
+                      <Route path="myapplications" element={<MyApplications />} />
+                    )}
                 <Route path="*" element={<NoPage />} />
               </Route>
             </Routes>

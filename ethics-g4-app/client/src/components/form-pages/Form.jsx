@@ -303,6 +303,7 @@ const Form = () => {
   });
 
   const [step, setStep] = React.useState(0);
+  const loggedIn = sessionUser && sessionUser.loggedIn;
 
   const handleStart = () => {
     setStep(1);
@@ -508,12 +509,12 @@ const Form = () => {
           </div>
         );
       default:
-        // Render other steps (Pg1, Pg2, etc.)
-        return (
-          <div>
+        
+        if(loggedIn){
+
+          return (
+            <div>
             <h1>Form Page {step}</h1>
-            {/* Import and render the appropriate component for each step */}
-            {/* Example: */}
             {step === 1 && (
               <Pg1
                 formik={formik}
@@ -583,6 +584,9 @@ const Form = () => {
             <pre>{JSON.stringify(formik.values, null, 3)}</pre>
           </div>
         );
+      }else{
+        return <div>Please Sign In To Continue</div>
+      }
     }
   };
 

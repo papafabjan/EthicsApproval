@@ -5,7 +5,10 @@ import React, { useContext } from "react";
 
 const Sidebar = () => {
   const user = useContext(UserContext);
+  const loggedIn = user && user.loggedIn;
   const isAdmin = user && user.role === "admin";
+  const showDashboard =
+    user && (user.role === "admin" || user.role === "staff");
 
   return (
     <>
@@ -55,17 +58,22 @@ const Sidebar = () => {
         </Link>
       </div>
 
-      <div className="icon-title">
-        <Link to="/dashboard">
-          <i className="fa fa-table-columns" aria-hidden="true"></i>Dashboard
-        </Link>
-      </div>
+      {showDashboard && (
+        <div className="icon-title">
+          <Link to="/dashboard">
+            <i className="fa fa-table-columns" aria-hidden="true"></i>Dashboard
+          </Link>
+        </div>
+      )}
 
-      <div className="icon-title">
-        <Link to="/myapplications">
-          <i className="fa fa-pen-to-square" aria-hidden="true"></i>My Applications
-        </Link>
-      </div>
+      {loggedIn && (
+        <div className="icon-title">
+          <Link to="/myapplications">
+            <i className="fa fa-pen-to-square" aria-hidden="true"></i>My
+            Applications
+          </Link>
+        </div>
+      )}
     </>
   );
 };

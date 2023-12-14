@@ -70,9 +70,7 @@ const Dashboard = () => {
   const approve = async (applicationId) => {
     try {
       const response = await fetch(
-        `${
-          import.meta.env.VITE_SERVER_URL
-        }/api/applications/update-status/${applicationId}`,
+        `${import.meta.env.VITE_SERVER_URL}/api/applications/update-status/${applicationId}`,
         {
           method: "PUT",
           headers: {
@@ -81,11 +79,11 @@ const Dashboard = () => {
           body: JSON.stringify({ status: "Approved" }), // Update the status as needed
         }
       );
-
+  
       if (!response.ok) {
         throw new Error(`Error updating status: ${response.statusText}`);
       }
-
+  
       // Assuming the status is updated successfully, update the UI accordingly
       const updatedApplications = applications.map((app) =>
         app.id === applicationId ? { ...app, status: "Approved" } : app
@@ -96,6 +94,7 @@ const Dashboard = () => {
       // Handle error or show notification to the user
     }
   };
+
 
   // Function to handle search term changes
   const handleSearch = (event) => {
@@ -132,77 +131,60 @@ const Dashboard = () => {
             <table>
               <tbody>
                 {filteredApplications.map((application) => (
-                  <tr key={application.id}>
-                    <td>
-                      <div className="row">
-                        <div className="application">
-                          <p>{applicantNames[application.applicant_id]}</p>
-                        </div>
-                        <div className="date">
-                          <p>
-                            {format(new Date(application.date), "dd/MM/yyyy")}
-                          </p>
-                        </div>
-                        <div className="status">
-                          <p>{application.status}</p>
-                        </div>
-                        <div className="actions">
-                          <button
+               
+        
+
+                    <tr key={application.id}>
+                      <td>
+                        <div className="row">
+                          <div className="application">
+                            <p>{applicantNames[application.applicant_id]}</p>
+                          </div>
+                          <div className="date">
+                            <p>
+                              {format(new Date(application.date), "dd/MM/yyyy")}
+                            </p>
+                          </div>
+                          <div className="status">
+                            <p>{application.status}</p>
+                          </div>
+                          <div className="actions">
+                            <button
+                              className="btn"
+                              onClick={() =>
+                                navigate(`/application/${application.id}`, {
+                                  state: { mode: "view" },
+                                })
+                              }
+                            >
+                              View/Comment
+                            </button>
+                            <button
+                              className="btn"
+                              onClick={() => {
+                                setShowAssignReviewers((prev) => !prev);
+                                setSelectedApplicationId(application.id);
+                              }}
+                            >
+                              Assign Reviewers
+                            </button>
+                            <button
                             className="btn"
-                            onClick={() =>
-                              navigate(`/application/${application.id}`, {
-                                state: { mode: "view" },
-                              })
-                            }
-                          >
-                            View/Comment
-                          </button>
-                          <button
-                            className="btn"
-                            onClick={() => {
-                              setShowAssignReviewers((prev) => !prev);
-                              setSelectedApplicationId(application.id);
-                            }}
-                          >
-                            Assign Reviewers
-                          </button>
-                          <button
-                            className="btn"
-                            onClick={() => console.log("Approve")}
+                         onClick={() => approve(application.id)}
                           >
                             Approve
                           </button>
-                        </div>
-                      </div>
-
-                      <div className="actions">
-                        <button
-                          className="btn"
-                          onClick={() =>
-                            navigate(`/application/${application.id}`, {
-                              state: { mode: "view" },
-                            })
-                          }
-                        >
-                          View/Comment
-                        </button>
-
-                        <button
-                          className="btn"
-                          onClick={() => approve(application.id)}
-                        >
-                          Approve
-                        </button>
-
+                          </div>
+                        </div>   
                         <div>
                           {showAssignReviewers &&
                             selectedApplicationId === application.id && (
-                              <AssignReviewers applicationId={application.id} />
-                            )}
+                              <AssignReviewers applicationId={application.id}/>
+                              )}
+
                         </div>
-                      </div>
-                    </td>
-                  </tr>
+                      </td>
+                    </tr>
                 ))}
               </tbody>
             </table>

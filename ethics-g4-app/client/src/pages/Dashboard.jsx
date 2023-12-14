@@ -116,6 +116,7 @@ const Dashboard = () => {
         <div>
           <h1>Dashboard</h1>
           <input
+            className="form-control me-2"
             type="text"
             placeholder="Search by applicant name"
             value={searchTerm}

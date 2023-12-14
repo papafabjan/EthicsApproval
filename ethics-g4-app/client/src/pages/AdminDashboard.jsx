@@ -41,7 +41,7 @@ const AdminDashboard = () => {
 
   return (
     <div>
-      <Link to={`${import.meta.env.VITE_SERVER_URL}/api/applications`}>
+      <Link to={`${import.meta.env.VITE_SERVER_URL}/api/users`}>
         <h1>Admin Dashboard</h1>
       </Link>
       <input
@@ -69,21 +69,15 @@ const AdminDashboard = () => {
               </button>
               <button
                 className="btn"
-                onClick={() => updateUserRole(user.user_id, "student")}
+                onClick={() => updateUserRole(user.user_id, "staff")}
               >
-                Change to Student
+                Change to Staff
               </button>
               <button
                 className="btn"
-                onClick={() => updateUserRole(user.user_id, "supervisor")}
+                onClick={() => updateUserRole(user.user_id, "user")}
               >
-                Change to Supervisor
-              </button>
-              <button
-                className="btn"
-                onClick={() => updateUserRole(user.user_id, "reviewer")}
-              >
-                Change to Reviewer
+                Change to User
               </button>
             </div>
           </li>

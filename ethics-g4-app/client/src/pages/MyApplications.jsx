@@ -102,6 +102,7 @@ const MyApplications = () => {
         <div>
           <h1>My Applications</h1>
           <input
+            className="form-control me-2"
             type="text"
             placeholder="Search applications"
             value={searchTerm}

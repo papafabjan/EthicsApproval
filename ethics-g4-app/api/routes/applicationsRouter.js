@@ -93,6 +93,33 @@ router.post("/applications/add", async (req, res) => {
 
     const applicationId = newApplication.rows[0].id;
 
+    // Find supervisor's user_id using the email
+    const supervisorEmail = values.supervisor; 
+    const supervisorUser = await pool.query(
+      `
+      SELECT user_id FROM users WHERE email = $1;
+      `,
+      [supervisorEmail]
+    );
+
+    if (supervisorUser.rows.length === 0) {
+      // Handle the case where the supervisor's email is not found
+      res.status(400).json({ success: false, error: "Supervisor not found" });
+      return;
+    }
+
+    const supervisorUserId = supervisorUser.rows[0].user_id;
+
+    // Insert into user_roles
+    const assignSupervisor = await pool.query(
+      `
+      INSERT INTO user_roles (user_id, role, application_id)
+      VALUES ($1, $2, $3)
+      RETURNING *;
+      `,
+      [supervisorUserId, 'supervisor', applicationId]
+    );
+
     // Insert application content
     const contentEntries = Object.entries(values);
 
@@ -119,7 +146,8 @@ router.post("/applications/add", async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
-// Assuming you have an initialized router and pool (database connection pool)
+
+
 
 router.put("/applications/update-status/:id", async (req, res) => {
   const { id } = req.params;
@@ -142,12 +170,6 @@ router.put("/applications/update-status/:id", async (req, res) => {
   }
 });
 
-
-
-// Add a new application
-router.post("/applications/add", async (req, res) => {
-  
-});
 
 // Update application body
 // router.put("/applications/:applicationId/edit-body", async (req, res) => {

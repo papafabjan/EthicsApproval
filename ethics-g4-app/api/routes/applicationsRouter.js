@@ -119,6 +119,30 @@ router.post("/applications/add", async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+// Assuming you have an initialized router and pool (database connection pool)
+
+router.put("/applications/update-status/:id", async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  try {
+    const updateStatusQuery = `
+      UPDATE applications
+      SET status = $1, date = $2 -- Add other columns if needed
+      WHERE id = $3
+      RETURNING *;
+    `;
+    const currentDate = new Date(); // Get the current date
+    const updatedApplication = await pool.query(updateStatusQuery, [status, currentDate, id]);
+
+    res.json({ success: true, updatedApplication: updatedApplication.rows[0] });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+
 
 // Add a new application
 router.post("/applications/add", async (req, res) => {

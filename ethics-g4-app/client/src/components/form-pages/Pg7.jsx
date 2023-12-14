@@ -1,5 +1,7 @@
 import Dropzone from "react-dropzone";
 import Thumb from "../Thumb";
+import React, { useState } from "react";
+import Comment from "../Comment";
 
 
 const dropzoneStyle = {
@@ -14,8 +16,16 @@ const dropzoneStyle = {
 
 
 
-export const Pg7 = ({ formik }) => {
+export const Pg7 = ({ formik, mode }) => {
+  const [comment, setComment] = useState("");
 
+  const handleCommentSave = (fieldName) => {
+    // Save the comment to formik or perform any other actions as needed
+    formik.setValues({
+      ...formik.values,
+      [fieldName]: comment,
+    });
+  };
   const handleFileChange = (event, initialValuesName) => {
     const file = event.target.files[0];
     formik.setFieldValue(initialValuesName, file);
@@ -39,7 +49,18 @@ export const Pg7 = ({ formik }) => {
           className="form-control"
           id="ListofQuestions"
           onChange={(e) => handleFileChange(e, "ListofQuestions")}
+          disabled={mode === "view"}
         />
+         {/* Comment component for the "ListofQuestions" field */}
+        {mode === "view" && (
+            <Comment
+              fieldName="ListofQuestions"
+              comment={formik.values.ListofQuestionsComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
         <Thumb file={formik.values.ListofQuestions} />
       </div>
 
@@ -48,7 +69,7 @@ export const Pg7 = ({ formik }) => {
           Any additional forms /documents you need to submit (optional)
         </label>
 
-        <Dropzone style={dropzoneStyle} onDrop={acceptedFiles => {
+        <Dropzone style={dropzoneStyle} disabled={mode === "view"} onDrop={acceptedFiles => {
           console.log(acceptedFiles);
 
           if (acceptedFiles.length === 0) {
@@ -73,7 +94,16 @@ export const Pg7 = ({ formik }) => {
         {/* {formik.values.AdditionalForms.map((file, i) => (
           <Thumb key={i} file={file} />
         ))} */}
-
+        {/* Comment component for the "AdditionalForms" field */}
+        {mode === "view" && (
+            <Comment
+              fieldName="AdditionalForms"
+              comment={formik.values.AdditionalFormsComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
       </div>
     </>
   );

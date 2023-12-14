@@ -1,5 +1,8 @@
+import React, { useState } from "react";
+import Comment from "../Comment";
+export const Pg4 = ({ formik, emphasizeFields, mode }) => {
+  const [comment, setComment] = useState("");
 
-export const Pg4 = ({ formik, emphasizeFields }) => {
   const handleRadioChange = (e, radio) => {
     formik.handleChange(e);
 
@@ -7,6 +10,14 @@ export const Pg4 = ({ formik, emphasizeFields }) => {
     if (e.target.value !== "Other") {
       formik.setFieldValue(radio, "");
     }
+  };
+
+  const handleCommentSave = (fieldName) => {
+    // Save the comment to formik or perform any other actions as needed
+    formik.setValues({
+      ...formik.values,
+      [fieldName]: comment,
+    });
   };
   return (
     <>
@@ -35,7 +46,18 @@ export const Pg4 = ({ formik, emphasizeFields }) => {
                 ? "red"
                 : "",
           }}
+          disabled={mode === "view"}
         />
+          {/* Comment component for the "PotentialParticipants" field */}
+          {mode === "view" && (
+            <Comment
+              fieldName="PotentialParticipants"
+              comment={formik.values.PotentialParticipantsComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
         {formik.touched.PotentialParticipants &&
           formik.errors.PotentialParticipants && (
             <div style={{ color: "red" }}>
@@ -69,7 +91,18 @@ export const Pg4 = ({ formik, emphasizeFields }) => {
                 ? "red"
                 : "",
           }}
+          disabled={mode === "view"}
         />
+         {/* Comment component for the "RecruitingPotentialParticipants" field */}
+         {mode === "view" && (
+            <Comment
+              fieldName="RecruitingPotentialParticipants"
+              comment={formik.values.RecruitingPotentialParticipantsComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
         {formik.touched.RecruitingPotentialParticipants &&
           formik.errors.RecruitingPotentialParticipants && (
             <div style={{ color: "red" }}>
@@ -77,6 +110,8 @@ export const Pg4 = ({ formik, emphasizeFields }) => {
             </div>
           )}
       </div>
+
+
       <div className="form-group">
         <label htmlFor="Payment">
           Payment <span style={{ color: "red" }}>*</span>
@@ -91,6 +126,7 @@ export const Pg4 = ({ formik, emphasizeFields }) => {
                 value="Yes"
                 checked={formik.values.Payment === "Yes"}
                 onChange={(e) => handleRadioChange(e, "otherPaymentOption")}
+                disabled={mode === "view"}
               />
               Yes
             </label>
@@ -103,6 +139,7 @@ export const Pg4 = ({ formik, emphasizeFields }) => {
                 value="No"
                 checked={formik.values.Payment === "No"}
                 onChange={(e) => handleRadioChange(e, "otherPaymentOption")}
+                disabled={mode === "view"}
               />
               No
             </label>
@@ -116,6 +153,7 @@ export const Pg4 = ({ formik, emphasizeFields }) => {
                 value="Other"
                 checked={formik.values.Payment === "Other"}
                 onChange={(e) => handleRadioChange(e, "otherPaymentOption")}
+                disabled={mode === "view"}
               />
               Other:
             </label>
@@ -145,6 +183,16 @@ export const Pg4 = ({ formik, emphasizeFields }) => {
                 </div>
               )}
           </li>
+          {/* Comment component for the "Payment" field */}
+         {mode === "view" && (
+            <Comment
+              fieldName="Payment"
+              comment={formik.values.PaymentComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
         </ul>
       </div>
 
@@ -171,7 +219,18 @@ export const Pg4 = ({ formik, emphasizeFields }) => {
                 ? "red"
                 : "",
           }}
+          disabled={mode === "view"}
         />
+        {/* Comment component for the "PotentialHarm" field */}
+        {mode === "view" && (
+            <Comment
+              fieldName="PotentialHarm"
+              comment={formik.values.PotentialHarmComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
         {formik.touched.PotentialHarm && formik.errors.PotentialHarm && (
           <div style={{ color: "red" }}>{formik.errors.PotentialHarm}</div>
         )}
@@ -201,6 +260,7 @@ export const Pg4 = ({ formik, emphasizeFields }) => {
                 onChange={(e) =>
                   handleRadioChange(e, "otherVulnerableParticipantsOptions")
                 }
+                disabled={mode === "view"}
               />
               Yes, it involves children and/or adolescents
             </label>
@@ -217,6 +277,7 @@ export const Pg4 = ({ formik, emphasizeFields }) => {
                 onChange={(e) =>
                   handleRadioChange(e, "otherVulnerableParticipantsOptions")
                 }
+                disabled={mode === "view"}
               />
               Yes, it involve adults lacking mental capability
             </label>
@@ -231,6 +292,7 @@ export const Pg4 = ({ formik, emphasizeFields }) => {
                 onChange={(e) =>
                   handleRadioChange(e, "otherVulnerableParticipantsOptions")
                 }
+                disabled={mode === "view"}
               />
               No, it involves adults with no vulnerabilities
             </label>
@@ -245,6 +307,7 @@ export const Pg4 = ({ formik, emphasizeFields }) => {
                 onChange={(e) =>
                   handleRadioChange(e, "otherVulnerableParticipantsOptions")
                 }
+                disabled={mode === "view"}
               />
               Other
             </label>
@@ -263,8 +326,19 @@ export const Pg4 = ({ formik, emphasizeFields }) => {
                       ? "red"
                       : "",
                 }}
+                
               />
             )}
+            {/* Comment component for the "VulnerableParticipants" field */}
+        {mode === "view" && (
+            <Comment
+              fieldName="VulnerableParticipants"
+              comment={formik.values.VulnerableParticipantsComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
             {formik.values.Payment === "Other" &&
               formik.touched.otherVulnerableParticipantsOptions &&
               formik.errors.otherVulnerableParticipantsOptions && (

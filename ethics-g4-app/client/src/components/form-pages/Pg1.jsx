@@ -95,12 +95,25 @@ function Pg1({ formik, emphasizeFields, mode }) {
                     ? "red"
                     : "",
               }}
+              disabled={mode === "view"}
             />
+            {/* Comment component for the "middleName" field */}
+             {mode === "view" && (
+            <Comment
+              fieldName="middleName"
+              comment={formik.values.middleNameComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
             {formik.touched.middleName && formik.errors.middleName && (
               <div style={{ color: "red" }}>{formik.errors.middleName}</div>
             )}
           </div>
         )}
+  
+
 
         <div className="form-group">
           <label htmlFor="lastName">
@@ -121,11 +134,23 @@ function Pg1({ formik, emphasizeFields, mode }) {
                   ? "red"
                   : "",
             }}
+            disabled={mode === "view"}
           />
           {formik.touched.lastName && formik.errors.lastName && (
             <div style={{ color: "red" }}>{formik.errors.lastName}</div>
           )}
         </div>
+             {/* Comment component for the "lastName" field */}
+  {mode === "view" && (
+            <Comment
+              fieldName="lastName"
+              comment={formik.values.lastNameComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
+
 
         <div className="form-group">
           <label htmlFor="email">
@@ -144,11 +169,24 @@ function Pg1({ formik, emphasizeFields, mode }) {
               borderColor:
                 emphasizeFields?.email && formik.touched?.email ? "red" : "",
             }}
+            disabled={mode === "view"}
           />
           {formik.touched.email && formik.errors.email && (
             <div style={{ color: "red" }}>{formik.errors.email}</div>
           )}
         </div>
+            {/* Comment component for the "email" field */}
+            {mode === "view" && (
+            <Comment
+              fieldName="email"
+              comment={formik.values.emailComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
+
+
 
         <div className="form-group">
           <label htmlFor="studentRegistration">
@@ -171,8 +209,21 @@ function Pg1({ formik, emphasizeFields, mode }) {
                   ? "red"
                   : "",
             }}
+            disabled={mode === "view"}
           />
         </div>
+               {/* Comment component for the "studentRegistration" field */}
+            {mode === "view" && (
+            <Comment
+              fieldName="studentRegistration"
+              comment={formik.values.studentRegistrationComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
+
+
 
         <div className="form-group">
           <label htmlFor="programme">
@@ -191,6 +242,7 @@ function Pg1({ formik, emphasizeFields, mode }) {
                   ? "red"
                   : "",
             }}
+            disabled={mode === "view"}
           >
             <option value="" label="Select a programme" />
             <option
@@ -220,6 +272,18 @@ function Pg1({ formik, emphasizeFields, mode }) {
           )}
         </div>
       </div>
+             {/* Comment component for the "programme" field */}
+             {mode === "view" && (
+            <Comment
+              fieldName="programme"
+              comment={formik.values.programmeComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
+
+
       <div className="form-group">
         <label htmlFor="supervisor">Your supervisor</label>
         <select
@@ -229,6 +293,7 @@ function Pg1({ formik, emphasizeFields, mode }) {
           value={formik.values.supervisor}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
+          disabled={mode === "view"}
         >
           <option value="" label="Select a supervisor" />
           <option
@@ -283,7 +348,10 @@ function Pg1({ formik, emphasizeFields, mode }) {
             value="s.veloudis@york.citycollege.eu"
             label="Simos Veloudis <s.veloudis@york.citycollege.eu>"
           />
+          
+      
         </select>
+        
         {formik.touched.supervisor && formik.errors.supervisor && (
           <div style={{ color: "red" }}>{formik.errors.supervisor}</div>
         )}

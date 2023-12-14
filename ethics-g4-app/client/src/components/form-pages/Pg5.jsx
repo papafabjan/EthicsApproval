@@ -1,7 +1,17 @@
 import Thumb from "../Thumb";
+import React, { useState } from "react";
+import Comment from "../Comment";
 
-export const Pg5 = ({ formik }) => {
+export const Pg5 = ({ formik, mode }) => {
+  const [comment, setComment] = useState("");
 
+  const handleCommentSave = (fieldName) => {
+    // Save the comment to formik or perform any other actions as needed
+    formik.setValues({
+      ...formik.values,
+      [fieldName]: comment,
+    });
+  };
   const handleFileChange = (event, initialValuesName) => {
     const file = event.target.files[0];
     formik.setFieldValue(initialValuesName, file);
@@ -31,9 +41,22 @@ export const Pg5 = ({ formik }) => {
               className="form-control"
               id="ParentalConsent"
               onChange={(e) => handleFileChange(e, "ParentalConsent")}
+              disabled={mode === "view"}
             />
+              {/* Comment component for the "ParentalConsent" field */}
+          {mode === "view" && (
+            <Comment
+              fieldName="ParentalConsent"
+              comment={formik.values.ParentalConsentComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
             <Thumb file={formik.values.ParentalConsent} />
           </div>
+
+
           <div className="form-group">
             <label htmlFor="ParentalInformation">
               <h2>
@@ -52,9 +75,23 @@ export const Pg5 = ({ formik }) => {
               className="form-control"
               id="ParentalInformation"
               onChange={(e) => handleFileChange(e, "ParentalInformation")}
+              disabled={mode === "view"}
             />
+             {/* Comment component for the "ParentalInformation" field */}
+            {mode === "view" && (
+            <Comment
+              fieldName="ParentalInformation"
+              comment={formik.values.ParentalInformationComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
             <Thumb file={formik.values.ParentalInformation} />
           </div>
+
+
+
           <div className="form-group">
             <label htmlFor="ChildInformation">
               <h2>
@@ -74,9 +111,23 @@ export const Pg5 = ({ formik }) => {
               className="form-control"
               id="ChildInformation"
               onChange={(e) => handleFileChange(e, "ChildInformation")}
+              disabled={mode === "view"}
             />
+            {/* Comment component for the "ChildInformation" field */}
+            {mode === "view" && (
+            <Comment
+              fieldName="ChildInformation"
+              comment={formik.values.ChildInformationComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
             <Thumb file={formik.values.ChildInformation} />
           </div>
+
+
+
           <div className="form-group">
             <label htmlFor="HeadTeacherConsent">
               <h2>Head Teacher Consent Form (optional)</h2>
@@ -92,9 +143,22 @@ export const Pg5 = ({ formik }) => {
               className="form-control"
               id="HeadTeacherConsent"
               onChange={(e) => handleFileChange(e, "HeadTeacherConsent")}
+              disabled={mode === "view"}
             />
+            {/* Comment component for the "HeadTeacherConsent" field */}
+            {mode === "view" && (
+            <Comment
+              fieldName="HeadTeacherConsent"
+              comment={formik.values.HeadTeacherConsentComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
             <Thumb file={formik.values.HeadTeacherConsent} />
           </div>
+
+
           <div className="form-group">
             <label htmlFor="HeadteacherInformation">
               <h2>Head Teacher Information Form (optional)</h2>
@@ -110,13 +174,26 @@ export const Pg5 = ({ formik }) => {
               className="form-control"
               id="HeadteacherInformation"
               onChange={(e) => handleFileChange(e, "HeadteacherInformation")}
+              disabled={mode === "view"}
             />
             <Thumb file={formik.values.HeadteacherInformation} />
+            {/* Comment component for the "HeadteacherInformation" field */}
+            {mode === "view" && (
+            <Comment
+              fieldName="HeadteacherInformation"
+              comment={formik.values.HeadteacherInformationComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
           </div>
         </>
       ) : formik.values.VulnerableParticipants === "YesAdultsMental" ? (
         <>
           <h5>YesAdultsMental got selected</h5>
+
+
           <div className="form-group">
             <label htmlFor="AccessibleConsentMaterial">
               <h2>
@@ -139,9 +216,23 @@ export const Pg5 = ({ formik }) => {
               className="form-control"
               id="AccessibleConsentMaterial"
               onChange={(e) => handleFileChange(e, "AccessibleConsentMaterial")}
+              disabled={mode === "view"}
             />
+            {/* Comment component for the "AccessibleConsentMaterial" field */}
+            {mode === "view" && (
+            <Comment
+              fieldName="AccessibleConsentMaterial"
+              comment={formik.values.AccessibleConsentMaterialComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
             <Thumb file={formik.values.AccessibleConsentMaterial} />
           </div>
+
+
+
           <div className="form-group">
             <label htmlFor="ProxyConsentProcedures">
               <h2>
@@ -162,7 +253,18 @@ export const Pg5 = ({ formik }) => {
               className="form-control"
               id="ProxyConsentProcedures"
               onChange={(e) => handleFileChange(e, "ProxyConsentProcedures")}
+              disabled={mode === "view"}
             />
+            {/* Comment component for the "ProxyConsentProcedures" field */}
+            {mode === "view" && (
+            <Comment
+              fieldName="ProxyConsentProcedures"
+              comment={formik.values.ProxyConsentProceduresComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
             <Thumb file={formik.values.ProxyConsentProcedures} />
           </div>
         </>
@@ -171,6 +273,8 @@ export const Pg5 = ({ formik }) => {
       ) : (
         <>
           <h5>NoAdults/Other Participants got selected</h5>
+
+
           <div className="form-group">
             <label htmlFor="ParticipantInformation">
               <h2>
@@ -191,9 +295,22 @@ export const Pg5 = ({ formik }) => {
               className="form-control"
               id="ParticipantInformation"
               onChange={(e) => handleFileChange(e, "ParticipantInformation")}
+              disabled={mode === "view"}
             />
+            {/* Comment component for the "ParticipantInformation" field */}
+            {mode === "view" && (
+            <Comment
+              fieldName="ParticipantInformation"
+              comment={formik.values.ParticipantInformationComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
             <Thumb file={formik.values.ParticipantInformation} />
           </div>
+
+
           <div className="form-group">
             <label htmlFor="ParticipantConsent">
               <h2>
@@ -211,9 +328,22 @@ export const Pg5 = ({ formik }) => {
               className="form-control"
               id="ParticipantConsent"
               onChange={(e) => handleFileChange(e, "ParticipantConsent")}
+              disabled={mode === "view"}
             />
+            {/* Comment component for the "ParticipantConsent" field */}
+            {mode === "view" && (
+            <Comment
+              fieldName="ParticipantConsent"
+              comment={formik.values.ParticipantConsentComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
             <Thumb file={formik.values.ParticipantConsent} />
           </div>
+
+
           <div className="form-group">
             <label htmlFor="ParticipantDebriefing">
               <h2>Debriefing Form (optional)</h2>
@@ -230,9 +360,22 @@ export const Pg5 = ({ formik }) => {
               className="form-control"
               id="ParticipantDebriefing"
               onChange={(e) => handleFileChange(e, "ParticipantDebriefing")}
+              disabled={mode === "view"}
             />
+            {/* Comment component for the "ParticipantDebriefing" field */}
+            {mode === "view" && (
+            <Comment
+              fieldName="ParticipantDebriefing"
+              comment={formik.values.ParticipantDebriefingComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
             <Thumb file={formik.values.ParticipantDebriefing} />
           </div>
+
+
           <div className="form-group">
             <label htmlFor="AccessibilityLetter">
               <h2>Accessibility Letter (Optional)</h2>
@@ -247,7 +390,18 @@ export const Pg5 = ({ formik }) => {
               className="form-control"
               id="AccessibilityLetter"
               onChange={(e) => handleFileChange(e, "AccessibilityLetter")}
+              disabled={mode === "view"}
             />
+            {/* Comment component for the "AccessibilityLetter" field */}
+            {mode === "view" && (
+            <Comment
+              fieldName="AccessibilityLetter"
+              comment={formik.values.AccessibilityLetterComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
             <Thumb file={formik.values.AccessibilityLetter} />
           </div>
         </>

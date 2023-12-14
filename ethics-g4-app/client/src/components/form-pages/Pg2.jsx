@@ -1,6 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
+import Comment from "../Comment";
 
-function Pg2({ formik, emphasizeFields}) {
+
+function Pg2({ formik, emphasizeFields, mode}) {
+  const [comment, setComment] = useState("");
+
+  const handleCommentSave = (fieldName) => {
+    // Save the comment to formik or perform any other actions as needed
+    formik.setValues({
+      ...formik.values,
+      [fieldName]: comment,
+    });
+  };
   const handleRadioChange = (e, radio) => {
     formik.handleChange(e);
 
@@ -39,11 +50,24 @@ function Pg2({ formik, emphasizeFields}) {
                 ? "red"
                 : "",
           }}
+          disabled={mode === "view"}
         />
+        {/* Comment component for the "ResearchProject" field */}
+        {mode === "view" && (
+            <Comment
+              fieldName="ResearchProject"
+              comment={formik.values.ResearchProjectComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
         {formik.touched.ResearchProject && formik.errors.ResearchProject && (
           <div style={{ color: "red" }}>{formik.errors.ResearchProject}</div>
         )}
+       
       </div>
+      
 
       <div className="form-group">
         <label htmlFor="CoApplicantName">
@@ -66,7 +90,21 @@ function Pg2({ formik, emphasizeFields}) {
                 ? "red"
                 : "",
           }}
+          disabled={mode === "view"}
         />
+         {/* Comment component for the "CoApplicantName" field */}
+         {mode === "view" && (
+            <Comment
+              fieldName="CoApplicantName"
+              comment={formik.values.CoApplicantNameComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
+        {formik.touched.ResearchProject && formik.errors.ResearchProject && (
+          <div style={{ color: "red" }}>{formik.errors.ResearchProject}</div>
+        )}
         {formik.touched.CoApplicantName && formik.errors.CoApplicantName && (
           <div style={{ color: "red" }}>{formik.errors.CoApplicantName}</div>
         )}
@@ -92,7 +130,18 @@ function Pg2({ formik, emphasizeFields}) {
                 ? "red"
                 : "",
           }}
+          disabled={mode === "view"}
         />
+         {/* Comment component for the "CoApplicantEmail" field */}
+         {mode === "view" && (
+            <Comment
+              fieldName="CoApplicantEmail"
+              comment={formik.values.CoApplicantEmailComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
         {formik.touched.CoApplicantEmail && formik.errors.CoApplicantEmail && (
           <div style={{ color: "red" }}>{formik.errors.CoApplicantName}</div>
         )}
@@ -116,7 +165,18 @@ function Pg2({ formik, emphasizeFields}) {
                 ? "red"
                 : "",
           }}
+          disabled={mode === "view"}
         />
+        {/* Comment component for the "StartDate" field */}
+        {mode === "view" && (
+            <Comment
+              fieldName="StartDate"
+              comment={formik.values.StartDateComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
         {formik.touched.StartDate && formik.errors.StartDate && (
           <div style={{ color: "red" }}>{formik.errors.StartDate}</div>
         )}
@@ -134,10 +194,21 @@ function Pg2({ formik, emphasizeFields}) {
           value={formik.values.EndDate}
           onChange={formik.handleChange}
           name="EndDate"
+          disabled={mode === "view"}
         />
+        {/* Comment component for the "EndDate" field */}
+        {mode === "view" && (
+            <Comment
+              fieldName="EndDate"
+              comment={formik.values.EndDateComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
       </div>
 
-      <div className="radio-example">
+      <div className="form-group">
         <label>
           Is the project externally funded?{" "}
           <span style={{ color: "red" }}>*</span>
@@ -149,6 +220,7 @@ function Pg2({ formik, emphasizeFields}) {
           <li>
             <label>
               <input
+              disabled={mode === "view"}
                 type="radio"
                 name="Funding"
                 value="Other"
@@ -183,6 +255,7 @@ function Pg2({ formik, emphasizeFields}) {
           <li>
             <label>
               <input
+                disabled={mode === "view"}
                 type="radio"
                 name="Funding"
                 value="No"
@@ -192,6 +265,16 @@ function Pg2({ formik, emphasizeFields}) {
               No Funding
             </label>
           </li>
+          {/* Comment component for the "Funding" field */}
+        {mode === "view" && (
+            <Comment
+              fieldName="Funding"
+              comment={formik.values.FundingComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
         </ul>
       </div>
 
@@ -214,6 +297,7 @@ function Pg2({ formik, emphasizeFields}) {
                 value="Greece"
                 checked={formik.values.Country.includes("Greece")}
                 onChange={formik.handleChange}
+                disabled={mode === "view"}
               />{" "}
               Greece
             </label>
@@ -226,6 +310,7 @@ function Pg2({ formik, emphasizeFields}) {
                 value="Bulgaria"
                 checked={formik.values.Country.includes("Bulgaria")}
                 onChange={formik.handleChange}
+                disabled={mode === "view"}
               />{" "}
               Bulgaria
             </label>
@@ -238,6 +323,7 @@ function Pg2({ formik, emphasizeFields}) {
                 value="Romania"
                 checked={formik.values.Country.includes("Romania")}
                 onChange={formik.handleChange}
+                disabled={mode === "view"}
               />{" "}
               Romania
             </label>
@@ -253,6 +339,7 @@ function Pg2({ formik, emphasizeFields}) {
                   formik.values.Country.includes("Other")
                 }
                 onChange={(e) => handleCheckboxChange(e, "OtherCountry")}
+                disabled={mode === "view"}
               />{" "}
               Other
             </label>
@@ -280,6 +367,16 @@ function Pg2({ formik, emphasizeFields}) {
                 <div style={{ color: "red" }}>{formik.errors.OtherCountry}</div>
               )}
           </li>
+          {/* Comment component for the "Country" field */}
+        {mode === "view" && (
+            <Comment
+              fieldName="Country"
+              comment={formik.values.CountryComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
         </ul>
       </div>
 
@@ -298,6 +395,7 @@ function Pg2({ formik, emphasizeFields}) {
                 value="Yes"
                 onChange={formik.handleChange}
                 checked={formik.values.HealthSocialCare === "Yes"}
+                disabled={mode === "view"}
               />{" "}
               Yes
             </label>
@@ -311,10 +409,21 @@ function Pg2({ formik, emphasizeFields}) {
                 value="No"
                 onChange={formik.handleChange}
                 checked={formik.values.HealthSocialCare === "No"}
+                disabled={mode === "view"}
               />{" "}
               No
             </label>
           </li>
+          {/* Comment component for the "HealthSocialCare" field */}
+        {mode === "view" && (
+            <Comment
+              fieldName="HealthSocialCare"
+              comment={formik.values.HealthSocialCareComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
         </ul>
       </div>
 
@@ -334,6 +443,7 @@ function Pg2({ formik, emphasizeFields}) {
                 onChange={(e) =>
                   handleRadioChange(e, "AnotherInstitutionOther")
                 }
+                disabled={mode === "view"}
               />{" "}
               No
             </label>
@@ -348,6 +458,7 @@ function Pg2({ formik, emphasizeFields}) {
                 onChange={(e) =>
                   handleRadioChange(e, "AnotherInstitutionOther")
                 }
+                disabled={mode === "view"}
               />{" "}
               Other
             </label>
@@ -363,6 +474,16 @@ function Pg2({ formik, emphasizeFields}) {
               )}
             </label>
           </li>
+            {/* Comment component for the "AnotherInstitution" field */}
+        {mode === "view" && (
+            <Comment
+              fieldName="AnotherInstitution"
+              comment={formik.values.AnotherInstitutionComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
         </ul>
       </div>
 
@@ -380,6 +501,7 @@ function Pg2({ formik, emphasizeFields}) {
                 value="Yes"
                 onChange={formik.handleChange}
                 checked={formik.values.HumanTissue === "Yes"}
+                disabled={mode === "view"}
               />{" "}
               Yes
             </label>
@@ -393,10 +515,21 @@ function Pg2({ formik, emphasizeFields}) {
                 value="No"
                 onChange={formik.handleChange}
                 checked={formik.values.HumanTissue === "No"}
+                disabled={mode === "view"}
               />{" "}
               No
             </label>
           </li>
+          {/* Comment component for the "HumanTissue" field */}
+        {mode === "view" && (
+            <Comment
+              fieldName="HumanTissue"
+              comment={formik.values.HumanTissueComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
         </ul>
       </div>
 
@@ -415,6 +548,7 @@ function Pg2({ formik, emphasizeFields}) {
                 value="Yes"
                 onChange={formik.handleChange}
                 checked={formik.values.ClinicalMedical === "Yes"}
+                disabled={mode === "view"}
               />{" "}
               Yes
             </label>
@@ -428,10 +562,21 @@ function Pg2({ formik, emphasizeFields}) {
                 value="No"
                 onChange={formik.handleChange}
                 checked={formik.values.ClinicalMedical === "No"}
+                disabled={mode === "view"}
               />{" "}
               No
             </label>
           </li>
+          {/* Comment component for the "ClinicalMedical" field */}
+        {mode === "view" && (
+            <Comment
+              fieldName="ClinicalMedical"
+              comment={formik.values.ClinicalMedicalComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
         </ul>
       </div>
 
@@ -451,6 +596,7 @@ function Pg2({ formik, emphasizeFields}) {
                 checked={formik.values.SocialCareServices === "Yes"}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
+                disabled={mode === "view"}
               />{" "}
               Yes
             </label>
@@ -465,10 +611,21 @@ function Pg2({ formik, emphasizeFields}) {
                 checked={formik.values.SocialCareServices === "No"}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
+                disabled={mode === "view"}
               />{" "}
               No
             </label>
           </li>
+          {/* Comment component for the "SocialCareServices" field */}
+        {mode === "view" && (
+            <Comment
+              fieldName="SocialCareServices"
+              comment={formik.values.SocialCareServicesComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}  
         </ul>
         {formik.touched.SocialCareServices &&
           formik.errors.SocialCareServices && (

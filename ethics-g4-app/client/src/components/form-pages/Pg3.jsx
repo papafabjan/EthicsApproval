@@ -1,5 +1,7 @@
 import Thumb from "../Thumb";
 import Dropzone from "react-dropzone";
+import React, { useState }  from "react";
+import Comment from "../Comment";
 
 const dropzoneStyle = {
   width: "100%",
@@ -10,7 +12,16 @@ const dropzoneStyle = {
   borderRadius: 5,
 }
 
-function Pg3({ formik, emphasizeFields }) {
+function Pg3({ formik, emphasizeFields, mode }) {
+  const [comment, setComment] = useState("");
+
+  const handleCommentSave = (fieldName) => {
+    // Save the comment to formik or perform any other actions as needed
+    formik.setValues({
+      ...formik.values,
+      [fieldName]: comment,
+    });
+  };
   return (
     <>
       <div className="form-group">
@@ -36,7 +47,18 @@ function Pg3({ formik, emphasizeFields }) {
                 ? "red"
                 : "",
           }}
+          disabled={mode === "view"}
         />
+         {/* Comment component for the "AimsObjectives" field */}
+        {mode === "view" && (
+            <Comment
+              fieldName="AimsObjectives"
+              comment={formik.values.AimsObjectivesComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
         {formik.touched.AimsObjectives && formik.errors.AimsObjectives && (
           <div style={{ color: "red" }}>{formik.errors.AimsObjectives}</div>
         )}
@@ -67,11 +89,24 @@ function Pg3({ formik, emphasizeFields }) {
                 ? "red"
                 : "",
           }}
+          disabled={mode === "view"}
         />
+        {/* Comment component for the "Methodology" field */}
+        {mode === "view" && (
+            <Comment
+              fieldName="Methodology"
+              comment={formik.values.MethodologyComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
         {formik.touched.Methodology && formik.errors.Methodology && (
           <div style={{ color: "red" }}>{formik.errors.Methodology}</div>
         )}
       </div>
+
+
       <div className="form-group">
         <label htmlFor="SafetyConcerns">
           Safety concerns <span style={{ color: "red" }}>*</span>
@@ -96,11 +131,23 @@ function Pg3({ formik, emphasizeFields }) {
                 ? "red"
                 : "",
           }}
+          disabled={mode === "view"}
         />
+        {/* Comment component for the "SafetyConcerns" field */}
+        {mode === "view" && (
+            <Comment
+              fieldName="SafetyConcerns"
+              comment={formik.values.SafetyConcernsComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
         {formik.touched.SafetyConcerns && formik.errors.SafetyConcerns && (
           <div style={{ color: "red" }}>{formik.errors.SafetyConcerns}</div>
         )}
       </div>
+
 
       <div className="form-group">
         <label htmlFor="SensitiveTopics">
@@ -122,6 +169,7 @@ function Pg3({ formik, emphasizeFields }) {
                 value="Yes"
                 checked={formik.values.SensitiveTopics === "Yes"}
                 onChange={formik.handleChange}
+                disabled={mode === "view"}
               />
               Yes
             </label>
@@ -134,10 +182,21 @@ function Pg3({ formik, emphasizeFields }) {
                 value="No"
                 checked={formik.values.SensitiveTopics === "No"}
                 onChange={formik.handleChange}
+                disabled={mode === "view"}
               />
               No
             </label>
           </li>
+          {/* Comment component for the "SensitiveTopics" field */}
+        {mode === "view" && (
+            <Comment
+              fieldName="SensitiveTopics"
+              comment={formik.values.SensitiveTopicsComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
         </ul>
         {formik.touched.SensitiveTopics && formik.errors.SensitiveTopics && (
           <div style={{ color: "red" }}>{formik.errors.SensitiveTopics}</div>
@@ -151,6 +210,7 @@ function Pg3({ formik, emphasizeFields }) {
 
         <Dropzone
           style={dropzoneStyle}
+          disabled={mode === "view"}
           onDrop={(acceptedFiles) => {
             console.log(acceptedFiles);
 
@@ -183,7 +243,16 @@ function Pg3({ formik, emphasizeFields }) {
             </section>
           )}
         </Dropzone>
-
+            {/* Comment component for the "SensitiveMaterialFiles" field */}
+            {mode === "view" && (
+            <Comment
+              fieldName="SensitiveMaterialFiles"
+              comment={formik.values.SensitiveMaterialFilesComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
         {formik.touched.SensitiveMaterialFiles &&
           formik.errors.SensitiveMaterialFiles && (
             <div style={{ color: "red" }}>

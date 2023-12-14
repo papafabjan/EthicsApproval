@@ -32,9 +32,10 @@ function Pg1({ formik, emphasizeFields, mode }) {
   }
 
   // Set the form data based on the user's information
-  const userNames = splitUsername(user.username);
-
-  return (
+  if (user && user.username) {
+    const userNames = splitUsername(user.username);
+    
+    return (
     <>
       <div>
         <div className="form-group">
@@ -287,18 +288,21 @@ function Pg1({ formik, emphasizeFields, mode }) {
           <div style={{ color: "red" }}>{formik.errors.supervisor}</div>
         )}
         {/* Comment section for Supervisor */}
-          {mode === "view" && (
-            <Comment
-              fieldName="supervisor"
-              comment={formik.values.supervisorComment}
-              onCommentSave={(fieldName, comment) =>
-                formik.setFieldValue(`${fieldName}Comment`, comment)
-              }
-            />
-          )}
+        {mode === "view" && (
+          <Comment
+            fieldName="supervisor"
+            comment={formik.values.supervisorComment}
+            onCommentSave={(fieldName, comment) =>
+              formik.setFieldValue(`${fieldName}Comment`, comment)
+            }
+          />
+        )}
       </div>
     </>
   );
+  }else{
+    return <div>Please log-in </div>;
+  }
 }
 
 export default Pg1;

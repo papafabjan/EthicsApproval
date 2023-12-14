@@ -55,6 +55,7 @@ const Dashboard = styled.div`
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    margin: 3px;
   }
   input {
     padding: 8px;

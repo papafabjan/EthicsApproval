@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 const MyApplications = styled.div`
-
   h1 {
     margin-bottom: 10px;
   }
@@ -47,6 +46,7 @@ const MyApplications = styled.div`
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    margin: 3px;
   }
 
   input {

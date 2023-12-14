@@ -4,6 +4,7 @@ import StyledDashboard from "../styled/Dashboard.styled";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import MyForm from "../components/form-pages/Form";
+import AssignReviewers from "./AssignReviewers";
 
 // {navigate('../pages/Application.jsx', element={<Application/>}, {replace: true})}
 const Dashboard = () => {
@@ -11,6 +12,8 @@ const Dashboard = () => {
   const [applicantNames, setApplicantNames] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
+  const [showAssignReviewers, setShowAssignReviewers] = useState(false);
+  const [selectedApplicationId, setSelectedApplicationId] = useState(null);
 
   // Fetch applications from your API
   useEffect(() => {
@@ -91,7 +94,7 @@ const Dashboard = () => {
       // Handle error or show notification to the user
     }
   };
-  
+
 
   // Function to handle search term changes
   const handleSearch = (event) => {
@@ -104,7 +107,6 @@ const Dashboard = () => {
     return (
       applicantName &&
       applicantName.toLowerCase().includes(searchTerm.toLowerCase())
-
     );
   });
 
@@ -129,20 +131,52 @@ const Dashboard = () => {
             <table>
               <tbody>
                 {filteredApplications.map((application) => (
-                  <tr key={application.id}>
-                    <td>
-                      <div className="row">
-                        <div className="application">
-                          <p>{applicantNames[application.applicant_id]}</p>
+               
+        
+
+                    <tr key={application.id}>
+                      <td>
+                        <div className="row">
+                          <div className="application">
+                            <p>{applicantNames[application.applicant_id]}</p>
+                          </div>
+                          <div className="date">
+                            <p>
+                              {format(new Date(application.date), "dd/MM/yyyy")}
+                            </p>
+                          </div>
+                          <div className="status">
+                            <p>{application.status}</p>
+                          </div>
+                          <div className="actions">
+                            <button
+                              className="btn"
+                              onClick={() =>
+                                navigate(`/application/${application.id}`, {
+                                  state: { mode: "view" },
+                                })
+                              }
+                            >
+                              View/Comment
+                            </button>
+                            <button
+                              className="btn"
+                              onClick={() => {
+                                setShowAssignReviewers((prev) => !prev);
+                                setSelectedApplicationId(application.id);
+                              }}
+                            >
+                              Assign Reviewers
+                            </button>
+                            <button
+                              className="btn"
+                              onClick={() => console.log("Approve")}
+                            >
+                              Approve
+                            </button>
+                          </div>
                         </div>
-                        <div className="date">
-                          <p>
-                            {format(new Date(application.date), "dd/MM/yyyy")}
-                          </p>
-                        </div>
-                        <div className="status">
-                          <p>{application.status}</p>
-                        </div>
+
                         <div className="actions">
                           <button
                             className="btn"
@@ -154,12 +188,6 @@ const Dashboard = () => {
                           >
                             View/Comment
                           </button>
-                          <button
-                            className="btn"
-                            onClick={() => console.log("Assign Reviewers")}
-                          >
-                            Assign Reviewers
-                          </button>
 
                           <button
                             className="btn"
@@ -167,10 +195,18 @@ const Dashboard = () => {
                           >
                             Approve
                           </button>
+
+                        <div>
+                          {showAssignReviewers &&
+                            selectedApplicationId === application.id && (
+                              <AssignReviewers applicationId={application.id}/>
+                              )}
+
                         </div>
-                      </div>
-                    </td>
-                  </tr>
+                      </td>
+                    </tr>
+           
+                 
                 ))}
               </tbody>
             </table>
@@ -179,7 +215,6 @@ const Dashboard = () => {
       </StyledDashboard>
     </>
   );
-
 };
 
 export default Dashboard;

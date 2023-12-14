@@ -9,8 +9,10 @@ const userRoutes = require("./routes/userRouter");
 const applicationsRoutes = require("./routes/applicationsRouter");
 const testapplicationsRoutes = require("./routes/testapplicationsRouter");
 const commentsRoutes = require("./routes/commentsRouter");
+const reviewerRoutes = require("./routes/reviewerRouter");
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 
 app.use(
@@ -24,6 +26,7 @@ app.use("/api", userRoutes);
 app.use("/api", applicationsRoutes);
 app.use("/api", testapplicationsRoutes);
 app.use("/api", commentsRoutes);
+app.use("/api", reviewerRoutes);
 
 app.use(
   session({

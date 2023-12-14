@@ -88,7 +88,7 @@ router.post("/applications/add", async (req, res) => {
       VALUES ($1, $2, $3) 
       RETURNING *;
       `,
-      ["pending", new Date(), userID]
+      ["Pending supervisor's admission ", new Date(), userID]
     );
 
     const applicationId = newApplication.rows[0].id;
@@ -143,6 +143,11 @@ router.put("/applications/update-status/:id", async (req, res) => {
 });
 
 
+
+// Add a new application
+router.post("/applications/add", async (req, res) => {
+  
+});
 
 // Update application body
 // router.put("/applications/:applicationId/edit-body", async (req, res) => {

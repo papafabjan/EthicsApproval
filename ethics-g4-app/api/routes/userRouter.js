@@ -13,24 +13,6 @@ router.get("/users", async (req, res) => {
   }
 });
 
-// Update user role
-router.put("/users/:userId/edit-role", async (req, res) => {
-  const { userId } = req.params;
-  const { newRole } = req.body;
-
-  try {
-    const updatedUser = await pool.query(
-      "UPDATE users SET role = $1 WHERE user_id = $2 RETURNING *",
-      [newRole, userId]
-    );
-
-    res.json(updatedUser.rows[0]);
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).send("Server Error");
-  }
-});
-
 // Get user by Google-ID
 router.get("/users/:userId", async (req, res) => {
   const { userId } = req.params;
@@ -41,7 +23,7 @@ router.get("/users/:userId", async (req, res) => {
     ]);
 
     if (user.rows.length === 0) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(501).json({ error: "User not found" });
     }
 
     res.json(user.rows[0]);
@@ -61,7 +43,7 @@ router.get("/users/userID/:userId", async (req, res) => {
     ]);
 
     if (user.rows.length === 0) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(500).json({ error: "User not found" });
     }
 
     res.json(user.rows[0]);
@@ -71,6 +53,23 @@ router.get("/users/userID/:userId", async (req, res) => {
   }
 });
 
+// Update user role
+router.put("/users/:userId/edit-role", async (req, res) => {
+  const { userId } = req.params;
+  const { newRole } = req.body;
+
+  try {
+    const updatedUser = await pool.query(
+      "UPDATE users SET role = $1 WHERE user_id = $2 RETURNING *",
+      [newRole, userId]
+    );
+
+    res.json(updatedUser.rows[0]);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server Error");
+  }
+});
 
 
 module.exports = router;

@@ -2,72 +2,60 @@ import React, { useState, useEffect, useContext } from "react";
 import StyledDashboard from "../styled/Dashboard.styled";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
-import AssignReviewers from "./AssignReviewers";
+import AssignReviewers from "../components/AssignReviewers";
 import { UserContext } from "../components/UserContext";
 
 const Dashboard = () => {
   const [applications, setApplications] = useState([]);
   const [applicantNames, setApplicantNames] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
+  const [fetchTrigger, setFetchTrigger] = useState(0); // New state to trigger fetch
   const navigate = useNavigate();
   const [showAssignReviewers, setShowAssignReviewers] = useState(false);
   const [selectedApplicationId, setSelectedApplicationId] = useState(null);
 
   const sessionUser = useContext(UserContext);
 
- if (sessionUser.role === "staff") {
-   // Fetch applications from the API
-   useEffect(() => {
-     const fetchApplications = async () => {
-       try {
-         await fetchSupervisorApplications();
-   
-         // Fetch and store applicant names for the supervisor applications
-         const namesPromises = applications.map(async (application) => {
-           const applicantName = await fetchApplicantName(
-             application.applicant_id
-           );
-           setApplicantNames((prevNames) => ({
-             ...prevNames,
-             [application.applicant_id]: applicantName,
-           }));
-         });
-   
-         // Wait for all names to be fetched
-         await Promise.all(namesPromises);
-       } catch (error) {
-         console.error(error.message);
-       }
-     };
-   
-     const delay = 1000; // Delay in milliseconds (adjust as needed)
-     const timeoutId = setTimeout(() => {
-       fetchApplications();
-     }, delay);
-   
-     return () => {
-       clearTimeout(timeoutId); // Clean up the timeout on component unmount
-     };
-   }, [applications]); // Add applications as a dependency
- }
+  if (sessionUser.role === "staff") {
+    // Fetch applications from the API
+    useEffect(() => {
+      const fetchSupervisorApplications = async () => {
+        try {
+          const response = await fetch(
+            `${import.meta.env.VITE_SERVER_URL}/api/supervisor/applications/${
+              sessionUser.id
+            }`
+          );
+          if (!response.ok) {
+            throw new Error(
+              `Error fetching supervisor applications: ${response.statusText}`
+            );
+          }
+          const data = await response.json();
+          setApplications(data);
+
+          // Fetch and store applicant names for the supervisor applications
+          const namesPromises = data.map(async (application) => {
+            const applicantName = await fetchApplicantName(
+              application.applicant_id
+            );
+            setApplicantNames((prevNames) => ({
+              ...prevNames,
+              [application.applicant_id]: applicantName,
+            }));
+          });
+
+          // Wait for all names to be fetched
+          await Promise.all(namesPromises);
+        } catch (error) {
+          console.error(error.message);
+        }
+      };
+      fetchSupervisorApplications();
+    }, [sessionUser.role, fetchTrigger]);
+  }
 
   //fetch applications where user is a supervisor
-  const fetchSupervisorApplications = async () => {
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_SERVER_URL}/api/supervisor/applications/${sessionUser.id}`
-      );
-      if (!response.ok) {
-        throw new Error(
-          `Error fetching supervisor applications: ${response.statusText}`
-        );
-      }
-      const data = await response.json();
-      setApplications(data);
-    } catch (error) {
-      console.error(error.message);
-    }
-  };
 
   if (sessionUser.role === "admin") {
     // Fetch applications from your API
@@ -104,9 +92,8 @@ const Dashboard = () => {
       };
 
       fetchApplications();
-    }, []);
+    }, [sessionUser.role, fetchTrigger]);
   }
-  
 
   const fetchApplicantName = async (applicantId) => {
     try {
@@ -142,6 +129,8 @@ const Dashboard = () => {
       if (!response.ok) {
         throw new Error(`Error deleting application: ${response.statusText}`);
       }
+      // Set fetchTrigger to trigger re-fetch when Approve is clicked
+      setFetchTrigger((prev) => prev + 1);
     } catch (error) {
       console.error("Error deleting application:", error.message);
     }
@@ -158,22 +147,19 @@ const Dashboard = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ status: "Approved" }), // Update the status as needed
+          body: JSON.stringify({ status: "Approved" }),
         }
       );
+
+      // Set fetchTrigger to trigger re-fetch when Approve is clicked
+      setFetchTrigger((prev) => prev - 1);
 
       if (!response.ok) {
         throw new Error(`Error updating status: ${response.statusText}`);
       }
-
-      // Assuming the status is updated successfully, update the UI accordingly
-      const updatedApplications = applications.map((app) =>
-        app.id === applicationId ? { ...app, status: "Approved" } : app
-      );
-      setApplications(updatedApplications);
     } catch (error) {
-      console.error(error.message);
       // Handle error or show notification to the user
+      console.error(error.message);
     }
   };
 
@@ -181,16 +167,16 @@ const Dashboard = () => {
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
-  
+
   // Filter applications based on search term
   const filteredApplications = applications.filter((application) => {
     const applicantName = applicantNames[application.applicant_id];
     return (
       applicantName &&
       applicantName.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    });
-    
+    );
+  });
+
   return (
     <>
       <StyledDashboard>
@@ -203,6 +189,7 @@ const Dashboard = () => {
             value={searchTerm}
             onChange={handleSearch}
           />
+
           <div>
             <div className="header">
               <p className="application">Applicant Name</p>
@@ -243,6 +230,8 @@ const Dashboard = () => {
                             onClick={() => {
                               setShowAssignReviewers((prev) => !prev);
                               setSelectedApplicationId(application.id);
+                              // Set fetchTrigger to trigger re-fetch when Assign Reviewers is clicked
+                              setFetchTrigger((prev) => prev + 1);
                             }}
                           >
                             Assign Reviewers

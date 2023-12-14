@@ -264,9 +264,11 @@ const Form = () => {
             }
 
             console.log("Comments saved successfully");
+
+            window.location.href="/dashboard";
+
           } catch (error) {
             console.error("Error:", error.message);
-            // Handle errors as needed
           }
         };
 
@@ -292,13 +294,12 @@ const Form = () => {
 
           const responseData = await response.json();
           console.log("Application submitted successfully:", responseData);
+          window.location.href = "/myapplications";
         } catch (error) {
           console.error("Error:", error.message);
-          // Handle errors as needed
         }
       }
 
-      window.location.reload(true);
     },
   });
 

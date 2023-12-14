@@ -175,7 +175,7 @@ router.delete("/applications/delete/:applicationId", async (req, res) => {
   try {
     const { applicationId } = req.params;
 
-    // Delete from user_roles
+    // Delete user_roles
     const deleteUserRoles = await pool.query(
       `
       DELETE FROM user_roles
@@ -185,11 +185,21 @@ router.delete("/applications/delete/:applicationId", async (req, res) => {
       [applicationId]
     );
 
-    // Delete from application_content
+    // Delete application_content
     const deleteApplicationContent = await pool.query(
       `
       DELETE FROM application_content
       WHERE application_id = $1;
+      `,
+      [applicationId]
+    );
+
+    // Delete comments
+    const deleteComments = await pool.query(
+      `
+      DELETE FROM comments
+      WHERE application_id = $1
+      RETURNING *;
       `,
       [applicationId]
     );

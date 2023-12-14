@@ -170,23 +170,52 @@ router.put("/applications/update-status/:id", async (req, res) => {
   }
 });
 
+// Delete an application
+router.delete("/applications/delete/:applicationId", async (req, res) => {
+  try {
+    const { applicationId } = req.params;
 
-// Update application body
-// router.put("/applications/:applicationId/edit-body", async (req, res) => {
-//   const { applicationId } = req.params;
-//   const { newBody } = req.body;
+    // Delete from user_roles
+    const deleteUserRoles = await pool.query(
+      `
+      DELETE FROM user_roles
+      WHERE application_id = $1
+      RETURNING *;
+      `,
+      [applicationId]
+    );
 
-//   try {
-//     const updatedApplication = await pool.query(
-//       "UPDATE applications SET body = $1 WHERE id = $2 RETURNING *",
-//       [newBody, applicationId]
-//     );
+    // Delete from application_content
+    const deleteApplicationContent = await pool.query(
+      `
+      DELETE FROM application_content
+      WHERE application_id = $1;
+      `,
+      [applicationId]
+    );
 
-//     res.json(updatedApplication.rows[0]);
-//   } catch (error) {
-//     console.error(error.message);
-//     res.status(500).send("Server Error");
-//   }
-// });
+    // Delete from applications
+    const deleteApplication = await pool.query(
+      `
+      DELETE FROM applications
+      WHERE id = $1
+      RETURNING *;
+      `,
+      [applicationId]
+    );
+
+    if (deleteApplication.rows.length === 0) {
+      // Handle the case where the application ID is not found
+      res.status(404).json({ success: false, error: "Application not found" });
+      return;
+    }
+
+    res.json({ success: true, message: "Application deleted successfully" });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 
 module.exports = router;

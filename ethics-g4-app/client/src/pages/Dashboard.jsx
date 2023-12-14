@@ -67,6 +67,34 @@ const Dashboard = () => {
       return "Unknown";
     }
   };
+
+
+
+const deleteApplication = async (applicationId) => {
+  try {
+    const response = await fetch(
+      `${
+        import.meta.env.VITE_SERVER_URL
+      }/api/applications/delete/${applicationId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Error deleting application: ${response.statusText}`);
+    }
+  } catch (error) {
+    console.error("Error deleting application:", error.message);
+
+  }
+};
+
+
+
   const approve = async (applicationId) => {
     try {
       const response = await fetch(
@@ -132,60 +160,62 @@ const Dashboard = () => {
             <table>
               <tbody>
                 {filteredApplications.map((application) => (
-               
-        
-
-                    <tr key={application.id}>
-                      <td>
-                        <div className="row">
-                          <div className="application">
-                            <p>{applicantNames[application.applicant_id]}</p>
-                          </div>
-                          <div className="date">
-                            <p>
-                              {format(new Date(application.date), "dd/MM/yyyy")}
-                            </p>
-                          </div>
-                          <div className="status">
-                            <p>{application.status}</p>
-                          </div>
-                          <div className="actions">
-                            <button
-                              className="btn"
-                              onClick={() =>
-                                navigate(`/application/${application.id}`, {
-                                  state: { mode: "view" },
-                                })
-                              }
-                            >
-                              View/Comment
-                            </button>
-                            <button
-                              className="btn"
-                              onClick={() => {
-                                setShowAssignReviewers((prev) => !prev);
-                                setSelectedApplicationId(application.id);
-                              }}
-                            >
-                              Assign Reviewers
-                            </button>
-                            <button
+                  <tr key={application.id}>
+                    <td>
+                      <div className="row">
+                        <div className="application">
+                          <p>{applicantNames[application.applicant_id]}</p>
+                        </div>
+                        <div className="date">
+                          <p>
+                            {format(new Date(application.date), "dd/MM/yyyy")}
+                          </p>
+                        </div>
+                        <div className="status">
+                          <p>{application.status}</p>
+                        </div>
+                        <div className="actions">
+                          <button
                             className="btn"
-                         onClick={() => approve(application.id)}
+                            onClick={() =>
+                              navigate(`/application/${application.id}`, {
+                                state: { mode: "view" },
+                              })
+                            }
+                          >
+                            View/Comment
+                          </button>
+                          <button
+                            className="btn"
+                            onClick={() => {
+                              setShowAssignReviewers((prev) => !prev);
+                              setSelectedApplicationId(application.id);
+                            }}
+                          >
+                            Assign Reviewers
+                          </button>
+                          <button
+                            className="btn"
+                            onClick={() => approve(application.id)}
                           >
                             Approve
                           </button>
-                          </div>
-                        </div>   
-                        <div>
-                          {showAssignReviewers &&
-                            selectedApplicationId === application.id && (
-                              <AssignReviewers applicationId={application.id}/>
-                              )}
-
+                          <button
+                            className="btn"
+                            onClick={() => deleteApplication(application.id)}
+                          >
+                            Delete Application
+                          </button>
                         </div>
-                      </td>
-                    </tr>
+                      </div>
+                      <div>
+                        {showAssignReviewers &&
+                          selectedApplicationId === application.id && (
+                            <AssignReviewers applicationId={application.id} />
+                          )}
+                      </div>
+                    </td>
+                  </tr>
                 ))}
               </tbody>
             </table>

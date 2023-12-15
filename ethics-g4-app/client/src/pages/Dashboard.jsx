@@ -193,7 +193,7 @@ const Dashboard = () => {
           <div>
             <div className="header">
               <p className="application">Applicant Name</p>
-              <p className="date">Date</p>
+              <p className="date">Date of submission</p>
               <p className="status">Status</p>
               <p className="actions">Actions</p>
             </div>
@@ -225,29 +225,33 @@ const Dashboard = () => {
                           >
                             View/Comment
                           </button>
-                          <button
-                            className="btn"
-                            onClick={() => {
-                              setShowAssignReviewers((prev) => !prev);
-                              setSelectedApplicationId(application.id);
-                              // Set fetchTrigger to trigger re-fetch when Assign Reviewers is clicked
-                              setFetchTrigger((prev) => prev + 1);
-                            }}
-                          >
-                            Assign Reviewers
-                          </button>
+                          {sessionUser.role === "admin" && (
+                            <button
+                              className="btn"
+                              onClick={() => {
+                                setShowAssignReviewers((prev) => !prev);
+                                setSelectedApplicationId(application.id);
+                                // Set fetchTrigger to trigger re-fetch when Assign Reviewers is clicked
+                                setFetchTrigger((prev) => prev + 1);
+                              }}
+                            >
+                              Assign Reviewers
+                            </button>
+                          )}
                           <button
                             className="btn"
                             onClick={() => approve(application.id)}
                           >
                             Approve
                           </button>
-                          <button
-                            className="btn"
-                            onClick={() => deleteApplication(application.id)}
-                          >
-                            Delete Application
-                          </button>
+                          {sessionUser.role === "admin" && (
+                            <button
+                              className="btn"
+                              onClick={() => deleteApplication(application.id)}
+                            >
+                              Delete Application
+                            </button>
+                          )}
                         </div>
                       </div>
                       <div>

@@ -107,9 +107,8 @@ const initialValues = {
   DataConfidentiality: "",
   DataStorageandSecurity: "",
 
-  // // Page7:
-  ListofQuestions: "",
-  AdditionalForms: "",
+  ListofQuestions: [],
+  AdditionalForms: []
 };
 
 const Form = () => {
@@ -133,8 +132,7 @@ const Form = () => {
       const fetchApplicationData = async () => {
         try {
           const response = await fetch(
-            `${
-              import.meta.env.VITE_SERVER_URL
+            `${import.meta.env.VITE_SERVER_URL
             }/api/applications/${applicationId}`
           );
 
@@ -298,7 +296,7 @@ const Form = () => {
         }
       }
 
-      window.location.reload(true);
+      // window.location.reload(true);
     },
   });
 
@@ -459,12 +457,48 @@ const Form = () => {
     // Add more conditions for other steps as needed
   };
 
+
   const handleSubmit = () => {
     // Don't submit if the form is currently submitting or has errors
     // if (!formik.isValid) {
     //   return;
     // }
     // Change the mode to 'apply' before submitting
+
+    // Create a FormData object and append files to it
+
+    const formData = new FormData();
+
+    formData.append('files[]', formik.values.SensitiveTopicsFiles);
+    formData.append('files[]', formik.values.ParentalConsent);
+    formData.append('files[]', formik.values.ParentalInformation);
+    formData.append('files[]', formik.values.ChildInformation);
+    formData.append('files[]', formik.values.HeadTeacherConsent);
+    formData.append('files[]', formik.values.HeadteacherInformation);
+    formData.append('files[]', formik.values.AccessibleConsentMaterial);
+    formData.append('files[]', formik.values.ProxyConsentProcedure);
+    formData.append('files[]', formik.values.ParticipantInformation);
+    formData.append('files[]', formik.values.ParticipantConsent);
+    formData.append('files[]', formik.values.ParticipantDebriefing);
+    formData.append('files[]', formik.values.AccessibilityLetter);
+    formData.append('files[]', formik.values.ListofQuestions);
+    formData.append('files[]', formik.values.AdditionalForms);
+
+    console.log(formData)
+
+    // Make the fetch request
+    fetch('http://localhost:4000/api/multiple', {
+      method: 'POST',
+      body: formData,
+    })
+      .then(response => response.text()) // Use response.text() for non-JSON responses
+      .then(data => {
+        console.log('Success:', data);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+
     const submitMode = mode === "view" ? "apply" : mode;
     formik.handleSubmit();
   };

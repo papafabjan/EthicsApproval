@@ -24,7 +24,9 @@ router.get("/applications/title/:applicationId", async (req, res) => {
     );
 
     if (titleResult.rows.length === 0) {
-      return res.status(404).json({ error: "Title not found for the specified application ID" });
+      return res
+        .status(404)
+        .json({ error: "Title not found for the specified application ID" });
     }
 
     const title = titleResult.rows[0].field_value;
@@ -74,7 +76,6 @@ router.get("/applications/:id", async (req, res) => {
   }
 });
 
-
 // Add a new application
 router.post("/applications/add", async (req, res) => {
   try {
@@ -94,7 +95,7 @@ router.post("/applications/add", async (req, res) => {
     const applicationId = newApplication.rows[0].id;
 
     // Find supervisor's user_id using the email
-    const supervisorEmail = values.supervisor; 
+    const supervisorEmail = values.supervisor;
     const supervisorUser = await pool.query(
       `
       SELECT user_id FROM users WHERE email = $1;
@@ -117,7 +118,7 @@ router.post("/applications/add", async (req, res) => {
       VALUES ($1, $2, $3)
       RETURNING *;
       `,
-      [supervisorUserId, 'supervisor', applicationId]
+      [supervisorUserId, "supervisor", applicationId]
     );
 
     // Insert application content
@@ -147,8 +148,6 @@ router.post("/applications/add", async (req, res) => {
   }
 });
 
-
-
 router.post("/applications/update-status/:id", async (req, res) => {
   const { id } = req.params;
   var status = req.body.status;
@@ -157,54 +156,89 @@ router.post("/applications/update-status/:id", async (req, res) => {
   try {
     //fetch status of application with id
     const fetchStatusQuery = `
-      SELECT status FROM applications WHERE id = $1
+    SELECT status FROM applications WHERE id = $1
     `;
     const fetchStatus = await pool.query(fetchStatusQuery, [id]);
     const currentStatus = fetchStatus.rows[0].status; //100%
     console.log(currentStatus);
-
-    if (currentStatus === "Approved") {
-      return res.json({
-        success: false,
-        message: "Application is already approved, do you wish to delete it?",
-      });
-    }
-
+    
     //fetch user role in application with user_id
     const fetchUserIDQuery = `
-      SELECT user_id from users WHERE google_id = $1
+    SELECT user_id from users WHERE google_id = $1
     `;
     const fetchUserID = await pool.query(fetchUserIDQuery, [userID]);
     const userId = fetchUserID.rows[0].user_id;
     console.log(userId);
-    const fetchUserRole = `
-      SELECT role FROM user_roles WHERE user_id = $1 AND application_id = $2
-    `;
-    const fetchRole = await pool.query(fetchUserRole, [userId, id]);
-    const userRole = fetchRole.rows[0].role; //100%
-    console.log(userRole);
 
+    const fetchUserRole = `
+  SELECT role FROM user_roles WHERE user_id = $1 AND application_id = $2
+`;
+    const fetchRole = await pool.query(fetchUserRole, [userId, id]);
+    var userRole = "none";
+
+    if (fetchRole.rows.length > 0) {
+      const roleFromDb = fetchRole.rows[0].role;
+
+      if (roleFromDb === "supervisor" || roleFromDb === "reviewer") {
+        userRole = roleFromDb;
+      }
+    }
+    console.log(userRole);
+  
+    //keeping it in case the admin attempts to bypass states
+    const isAdminQuery = await pool.query(
+      "SELECT role FROM user_roles WHERE role = 'admin' AND user_id = $1",
+      [userId],
+    );
+    const isAdmin = isAdminQuery.rows[0].role === "admin";
+    console.log(isAdmin);
+
+    if(currentStatus ==="Approved") {
+      return res.json({
+        success: false,
+        message: "Application is already approved",
+      })
+    }
+
+    if (isAdmin) {
+      if (
+        !(currentStatus === "Approved by reviewer, pending ethics admin's approval")
+      ) {
+        return res.json({
+          success: false,
+          message:
+            "You cannot approve an application until it has gone through the correct process",
+        });
+      }
+    }
+    
     if (userRole === "supervisor") {
       if (currentStatus === "Pending supervisor's admission ") {
-        if(status === "Approved"){
-          status = "Approved by supervisor, pending reviewers addition"
+        if (status === "Approved") {
+          status = "Approved by supervisor, pending reviewers addition";
         }
-      }
-      if (currentStatus === "Approved by supervisor, pending reviewers addition") {
+      } else {
+        if (
+          !status === "Approved by reviewer, pending ethics admin's approval"
+        ) {
           return res.json({
             success: false,
             message:
               "Application is already approved by you, it's time for the reviewers to review.",
           });
-      }
-    }
-    if(userRole === "reviewer"){
-      if (currentStatus ==="Reviewers Assigned"){
-        if(status ==="Approved"){
-          status = "Approved by reviewer, pending ethics admin's approval"
         }
       }
-      if (currentStatus === "Approved by reviewer, pending ethics admin's approval"){
+    }
+    if (userRole === "reviewer") {
+      if (currentStatus === "Reviewers Assigned") {
+        if (status === "Approved") {
+          status = "Approved by reviewer, pending ethics admin's approval";
+        }
+      }
+      if (
+        currentStatus ===
+        "Approved by reviewer, pending ethics admin's approval"
+      ) {
         return res.json({
           success: false,
           message:
@@ -215,7 +249,7 @@ router.post("/applications/update-status/:id", async (req, res) => {
 
     const updateStatusQuery = `
       UPDATE applications
-      SET status = $1, date = $2 -- Add other columns if needed
+      SET status = $1, date = $2
       WHERE id = $3
       RETURNING *;
     `;
@@ -289,6 +323,5 @@ router.delete("/applications/delete/:applicationId", async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
-
 
 module.exports = router;

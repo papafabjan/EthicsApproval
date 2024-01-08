@@ -1,10 +1,11 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { UserContext } from "../components/UserContext";
 
-function Navbar() {
+const Navbar =() => {
   const user = useContext(UserContext);
+  const navigate = useNavigate();
 
   const Login = () => {
     const str = `${import.meta.env.VITE_SERVER_URL}/auth/google`;
@@ -26,17 +27,17 @@ function Navbar() {
 
       if (response.ok) {
         console.log("Logout successful");
-        // Handle any further actions after successful Logout
+        // Redirect to the main page after successful Logout
       } else {
         console.error("Logout failed");
         // Handle Logout failure
       }
+      navigate("/");
+       window.location.reload(true);
     } catch (error) {
       console.error("Error during Logout", error);
       // Handle error during Logout
     }
-
-    window.location.reload(true);
   };
 
   return (

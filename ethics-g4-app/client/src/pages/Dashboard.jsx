@@ -19,31 +19,49 @@ const Dashboard = () => {
   if (sessionUser.role === "staff") {
     // Fetch applications from the API
     useEffect(() => {
-      const fetchSupervisorApplications = async () => {
+      const fetchSupervisorAndReviewerApplications = async () => {
         try {
-          const response = await fetch(
+          // Fetch supervisor applications
+          const supervisorResponse = await fetch(
             `${import.meta.env.VITE_SERVER_URL}/api/supervisor/applications/${
               sessionUser.id
             }`
           );
-          if (!response.ok) {
+          if (!supervisorResponse.ok) {
             throw new Error(
-              `Error fetching supervisor applications: ${response.statusText}`
+              `Error fetching supervisor applications: ${supervisorResponse.statusText}`
             );
           }
-          const data = await response.json();
-          setApplications(data);
+          const supervisorData = await supervisorResponse.json();
+
+          // Fetch reviewer applications
+          const reviewerResponse = await fetch(
+            `${import.meta.env.VITE_SERVER_URL}/api/reviewer/applications/${
+              sessionUser.id
+            }`
+          );
+          if (!reviewerResponse.ok) {
+            throw new Error(
+              `Error fetching reviewer applications: ${reviewerResponse.statusText}`
+            );
+          }
+          const reviewerData = await reviewerResponse.json();
+
+          // Update state with combined data
+          setApplications([...supervisorData, ...reviewerData]);
 
           // Fetch and store applicant names for the supervisor applications
-          const namesPromises = data.map(async (application) => {
-            const applicantName = await fetchApplicantName(
-              application.applicant_id
-            );
-            setApplicantNames((prevNames) => ({
-              ...prevNames,
-              [application.applicant_id]: applicantName,
-            }));
-          });
+          const namesPromises = [...supervisorData, ...reviewerData].map(
+            async (application) => {
+              const applicantName = await fetchApplicantName(
+                application.applicant_id
+              );
+              setApplicantNames((prevNames) => ({
+                ...prevNames,
+                [application.applicant_id]: applicantName,
+              }));
+            }
+          );
 
           // Wait for all names to be fetched
           await Promise.all(namesPromises);
@@ -51,7 +69,8 @@ const Dashboard = () => {
           console.error(error.message);
         }
       };
-      fetchSupervisorApplications();
+
+      fetchSupervisorAndReviewerApplications();
     }, [sessionUser.role, fetchTrigger]);
   }
 
@@ -143,19 +162,27 @@ const Dashboard = () => {
           import.meta.env.VITE_SERVER_URL
         }/api/applications/update-status/${applicationId}`,
         {
-          method: "PUT",
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ status: "Approved" }),
+          body: JSON.stringify({
+            status: "Approved",
+            user: sessionUser,
+          }),
         }
       );
 
       // Set fetchTrigger to trigger re-fetch when Approve is clicked
       setFetchTrigger((prev) => prev - 1);
+      const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(`Error updating status: ${response.statusText}`);
+      if (data.success) {
+        // Update successful
+        console.log(data.message);
+      } else {
+        // Handle the case where the action is not possible
+        console.error(data.message);
       }
     } catch (error) {
       // Handle error or show notification to the user
@@ -176,6 +203,8 @@ const Dashboard = () => {
       applicantName.toLowerCase().includes(searchTerm.toLowerCase())
     );
   });
+
+
 
   return (
     <>
@@ -234,6 +263,10 @@ const Dashboard = () => {
                                 // Set fetchTrigger to trigger re-fetch when Assign Reviewers is clicked
                                 setFetchTrigger((prev) => prev + 1);
                               }}
+                              disabled={
+                                !(application.status ===
+                                "Approved by supervisor, pending reviewers addition") && !(application.status === "Reviewers Assigned")
+                              }
                             >
                               Assign Reviewers
                             </button>

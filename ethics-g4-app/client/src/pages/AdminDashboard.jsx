@@ -75,7 +75,7 @@ const AdminDashboard = () => {
               </button>
               <button
                 className="btn"
-                onClick={() => updateUserRole(user.user_id, "user")}
+                onClick={() => updateUserRole(user.user_id, "student")}
               >
                 Change to User
               </button>

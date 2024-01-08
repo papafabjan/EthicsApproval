@@ -30,7 +30,7 @@ CREATE TABLE application_content (
 
 CREATE TABLE comments (
   id SERIAL PRIMARY KEY,
-  commenter_id INTEGER REFERENCES users(user_id),--google-id
+  commenter_id INTEGER REFERENCES users(user_id),
   field VARCHAR(255) NOT NULL,
   content VARCHAR(255) NOT NULL,
   application_id INTEGER REFERENCES applications(id) NOT NULL
@@ -106,3 +106,9 @@ INSERT INTO applications ( body, status, date, applicant_id)
 VALUES 
 ('Test','Pending supervisor admission','23/11/2023','1'),
 ('Test 2','Pending supervisor admission','23/11/2023','2');
+
+
+
+
+--should the supervisor have to accept/refuse the application without even going into it or just make a comment in the supervisor field, saying i dont want to be the supervisor for this application.
+--should we have controllers in our app? so far everything works with routers.

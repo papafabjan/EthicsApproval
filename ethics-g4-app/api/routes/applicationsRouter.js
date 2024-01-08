@@ -149,11 +149,70 @@ router.post("/applications/add", async (req, res) => {
 
 
 
-router.put("/applications/update-status/:id", async (req, res) => {
+router.post("/applications/update-status/:id", async (req, res) => {
   const { id } = req.params;
-  const { status } = req.body;
+  var status = req.body.status;
+  const userID = req.body.user.id;
 
   try {
+    //fetch status of application with id
+    const fetchStatusQuery = `
+      SELECT status FROM applications WHERE id = $1
+    `;
+    const fetchStatus = await pool.query(fetchStatusQuery, [id]);
+    const currentStatus = fetchStatus.rows[0].status; //100%
+    console.log(currentStatus);
+
+    if (currentStatus === "Approved") {
+      return res.json({
+        success: false,
+        message: "Application is already approved, do you wish to delete it?",
+      });
+    }
+
+    //fetch user role in application with user_id
+    const fetchUserIDQuery = `
+      SELECT user_id from users WHERE google_id = $1
+    `;
+    const fetchUserID = await pool.query(fetchUserIDQuery, [userID]);
+    const userId = fetchUserID.rows[0].user_id;
+    console.log(userId);
+    const fetchUserRole = `
+      SELECT role FROM user_roles WHERE user_id = $1 AND application_id = $2
+    `;
+    const fetchRole = await pool.query(fetchUserRole, [userId, id]);
+    const userRole = fetchRole.rows[0].role; //100%
+    console.log(userRole);
+
+    if (userRole === "supervisor") {
+      if (currentStatus === "Pending supervisor's admission ") {
+        if(status === "Approved"){
+          status = "Approved by supervisor, pending reviewers addition"
+        }
+      }
+      if (currentStatus === "Approved by supervisor, pending reviewers addition") {
+          return res.json({
+            success: false,
+            message:
+              "Application is already approved by you, it's time for the reviewers to review.",
+          });
+      }
+    }
+    if(userRole === "reviewer"){
+      if (currentStatus ==="Reviewers Assigned"){
+        if(status ==="Approved"){
+          status = "Approved by reviewer, pending ethics admin's approval"
+        }
+      }
+      if (currentStatus === "Approved by reviewer, pending ethics admin's approval"){
+        return res.json({
+          success: false,
+          message:
+            "Application is already approved by you, it's time for the admins to review.",
+        });
+      }
+    }
+
     const updateStatusQuery = `
       UPDATE applications
       SET status = $1, date = $2 -- Add other columns if needed
@@ -161,7 +220,11 @@ router.put("/applications/update-status/:id", async (req, res) => {
       RETURNING *;
     `;
     const currentDate = new Date(); // Get the current date
-    const updatedApplication = await pool.query(updateStatusQuery, [status, currentDate, id]);
+    const updatedApplication = await pool.query(updateStatusQuery, [
+      status,
+      currentDate,
+      id,
+    ]);
 
     res.json({ success: true, updatedApplication: updatedApplication.rows[0] });
   } catch (error) {

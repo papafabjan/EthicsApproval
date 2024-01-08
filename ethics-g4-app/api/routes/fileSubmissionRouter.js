@@ -22,7 +22,7 @@ const upload = multer({
 });
 
 // Your route handling multiple file uploads
-router.post("/multiple", upload.array("files[]"), (req, res) => {
+router.post("/multiple", upload.array("files"), (req, res) => {
     // Check if req.files is empty
     if (!req.files || req.files.length === 0) {
         return res.status(400).send('No files were uploaded.');
@@ -31,5 +31,6 @@ router.post("/multiple", upload.array("files[]"), (req, res) => {
     console.log(req.files);
     res.send("Multiple Files Upload successful");
 });
+
 
 module.exports = router;

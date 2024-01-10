@@ -47,7 +47,7 @@ function Pg3({ formik, emphasizeFields, mode }) {
                 ? "red"
                 : "",
           }}
-          disabled={mode === "review"}
+          disabled={mode === "review" || mode === "view"}
         />
         {/* Comment component for the "AimsObjectives" field */}
         {mode === "review" && (
@@ -89,7 +89,7 @@ function Pg3({ formik, emphasizeFields, mode }) {
                 ? "red"
                 : "",
           }}
-          disabled={mode === "review"}
+          disabled={mode === "review" || mode === "view"}
         />
         {/* Comment component for the "Methodology" field */}
         {mode === "review" && (
@@ -130,7 +130,7 @@ function Pg3({ formik, emphasizeFields, mode }) {
                 ? "red"
                 : "",
           }}
-          disabled={mode === "review"}
+          disabled={mode === "review" || mode === "view"}
         />
         {/* Comment component for the "SafetyConcerns" field */}
         {mode === "review" && (
@@ -167,7 +167,7 @@ function Pg3({ formik, emphasizeFields, mode }) {
                 value="Yes"
                 checked={formik.values.SensitiveTopics === "Yes"}
                 onChange={formik.handleChange}
-                disabled={mode === "review"}
+                disabled={mode === "review" || mode === "view"}
               />
               Yes
             </label>
@@ -180,7 +180,7 @@ function Pg3({ formik, emphasizeFields, mode }) {
                 value="No"
                 checked={formik.values.SensitiveTopics === "No"}
                 onChange={formik.handleChange}
-                disabled={mode === "review"}
+                disabled={mode === "review" || mode === "view"}
               />
               No
             </label>
@@ -208,7 +208,7 @@ function Pg3({ formik, emphasizeFields, mode }) {
 
         <Dropzone
           style={dropzoneStyle}
-          disabled={mode === "review"}
+          disabled={mode === "review" || mode === "view"}
           onDrop={(acceptedFiles) => {
             console.log(acceptedFiles);
 

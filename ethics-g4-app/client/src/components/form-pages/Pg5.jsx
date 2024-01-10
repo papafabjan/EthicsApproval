@@ -40,7 +40,7 @@ export const Pg5 = ({ formik, mode }) => {
               className="form-control"
               id="ParentalConsent"
               onChange={(e) => handleFileChange(e, "ParentalConsent")}
-              disabled={mode === "review"}
+              disabled={mode === "review" || mode === "view"}
             />
             {/* Comment component for the "ParentalConsent" field */}
             {mode === "review" && (
@@ -73,7 +73,7 @@ export const Pg5 = ({ formik, mode }) => {
               className="form-control"
               id="ParentalInformation"
               onChange={(e) => handleFileChange(e, "ParentalInformation")}
-              disabled={mode === "review"}
+              disabled={mode === "review" || mode === "view"}
             />
             {/* Comment component for the "ParentalInformation" field */}
             {mode === "review" && (
@@ -107,7 +107,7 @@ export const Pg5 = ({ formik, mode }) => {
               className="form-control"
               id="ChildInformation"
               onChange={(e) => handleFileChange(e, "ChildInformation")}
-              disabled={mode === "review"}
+              disabled={mode === "review" || mode === "view"}
             />
             {/* Comment component for the "ChildInformation" field */}
             {mode === "review" && (
@@ -137,7 +137,7 @@ export const Pg5 = ({ formik, mode }) => {
               className="form-control"
               id="HeadTeacherConsent"
               onChange={(e) => handleFileChange(e, "HeadTeacherConsent")}
-              disabled={mode === "review"}
+              disabled={mode === "review" || mode === "view"}
             />
             {/* Comment component for the "HeadTeacherConsent" field */}
             {mode === "review" && (
@@ -167,7 +167,7 @@ export const Pg5 = ({ formik, mode }) => {
               className="form-control"
               id="HeadteacherInformation"
               onChange={(e) => handleFileChange(e, "HeadteacherInformation")}
-              disabled={mode === "review"}
+              disabled={mode === "review" || mode === "view"}
             />
             <Thumb file={formik.values.HeadteacherInformation} />
             {/* Comment component for the "HeadteacherInformation" field */}
@@ -208,7 +208,7 @@ export const Pg5 = ({ formik, mode }) => {
               className="form-control"
               id="AccessibleConsentMaterial"
               onChange={(e) => handleFileChange(e, "AccessibleConsentMaterial")}
-              disabled={mode === "review"}
+              disabled={mode === "review" || mode === "view"}
             />
             {/* Comment component for the "AccessibleConsentMaterial" field */}
             {mode === "review" && (
@@ -243,7 +243,7 @@ export const Pg5 = ({ formik, mode }) => {
               className="form-control"
               id="ProxyConsentProcedures"
               onChange={(e) => handleFileChange(e, "ProxyConsentProcedures")}
-              disabled={mode === "review"}
+              disabled={mode === "review" || mode === "view"}
             />
             {/* Comment component for the "ProxyConsentProcedures" field */}
             {mode === "review" && (
@@ -284,7 +284,7 @@ export const Pg5 = ({ formik, mode }) => {
               className="form-control"
               id="ParticipantInformation"
               onChange={(e) => handleFileChange(e, "ParticipantInformation")}
-              disabled={mode === "review"}
+              disabled={mode === "review" || mode === "view"}
             />
             {/* Comment component for the "ParticipantInformation" field */}
             {mode === "review" && (
@@ -316,7 +316,7 @@ export const Pg5 = ({ formik, mode }) => {
               className="form-control"
               id="ParticipantConsent"
               onChange={(e) => handleFileChange(e, "ParticipantConsent")}
-              disabled={mode === "review"}
+              disabled={mode === "review" || mode === "view"}
             />
             {/* Comment component for the "ParticipantConsent" field */}
             {mode === "review" && (
@@ -347,7 +347,7 @@ export const Pg5 = ({ formik, mode }) => {
               className="form-control"
               id="ParticipantDebriefing"
               onChange={(e) => handleFileChange(e, "ParticipantDebriefing")}
-              disabled={mode === "review"}
+              disabled={mode === "review" || mode === "view"}
             />
             {/* Comment component for the "ParticipantDebriefing" field */}
             {mode === "review" && (
@@ -376,7 +376,7 @@ export const Pg5 = ({ formik, mode }) => {
               className="form-control"
               id="AccessibilityLetter"
               onChange={(e) => handleFileChange(e, "AccessibilityLetter")}
-              disabled={mode === "review"}
+              disabled={mode === "review" || mode === "view"}
             />
             {/* Comment component for the "AccessibilityLetter" field */}
             {mode === "review" && (

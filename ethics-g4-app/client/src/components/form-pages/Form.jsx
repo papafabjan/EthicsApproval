@@ -129,7 +129,7 @@ const Form = () => {
   console.log(mode);
   console.log(applicationId);
   useEffect(() => {
-    if (mode === "review" && applicationId) {
+    if ((mode==="view"|| mode === "review") && applicationId) {
       const fetchApplicationData = async () => {
         try {
           const response = await fetch(
@@ -152,7 +152,7 @@ const Form = () => {
           });
 
           console.log("Successfully fetched application data");
-          // You may also update other parts of the form if needed
+
         } catch (error) {
           console.error("Error:", error.message);
           // Handle errors as needed
@@ -195,7 +195,6 @@ const Form = () => {
     onSubmit: async (values) => {
       if (mode === "review" && applicationId) {
         //get user_id through the google_id stored in session
-        // Assuming this is an asynchronous function in an async context (e.g., within an async function or using await)
         const fetchUserIdByGoogleId = async (googleId) => {
           try {
             const response = await fetch(
@@ -314,7 +313,9 @@ const Form = () => {
     if(mode === 'review' && step === 1) {
       navigate("/dashboard");
     }
-
+    if (mode === "view" && step === 1) {
+      navigate("/myapplications");
+    }
     setStep((prevStep) => prevStep - 1);
     console.log(formik.isValid);
   };
@@ -480,7 +481,7 @@ const Form = () => {
     switch (step) {
       case 0:
         //if application is being rereviewed there is no reason to show the explanation page
-        if (mode === "review") {
+        if (mode === "review" || mode === "view") {
           setStep(1);
         }
         return (
@@ -503,14 +504,28 @@ const Form = () => {
               >
                 Previous
               </Button>
-              <Button
-                className="btn"
-                onClick={handleSubmit}
-                disabled={!formik.isValid}
-                type="submit"
-              >
-                Submit
-              </Button>
+
+              {mode === "view" ? (
+                <Button
+                  className="btn"
+                  onClick={()=>{
+                    console.log("Redirected to MyApplications!");
+                    navigate("/myapplications");
+                  }}
+                  type="submit"
+                >
+                  Finished
+                </Button>
+              ) : (
+                <Button
+                  className="btn"
+                  onClick={handleSubmit}
+                  disabled={!formik.isValid}
+                  type="submit"
+                >
+                  Submit
+                </Button>
+              )}
             </NavigationButtons>
           </div>
         );

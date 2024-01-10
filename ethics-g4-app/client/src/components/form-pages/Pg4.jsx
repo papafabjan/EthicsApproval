@@ -46,7 +46,7 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
                 ? "red"
                 : "",
           }}
-          disabled={mode === "review"}
+          disabled={mode === "review" || mode === "view"}
         />
         {/* Comment component for the "PotentialParticipants" field */}
         {mode === "review" && (
@@ -91,7 +91,7 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
                 ? "red"
                 : "",
           }}
-          disabled={mode === "review"}
+          disabled={mode === "review" || mode === "view"}
         />
         {/* Comment component for the "RecruitingPotentialParticipants" field */}
         {mode === "review" && (
@@ -125,7 +125,7 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
                 value="Yes"
                 checked={formik.values.Payment === "Yes"}
                 onChange={(e) => handleRadioChange(e, "otherPaymentOption")}
-                disabled={mode === "review"}
+                disabled={mode === "review" || mode === "view"}
               />
               Yes
             </label>
@@ -138,7 +138,7 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
                 value="No"
                 checked={formik.values.Payment === "No"}
                 onChange={(e) => handleRadioChange(e, "otherPaymentOption")}
-                disabled={mode === "review"}
+                disabled={mode === "review" || mode === "view"}
               />
               No
             </label>
@@ -152,7 +152,7 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
                 value="Other"
                 checked={formik.values.Payment === "Other"}
                 onChange={(e) => handleRadioChange(e, "otherPaymentOption")}
-                disabled={mode === "review"}
+                disabled={mode === "review" || mode === "view"}
               />
               Other:
             </label>
@@ -218,7 +218,7 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
                 ? "red"
                 : "",
           }}
-          disabled={mode === "review"}
+          disabled={mode === "review" || mode === "view"}
         />
         {/* Comment component for the "PotentialHarm" field */}
         {mode === "review" && (
@@ -259,7 +259,7 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
                 onChange={(e) =>
                   handleRadioChange(e, "otherVulnerableParticipantsOptions")
                 }
-                disabled={mode === "review"}
+                disabled={mode === "review" || mode === "view"}
               />
               Yes, it involves children and/or adolescents
             </label>
@@ -276,7 +276,7 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
                 onChange={(e) =>
                   handleRadioChange(e, "otherVulnerableParticipantsOptions")
                 }
-                disabled={mode === "review"}
+                disabled={mode === "review" || mode === "view"}
               />
               Yes, it involve adults lacking mental capability
             </label>
@@ -291,7 +291,7 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
                 onChange={(e) =>
                   handleRadioChange(e, "otherVulnerableParticipantsOptions")
                 }
-                disabled={mode === "review"}
+                disabled={mode === "review" || mode === "view"}
               />
               No, it involves adults with no vulnerabilities
             </label>
@@ -306,7 +306,7 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
                 onChange={(e) =>
                   handleRadioChange(e, "otherVulnerableParticipantsOptions")
                 }
-                disabled={mode === "review"}
+                disabled={mode === "review" || mode === "view"}
               />
               Other
             </label>

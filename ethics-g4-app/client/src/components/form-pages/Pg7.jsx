@@ -45,7 +45,7 @@ export const Pg7 = ({ formik, mode }) => {
           className="form-control"
           id="ListofQuestions"
           onChange={(e) => handleFileChange(e, "ListofQuestions")}
-          disabled={mode === "review"}
+          disabled={mode === "review" || mode === "view"}
         />
         {/* Comment component for the "ListofQuestions" field */}
         {mode === "review" && (
@@ -67,7 +67,7 @@ export const Pg7 = ({ formik, mode }) => {
 
         <Dropzone
           style={dropzoneStyle}
-          disabled={mode === "review"}
+          disabled={mode === "review" || mode === "view"}
           onDrop={(acceptedFiles) => {
             console.log(acceptedFiles);
 

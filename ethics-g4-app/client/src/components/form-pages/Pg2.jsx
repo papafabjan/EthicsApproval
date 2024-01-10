@@ -49,7 +49,7 @@ function Pg2({ formik, emphasizeFields, mode }) {
                 ? "red"
                 : "",
           }}
-          disabled={mode === "review"}
+          disabled={mode === "review" || mode === "view"}
         />
         {/* Comment component for the "ResearchProject" field */}
         {mode === "review" && (
@@ -87,7 +87,7 @@ function Pg2({ formik, emphasizeFields, mode }) {
                 ? "red"
                 : "",
           }}
-          disabled={mode === "review"}
+          disabled={mode === "review" || mode === "view"}
         />
         {/* Comment component for the "CoApplicantName" field */}
         {mode === "review" && (
@@ -127,7 +127,7 @@ function Pg2({ formik, emphasizeFields, mode }) {
                 ? "red"
                 : "",
           }}
-          disabled={mode === "review"}
+          disabled={mode === "review" || mode === "view"}
         />
         {/* Comment component for the "CoApplicantEmail" field */}
         {mode === "review" && (
@@ -162,7 +162,7 @@ function Pg2({ formik, emphasizeFields, mode }) {
                 ? "red"
                 : "",
           }}
-          disabled={mode === "review"}
+          disabled={mode === "review" || mode === "view"}
         />
         {/* Comment component for the "StartDate" field */}
         {mode === "review" && (
@@ -191,7 +191,7 @@ function Pg2({ formik, emphasizeFields, mode }) {
           value={formik.values.EndDate}
           onChange={formik.handleChange}
           name="EndDate"
-          disabled={mode === "review"}
+          disabled={mode === "review" || mode === "view"}
         />
         {/* Comment component for the "EndDate" field */}
         {mode === "review" && (
@@ -217,7 +217,7 @@ function Pg2({ formik, emphasizeFields, mode }) {
           <li>
             <label>
               <input
-                disabled={mode === "review"}
+                disabled={mode === "review" || mode === "view"}
                 type="radio"
                 name="Funding"
                 value="Other"
@@ -252,7 +252,7 @@ function Pg2({ formik, emphasizeFields, mode }) {
           <li>
             <label>
               <input
-                disabled={mode === "review"}
+                disabled={mode === "review" || mode === "view"}
                 type="radio"
                 name="Funding"
                 value="No"
@@ -294,7 +294,7 @@ function Pg2({ formik, emphasizeFields, mode }) {
                 value="Greece"
                 checked={formik.values.Country.includes("Greece")}
                 onChange={formik.handleChange}
-                disabled={mode === "review"}
+                disabled={mode === "review" || mode === "view"}
               />{" "}
               Greece
             </label>
@@ -307,7 +307,7 @@ function Pg2({ formik, emphasizeFields, mode }) {
                 value="Bulgaria"
                 checked={formik.values.Country.includes("Bulgaria")}
                 onChange={formik.handleChange}
-                disabled={mode === "review"}
+                disabled={mode === "review" || mode === "view"}
               />{" "}
               Bulgaria
             </label>
@@ -320,7 +320,7 @@ function Pg2({ formik, emphasizeFields, mode }) {
                 value="Romania"
                 checked={formik.values.Country.includes("Romania")}
                 onChange={formik.handleChange}
-                disabled={mode === "review"}
+                disabled={mode === "review" || mode === "view"}
               />{" "}
               Romania
             </label>
@@ -336,7 +336,7 @@ function Pg2({ formik, emphasizeFields, mode }) {
                   formik.values.Country.includes("Other")
                 }
                 onChange={(e) => handleCheckboxChange(e, "OtherCountry")}
-                disabled={mode === "review"}
+                disabled={mode === "review" || mode === "view"}
               />{" "}
               Other
             </label>
@@ -392,7 +392,7 @@ function Pg2({ formik, emphasizeFields, mode }) {
                 value="Yes"
                 onChange={formik.handleChange}
                 checked={formik.values.HealthSocialCare === "Yes"}
-                disabled={mode === "review"}
+                disabled={mode === "review" || mode === "view"}
               />{" "}
               Yes
             </label>
@@ -406,7 +406,7 @@ function Pg2({ formik, emphasizeFields, mode }) {
                 value="No"
                 onChange={formik.handleChange}
                 checked={formik.values.HealthSocialCare === "No"}
-                disabled={mode === "review"}
+                disabled={mode === "review" || mode === "view"}
               />{" "}
               No
             </label>
@@ -440,7 +440,7 @@ function Pg2({ formik, emphasizeFields, mode }) {
                 onChange={(e) =>
                   handleRadioChange(e, "AnotherInstitutionOther")
                 }
-                disabled={mode === "review"}
+                disabled={mode === "review" || mode === "view"}
               />{" "}
               No
             </label>
@@ -455,7 +455,7 @@ function Pg2({ formik, emphasizeFields, mode }) {
                 onChange={(e) =>
                   handleRadioChange(e, "AnotherInstitutionOther")
                 }
-                disabled={mode === "review"}
+                disabled={mode === "review" || mode === "view"}
               />{" "}
               Other
             </label>
@@ -498,7 +498,7 @@ function Pg2({ formik, emphasizeFields, mode }) {
                 value="Yes"
                 onChange={formik.handleChange}
                 checked={formik.values.HumanTissue === "Yes"}
-                disabled={mode === "review"}
+                disabled={mode === "review" || mode === "view"}
               />{" "}
               Yes
             </label>
@@ -512,7 +512,7 @@ function Pg2({ formik, emphasizeFields, mode }) {
                 value="No"
                 onChange={formik.handleChange}
                 checked={formik.values.HumanTissue === "No"}
-                disabled={mode === "review"}
+                disabled={mode === "review" || mode === "view"}
               />{" "}
               No
             </label>
@@ -545,7 +545,7 @@ function Pg2({ formik, emphasizeFields, mode }) {
                 value="Yes"
                 onChange={formik.handleChange}
                 checked={formik.values.ClinicalMedical === "Yes"}
-                disabled={mode === "review"}
+                disabled={mode === "review" || mode === "view"}
               />{" "}
               Yes
             </label>
@@ -559,7 +559,7 @@ function Pg2({ formik, emphasizeFields, mode }) {
                 value="No"
                 onChange={formik.handleChange}
                 checked={formik.values.ClinicalMedical === "No"}
-                disabled={mode === "review"}
+                disabled={mode === "review" || mode === "view"}
               />{" "}
               No
             </label>
@@ -593,7 +593,7 @@ function Pg2({ formik, emphasizeFields, mode }) {
                 checked={formik.values.SocialCareServices === "Yes"}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                disabled={mode === "review"}
+                disabled={mode === "review" || mode === "view"}
               />{" "}
               Yes
             </label>
@@ -608,7 +608,7 @@ function Pg2({ formik, emphasizeFields, mode }) {
                 checked={formik.values.SocialCareServices === "No"}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                disabled={mode === "review"}
+                disabled={mode === "review" || mode === "view"}
               />{" "}
               No
             </label>

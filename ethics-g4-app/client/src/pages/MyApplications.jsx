@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { UserContext } from "../components/UserContext";
 import StyledMyApplications from "../styled/MyApplications.styled";
 import { format } from "date-fns";
+import { useNavigate } from "react-router-dom";
 
 const MyApplications = () => {
   const [applications, setApplications] = useState([]);
@@ -10,6 +11,7 @@ const MyApplications = () => {
   const sessionUser = useContext(UserContext);
   const [userData, setUserData] = useState(null);
   const userId = sessionUser.id;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -134,7 +136,11 @@ const MyApplications = () => {
                         <div className="actions">
                           <button
                             className="btn"
-                            onClick={() => console.log("View Application")}
+                            onClick={() =>
+                              navigate(`/application/${application.id}`, {
+                                state: { mode: "view" },
+                              })
+                            }
                           >
                             View Application
                           </button>

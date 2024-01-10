@@ -57,7 +57,7 @@ function Pg1({ formik, emphasizeFields, mode }) {
                     ? "red"
                     : "",
               }}
-              disabled={mode === "review"}
+              disabled={mode === "review" || mode === "view"}
             />
 
             {formik.touched.firstName && formik.errors.firstName && (
@@ -95,7 +95,7 @@ function Pg1({ formik, emphasizeFields, mode }) {
                       ? "red"
                       : "",
                 }}
-                disabled={mode === "review"}
+                disabled={mode === "review" || mode === "view"}
               />
               {/* Comment component for the "middleName" field */}
               {mode === "review" && (
@@ -132,7 +132,7 @@ function Pg1({ formik, emphasizeFields, mode }) {
                     ? "red"
                     : "",
               }}
-              disabled={mode === "review"}
+              disabled={mode === "review" || mode === "view"}
             />
             {formik.touched.lastName && formik.errors.lastName && (
               <div style={{ color: "red" }}>{formik.errors.lastName}</div>
@@ -166,7 +166,7 @@ function Pg1({ formik, emphasizeFields, mode }) {
                 borderColor:
                   emphasizeFields?.email && formik.touched?.email ? "red" : "",
               }}
-              disabled={mode === "review"}
+              disabled={mode === "review" || mode === "view"}
             />
             {formik.touched.email && formik.errors.email && (
               <div style={{ color: "red" }}>{formik.errors.email}</div>
@@ -205,7 +205,7 @@ function Pg1({ formik, emphasizeFields, mode }) {
                     ? "red"
                     : "",
               }}
-              disabled={mode === "review"}
+              disabled={mode === "review" || mode === "view"}
             />
           </div>
           {/* Comment component for the "studentRegistration" field */}
@@ -236,7 +236,7 @@ function Pg1({ formik, emphasizeFields, mode }) {
                     ? "red"
                     : "",
               }}
-              disabled={mode === "review"}
+              disabled={mode === "review" || mode === "view"}
             >
               <option value="" label="Select a programme" />
               <option
@@ -286,7 +286,7 @@ function Pg1({ formik, emphasizeFields, mode }) {
             value={formik.values.supervisor}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            disabled={mode === "review"}
+            disabled={mode === "review" || mode === "view"}
           >
             <option value="" label="Select a supervisor" />
             <option

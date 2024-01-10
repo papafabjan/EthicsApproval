@@ -35,7 +35,7 @@ export const Pg6 = ({ formik, mode }) => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           placeholder="e.g. Ethics web-site"
-          disabled={mode === "review"}
+          disabled={mode === "review" || mode === "view"}
         />
         {/* Comment component for the "DataProcessing" field */}
         {mode === "review" && (
@@ -66,7 +66,7 @@ export const Pg6 = ({ formik, mode }) => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           placeholder="e.g. Kostas Dimopoulos"
-          disabled={mode === "review"}
+          disabled={mode === "review" || mode === "view"}
         />
         {/* Comment component for the "DataConfidentiality" field */}
         {mode === "review" && (
@@ -101,7 +101,7 @@ export const Pg6 = ({ formik, mode }) => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           placeholder="eg. kdimopoulos@york.citycollege.eu"
-          disabled={mode === "review"}
+          disabled={mode === "review" || mode === "view"}
         />
         {/* Comment component for the "DataStorageandSecurity" field */}
         {mode === "review" && (

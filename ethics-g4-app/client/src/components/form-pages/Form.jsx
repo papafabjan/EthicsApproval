@@ -1,12 +1,11 @@
 // MyForm.jsx
 import React, { useContext, useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { UserContext } from "../UserContext";
 import * as yup from "yup";
 import { NavigationButtons } from "../../styled/Form.styled";
 import { Button } from "../../styled/Form.styled";
-import { useLocation } from "react-router-dom";
 import Pg0 from "./Pg0";
 import Pg1 from "./Pg1";
 import Pg2 from "./Pg2";
@@ -118,18 +117,19 @@ const Form = () => {
   const { applicationId } = useParams();
   const location = useLocation();
   const mode = location.state?.mode || "apply";
-
-  //view mode
+  
+  //review mode
   const sessionUser = useContext(UserContext);
   const [userData, setUserData] = useState(null);
   const userId = sessionUser.id;
+  const navigate = useNavigate();
 
   const totalSteps = 9;
 
   console.log(mode);
   console.log(applicationId);
   useEffect(() => {
-    if (mode === "view" && applicationId) {
+    if (mode === "review" && applicationId) {
       const fetchApplicationData = async () => {
         try {
           const response = await fetch(
@@ -193,7 +193,7 @@ const Form = () => {
     initialValues,
     validationSchema,
     onSubmit: async (values) => {
-      if (mode === "view" && applicationId) {
+      if (mode === "review" && applicationId) {
         //get user_id through the google_id stored in session
         // Assuming this is an asynchronous function in an async context (e.g., within an async function or using await)
         const fetchUserIdByGoogleId = async (googleId) => {
@@ -310,6 +310,11 @@ const Form = () => {
     setStep(1);
   };
   const handlePrevious = () => {
+
+    if(mode === 'review' && step === 1) {
+      navigate("/dashboard");
+    }
+
     setStep((prevStep) => prevStep - 1);
     console.log(formik.isValid);
   };
@@ -467,15 +472,15 @@ const Form = () => {
     //   return;
     // }
     // Change the mode to 'apply' before submitting
-    const submitMode = mode === "view" ? "apply" : mode;
+    const submitMode = mode === "review" ? "apply" : mode;
     formik.handleSubmit();
   };
 
   const renderFormStep = () => {
     switch (step) {
       case 0:
-        //if application is being reviewed there is no reason to show the explanation page
-        if (mode === "view") {
+        //if application is being rereviewed there is no reason to show the explanation page
+        if (mode === "review") {
           setStep(1);
         }
         return (

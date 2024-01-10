@@ -25,10 +25,10 @@ function Comment({ fieldName, comment, onCommentSave }) {
             value={localComment}
             onChange={handleCommentChange}
           />
-          <button onClick={handleCommentSave}>Save</button>
+          <button className="btn" onClick={handleCommentSave}>Hide</button>
         </div>
       ) : (
-        <button onClick={() => setEditing(true)}>Comment</button>
+        <button className="btn" onClick={() => setEditing(true)}>Comment</button>
       )}
     </div>
   );

@@ -248,7 +248,7 @@ const Dashboard = () => {
                             className="btn"
                             onClick={() =>
                               navigate(`/application/${application.id}`, {
-                                state: { mode: "view" },
+                                state: { mode: "review" },
                               })
                             }
                           >

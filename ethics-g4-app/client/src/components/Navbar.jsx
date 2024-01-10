@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { UserContext } from "../components/UserContext";
 
-const Navbar =() => {
+const Navbar = () => {
   const user = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -33,7 +33,7 @@ const Navbar =() => {
         // Handle Logout failure
       }
       navigate("/");
-       window.location.reload(true);
+      window.location.reload(true);
     } catch (error) {
       console.error("Error during Logout", error);
       // Handle error during Logout
@@ -91,6 +91,6 @@ const Navbar =() => {
       </nav>
     </>
   );
-}
+};
 
 export default Navbar;

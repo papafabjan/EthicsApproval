@@ -15,6 +15,9 @@ CREATE TABLE users (
 CREATE TABLE applications (
   id SERIAL PRIMARY KEY,
   status VARCHAR(255) NOT NULL,
+  -- supervisor VARCHAR(255) NOT NULL
+  -- reviewers  VARCHAR(255) ARRAY,
+  -- risk VARCHAR(255),
   date TIMESTAMP NOT NULL,
   applicant_id INT REFERENCES users(user_id) NOT NULL
 );
@@ -33,6 +36,7 @@ CREATE TABLE comments (
   commenter_id INTEGER REFERENCES users(user_id),
   field VARCHAR(255) NOT NULL,
   content VARCHAR(255) NOT NULL,
+  application_status VARCHAR(255) NOT NULL,
   application_id INTEGER REFERENCES applications(id) NOT NULL
 );
 

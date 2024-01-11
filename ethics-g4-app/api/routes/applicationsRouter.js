@@ -202,7 +202,31 @@ router.post("/applications/update-status/:id", async (req, res) => {
         message: "Application is already approved",
       });
     }
-
+    if (userRole === "none"){
+      if (
+        currentStatus ===
+        "Approved by reviewer, pending ethics admin's approval"
+      ) {
+        const updateStatusQuery =
+          "UPDATE applications SET status = $1, date = $2 WHERE id = $3 RETURNING *";
+        const currentDate = new Date();
+        const updatedApplication = await pool.query(updateStatusQuery, [
+          status,
+          currentDate,
+          id,
+        ]);
+        return res.json({
+          success: true,
+          message: "Successful Approval",
+        });
+      } else {
+        return res.json({
+          success: false,
+          message:
+            "You cannot approve an application until it has gone through the correct process",
+        });
+      }
+    }
     if (userRole === "supervisor" && isAdmin) {
       if (currentStatus === "Pending supervisor's admission") {
         status = "Approved by supervisor, pending reviewers addition";
@@ -265,26 +289,18 @@ router.post("/applications/update-status/:id", async (req, res) => {
 
     if (userRole === "supervisor") {
       if (currentStatus === "Pending supervisor's admission") {
-        if (status === "Approved") {
           status = "Approved by supervisor, pending reviewers addition";
-        }
       } else {
-        if (
-          !status === "Approved by reviewer, pending ethics admin's approval"
-        ) {
           return res.json({
             success: false,
             message:
               "Application is already approved by you, it's time for the reviewers to review.",
           });
-        }
       }
     }
     if (userRole === "reviewer") {
       if (currentStatus === "Reviewers Assigned") {
-        if (status === "Approved") {
           status = "Approved by reviewer, pending ethics admin's approval";
-        }
       }
       if (
         currentStatus ===

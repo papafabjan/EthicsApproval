@@ -469,7 +469,14 @@ const Form = () => {
 
     const formData = new FormData();
 
-    formData.append('files', formik.values.SensitiveTopicsFiles);
+    for (var i = 0; i < formik.values.SensitiveTopicsFiles.length; i++) {
+      formData.append('files', formik.values.SensitiveTopicsFiles[i]);
+    }
+
+    for (var i = 0; i < formik.values.AdditionalForms.length; i++) {
+      formData.append('files', formik.values.AdditionalForms[i]);
+    }
+
     formData.append('files', formik.values.ParentalConsent);
     formData.append('files', formik.values.ParentalInformation);
     formData.append('files', formik.values.ChildInformation);
@@ -482,7 +489,6 @@ const Form = () => {
     formData.append('files', formik.values.ParticipantDebriefing);
     formData.append('files', formik.values.AccessibilityLetter);
     formData.append('files', formik.values.ListofQuestions);
-    formData.append('files', formik.values.AdditionalForms);
 
     console.log(formData)
 

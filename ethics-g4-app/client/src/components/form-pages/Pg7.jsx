@@ -1,25 +1,15 @@
-import Dropzone from "react-dropzone";
-import Thumb from "../Thumb";
-
-
-const dropzoneStyle = {
-  width: '100%',
-  minHeight: '100px',
-  border: '2px dashed #ccc',
-  borderRadius: '4px',
-  padding: '20px',
-  textAlign: 'center',
-  cursor: 'pointer',
-};
-
-
-
 export const Pg7 = ({ formik }) => {
 
   const handleFileChange = (event, initialValuesName) => {
     const file = event.target.files[0];
     formik.setFieldValue(initialValuesName, file);
     console.log(file)
+  };
+
+  const handleFilesChange = (event, initialValuesName) => {
+    const files = event.target.files;
+    formik.setFieldValue(initialValuesName, files);
+    console.log(files);
   };
 
 
@@ -40,7 +30,6 @@ export const Pg7 = ({ formik }) => {
           id="ListofQuestions"
           onChange={(e) => handleFileChange(e, "ListofQuestions")}
         />
-        <Thumb file={formik.values.ListofQuestions} />
       </div>
 
       <div className="form-group">
@@ -48,32 +37,14 @@ export const Pg7 = ({ formik }) => {
           Any additional forms /documents you need to submit (optional)
         </label>
 
-        <Dropzone style={dropzoneStyle} onDrop={acceptedFiles => {
-          console.log(acceptedFiles);
-
-          if (acceptedFiles.length === 0) {
-            return;
-          }
-
-          formik.setFieldValue(
-            "AdditionalForms",
-            formik.values.AdditionalForms.concat(acceptedFiles)
-          );
-        }}>
-          {({ getRootProps, getInputProps }) => (
-            <section>
-              <div {...getRootProps()}>
-                <input {...getInputProps()} />
-                <p>Upload up to 10 files (e.g., questionnaires, photos, interview questions, etc) in any format.</p>
-              </div>
-            </section>
-          )}
-        </Dropzone>
-
-        {/* {formik.values.AdditionalForms.map((file, i) => (
-          <Thumb key={i} file={file} />
-        ))} */}
-
+        <input
+          type="file"
+          multiple
+          name="AdditionalForms"
+          className="form-control"
+          id="AdditionalForms"
+          onChange={(e) => handleFilesChange(e, "AdditionalForms")}
+        />
       </div>
     </>
   );

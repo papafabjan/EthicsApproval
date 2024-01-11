@@ -1,16 +1,11 @@
-import Thumb from "../Thumb";
-import Dropzone from "react-dropzone";
-
-const dropzoneStyle = {
-  width: "100%",
-  height: "auto",
-  borderWidth: 2,
-  borderColor: "rgb(102, 102, 102)",
-  borderStyle: "dashed",
-  borderRadius: 5,
-}
-
 function Pg3({ formik, emphasizeFields }) {
+
+  const handleFilesChange = (event, initialValuesName) => {
+    const files = event.target.files;
+    formik.setFieldValue(initialValuesName, files);
+    console.log(files);
+  };
+
   return (
     <>
       <div className="form-group">
@@ -145,44 +140,18 @@ function Pg3({ formik, emphasizeFields }) {
       </div>
 
       <div className="form-group">
-        <label htmlFor="SensitiveMaterialFiles">
+        <label htmlFor="SensitiveTopicsFiles">
           Sensitive Material/tools<span style={{ color: "red" }}>*</span>
         </label>
 
-        <Dropzone
-          style={dropzoneStyle}
-          onDrop={(acceptedFiles) => {
-            console.log(acceptedFiles);
-
-            // do nothing if no files
-            if (acceptedFiles.length === 0) {
-              return;
-            }
-
-            // on drop we add to the existing files
-            //Doesn't work yet
-            formik.setFieldValue(
-              "SensitiveMaterialFiles",
-              formik.values.SensitiveMaterialFiles.concat(acceptedFiles)
-            );
-
-            return formik.values.SensitiveMaterialFiles.map((file, i) => (
-              <Thumb key={i} file={file} />
-            ));
-          }}
-        >
-          {({ getRootProps, getInputProps }) => (
-            <section>
-              <div {...getRootProps()}>
-                <input {...getInputProps()} />
-                <p>
-                  Upload up to 5 files (photos, questionnaires, interview
-                  questions etc.) in any format
-                </p>
-              </div>
-            </section>
-          )}
-        </Dropzone>
+        <input
+          type="file"
+          multiple
+          name="SensitiveTopicsFiles"
+          className="form-control"
+          id="SensitiveTopicsFiles"
+          onChange={(e) => handleFilesChange(e, "SensitiveTopicsFiles")}
+        />
 
         {formik.touched.SensitiveMaterialFiles &&
           formik.errors.SensitiveMaterialFiles && (

@@ -1,5 +1,3 @@
-import Thumb from "../Thumb";
-
 export const Pg5 = ({ formik }) => {
 
   const handleFileChange = (event, initialValuesName) => {
@@ -32,7 +30,6 @@ export const Pg5 = ({ formik }) => {
               id="ParentalConsent"
               onChange={(e) => handleFileChange(e, "ParentalConsent")}
             />
-            <Thumb file={formik.values.ParentalConsent} />
           </div>
           <div className="form-group">
             <label htmlFor="ParentalInformation">
@@ -53,7 +50,6 @@ export const Pg5 = ({ formik }) => {
               id="ParentalInformation"
               onChange={(e) => handleFileChange(e, "ParentalInformation")}
             />
-            <Thumb file={formik.values.ParentalInformation} />
           </div>
           <div className="form-group">
             <label htmlFor="ChildInformation">
@@ -75,7 +71,6 @@ export const Pg5 = ({ formik }) => {
               id="ChildInformation"
               onChange={(e) => handleFileChange(e, "ChildInformation")}
             />
-            <Thumb file={formik.values.ChildInformation} />
           </div>
           <div className="form-group">
             <label htmlFor="HeadTeacherConsent">
@@ -93,7 +88,6 @@ export const Pg5 = ({ formik }) => {
               id="HeadTeacherConsent"
               onChange={(e) => handleFileChange(e, "HeadTeacherConsent")}
             />
-            <Thumb file={formik.values.HeadTeacherConsent} />
           </div>
           <div className="form-group">
             <label htmlFor="HeadteacherInformation">
@@ -111,7 +105,6 @@ export const Pg5 = ({ formik }) => {
               id="HeadteacherInformation"
               onChange={(e) => handleFileChange(e, "HeadteacherInformation")}
             />
-            <Thumb file={formik.values.HeadteacherInformation} />
           </div>
         </>
       ) : formik.values.VulnerableParticipants === "YesAdultsMental" ? (
@@ -140,7 +133,6 @@ export const Pg5 = ({ formik }) => {
               id="AccessibleConsentMaterial"
               onChange={(e) => handleFileChange(e, "AccessibleConsentMaterial")}
             />
-            <Thumb file={formik.values.AccessibleConsentMaterial} />
           </div>
           <div className="form-group">
             <label htmlFor="ProxyConsentProcedures">
@@ -163,7 +155,6 @@ export const Pg5 = ({ formik }) => {
               id="ProxyConsentProcedures"
               onChange={(e) => handleFileChange(e, "ProxyConsentProcedures")}
             />
-            <Thumb file={formik.values.ProxyConsentProcedures} />
           </div>
         </>
       ) : formik.values.VulnerableParticipants === "" ? (
@@ -192,7 +183,6 @@ export const Pg5 = ({ formik }) => {
               id="ParticipantInformation"
               onChange={(e) => handleFileChange(e, "ParticipantInformation")}
             />
-            <Thumb file={formik.values.ParticipantInformation} />
           </div>
           <div className="form-group">
             <label htmlFor="ParticipantConsent">
@@ -212,7 +202,6 @@ export const Pg5 = ({ formik }) => {
               id="ParticipantConsent"
               onChange={(e) => handleFileChange(e, "ParticipantConsent")}
             />
-            <Thumb file={formik.values.ParticipantConsent} />
           </div>
           <div className="form-group">
             <label htmlFor="ParticipantDebriefing">
@@ -231,7 +220,6 @@ export const Pg5 = ({ formik }) => {
               id="ParticipantDebriefing"
               onChange={(e) => handleFileChange(e, "ParticipantDebriefing")}
             />
-            <Thumb file={formik.values.ParticipantDebriefing} />
           </div>
           <div className="form-group">
             <label htmlFor="AccessibilityLetter">
@@ -248,7 +236,6 @@ export const Pg5 = ({ formik }) => {
               id="AccessibilityLetter"
               onChange={(e) => handleFileChange(e, "AccessibilityLetter")}
             />
-            <Thumb file={formik.values.AccessibilityLetter} />
           </div>
         </>
       )}

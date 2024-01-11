@@ -397,6 +397,14 @@ router.post("/applications/edit/:applicationId", async (req, res) => {
     const { applicationId } = req.params;
     const userID = req.body.user.id;
     const values = req.body.application;
+
+    const oldStatusQuery = await pool.query(`
+    SELECT application_status FROM comments WHERE application_id = $1;
+    `,
+    [applicationId]
+    );
+    const oldStatus = oldStatusQuery.rows[0].application_status;
+    console.log(oldStatus);
     const fetchUserIDQuery = `
       SELECT user_id from users WHERE google_id = $1
       `;
@@ -424,7 +432,7 @@ router.post("/applications/edit/:applicationId", async (req, res) => {
     WHERE id = $4
     RETURNING *;
     `,
-      ["Pending supervisor's admission", new Date(), userId, applicationId]
+      [oldStatus, new Date(), userId, applicationId]
     );
 
     // Find the supervisor's user_id using the email

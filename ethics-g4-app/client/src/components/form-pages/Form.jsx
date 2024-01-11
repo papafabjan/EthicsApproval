@@ -313,7 +313,7 @@ const Form = () => {
 
           const responseData = await response.json();
           console.log("Application edited successfully:", responseData);
-          // navigate("/myapplications");
+          navigate("/myapplications");
           //  window.location.reload(true);
         } catch (error) {
           // Handle error or show notification to the user

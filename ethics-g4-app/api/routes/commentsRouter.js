@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const pool = require("../db");
 
-
 router.post("/comments/add", async (req, res) => {
   const { comments, applicationId, userId } = req.body;
 
@@ -42,6 +41,21 @@ router.post("/comments/add", async (req, res) => {
   }
 });
 
-
+router.get("/comments/:applicationId", async (req, res) => {
+  try {
+    const { applicationId } = req.params;
+    console.log(applicationId);
+    const commentsFetch = await pool.query(
+      "SELECT * FROM comments WHERE application_id = $1",
+      [applicationId]
+    );
+    const comments = commentsFetch.rows;
+    console.log(comments);
+    res.status(201).json( comments );
+  } catch (error) {
+    console.error("Error:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 module.exports = router;

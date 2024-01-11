@@ -63,6 +63,7 @@ const MyApplications = () => {
 
     fetchData();
   }, [userId]);
+
   const fetchApplicationTitle = async (applicationId) => {
     try {
       const response = await fetch(
@@ -152,8 +153,10 @@ const MyApplications = () => {
                               })
                             }
                             disabled={
-                              application.status !=
-                              "Pending supervisor's admission"
+                              application.status !==
+                                "Pending supervisor's admission" &&
+                              application.status !==
+                                "Comments added, awaiting review by applicant"
                             }
                           >
                             Edit Application

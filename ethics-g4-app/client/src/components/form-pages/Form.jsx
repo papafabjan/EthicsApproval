@@ -117,7 +117,8 @@ const Form = () => {
   const { applicationId } = useParams();
   const location = useLocation();
   const mode = location.state?.mode || "apply";
-  
+  //edit mode
+  const [fetchedComments, setFetchedComments] = useState([]);
   //review mode
   const sessionUser = useContext(UserContext);
   const [userData, setUserData] = useState(null);
@@ -129,7 +130,10 @@ const Form = () => {
   console.log(mode);
   console.log(applicationId);
   useEffect(() => {
-    if ((mode==="view" || mode === "review" || mode === "edit") && applicationId) {
+    if (
+      (mode === "view" || mode === "review" || mode === "edit") &&
+      applicationId
+    ) {
       const fetchApplicationData = async () => {
         try {
           const response = await fetch(
@@ -152,15 +156,28 @@ const Form = () => {
           });
 
           console.log("Successfully fetched application data");
-
         } catch (error) {
           console.error("Error:", error.message);
           // Handle errors as needed
         }
       };
 
-      // Call the fetchApplicationData function
+      const fetchComments = async () => {
+        try {
+          const response = await fetch(
+            `${import.meta.env.VITE_SERVER_URL}/api/comments/${applicationId}`
+          );
+          const data = await response.json();
+          console.log(data);
+          setFetchedComments(data);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+      // Call the functions
       fetchApplicationData();
+      fetchComments();
     } else {
       // Function to fetch user data by user ID
       const fetchUserData = async () => {
@@ -263,48 +280,46 @@ const Form = () => {
 
             console.log("Comments saved successfully");
 
-            window.location.href="/dashboard";
-
+            window.location.href = "/dashboard";
           } catch (error) {
             console.error("Error:", error.message);
           }
         };
 
         sendCommentsToServer();
-      } 
-      if(mode==="edit"){
-      try {
-        const response = await fetch(
-          `${
-            import.meta.env.VITE_SERVER_URL
-          }/api/applications/edit/${applicationId}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              application: values,
-              user: sessionUser,
-            }),
-          }
-        );
-
-        if (!response.ok) {
-          console.log({ sessionUser, values });
-          throw new Error("Failed to edit application");
-        }
-
-        const responseData = await response.json();
-        console.log("Application edited successfully:", responseData);
-        // navigate("/myapplications");
-        //  window.location.reload(true);
-      } catch (error) {
-        // Handle error or show notification to the user
-        console.error(error.message);
       }
+      if (mode === "edit") {
+        try {
+          const response = await fetch(
+            `${
+              import.meta.env.VITE_SERVER_URL
+            }/api/applications/edit/${applicationId}`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                application: values,
+                user: sessionUser,
+              }),
+            }
+          );
 
-      }else {
+          if (!response.ok) {
+            console.log({ sessionUser, values });
+            throw new Error("Failed to edit application");
+          }
+
+          const responseData = await response.json();
+          console.log("Application edited successfully:", responseData);
+          // navigate("/myapplications");
+          //  window.location.reload(true);
+        } catch (error) {
+          // Handle error or show notification to the user
+          console.error(error.message);
+        }
+      } else {
         try {
           const userID = userData.user_id;
           const response = await fetch(
@@ -331,7 +346,6 @@ const Form = () => {
           console.error("Error:", error.message);
         }
       }
-
     },
   });
 
@@ -342,11 +356,10 @@ const Form = () => {
     setStep(1);
   };
   const handlePrevious = () => {
-
-    if(mode === 'review' && step === 1) {
+    if (mode === "review" && step === 1) {
       navigate("/dashboard");
     }
-    if ((mode ==="edit" || mode === "view") && step === 1) {
+    if ((mode === "edit" || mode === "view") && step === 1) {
       navigate("/myapplications");
     }
     setStep((prevStep) => prevStep - 1);
@@ -541,7 +554,7 @@ const Form = () => {
               {mode === "view" ? (
                 <Button
                   className="btn"
-                  onClick={()=>{
+                  onClick={() => {
                     console.log("Redirected to MyApplications!");
                     navigate("/myapplications");
                   }}
@@ -563,84 +576,92 @@ const Form = () => {
           </div>
         );
       default:
-        
-        if(loggedIn){
-
+        if (loggedIn) {
           return (
             <div>
-            <h1>Form Page {step}</h1>
-            {step === 1 && (
-              <Pg1
-                formik={formik}
-                emphasizeFields={formik.errors}
-                mode={mode}
-              />
-            )}
-            {step === 2 && (
-              <Pg2
-                formik={formik}
-                emphasizeFields={formik.errors}
-                mode={mode}
-              />
-            )}
-            {step === 3 && (
-              <Pg3
-                formik={formik}
-                emphasizeFields={formik.errors}
-                mode={mode}
-              />
-            )}
-            {step === 4 && (
-              <Pg4
-                formik={formik}
-                emphasizeFields={formik.errors}
-                mode={mode}
-              />
-            )}
-            {step === 5 && (
-              <Pg5
-                formik={formik}
-                emphasizeFields={formik.errors}
-                mode={mode}
-              />
-            )}
-            {step === 6 && (
-              <Pg6
-                formik={formik}
-                emphasizeFields={formik.errors}
-                mode={mode}
-              />
-            )}
-            {step === 7 && (
-              <Pg7
-                formik={formik}
-                emphasizeFields={formik.errors}
-                mode={mode}
-              />
-            )}
+              <h1>Form Page {step}</h1>
+              {step === 1 && (
+                <Pg1
+                  formik={formik}
+                  emphasizeFields={formik.errors}
+                  mode={mode}
+                />
+              )}
+              {step === 2 && (
+                <Pg2
+                  formik={formik}
+                  emphasizeFields={formik.errors}
+                  mode={mode}
+                />
+              )}
+              {step === 3 && (
+                <Pg3
+                  formik={formik}
+                  emphasizeFields={formik.errors}
+                  mode={mode}
+                />
+              )}
+              {step === 4 && (
+                <Pg4
+                  formik={formik}
+                  emphasizeFields={formik.errors}
+                  mode={mode}
+                />
+              )}
+              {step === 5 && (
+                <Pg5
+                  formik={formik}
+                  emphasizeFields={formik.errors}
+                  mode={mode}
+                />
+              )}
+              {step === 6 && (
+                <Pg6
+                  formik={formik}
+                  emphasizeFields={formik.errors}
+                  mode={mode}
+                />
+              )}
+              {step === 7 && (
+                <Pg7
+                  formik={formik}
+                  emphasizeFields={formik.errors}
+                  mode={mode}
+                />
+              )}
 
-            <NavigationButtons>
-              <Button
-                className="btn"
-                onClick={handlePrevious}
-                disabled={isFirstStep}
-              >
-                Previous
-              </Button>
-              <Button
-                className="btn"
-                onClick={handleNext}
-                disabled={isLastStep}
-              >
-                Next
-              </Button>
-            </NavigationButtons>
-            <pre>{JSON.stringify(formik.values, null, 3)}</pre>
-          </div>
-        );
-      }else{
-        return <div>Please Sign In To Continue</div>
-      }
+              <NavigationButtons>
+                <Button
+                  className="btn"
+                  onClick={handlePrevious}
+                  disabled={isFirstStep}
+                >
+                  Previous
+                </Button>
+                <Button
+                  className="btn"
+                  onClick={handleNext}
+                  disabled={isLastStep}
+                >
+                  Next
+                </Button>
+              </NavigationButtons>
+              {fetchedComments && ( //display comments
+                <div>
+                  {fetchedComments.map((comment) => (
+                    <div key={comment.id}>
+                      <p>Field: {comment.field}</p>
+                      <p>Comment: {comment.content}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <pre>{JSON.stringify(formik.values, null, 3)}</pre>
+            </div>
+          );
+        } else {
+          return <div>Please Sign In To Continue</div>;
+        }
     }
   };
 

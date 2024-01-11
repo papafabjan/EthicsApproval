@@ -204,8 +204,6 @@ const Dashboard = () => {
     );
   });
 
-
-
   return (
     <>
       <StyledDashboard>
@@ -264,8 +262,11 @@ const Dashboard = () => {
                                 setFetchTrigger((prev) => prev + 1);
                               }}
                               disabled={
-                                !(application.status ===
-                                "Approved by supervisor, pending reviewers addition") && !(application.status === "Reviewers Assigned")
+                                !(
+                                  application.status ===
+                                  "Approved by supervisor, pending reviewers addition"
+                                ) &&
+                                !(application.status === "Reviewers Assigned")
                               }
                             >
                               Assign Reviewers
@@ -274,6 +275,10 @@ const Dashboard = () => {
                           <button
                             className="btn"
                             onClick={() => approve(application.id)}
+                            disabled={
+                              application.status ===
+                              "Comments added, awaiting review by applicant"
+                            }
                           >
                             Approve
                           </button>

@@ -67,7 +67,7 @@ function AssignReviewers({applicationId}) {
         <div>
           <h2>Existing Reviewers:</h2>
           {existingReviewers.map((reviewer) => (
-            <div key={reviewer.id}>{reviewer.username}</div>
+            <li key={reviewer.id}>{reviewer.username}</li>
           ))}
           <br />
           <br />
@@ -478,6 +478,10 @@ function AssignReviewers({applicationId}) {
               <option
                 value="scarimproved@gmail.com"
                 label="Scar Polyie <scarimproved@gmail.com>"
+              />
+              <option
+                value="fpapa@york.citycollege.eu"
+                label="Fabian Papa <fpapa@york.citycollege.eu>"
               />
             </select>
           </div>

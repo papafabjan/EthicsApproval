@@ -161,7 +161,7 @@ router.post("/applications/update-status/:id", async (req, res) => {
     const fetchStatus = await pool.query(fetchStatusQuery, [id]);
     const currentStatus = fetchStatus.rows[0].status; //100%
     console.log(currentStatus);
-    
+
     //fetch user role in application with user_id
     const fetchUserIDQuery = `
     SELECT user_id from users WHERE google_id = $1
@@ -178,9 +178,10 @@ router.post("/applications/update-status/:id", async (req, res) => {
 
     if (fetchRole.rows.length > 0) {
       const roleFromDb = fetchRole.rows[0].role;
-
-      if (roleFromDb === "supervisor" || roleFromDb === "reviewer") {
-        userRole = roleFromDb;
+      if (fetchRole.rows.length > 1) { //if more than 1 roles for the same user on the same application he can only be a reviewer attempting to approve.
+        userRole = "reviewer";
+      } else {
+          userRole = roleFromDb;
       }
     }
     console.log(userRole);
@@ -188,33 +189,80 @@ router.post("/applications/update-status/:id", async (req, res) => {
     //keeping it in case the admin attempts to bypass states
     const isAdminQuery = await pool.query(
       "SELECT role FROM user_roles WHERE role = 'admin' AND user_id = $1",
-      [userId],
+      [userId]
     );
     if (isAdminQuery.rows.length > 0) {
-      
       isAdmin = isAdminQuery.rows[0].role === "admin";
     }
     console.log(isAdmin);
 
-    if(currentStatus ==="Approved") {
+    if (currentStatus === "Approved") {
       return res.json({
         success: false,
         message: "Application is already approved",
-      })
+      });
     }
 
-    if (isAdmin) {
-      if (
-        !(currentStatus === "Approved by reviewer, pending ethics admin's approval")
-      ) {
-        return res.json({
-          success: false,
-          message:
-            "You cannot approve an application until it has gone through the correct process",
-        });
+    if (userRole === "supervisor" && isAdmin) {
+      if (currentStatus === "Pending supervisor's admission") {
+        status = "Approved by supervisor, pending reviewers addition";
+      } else {
+        if (
+          currentStatus ===
+          "Approved by reviewer, pending ethics admin's approval"
+        ) {
+          const updateStatusQuery =
+            "UPDATE applications SET status = $1, date = $2 WHERE id = $3 RETURNING *";
+          const currentDate = new Date();
+          const updatedApplication = await pool.query(updateStatusQuery, [
+            status,
+            currentDate,
+            id,
+          ]);
+          return res.json({
+            success: true,
+            message: "Successful Approval",
+          });
+        } else {
+          return res.json({
+            success: false,
+            message:
+              "You cannot approve an application until it has gone through the correct process",
+          });
+        }
       }
     }
-    
+
+    if (userRole === "reviewer" && isAdmin) {
+      if (currentStatus === "Reviewers Assigned") {
+        status = "Approved by reviewer, pending ethics admin's approval";
+      } else {
+        if (
+          currentStatus ===
+          "Approved by reviewer, pending ethics admin's approval"
+        ) {
+          const updateStatusQuery =
+            "UPDATE applications SET status = $1, date = $2 WHERE id = $3 RETURNING *";
+          const currentDate = new Date();
+          const updatedApplication = await pool.query(updateStatusQuery, [
+            status,
+            currentDate,
+            id,
+          ]);
+          return res.json({
+            success: true,
+            message: "Successful Approval",
+          });
+        } else {
+          return res.json({
+            success: false,
+            message:
+              "You cannot approve an application until it has gone through the correct process",
+          });
+        }
+      }
+    }
+
     if (userRole === "supervisor") {
       if (currentStatus === "Pending supervisor's admission") {
         if (status === "Approved") {
@@ -255,7 +303,7 @@ router.post("/applications/update-status/:id", async (req, res) => {
       SET status = $1, date = $2
       WHERE id = $3
       RETURNING *;
-    `;
+      `;
     const currentDate = new Date(); // Get the current date
     const updatedApplication = await pool.query(updateStatusQuery, [
       status,
@@ -263,7 +311,7 @@ router.post("/applications/update-status/:id", async (req, res) => {
       id,
     ]);
 
-    res.json({ success: true, updatedApplication: updatedApplication.rows[0] });
+    res.json({ success: true, message: "Successful Approval" });
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Server Error");
@@ -327,11 +375,9 @@ router.delete("/applications/delete/:applicationId", async (req, res) => {
   }
 });
 
-
-
 //edit application
 router.post("/applications/edit/:applicationId", async (req, res) => {
-try {
+  try {
     const { applicationId } = req.params;
     const userID = req.body.user.id;
     const values = req.body.application;
@@ -384,7 +430,7 @@ try {
 
     // Delete the previous supervisor from the `user_roles` table
     await pool.query(
-    `
+      `
     DELETE FROM user_roles
     WHERE application_id = $1 AND role = 'supervisor';
     `,
@@ -402,53 +448,53 @@ try {
     );
 
     // Update the application content in the `application_content` table
-  const contentEntries = Object.entries(values);
+    const contentEntries = Object.entries(values);
 
-  for (const [fieldName, fieldValue] of contentEntries) {
-    if (
-      fieldValue === "" ||
-      (Array.isArray(fieldValue) && fieldValue.length === 0)
-    ) {
-      // Delete the field from the `application_content` table if the value is empty
-      await pool.query(
-        `
+    for (const [fieldName, fieldValue] of contentEntries) {
+      if (
+        fieldValue === "" ||
+        (Array.isArray(fieldValue) && fieldValue.length === 0)
+      ) {
+        // Delete the field from the `application_content` table if the value is empty
+        await pool.query(
+          `
         DELETE FROM application_content
         WHERE application_id = $1 AND field_name = $2;
         `,
-        [applicationId, fieldName]
-      );
-    } else {
-      // Check if the field already exists in the `application_content` table
-      const existingField = await pool.query(
-        `
+          [applicationId, fieldName]
+        );
+      } else {
+        // Check if the field already exists in the `application_content` table
+        const existingField = await pool.query(
+          `
         SELECT * FROM application_content
         WHERE application_id = $1 AND field_name = $2;
         `,
-        [applicationId, fieldName]
-      );
+          [applicationId, fieldName]
+        );
 
-      if (existingField.rows.length === 0) {
-        // Insert the new field into the `application_content` table
-        await pool.query(
-          `
+        if (existingField.rows.length === 0) {
+          // Insert the new field into the `application_content` table
+          await pool.query(
+            `
           INSERT INTO application_content (application_id, field_name, field_value) 
           VALUES ($1, $2, $3);
           `,
-          [applicationId, fieldName, fieldValue]
-        );
-      } else {
-        // Update the existing field in the `application_content` table
-        await pool.query(
-          `
+            [applicationId, fieldName, fieldValue]
+          );
+        } else {
+          // Update the existing field in the `application_content` table
+          await pool.query(
+            `
     UPDATE application_content
     SET field_value = $3
     WHERE application_id = $1 AND field_name = $2;
     `,
-          [applicationId, fieldName, fieldValue]
-        );
+            [applicationId, fieldName, fieldValue]
+          );
+        }
       }
     }
-  }
 
     res.json({ success: true, applicationId });
   } catch (error) {
@@ -456,6 +502,5 @@ try {
     res.status(500).send("Server Error");
   }
 });
-
 
 module.exports = router;

@@ -146,7 +146,15 @@ const MyApplications = () => {
                           </button>
                           <button
                             className="btn"
-                            onClick={() => console.log("Edit Application")}
+                            onClick={() =>
+                              navigate(`/application/${application.id}`, {
+                                state: { mode: "edit" },
+                              })
+                            }
+                            disabled={
+                              application.status !=
+                              "Pending supervisor's admission"
+                            }
                           >
                             Edit Application
                           </button>

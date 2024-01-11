@@ -89,7 +89,7 @@ router.post("/applications/add", async (req, res) => {
       VALUES ($1, $2, $3) 
       RETURNING *;
       `,
-      ["Pending supervisor's admission ", new Date(), userID]
+      ["Pending supervisor's admission", new Date(), userID]
     );
 
     const applicationId = newApplication.rows[0].id;
@@ -184,13 +184,16 @@ router.post("/applications/update-status/:id", async (req, res) => {
       }
     }
     console.log(userRole);
-  
+    var isAdmin = false;
     //keeping it in case the admin attempts to bypass states
     const isAdminQuery = await pool.query(
       "SELECT role FROM user_roles WHERE role = 'admin' AND user_id = $1",
       [userId],
     );
-    const isAdmin = isAdminQuery.rows[0].role === "admin";
+    if (isAdminQuery.rows.length > 0) {
+      
+      isAdmin = isAdminQuery.rows[0].role === "admin";
+    }
     console.log(isAdmin);
 
     if(currentStatus ==="Approved") {
@@ -213,7 +216,7 @@ router.post("/applications/update-status/:id", async (req, res) => {
     }
     
     if (userRole === "supervisor") {
-      if (currentStatus === "Pending supervisor's admission ") {
+      if (currentStatus === "Pending supervisor's admission") {
         if (status === "Approved") {
           status = "Approved by supervisor, pending reviewers addition";
         }
@@ -323,5 +326,136 @@ router.delete("/applications/delete/:applicationId", async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+
+
+
+//edit application
+router.post("/applications/edit/:applicationId", async (req, res) => {
+try {
+    const { applicationId } = req.params;
+    const userID = req.body.user.id;
+    const values = req.body.application;
+    const fetchUserIDQuery = `
+      SELECT user_id from users WHERE google_id = $1
+      `;
+    const fetchUserID = await pool.query(fetchUserIDQuery, [userID]);
+    const userId = fetchUserID.rows[0].user_id;
+    // Find the existing application
+    const existingApplication = await pool.query(
+      `
+    SELECT * FROM applications WHERE id = $1;
+    `,
+      [applicationId]
+    );
+
+    if (existingApplication.rows.length === 0) {
+      // Handle the case where the application is not found
+      res.status(404).json({ success: false, error: "Application not found" });
+      return;
+    }
+
+    // Update the application in the `applications` table
+    const updateApplication = await pool.query(
+      `
+    UPDATE applications 
+    SET status = $1, date = $2, applicant_id = $3
+    WHERE id = $4
+    RETURNING *;
+    `,
+      ["Pending supervisor's admission", new Date(), userId, applicationId]
+    );
+
+    // Find the supervisor's user_id using the email
+    const supervisorEmail = values.supervisor;
+    const supervisorUser = await pool.query(
+      `
+    SELECT user_id FROM users WHERE email = $1;
+    `,
+      [supervisorEmail]
+    );
+
+    if (supervisorUser.rows.length === 0) {
+      // Handle the case where the supervisor's email is not found
+      res.status(400).json({ success: false, error: "Supervisor not found" });
+      return;
+    }
+
+    const supervisorUserId = supervisorUser.rows[0].user_id;
+
+    // Delete the previous supervisor from the `user_roles` table
+    await pool.query(
+    `
+    DELETE FROM user_roles
+    WHERE application_id = $1 AND role = 'supervisor';
+    `,
+      [applicationId]
+    );
+
+    // Insert the new supervisor into the `user_roles` table
+    const assignSupervisor = await pool.query(
+      `
+    INSERT INTO user_roles (user_id, role, application_id)
+    VALUES ($1, $2, $3)
+    RETURNING *;
+    `,
+      [supervisorUserId, "supervisor", applicationId]
+    );
+
+    // Update the application content in the `application_content` table
+  const contentEntries = Object.entries(values);
+
+  for (const [fieldName, fieldValue] of contentEntries) {
+    if (
+      fieldValue === "" ||
+      (Array.isArray(fieldValue) && fieldValue.length === 0)
+    ) {
+      // Delete the field from the `application_content` table if the value is empty
+      await pool.query(
+        `
+        DELETE FROM application_content
+        WHERE application_id = $1 AND field_name = $2;
+        `,
+        [applicationId, fieldName]
+      );
+    } else {
+      // Check if the field already exists in the `application_content` table
+      const existingField = await pool.query(
+        `
+        SELECT * FROM application_content
+        WHERE application_id = $1 AND field_name = $2;
+        `,
+        [applicationId, fieldName]
+      );
+
+      if (existingField.rows.length === 0) {
+        // Insert the new field into the `application_content` table
+        await pool.query(
+          `
+          INSERT INTO application_content (application_id, field_name, field_value) 
+          VALUES ($1, $2, $3);
+          `,
+          [applicationId, fieldName, fieldValue]
+        );
+      } else {
+        // Update the existing field in the `application_content` table
+        await pool.query(
+          `
+    UPDATE application_content
+    SET field_value = $3
+    WHERE application_id = $1 AND field_name = $2;
+    `,
+          [applicationId, fieldName, fieldValue]
+        );
+      }
+    }
+  }
+
+    res.json({ success: true, applicationId });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 
 module.exports = router;

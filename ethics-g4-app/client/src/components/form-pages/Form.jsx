@@ -1,4 +1,4 @@
-// MyForm.jsx
+// Fetch requests for the initial apply and review features can be cut down by a lot. "View" "Edit" should be the simplest ones.
 import React, { useContext, useState, useEffect } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
@@ -129,7 +129,7 @@ const Form = () => {
   console.log(mode);
   console.log(applicationId);
   useEffect(() => {
-    if ((mode==="view"|| mode === "review") && applicationId) {
+    if ((mode==="view" || mode === "review" || mode === "edit") && applicationId) {
       const fetchApplicationData = async () => {
         try {
           const response = await fetch(
@@ -165,7 +165,6 @@ const Form = () => {
       // Function to fetch user data by user ID
       const fetchUserData = async () => {
         try {
-          // Check if userId is truthy before attempting to fetch user data
           if (userId) {
             const response = await fetch(
               `${import.meta.env.VITE_SERVER_URL}/api/users/${userId}`
@@ -272,7 +271,40 @@ const Form = () => {
         };
 
         sendCommentsToServer();
-      } else {
+      } 
+      if(mode==="edit"){
+      try {
+        const response = await fetch(
+          `${
+            import.meta.env.VITE_SERVER_URL
+          }/api/applications/edit/${applicationId}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              application: values,
+              user: sessionUser,
+            }),
+          }
+        );
+
+        if (!response.ok) {
+          console.log({ sessionUser, values });
+          throw new Error("Failed to edit application");
+        }
+
+        const responseData = await response.json();
+        console.log("Application edited successfully:", responseData);
+        // navigate("/myapplications");
+        //  window.location.reload(true);
+      } catch (error) {
+        // Handle error or show notification to the user
+        console.error(error.message);
+      }
+
+      }else {
         try {
           const userID = userData.user_id;
           const response = await fetch(
@@ -293,7 +325,8 @@ const Form = () => {
 
           const responseData = await response.json();
           console.log("Application submitted successfully:", responseData);
-          window.location.href = "/myapplications";
+          navigate("/myapplications");
+          //  window.location.reload(true);
         } catch (error) {
           console.error("Error:", error.message);
         }
@@ -313,7 +346,7 @@ const Form = () => {
     if(mode === 'review' && step === 1) {
       navigate("/dashboard");
     }
-    if (mode === "view" && step === 1) {
+    if ((mode ==="edit" || mode === "view") && step === 1) {
       navigate("/myapplications");
     }
     setStep((prevStep) => prevStep - 1);

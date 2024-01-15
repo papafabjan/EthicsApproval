@@ -23,9 +23,26 @@ router.post("/reviewer/assign-reviewer", async (req, res) => {
 
       const userId = userQuery.rows[0].user_id;
 
+      // Check if the user is already a reviewer for the application
+      const checkReviewerQuery = await pool.query(
+        `
+        SELECT * FROM user_roles
+        WHERE user_id = $1 AND role = 'reviewer' AND application_id = $2
+        `,
+        [userId, applicationId]
+      );
+      
+      // If the query returns any results, the user is already a reviewer
+      if (checkReviewerQuery.rows.length > 0) {
+        return res.status(400).json({ error: "Reviewer already exists" });
+      }
+      
       // Insert the data into the user_roles table
       await pool.query(
-        "INSERT INTO user_roles (user_id, role, application_id) VALUES ($1, $2, $3)",
+        `
+        INSERT INTO user_roles (user_id, role, application_id)
+        VALUES ($1, $2, $3)
+        `,
         [userId, role, applicationId]
       );
     }

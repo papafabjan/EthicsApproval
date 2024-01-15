@@ -36,7 +36,7 @@ function App() {
                 <Route index element={<Home />} />
                 {isAdmin && (
                   <Route path="admindashboard" element={<AdminDashboard />} />
-                  )}
+                )}
                 <Route path="contact" element={<Contact />} />
                 <Route path="guides" element={<Guides />} />
                 <Route path="application" element={<Form />} />
@@ -44,16 +44,16 @@ function App() {
                 <Route
                   path="document_templates"
                   element={<Document_Templates />}
-                  />
+                />
                 <Route path="guides/applicant" element={<Applicant />} />
                 <Route path="guides/supervisor" element={<Supervisor />} />
                 <Route path="guides/reviewer" element={<Reviewer />} />
-                  {showDashboard && (
-                    <Route path="dashboard" element={<Dashboard />} />
-                    )}
-                    {loggedIn && (
-                      <Route path="myapplications" element={<MyApplications />} />
-                    )}
+                {showDashboard && (
+                  <Route path="dashboard" element={<Dashboard />} />
+                )}
+                {loggedIn && (
+                  <Route path="myapplications" element={<MyApplications />} />
+                )}
                 <Route path="*" element={<NoPage />} />
               </Route>
             </Routes>

@@ -258,33 +258,33 @@ router.post("/applications/update-status/:id", async (req, res) => {
     }
 
     if (userRole === "reviewer" && isAdmin) {
-      if (currentStatus === "Reviewers Assigned") {
-        status = "Approved by reviewer, pending ethics admin's approval";
-      } else {
-        if (
-          currentStatus ===
-          "Approved by reviewer, pending ethics admin's approval"
-        ) {
-          const updateStatusQuery =
-            "UPDATE applications SET status = $1, date = $2 WHERE id = $3 RETURNING *";
-          const currentDate = new Date();
-          const updatedApplication = await pool.query(updateStatusQuery, [
-            status,
-            currentDate,
-            id,
-          ]);
-          return res.json({
-            success: true,
-            message: "Successful Approval",
-          });
+        if (currentStatus === "Reviewers Assigned") {
+          status = "Approved by reviewer, pending ethics admin's approval";
         } else {
-          return res.json({
-            success: false,
-            message:
-              "You cannot approve an application until it has gone through the correct process",
-          });
+          if (
+            currentStatus ===
+            "Approved by reviewer, pending ethics admin's approval"
+          ) {
+            const updateStatusQuery =
+              "UPDATE applications SET status = $1, date = $2 WHERE id = $3 RETURNING *";
+            const currentDate = new Date();
+            const updatedApplication = await pool.query(updateStatusQuery, [
+              status,
+              currentDate,
+              id,
+            ]);
+            return res.json({
+              success: true,
+              message: "Successful Approval",
+            });
+          } else {
+            return res.json({
+              success: false,
+              message:
+                "You cannot approve an application until it has gone through the correct process",
+            });
+          }
         }
-      }
     }
 
     if (userRole === "supervisor") {
@@ -519,6 +519,16 @@ router.post("/applications/edit/:applicationId", async (req, res) => {
         }
       }
     }
+
+    //delete existing comments for this application
+    const deleteComments = await pool.query(
+      `
+    DELETE FROM comments
+    WHERE application_id = $1;
+    `,
+      [applicationId]
+    );
+
 
     res.json({ success: true, applicationId });
   } catch (error) {

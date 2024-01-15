@@ -342,10 +342,6 @@ function Pg1({ formik, emphasizeFields, mode }) {
               label="Simos Veloudis <s.veloudis@york.citycollege.eu>"
             />
             <option
-              value="fpapa@york.citycollege.eu"
-              label="Fabian Papa <fpapa@york.citycollege.eu>"
-            />
-            <option
               value="pkaralis@york.citycollege.eu"
               label="Panagiotis Karalis <pkaralis@york.citycollege.eu>"
             />
@@ -360,6 +356,10 @@ function Pg1({ formik, emphasizeFields, mode }) {
             <option
               value="bpireva@york.citycollege.eu"
               label="Bindi Pireva <bpireva@york.citycollege.eu>"
+            />
+            <option
+              value="fpapa@york.citycollege.eu"
+              label="Fabian Papa <fpapa@york.citycollege.eu>"
             />
             <option
               value="scarimproved@gmail.com"

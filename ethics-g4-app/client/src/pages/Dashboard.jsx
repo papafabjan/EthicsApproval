@@ -265,8 +265,9 @@ const Dashboard = () => {
                                 !(
                                   application.status ===
                                   "Approved by supervisor, pending reviewers addition"
-                                ) &&
-                                !(application.status === "Reviewers Assigned")
+                                ) 
+                                // &&
+                                // !(application.status === "Reviewers assigned by Ethics Admin")
                               }
                             >
                               Assign Reviewers

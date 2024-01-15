@@ -202,10 +202,82 @@ router.post("/applications/update-status/:id", async (req, res) => {
         message: "Application is already approved",
       });
     }
+
+
+
+  if (userRole === "reviewer" && currentStatus.includes("by") && (currentStatus.includes("reviewers") || currentStatus.includes("Reviewers"))) {
+    
+    const reviewers = await pool.query(
+      "SELECT user_id FROM user_roles WHERE role = 'reviewer' AND application_id = $1",
+      [id]
+      );
+      
+      const remainingApprovalQuery = await pool.query(
+        `
+      SELECT remaining_approval
+      FROM applications
+      WHERE id = $1
+      `,
+      [id]
+    );
+
+    const remainingApprovalArray = remainingApprovalQuery.rows[0].remaining_approval;
+  
+    // Check if the current user has already approved the application
+    if (!remainingApprovalArray.includes(userId)) {
+      return res.json({
+        success: false,
+        message: "You already approved this application",
+      });
+    } else {
+      // Update the status based on the number of remaining approvals
+      const numReviewers = reviewers.rows.length;
+      const numApprovals = numReviewers - remainingApprovalArray.length + 1;
+      console.log(numReviewers, numApprovals);
+      if (numReviewers === numApprovals) {
+        status = "Reviewer approval complete, pending ethics admin's approval";
+      }
+      else{
+        status = `Approved by ${numApprovals} / ${numReviewers} reviewers`;
+      }
+  
+      // Update the status in the applications table
+      const updateStatusQuery = `
+        UPDATE applications
+        SET status = $1, date = $2
+        WHERE id = $3
+        RETURNING *;
+      `;
+      const currentDate = new Date();
+      const updatedApplication = await pool.query(updateStatusQuery, [
+        status,
+        currentDate,
+        id,
+      ]);
+
+      // remove userId from remaining_approval array in applications
+      const removeReviewerFromRemainingApproval =await pool.query(
+        `
+        UPDATE applications
+        SET remaining_approval = array_remove(remaining_approval, $1)
+        WHERE id = $2
+        `,
+        [userId, id]
+      )
+  
+      return res.json({
+        success: true,
+        message: "Successful Approval",
+      });
+    }
+  }
+  
+  // ...
+
     if (userRole === "none"){
       if (
         currentStatus ===
-        "Approved by reviewer, pending ethics admin's approval"
+        "Reviewer approval complete, pending ethics admin's approval"
       ) {
         const updateStatusQuery =
           "UPDATE applications SET status = $1, date = $2 WHERE id = $3 RETURNING *";
@@ -233,7 +305,7 @@ router.post("/applications/update-status/:id", async (req, res) => {
       } else {
         if (
           currentStatus ===
-          "Approved by reviewer, pending ethics admin's approval"
+          "Reviewer approval complete, pending ethics admin's approval"
         ) {
           const updateStatusQuery =
             "UPDATE applications SET status = $1, date = $2 WHERE id = $3 RETURNING *";
@@ -258,12 +330,12 @@ router.post("/applications/update-status/:id", async (req, res) => {
     }
 
     if (userRole === "reviewer" && isAdmin) {
-        if (currentStatus === "Reviewers Assigned") {
-          status = "Approved by reviewer, pending ethics admin's approval";
+        if (currentStatus === "Reviewers assigned by Ethics Admin") {
+          status = "Reviewer approval complete, pending ethics admin's approval";
         } else {
           if (
             currentStatus ===
-            "Approved by reviewer, pending ethics admin's approval"
+            "Reviewer approval complete, pending ethics admin's approval"
           ) {
             const updateStatusQuery =
               "UPDATE applications SET status = $1, date = $2 WHERE id = $3 RETURNING *";
@@ -299,12 +371,12 @@ router.post("/applications/update-status/:id", async (req, res) => {
       }
     }
     if (userRole === "reviewer") {
-      if (currentStatus === "Reviewers Assigned") {
-          status = "Approved by reviewer, pending ethics admin's approval";
+      if (currentStatus === "Reviewers assigned by Ethics Admin") {
+          status = "Reviewer approval complete, pending ethics admin's approval";
       }
       if (
         currentStatus ===
-        "Approved by reviewer, pending ethics admin's approval"
+        "Reviewer approval complete, pending ethics admin's approval"
       ) {
         return res.json({
           success: false,

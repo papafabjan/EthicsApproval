@@ -13,16 +13,16 @@ router.post("/reviewer/assign-reviewer", async (req, res) => {
         "SELECT user_id FROM users WHERE email = $1",
         [reviewer]
       );
-
+    
       // Check if the query returned any results
       if (userQuery.rows.length === 0) {
         return res
           .status(400)
           .json({ error: `User with email ${reviewer} not found` });
       }
-
+    
       const userId = userQuery.rows[0].user_id;
-
+    
       // Check if the user is already a reviewer for the application
       const checkReviewerQuery = await pool.query(
         `
@@ -32,7 +32,6 @@ router.post("/reviewer/assign-reviewer", async (req, res) => {
         [userId, applicationId]
       );
       
-      // If the query returns any results, the user is already a reviewer
       if (checkReviewerQuery.rows.length > 0) {
         return res.status(400).json({ error: "Reviewer already exists" });
       }
@@ -45,10 +44,22 @@ router.post("/reviewer/assign-reviewer", async (req, res) => {
         `,
         [userId, role, applicationId]
       );
+    
+      // Add the userId to the remaining_approval array in the applications table
+      await pool.query(
+        `
+        UPDATE applications
+        SET remaining_approval = array_append(remaining_approval, $1)
+        WHERE id = $2;
+        `,
+        [userId, applicationId]
+      );
     }
-    //Update the status of the application to Reviewers Assigned
+
+
+    //Update the status of the application to Reviewers assigned by Ethics Admin
     await pool.query(
-      "UPDATE applications SET status = 'Reviewers Assigned' WHERE id = $1",
+      "UPDATE applications SET status = 'Reviewers assigned by Ethics Admin' WHERE id = $1",
       [applicationId]
     );
     res.status(200).json({ message: "Reviewers assigned successfully" });

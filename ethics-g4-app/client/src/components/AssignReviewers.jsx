@@ -412,6 +412,75 @@ function AssignReviewers({applicationId}) {
                 Simos Veloudis &lt;s.veloudis@york.citycollege.eu&gt;
               </label>
             </div>
+
+            <div>
+              <label>
+                <input
+                  type="checkbox"
+                  value="fpapa@york.citycollege.eu"
+                  checked={selectedReviewers.includes(
+                    "fpapa@york.citycollege.eu"
+                  )}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setSelectedReviewers((prevReviewers) => {
+                      if (prevReviewers.includes(value)) {
+                        return prevReviewers.filter(
+                          (reviewer) => reviewer !== value
+                        );
+                      } else {
+                        return [...prevReviewers, value];
+                      }
+                    });
+                  }}
+                />{" "}
+                Fabian Papa &lt;fpapa@york.citycollege.eu&gt;
+              </label>
+            </div>
+            <div>
+              <label>
+                <input
+                  type="checkbox"
+                  value="scarimproved@gmail.com"
+                  checked={selectedReviewers.includes("scarimproved@gmail.com")}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setSelectedReviewers((prevReviewers) => {
+                      if (prevReviewers.includes(value)) {
+                        return prevReviewers.filter(
+                          (reviewer) => reviewer !== value
+                        );
+                      } else {
+                        return [...prevReviewers, value];
+                      }
+                    });
+                  }}
+                />{" "}
+                Scar Polyie &lt;scarimproved@gmail.com&gt;
+              </label>
+            </div>
+            <div>
+              <label>
+                <input
+                  type="checkbox"
+                  value="sgdzfab123@gmail.com"
+                  checked={selectedReviewers.includes("sgdzfab123@gmail.com")}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setSelectedReviewers((prevReviewers) => {
+                      if (prevReviewers.includes(value)) {
+                        return prevReviewers.filter(
+                          (reviewer) => reviewer !== value
+                        );
+                      } else {
+                        return [...prevReviewers, value];
+                      }
+                    });
+                  }}
+                />{" "}
+                Fabian Price &lt;sgdzfab123@gmail.com&gt;
+              </label>
+            </div>
           </div>
         )}
         {riskLevel === "low" && (

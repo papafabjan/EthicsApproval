@@ -17,9 +17,9 @@ CREATE TABLE applications (
   status VARCHAR(255) NOT NULL,
   -- supervisor VARCHAR(255) NOT NULL
   -- reviewers  VARCHAR(255) ARRAY,
-  -- risk VARCHAR(255),
   date TIMESTAMP NOT NULL,
-  applicant_id INT REFERENCES users(user_id) NOT NULL
+  applicant_id INT REFERENCES users(user_id) NOT NULL,
+  remaining_approval INT
 );
 
 
@@ -43,7 +43,8 @@ CREATE TABLE comments (
 CREATE TABLE user_roles (
   user_id INTEGER REFERENCES users (user_id),
   role VARCHAR(255) NOT NULL,
-  application_id INTEGER  REFERENCES applications (id)
+  application_id INTEGER  REFERENCES applications (id),
+  approved BOOLEAN DEFAULT false
 );
 
 

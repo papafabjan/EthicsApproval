@@ -1,4 +1,16 @@
-export const Pg6 = ({ formik }) => {
+import React, { useState } from "react";
+import Comment from "../Comment";
+
+export const Pg6 = ({ formik, mode }) => {
+  const [comment, setComment] = useState("");
+
+  const handleCommentSave = (fieldName) => {
+    // Save the comment to formik or perform any other actions as needed
+    formik.setValues({
+      ...formik.values,
+      [fieldName]: comment,
+    });
+  };
   return (
     <>
       <div className="form-group">
@@ -23,8 +35,20 @@ export const Pg6 = ({ formik }) => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           placeholder="e.g. Ethics web-site"
+          disabled={mode === "review" || mode === "view"}
         />
+        {/* Comment component for the "DataProcessing" field */}
+        {mode === "review" && (
+          <Comment
+            fieldName="DataProcessing"
+            comment={formik.values.DataProcessingComment}
+            onCommentSave={(fieldName, comment) =>
+              formik.setFieldValue(`${fieldName}Comment`, comment)
+            }
+          />
+        )}
       </div>
+
       <div className="form-group">
         <label htmlFor="DataConfidentiality">
           Data Confidentiality <span style={{ color: "red" }}>*</span>
@@ -42,8 +66,20 @@ export const Pg6 = ({ formik }) => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           placeholder="e.g. Kostas Dimopoulos"
+          disabled={mode === "review" || mode === "view"}
         />
+        {/* Comment component for the "DataConfidentiality" field */}
+        {mode === "review" && (
+          <Comment
+            fieldName="DataConfidentiality"
+            comment={formik.values.DataConfidentialityComment}
+            onCommentSave={(fieldName, comment) =>
+              formik.setFieldValue(`${fieldName}Comment`, comment)
+            }
+          />
+        )}
       </div>
+
       <div className="form-group">
         <label htmlFor="DataStorageandSecurity">
           Data Storage and Security <span style={{ color: "red" }}>*</span>
@@ -65,7 +101,18 @@ export const Pg6 = ({ formik }) => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           placeholder="eg. kdimopoulos@york.citycollege.eu"
+          disabled={mode === "review" || mode === "view"}
         />
+        {/* Comment component for the "DataStorageandSecurity" field */}
+        {mode === "review" && (
+          <Comment
+            fieldName="DataStorageandSecurity"
+            comment={formik.values.DataStorageandSecurityComment}
+            onCommentSave={(fieldName, comment) =>
+              formik.setFieldValue(`${fieldName}Comment`, comment)
+            }
+          />
+        )}
       </div>
     </>
   );

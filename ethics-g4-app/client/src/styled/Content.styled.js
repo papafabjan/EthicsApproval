@@ -2,19 +2,18 @@ import styled from "styled-components";
 
 const Content = styled.div`
   overflow-y: scroll;
-  height: 140vh;
-  width: 95%;
+  height: 150em;
+  width: 93%;
   margin: 0 auto;
-  margin-top: 9vh;
-  margin-bottom: 9vh;
+  margin-top: 3vh;
+  margin-bottom: 3vh;
   background: linear-gradient(rgb(255, 255, 255) 0%, rgb(191, 191, 191) 100%);
   color: black;
   border-radius: 24px;
   box-shadow: 0 0px 20px 0px rgba(0, 0, 0, 0.6);
   padding: 30px;
-
-  &:hover {
-  }
+  
+  /* border: 5px solid purple; */
 
   /* width */
   &::-webkit-scrollbar {
@@ -39,11 +38,10 @@ const Content = styled.div`
   &::-webkit-scrollbar-thumb:hover {
     border-radius: 10px;
   }
-  &::-webkit-scrollbar-thumb:active{
-    
+  &::-webkit-scrollbar-thumb:active {
     background: rgba(255, 183, 0, 0.841);
   }
-  
+
   .underlined {
     text-decoration: underline;
   }

@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 function Comment({ fieldName, comment, onCommentSave }) {
   const [isEditing, setEditing] = useState(false);
-  const [localComment, setLocalComment] = useState(comment || '');
+  const [localComment, setLocalComment] = useState(comment || "");
 
   const handleCommentChange = (e) => {
     setLocalComment(e.target.value);
-    onCommentSave(fieldName, e.target.value); // Update the comment in Formik in real-time
+    onCommentSave(fieldName, e.target.value);
   };
 
   const handleCommentSave = () => {
@@ -25,10 +25,14 @@ function Comment({ fieldName, comment, onCommentSave }) {
             value={localComment}
             onChange={handleCommentChange}
           />
-          <button onClick={handleCommentSave}>Save</button>
+          <button className="btn" onClick={handleCommentSave}>
+            Hide
+          </button>
         </div>
       ) : (
-        <button onClick={() => setEditing(true)}>Comment</button>
+        <button className="btn" onClick={() => setEditing(true)}>
+          Comment
+        </button>
       )}
     </div>
   );

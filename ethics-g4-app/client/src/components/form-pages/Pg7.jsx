@@ -1,16 +1,22 @@
-export const Pg7 = ({ formik }) => {
 
-  const handleFileChange = (event, initialValuesName) => {
-    const file = event.target.files[0];
-    formik.setFieldValue(initialValuesName, file);
-    console.log(file)
+export const Pg7 = ({ formik, mode }) => {
+  const [comment, setComment] = useState("");
+
+  const handleCommentSave = (fieldName) => {
+    // Save the comment to formik or perform any other actions as needed
+    formik.setValues({
+      ...formik.values,
+      [fieldName]: comment,
+    });
   };
-
+  
+ 
   const handleFilesChange = (event, initialValuesName) => {
     const files = event.target.files;
     formik.setFieldValue(initialValuesName, files);
     console.log(files);
   };
+
 
 
   return (
@@ -21,7 +27,7 @@ export const Pg7 = ({ formik }) => {
         </label>
         <p>
           Upload your proposed list of questions (e.g., questionnaires, photos,
-          interview questions, etc) in any format.
+          interreview questions, etc) in any format.
         </p>
         <input
           type="file"
@@ -29,7 +35,20 @@ export const Pg7 = ({ formik }) => {
           className="form-control"
           id="ListofQuestions"
           onChange={(e) => handleFileChange(e, "ListofQuestions")}
+          disabled={mode === "review" || mode === "view"}
         />
+
+        {/* Comment component for the "ListofQuestions" field */}
+        {mode === "review" && (
+          <Comment
+            fieldName="ListofQuestions"
+            comment={formik.values.ListofQuestionsComment}
+            onCommentSave={(fieldName, comment) =>
+              formik.setFieldValue(`${fieldName}Comment`, comment)
+            }
+          />
+        )}
+
       </div>
 
       <div className="form-group">
@@ -45,6 +64,18 @@ export const Pg7 = ({ formik }) => {
           id="AdditionalForms"
           onChange={(e) => handleFilesChange(e, "AdditionalForms")}
         />
+
+        {/* Comment component for the "AdditionalForms" field */}
+        {mode === "review" && (
+          <Comment
+            fieldName="AdditionalForms"
+            comment={formik.values.AdditionalFormsComment}
+            onCommentSave={(fieldName, comment) =>
+              formik.setFieldValue(`${fieldName}Comment`, comment)
+            }
+          />
+        )}
+
       </div>
     </>
   );

@@ -4,9 +4,11 @@ const Navbar = styled.div`
   /* border: 3px solid red; */
   overflow: hidden;
   float: top;
-  height: 20%;
+  height: 50%;
   align-items: center;
-
+  a {
+    text-decoration: none;
+  }
   .navbar-text {
     margin-right: 10vh;
     font-size: 3vh;

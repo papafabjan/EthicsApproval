@@ -11,8 +11,12 @@ const applicationsRoutes = require("./routes/applicationsRouter");
 const testapplicationsRoutes = require("./routes/testapplicationsRouter");
 const commentsRoutes = require("./routes/commentsRouter");
 const fileSubmissionRouter = require("./routes/fileSubmissionRouter");
+const reviewerRoutes = require("./routes/reviewerRouter");
+const supervisorRoutes = require("./routes/supervisorRouter");
+
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 
 app.use(
@@ -27,6 +31,8 @@ app.use("/api", applicationsRoutes);
 app.use("/api", testapplicationsRoutes);
 app.use("/api", commentsRoutes);
 app.use("/api", fileSubmissionRouter);
+app.use("/api", reviewerRoutes);
+app.use("/api", supervisorRoutes);
 
 app.use(
   session({

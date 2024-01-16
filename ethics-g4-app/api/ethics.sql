@@ -15,8 +15,11 @@ CREATE TABLE users (
 CREATE TABLE applications (
   id SERIAL PRIMARY KEY,
   status VARCHAR(255) NOT NULL,
+  -- supervisor VARCHAR(255) NOT NULL
+  -- reviewers  VARCHAR(255) ARRAY,
   date TIMESTAMP NOT NULL,
-  applicant_id INT REFERENCES users(user_id) NOT NULL
+  applicant_id INT REFERENCES users(user_id) NOT NULL,
+  remaining_approval INT[]
 );
 
 
@@ -30,10 +33,18 @@ CREATE TABLE application_content (
 
 CREATE TABLE comments (
   id SERIAL PRIMARY KEY,
-  commenter_id INTEGER REFERENCES users(user_id),--google-id
+  commenter_id INTEGER REFERENCES users(user_id),
   field VARCHAR(255) NOT NULL,
   content VARCHAR(255) NOT NULL,
+  application_status VARCHAR(255) NOT NULL,
   application_id INTEGER REFERENCES applications(id) NOT NULL
+);
+
+CREATE TABLE user_roles (
+  user_id INTEGER REFERENCES users (user_id),
+  role VARCHAR(255) NOT NULL,
+  application_id INTEGER  REFERENCES applications (id),
+  approved BOOLEAN DEFAULT false
 );
 
 
@@ -88,8 +99,21 @@ CREATE TABLE applications_test (
 -- ('Markos Darlas Mandravelis', 'example.link.com', '72346279346992'),
 -- ('Marios Polyzoidis', 'example.link.com', '97236469729476');
 
+INSERT INTO users (username, img, google_id, email, role)
+VALUES
+  ('Kostas Dimopoulos', 'img_url_1', '123', 'k.dimopoulos@york.citycollege.eu', 'role_1'),
+  ('Dimitris Dranidis', 'img_url_2', '1234', 'dranidis@york.citycollege.eu', 'role_2'),
+  ('Odysseas Efremidis', 'img_url_3', '12345', 'oefremidis@athtech.gr', 'role_3'),
+  ('Dimitris Irakleous', 'img_url_4', '123456', 'diracleous@athtech.gr', 'role_4');
+
 
 INSERT INTO applications ( body, status, date, applicant_id)
 VALUES 
 ('Test','Pending supervisor admission','23/11/2023','1'),
 ('Test 2','Pending supervisor admission','23/11/2023','2');
+
+
+
+
+--should the supervisor have to accept/refuse the application without even going into it or just make a comment in the supervisor field, saying i dont want to be the supervisor for this application.
+--should we have controllers in our app? so far everything works with routers.

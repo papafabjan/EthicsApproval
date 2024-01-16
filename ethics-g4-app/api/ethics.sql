@@ -19,7 +19,7 @@ CREATE TABLE applications (
   -- reviewers  VARCHAR(255) ARRAY,
   date TIMESTAMP NOT NULL,
   applicant_id INT REFERENCES users(user_id) NOT NULL,
-  remaining_approval INT
+  remaining_approval INT[]
 );
 
 

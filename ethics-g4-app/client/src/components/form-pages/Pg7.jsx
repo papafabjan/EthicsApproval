@@ -1,17 +1,3 @@
-import Dropzone from "react-dropzone";
-import Thumb from "../Thumb";
-import React, { useState } from "react";
-import Comment from "../Comment";
-
-const dropzoneStyle = {
-  width: "100%",
-  minHeight: "100px",
-  border: "2px dashed #ccc",
-  borderRadius: "4px",
-  padding: "20px",
-  textAlign: "center",
-  cursor: "pointer",
-};
 
 export const Pg7 = ({ formik, mode }) => {
   const [comment, setComment] = useState("");
@@ -23,11 +9,15 @@ export const Pg7 = ({ formik, mode }) => {
       [fieldName]: comment,
     });
   };
-  const handleFileChange = (event, initialValuesName) => {
-    const file = event.target.files[0];
-    formik.setFieldValue(initialValuesName, file);
-    console.log(file);
+  
+ 
+  const handleFilesChange = (event, initialValuesName) => {
+    const files = event.target.files;
+    formik.setFieldValue(initialValuesName, files);
+    console.log(files);
   };
+
+
 
   return (
     <>
@@ -47,6 +37,7 @@ export const Pg7 = ({ formik, mode }) => {
           onChange={(e) => handleFileChange(e, "ListofQuestions")}
           disabled={mode === "review" || mode === "view"}
         />
+
         {/* Comment component for the "ListofQuestions" field */}
         {mode === "review" && (
           <Comment
@@ -57,7 +48,7 @@ export const Pg7 = ({ formik, mode }) => {
             }
           />
         )}
-        <Thumb file={formik.values.ListofQuestions} />
+
       </div>
 
       <div className="form-group">
@@ -65,38 +56,15 @@ export const Pg7 = ({ formik, mode }) => {
           Any additional forms /documents you need to submit (optional)
         </label>
 
-        <Dropzone
-          style={dropzoneStyle}
-          disabled={mode === "review" || mode === "view"}
-          onDrop={(acceptedFiles) => {
-            console.log(acceptedFiles);
+        <input
+          type="file"
+          multiple
+          name="AdditionalForms"
+          className="form-control"
+          id="AdditionalForms"
+          onChange={(e) => handleFilesChange(e, "AdditionalForms")}
+        />
 
-            if (acceptedFiles.length === 0) {
-              return;
-            }
-
-            formik.setFieldValue(
-              "AdditionalForms",
-              formik.values.AdditionalForms.concat(acceptedFiles)
-            );
-          }}
-        >
-          {({ getRootProps, getInputProps }) => (
-            <section>
-              <div {...getRootProps()}>
-                <input {...getInputProps()} />
-                <p>
-                  Upload up to 10 files (e.g., questionnaires, photos,
-                  interreview questions, etc) in any format.
-                </p>
-              </div>
-            </section>
-          )}
-        </Dropzone>
-
-        {/* {formik.values.AdditionalForms.map((file, i) => (
-          <Thumb key={i} file={file} />
-        ))} */}
         {/* Comment component for the "AdditionalForms" field */}
         {mode === "review" && (
           <Comment
@@ -107,6 +75,7 @@ export const Pg7 = ({ formik, mode }) => {
             }
           />
         )}
+
       </div>
     </>
   );

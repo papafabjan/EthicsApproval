@@ -1,6 +1,4 @@
-import Thumb from "../Thumb";
-import React, { useState } from "react";
-import Comment from "../Comment";
+
 
 export const Pg5 = ({ formik, mode }) => {
   const [comment, setComment] = useState("");
@@ -42,6 +40,7 @@ export const Pg5 = ({ formik, mode }) => {
               onChange={(e) => handleFileChange(e, "ParentalConsent")}
               disabled={mode === "review" || mode === "view"}
             />
+
             {/* Comment component for the "ParentalConsent" field */}
             {mode === "review" && (
               <Comment
@@ -52,7 +51,7 @@ export const Pg5 = ({ formik, mode }) => {
                 }
               />
             )}
-            <Thumb file={formik.values.ParentalConsent} />
+            
           </div>
 
           <div className="form-group">
@@ -75,6 +74,7 @@ export const Pg5 = ({ formik, mode }) => {
               onChange={(e) => handleFileChange(e, "ParentalInformation")}
               disabled={mode === "review" || mode === "view"}
             />
+
             {/* Comment component for the "ParentalInformation" field */}
             {mode === "review" && (
               <Comment
@@ -85,7 +85,7 @@ export const Pg5 = ({ formik, mode }) => {
                 }
               />
             )}
-            <Thumb file={formik.values.ParentalInformation} />
+
           </div>
 
           <div className="form-group">
@@ -109,6 +109,7 @@ export const Pg5 = ({ formik, mode }) => {
               onChange={(e) => handleFileChange(e, "ChildInformation")}
               disabled={mode === "review" || mode === "view"}
             />
+
             {/* Comment component for the "ChildInformation" field */}
             {mode === "review" && (
               <Comment
@@ -119,7 +120,7 @@ export const Pg5 = ({ formik, mode }) => {
                 }
               />
             )}
-            <Thumb file={formik.values.ChildInformation} />
+
           </div>
 
           <div className="form-group">
@@ -139,6 +140,7 @@ export const Pg5 = ({ formik, mode }) => {
               onChange={(e) => handleFileChange(e, "HeadTeacherConsent")}
               disabled={mode === "review" || mode === "view"}
             />
+
             {/* Comment component for the "HeadTeacherConsent" field */}
             {mode === "review" && (
               <Comment
@@ -149,7 +151,7 @@ export const Pg5 = ({ formik, mode }) => {
                 }
               />
             )}
-            <Thumb file={formik.values.HeadTeacherConsent} />
+
           </div>
 
           <div className="form-group">
@@ -169,7 +171,7 @@ export const Pg5 = ({ formik, mode }) => {
               onChange={(e) => handleFileChange(e, "HeadteacherInformation")}
               disabled={mode === "review" || mode === "view"}
             />
-            <Thumb file={formik.values.HeadteacherInformation} />
+
             {/* Comment component for the "HeadteacherInformation" field */}
             {mode === "review" && (
               <Comment
@@ -180,6 +182,7 @@ export const Pg5 = ({ formik, mode }) => {
                 }
               />
             )}
+
           </div>
         </>
       ) : formik.values.VulnerableParticipants === "YesAdultsMental" ? (
@@ -210,6 +213,7 @@ export const Pg5 = ({ formik, mode }) => {
               onChange={(e) => handleFileChange(e, "AccessibleConsentMaterial")}
               disabled={mode === "review" || mode === "view"}
             />
+
             {/* Comment component for the "AccessibleConsentMaterial" field */}
             {mode === "review" && (
               <Comment
@@ -220,7 +224,7 @@ export const Pg5 = ({ formik, mode }) => {
                 }
               />
             )}
-            <Thumb file={formik.values.AccessibleConsentMaterial} />
+
           </div>
 
           <div className="form-group">
@@ -245,6 +249,7 @@ export const Pg5 = ({ formik, mode }) => {
               onChange={(e) => handleFileChange(e, "ProxyConsentProcedures")}
               disabled={mode === "review" || mode === "view"}
             />
+
             {/* Comment component for the "ProxyConsentProcedures" field */}
             {mode === "review" && (
               <Comment
@@ -255,7 +260,7 @@ export const Pg5 = ({ formik, mode }) => {
                 }
               />
             )}
-            <Thumb file={formik.values.ProxyConsentProcedures} />
+
           </div>
         </>
       ) : formik.values.VulnerableParticipants === "" ? (
@@ -286,6 +291,7 @@ export const Pg5 = ({ formik, mode }) => {
               onChange={(e) => handleFileChange(e, "ParticipantInformation")}
               disabled={mode === "review" || mode === "view"}
             />
+
             {/* Comment component for the "ParticipantInformation" field */}
             {mode === "review" && (
               <Comment
@@ -296,7 +302,6 @@ export const Pg5 = ({ formik, mode }) => {
                 }
               />
             )}
-            <Thumb file={formik.values.ParticipantInformation} />
           </div>
 
           <div className="form-group">
@@ -318,6 +323,7 @@ export const Pg5 = ({ formik, mode }) => {
               onChange={(e) => handleFileChange(e, "ParticipantConsent")}
               disabled={mode === "review" || mode === "view"}
             />
+
             {/* Comment component for the "ParticipantConsent" field */}
             {mode === "review" && (
               <Comment
@@ -328,7 +334,7 @@ export const Pg5 = ({ formik, mode }) => {
                 }
               />
             )}
-            <Thumb file={formik.values.ParticipantConsent} />
+
           </div>
 
           <div className="form-group">
@@ -349,6 +355,7 @@ export const Pg5 = ({ formik, mode }) => {
               onChange={(e) => handleFileChange(e, "ParticipantDebriefing")}
               disabled={mode === "review" || mode === "view"}
             />
+
             {/* Comment component for the "ParticipantDebriefing" field */}
             {mode === "review" && (
               <Comment
@@ -359,7 +366,7 @@ export const Pg5 = ({ formik, mode }) => {
                 }
               />
             )}
-            <Thumb file={formik.values.ParticipantDebriefing} />
+            
           </div>
 
           <div className="form-group">
@@ -378,6 +385,7 @@ export const Pg5 = ({ formik, mode }) => {
               onChange={(e) => handleFileChange(e, "AccessibilityLetter")}
               disabled={mode === "review" || mode === "view"}
             />
+
             {/* Comment component for the "AccessibilityLetter" field */}
             {mode === "review" && (
               <Comment
@@ -388,7 +396,7 @@ export const Pg5 = ({ formik, mode }) => {
                 }
               />
             )}
-            <Thumb file={formik.values.AccessibilityLetter} />
+
           </div>
         </>
       )}

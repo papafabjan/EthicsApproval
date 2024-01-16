@@ -1,16 +1,3 @@
-import Thumb from "../Thumb";
-import Dropzone from "react-dropzone";
-import React, { useState } from "react";
-import Comment from "../Comment";
-
-const dropzoneStyle = {
-  width: "100%",
-  height: "auto",
-  borderWidth: 2,
-  borderColor: "rgb(102, 102, 102)",
-  borderStyle: "dashed",
-  borderRadius: 5,
-};
 
 function Pg3({ formik, emphasizeFields, mode }) {
   const [comment, setComment] = useState("");
@@ -22,6 +9,13 @@ function Pg3({ formik, emphasizeFields, mode }) {
       [fieldName]: comment,
     });
   };
+  
+   const handleFilesChange = (event, initialValuesName) => {
+    const files = event.target.files;
+    formik.setFieldValue(initialValuesName, files);
+    console.log(files);
+  };
+
   return (
     <>
       <div className="form-group">
@@ -202,45 +196,19 @@ function Pg3({ formik, emphasizeFields, mode }) {
       </div>
 
       <div className="form-group">
-        <label htmlFor="SensitiveMaterialFiles">
+        <label htmlFor="SensitiveTopicsFiles">
           Sensitive Material/tools<span style={{ color: "red" }}>*</span>
         </label>
 
-        <Dropzone
-          style={dropzoneStyle}
-          disabled={mode === "review" || mode === "view"}
-          onDrop={(acceptedFiles) => {
-            console.log(acceptedFiles);
+        <input
+          type="file"
+          multiple
+          name="SensitiveTopicsFiles"
+          className="form-control"
+          id="SensitiveTopicsFiles"
+          onChange={(e) => handleFilesChange(e, "SensitiveTopicsFiles")}
+        />
 
-            // do nothing if no files
-            if (acceptedFiles.length === 0) {
-              return;
-            }
-
-            // on drop we add to the existing files
-            //Doesn't work yet
-            formik.setFieldValue(
-              "SensitiveMaterialFiles",
-              formik.values.SensitiveMaterialFiles.concat(acceptedFiles)
-            );
-
-            return formik.values.SensitiveMaterialFiles.map((file, i) => (
-              <Thumb key={i} file={file} />
-            ));
-          }}
-        >
-          {({ getRootProps, getInputProps }) => (
-            <section>
-              <div {...getRootProps()}>
-                <input {...getInputProps()} />
-                <p>
-                  Upload up to 5 files (photos, questionnaires, interreview
-                  questions etc.) in any format
-                </p>
-              </div>
-            </section>
-          )}
-        </Dropzone>
         {/* Comment component for the "SensitiveMaterialFiles" field */}
         {mode === "review" && (
           <Comment
@@ -251,6 +219,7 @@ function Pg3({ formik, emphasizeFields, mode }) {
             }
           />
         )}
+
         {formik.touched.SensitiveMaterialFiles &&
           formik.errors.SensitiveMaterialFiles && (
             <div style={{ color: "red" }}>

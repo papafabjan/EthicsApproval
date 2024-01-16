@@ -1,4 +1,5 @@
 const express = require("express");
+const multer = require('multer');
 require("dotenv").config();
 const app = express();
 const cors = require("cors");
@@ -9,8 +10,10 @@ const userRoutes = require("./routes/userRouter");
 const applicationsRoutes = require("./routes/applicationsRouter");
 const testapplicationsRoutes = require("./routes/testapplicationsRouter");
 const commentsRoutes = require("./routes/commentsRouter");
+const fileSubmissionRouter = require("./routes/fileSubmissionRouter");
 const reviewerRoutes = require("./routes/reviewerRouter");
 const supervisorRoutes = require("./routes/supervisorRouter");
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -27,6 +30,7 @@ app.use("/api", userRoutes);
 app.use("/api", applicationsRoutes);
 app.use("/api", testapplicationsRoutes);
 app.use("/api", commentsRoutes);
+app.use("/api", fileSubmissionRouter);
 app.use("/api", reviewerRoutes);
 app.use("/api", supervisorRoutes);
 

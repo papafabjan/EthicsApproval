@@ -46,18 +46,18 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
                 ? "red"
                 : "",
           }}
-          disabled={mode === "view"}
+          disabled={mode === "review" || mode === "view"}
         />
-          {/* Comment component for the "PotentialParticipants" field */}
-          {mode === "view" && (
-            <Comment
-              fieldName="PotentialParticipants"
-              comment={formik.values.PotentialParticipantsComment}
-              onCommentSave={(fieldName, comment) =>
-                formik.setFieldValue(`${fieldName}Comment`, comment)
-              }
-            />
-          )}
+        {/* Comment component for the "PotentialParticipants" field */}
+        {mode === "review" && (
+          <Comment
+            fieldName="PotentialParticipants"
+            comment={formik.values.PotentialParticipantsComment}
+            onCommentSave={(fieldName, comment) =>
+              formik.setFieldValue(`${fieldName}Comment`, comment)
+            }
+          />
+        )}
         {formik.touched.PotentialParticipants &&
           formik.errors.PotentialParticipants && (
             <div style={{ color: "red" }}>
@@ -91,18 +91,18 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
                 ? "red"
                 : "",
           }}
-          disabled={mode === "view"}
+          disabled={mode === "review" || mode === "view"}
         />
-         {/* Comment component for the "RecruitingPotentialParticipants" field */}
-         {mode === "view" && (
-            <Comment
-              fieldName="RecruitingPotentialParticipants"
-              comment={formik.values.RecruitingPotentialParticipantsComment}
-              onCommentSave={(fieldName, comment) =>
-                formik.setFieldValue(`${fieldName}Comment`, comment)
-              }
-            />
-          )}
+        {/* Comment component for the "RecruitingPotentialParticipants" field */}
+        {mode === "review" && (
+          <Comment
+            fieldName="RecruitingPotentialParticipants"
+            comment={formik.values.RecruitingPotentialParticipantsComment}
+            onCommentSave={(fieldName, comment) =>
+              formik.setFieldValue(`${fieldName}Comment`, comment)
+            }
+          />
+        )}
         {formik.touched.RecruitingPotentialParticipants &&
           formik.errors.RecruitingPotentialParticipants && (
             <div style={{ color: "red" }}>
@@ -110,7 +110,6 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
             </div>
           )}
       </div>
-
 
       <div className="form-group">
         <label htmlFor="Payment">
@@ -126,7 +125,7 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
                 value="Yes"
                 checked={formik.values.Payment === "Yes"}
                 onChange={(e) => handleRadioChange(e, "otherPaymentOption")}
-                disabled={mode === "view"}
+                disabled={mode === "review" || mode === "view"}
               />
               Yes
             </label>
@@ -139,7 +138,7 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
                 value="No"
                 checked={formik.values.Payment === "No"}
                 onChange={(e) => handleRadioChange(e, "otherPaymentOption")}
-                disabled={mode === "view"}
+                disabled={mode === "review" || mode === "view"}
               />
               No
             </label>
@@ -153,7 +152,7 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
                 value="Other"
                 checked={formik.values.Payment === "Other"}
                 onChange={(e) => handleRadioChange(e, "otherPaymentOption")}
-                disabled={mode === "view"}
+                disabled={mode === "review" || mode === "view"}
               />
               Other:
             </label>
@@ -184,7 +183,7 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
               )}
           </li>
           {/* Comment component for the "Payment" field */}
-         {mode === "view" && (
+          {mode === "review" && (
             <Comment
               fieldName="Payment"
               comment={formik.values.PaymentComment}
@@ -219,18 +218,18 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
                 ? "red"
                 : "",
           }}
-          disabled={mode === "view"}
+          disabled={mode === "review" || mode === "view"}
         />
         {/* Comment component for the "PotentialHarm" field */}
-        {mode === "view" && (
-            <Comment
-              fieldName="PotentialHarm"
-              comment={formik.values.PotentialHarmComment}
-              onCommentSave={(fieldName, comment) =>
-                formik.setFieldValue(`${fieldName}Comment`, comment)
-              }
-            />
-          )}
+        {mode === "review" && (
+          <Comment
+            fieldName="PotentialHarm"
+            comment={formik.values.PotentialHarmComment}
+            onCommentSave={(fieldName, comment) =>
+              formik.setFieldValue(`${fieldName}Comment`, comment)
+            }
+          />
+        )}
         {formik.touched.PotentialHarm && formik.errors.PotentialHarm && (
           <div style={{ color: "red" }}>{formik.errors.PotentialHarm}</div>
         )}
@@ -260,7 +259,7 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
                 onChange={(e) =>
                   handleRadioChange(e, "otherVulnerableParticipantsOptions")
                 }
-                disabled={mode === "view"}
+                disabled={mode === "review" || mode === "view"}
               />
               Yes, it involves children and/or adolescents
             </label>
@@ -277,7 +276,7 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
                 onChange={(e) =>
                   handleRadioChange(e, "otherVulnerableParticipantsOptions")
                 }
-                disabled={mode === "view"}
+                disabled={mode === "review" || mode === "view"}
               />
               Yes, it involve adults lacking mental capability
             </label>
@@ -292,7 +291,7 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
                 onChange={(e) =>
                   handleRadioChange(e, "otherVulnerableParticipantsOptions")
                 }
-                disabled={mode === "view"}
+                disabled={mode === "review" || mode === "view"}
               />
               No, it involves adults with no vulnerabilities
             </label>
@@ -307,7 +306,7 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
                 onChange={(e) =>
                   handleRadioChange(e, "otherVulnerableParticipantsOptions")
                 }
-                disabled={mode === "view"}
+                disabled={mode === "review" || mode === "view"}
               />
               Other
             </label>
@@ -326,19 +325,18 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
                       ? "red"
                       : "",
                 }}
-                
               />
             )}
             {/* Comment component for the "VulnerableParticipants" field */}
-        {mode === "view" && (
-            <Comment
-              fieldName="VulnerableParticipants"
-              comment={formik.values.VulnerableParticipantsComment}
-              onCommentSave={(fieldName, comment) =>
-                formik.setFieldValue(`${fieldName}Comment`, comment)
-              }
-            />
-          )}
+            {mode === "review" && (
+              <Comment
+                fieldName="VulnerableParticipants"
+                comment={formik.values.VulnerableParticipantsComment}
+                onCommentSave={(fieldName, comment) =>
+                  formik.setFieldValue(`${fieldName}Comment`, comment)
+                }
+              />
+            )}
             {formik.values.Payment === "Other" &&
               formik.touched.otherVulnerableParticipantsOptions &&
               formik.errors.otherVulnerableParticipantsOptions && (

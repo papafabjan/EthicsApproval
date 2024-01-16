@@ -53,7 +53,7 @@ function AssignReviewers({applicationId}) {
         console.error(error);
       });
 
-    // window.location.reload(true);
+    window.location.reload(true);
   };
 
   useEffect(() => {
@@ -63,13 +63,14 @@ function AssignReviewers({applicationId}) {
 
   return (
     <>
-      {existingReviewers.length>0 && (
+      {existingReviewers.length > 0 && (
         <div>
           <h2>Existing Reviewers:</h2>
           {existingReviewers.map((reviewer) => (
-            <div key={reviewer.id}>{reviewer.username}</div>
+            <li key={reviewer.id}>{reviewer.username}</li>
           ))}
-        <br/><br/>
+          <br />
+          <br />
         </div>
       )}
       <div>
@@ -411,6 +412,75 @@ function AssignReviewers({applicationId}) {
                 Simos Veloudis &lt;s.veloudis@york.citycollege.eu&gt;
               </label>
             </div>
+
+            <div>
+              <label>
+                <input
+                  type="checkbox"
+                  value="fpapa@york.citycollege.eu"
+                  checked={selectedReviewers.includes(
+                    "fpapa@york.citycollege.eu"
+                  )}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setSelectedReviewers((prevReviewers) => {
+                      if (prevReviewers.includes(value)) {
+                        return prevReviewers.filter(
+                          (reviewer) => reviewer !== value
+                        );
+                      } else {
+                        return [...prevReviewers, value];
+                      }
+                    });
+                  }}
+                />{" "}
+                Fabian Papa &lt;fpapa@york.citycollege.eu&gt;
+              </label>
+            </div>
+            <div>
+              <label>
+                <input
+                  type="checkbox"
+                  value="scarimproved@gmail.com"
+                  checked={selectedReviewers.includes("scarimproved@gmail.com")}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setSelectedReviewers((prevReviewers) => {
+                      if (prevReviewers.includes(value)) {
+                        return prevReviewers.filter(
+                          (reviewer) => reviewer !== value
+                        );
+                      } else {
+                        return [...prevReviewers, value];
+                      }
+                    });
+                  }}
+                />{" "}
+                Scar Polyie &lt;scarimproved@gmail.com&gt;
+              </label>
+            </div>
+            <div>
+              <label>
+                <input
+                  type="checkbox"
+                  value="sgdzfab123@gmail.com"
+                  checked={selectedReviewers.includes("sgdzfab123@gmail.com")}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setSelectedReviewers((prevReviewers) => {
+                      if (prevReviewers.includes(value)) {
+                        return prevReviewers.filter(
+                          (reviewer) => reviewer !== value
+                        );
+                      } else {
+                        return [...prevReviewers, value];
+                      }
+                    });
+                  }}
+                />{" "}
+                Fabian Price &lt;sgdzfab123@gmail.com&gt;
+              </label>
+            </div>
           </div>
         )}
         {riskLevel === "low" && (
@@ -473,6 +543,14 @@ function AssignReviewers({applicationId}) {
               <option
                 value="s.veloudis@york.citycollege.eu"
                 label="Simos Veloudis <s.veloudis@york.citycollege.eu>"
+              />
+              <option
+                value="scarimproved@gmail.com"
+                label="Scar Polyie <scarimproved@gmail.com>"
+              />
+              <option
+                value="fpapa@york.citycollege.eu"
+                label="Fabian Papa <fpapa@york.citycollege.eu>"
               />
             </select>
           </div>

@@ -1,12 +1,11 @@
-// MyForm.jsx
+// Fetch requests for the initial apply and review features can be cut down by a lot. "View" "Edit" should be the simplest ones.
 import React, { useContext, useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { UserContext } from "../UserContext";
 import * as yup from "yup";
 import { NavigationButtons } from "../../styled/Form.styled";
 import { Button } from "../../styled/Form.styled";
-import { useLocation } from "react-router-dom";
 import Pg0 from "./Pg0";
 import Pg1 from "./Pg1";
 import Pg2 from "./Pg2";
@@ -37,7 +36,7 @@ const validationSchema = yup.object({
   ResearchProject: yup.string().required("ResearchProject is required"),
   // CoApplicantName: yup.string().required("CoApllicant's Name is required"),
   // CoApplicantEmail: yup.string().required("CoApllicant's Email is required"),
-  StartDate: yup.string().required("Start Date is required"),
+  // StartDate: yup.string().required("Start Date is required"),
 });
 
 const initialValues = {
@@ -118,18 +117,23 @@ const Form = () => {
   const { applicationId } = useParams();
   const location = useLocation();
   const mode = location.state?.mode || "apply";
-
-  //view mode
+  //edit mode
+  const [fetchedComments, setFetchedComments] = useState([]);
+  //review mode
   const sessionUser = useContext(UserContext);
   const [userData, setUserData] = useState(null);
   const userId = sessionUser.id;
+  const navigate = useNavigate();
 
   const totalSteps = 9;
 
   console.log(mode);
   console.log(applicationId);
   useEffect(() => {
-    if (mode === "view" && applicationId) {
+    if (
+      (mode === "view" || mode === "review" || mode === "edit") &&
+      applicationId
+    ) {
       const fetchApplicationData = async () => {
         try {
           const response = await fetch(
@@ -152,20 +156,34 @@ const Form = () => {
           });
 
           console.log("Successfully fetched application data");
-          // You may also update other parts of the form if needed
         } catch (error) {
           console.error("Error:", error.message);
           // Handle errors as needed
         }
       };
 
-      // Call the fetchApplicationData function
+      if (mode === "edit") {
+        const fetchComments = async () => {
+          try {
+            const response = await fetch(
+              `${import.meta.env.VITE_SERVER_URL}/api/comments/${applicationId}`
+            );
+            const data = await response.json();
+            console.log(data);
+            setFetchedComments(data);
+          } catch (error) {
+            console.log(error);
+          }
+        };
+
+        fetchComments();
+      }
+      // Call the functions
       fetchApplicationData();
     } else {
       // Function to fetch user data by user ID
       const fetchUserData = async () => {
         try {
-          // Check if userId is truthy before attempting to fetch user data
           if (userId) {
             const response = await fetch(
               `${import.meta.env.VITE_SERVER_URL}/api/users/${userId}`
@@ -193,9 +211,8 @@ const Form = () => {
     initialValues,
     validationSchema,
     onSubmit: async (values) => {
-      if (mode === "view" && applicationId) {
+      if (mode === "review" && applicationId) {
         //get user_id through the google_id stored in session
-        // Assuming this is an asynchronous function in an async context (e.g., within an async function or using await)
         const fetchUserIdByGoogleId = async (googleId) => {
           try {
             const response = await fetch(
@@ -264,13 +281,46 @@ const Form = () => {
             }
 
             console.log("Comments saved successfully");
+
+            window.location.href = "/dashboard";
           } catch (error) {
             console.error("Error:", error.message);
-            // Handle errors as needed
           }
         };
 
         sendCommentsToServer();
+      }
+      if (mode === "edit") {
+        try {
+          const response = await fetch(
+            `${
+              import.meta.env.VITE_SERVER_URL
+            }/api/applications/edit/${applicationId}`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                application: values,
+                user: sessionUser,
+              }),
+            }
+          );
+
+          if (!response.ok) {
+            console.log({ sessionUser, values });
+            throw new Error("Failed to edit application");
+          }
+
+          const responseData = await response.json();
+          console.log("Application edited successfully:", responseData);
+          navigate("/myapplications");
+          //  window.location.reload(true);
+        } catch (error) {
+          // Handle error or show notification to the user
+          console.error(error.message);
+        }
       } else {
         try {
           const userID = userData.user_id;
@@ -292,22 +342,28 @@ const Form = () => {
 
           const responseData = await response.json();
           console.log("Application submitted successfully:", responseData);
+          navigate("/myapplications");
+          //  window.location.reload(true);
         } catch (error) {
           console.error("Error:", error.message);
-          // Handle errors as needed
         }
       }
-
-      window.location.reload(true);
     },
   });
 
   const [step, setStep] = React.useState(0);
+  const loggedIn = sessionUser && sessionUser.loggedIn;
 
   const handleStart = () => {
     setStep(1);
   };
   const handlePrevious = () => {
+    if (mode === "review" && step === 1) {
+      navigate("/dashboard");
+    }
+    if ((mode === "edit" || mode === "view") && step === 1) {
+      navigate("/myapplications");
+    }
     setStep((prevStep) => prevStep - 1);
     console.log(formik.isValid);
   };
@@ -465,15 +521,15 @@ const Form = () => {
     //   return;
     // }
     // Change the mode to 'apply' before submitting
-    const submitMode = mode === "view" ? "apply" : mode;
+    const submitMode = mode === "review" ? "apply" : mode;
     formik.handleSubmit();
   };
 
   const renderFormStep = () => {
     switch (step) {
       case 0:
-        //if application is being reviewed there is no reason to show the explanation page
-        if (mode === "view") {
+        //if application is being rereviewed there is no reason to show the explanation page
+        if (mode === "review" || mode === "view") {
           setStep(1);
         }
         return (
@@ -496,93 +552,118 @@ const Form = () => {
               >
                 Previous
               </Button>
-              <Button
-                className="btn"
-                onClick={handleSubmit}
-                disabled={!formik.isValid}
-                type="submit"
-              >
-                Submit
-              </Button>
+
+              {mode === "view" ? (
+                <Button
+                  className="btn"
+                  onClick={() => {
+                    console.log("Redirected to MyApplications!");
+                    navigate("/myapplications");
+                  }}
+                  type="submit"
+                >
+                  Finished
+                </Button>
+              ) : (
+                <Button
+                  className="btn"
+                  onClick={handleSubmit}
+                  disabled={!formik.isValid}
+                  type="submit"
+                >
+                  Submit
+                </Button>
+              )}
             </NavigationButtons>
           </div>
         );
       default:
-        // Render other steps (Pg1, Pg2, etc.)
-        return (
-          <div>
-            <h1>Form Page {step}</h1>
-            {/* Import and render the appropriate component for each step */}
-            {/* Example: */}
-            {step === 1 && (
-              <Pg1
-                formik={formik}
-                emphasizeFields={formik.errors}
-                mode={mode}
-              />
-            )}
-            {step === 2 && (
-              <Pg2
-                formik={formik}
-                emphasizeFields={formik.errors}
-                mode={mode}
-              />
-            )}
-            {step === 3 && (
-              <Pg3
-                formik={formik}
-                emphasizeFields={formik.errors}
-                mode={mode}
-              />
-            )}
-            {step === 4 && (
-              <Pg4
-                formik={formik}
-                emphasizeFields={formik.errors}
-                mode={mode}
-              />
-            )}
-            {step === 5 && (
-              <Pg5
-                formik={formik}
-                emphasizeFields={formik.errors}
-                mode={mode}
-              />
-            )}
-            {step === 6 && (
-              <Pg6
-                formik={formik}
-                emphasizeFields={formik.errors}
-                mode={mode}
-              />
-            )}
-            {step === 7 && (
-              <Pg7
-                formik={formik}
-                emphasizeFields={formik.errors}
-                mode={mode}
-              />
-            )}
+        if (loggedIn) {
+          return (
+            <div>
+              <h1>Form Page {step}</h1>
+              {step === 1 && (
+                <Pg1
+                  formik={formik}
+                  emphasizeFields={formik.errors}
+                  mode={mode}
+                />
+              )}
+              {step === 2 && (
+                <Pg2
+                  formik={formik}
+                  emphasizeFields={formik.errors}
+                  mode={mode}
+                />
+              )}
+              {step === 3 && (
+                <Pg3
+                  formik={formik}
+                  emphasizeFields={formik.errors}
+                  mode={mode}
+                />
+              )}
+              {step === 4 && (
+                <Pg4
+                  formik={formik}
+                  emphasizeFields={formik.errors}
+                  mode={mode}
+                />
+              )}
+              {step === 5 && (
+                <Pg5
+                  formik={formik}
+                  emphasizeFields={formik.errors}
+                  mode={mode}
+                />
+              )}
+              {step === 6 && (
+                <Pg6
+                  formik={formik}
+                  emphasizeFields={formik.errors}
+                  mode={mode}
+                />
+              )}
+              {step === 7 && (
+                <Pg7
+                  formik={formik}
+                  emphasizeFields={formik.errors}
+                  mode={mode}
+                />
+              )}
 
-            <NavigationButtons>
-              <Button
-                className="btn"
-                onClick={handlePrevious}
-                disabled={isFirstStep}
-              >
-                Previous
-              </Button>
-              <Button
-                className="btn"
-                onClick={handleNext}
-                disabled={isLastStep}
-              >
-                Next
-              </Button>
-            </NavigationButtons>
-            <pre>{JSON.stringify(formik.values, null, 3)}</pre>
-          </div>
-        );
+              <NavigationButtons>
+                <Button
+                  className="btn"
+                  onClick={handlePrevious}
+                  disabled={isFirstStep}
+                >
+                  Previous
+                </Button>
+                <Button
+                  className="btn"
+                  onClick={handleNext}
+                  disabled={isLastStep}
+                >
+                  Next
+                </Button>
+              </NavigationButtons>
+              {fetchedComments && ( //display comments
+                <div>
+                  {fetchedComments.map((comment) => (
+                    <div key={comment.id}>
+                      <p>Field: {comment.field}</p>
+                      <p>Comment: {comment.content}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <pre>{JSON.stringify(formik.values, null, 3)}</pre>
+            </div>
+          );
+        } else {
+          return <div>Please Sign In To Continue</div>;
+        }
     }
   };
 

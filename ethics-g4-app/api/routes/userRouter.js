@@ -59,6 +59,38 @@ router.put("/users/:userId/edit-role", async (req, res) => {
   const { newRole } = req.body;
 
   try {
+    if (newRole === "admin") {
+      const fetchAdmin = await pool.query(
+        "SELECT role FROM user_roles WHERE user_id = $1 AND role = $2",
+        [userId, newRole]
+      );
+      if (fetchAdmin.rows.length === 0) {
+        console.log("Admin role added successfully");
+        // Admin role does not exist, so add it
+        const addAdmin = await pool.query(
+          "INSERT INTO user_roles (user_id, role) VALUES ($1, $2)",
+          [userId, newRole]
+        );
+      }else{
+        console.log("Admin role already exists for this user");
+      }
+    }
+    if (newRole !== "admin") {
+      console.log("Admin role removed successfully.");
+        // Check if the user has the admin role
+      const checkAdminRole = await pool.query(
+        "SELECT 1 FROM user_roles WHERE user_id = $1 AND role = $2 LIMIT 1",
+        [userId, "admin"]
+      );
+
+      if (checkAdminRole.rows.length > 0) {
+        // User has the admin role, proceed to remove it
+        const deleteAdminRole = await pool.query(
+          "DELETE FROM user_roles WHERE user_id = $1 AND role = $2",
+          [userId, "admin"]
+        );
+      }
+    }
     const updatedUser = await pool.query(
       "UPDATE users SET role = $1 WHERE user_id = $2 RETURNING *",
       [newRole, userId]
@@ -70,6 +102,5 @@ router.put("/users/:userId/edit-role", async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
-
 
 module.exports = router;

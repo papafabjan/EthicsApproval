@@ -3,18 +3,15 @@ import Thumb from "../Thumb";
 import React, { useState } from "react";
 import Comment from "../Comment";
 
-
 const dropzoneStyle = {
-  width: '100%',
-  minHeight: '100px',
-  border: '2px dashed #ccc',
-  borderRadius: '4px',
-  padding: '20px',
-  textAlign: 'center',
-  cursor: 'pointer',
+  width: "100%",
+  minHeight: "100px",
+  border: "2px dashed #ccc",
+  borderRadius: "4px",
+  padding: "20px",
+  textAlign: "center",
+  cursor: "pointer",
 };
-
-
 
 export const Pg7 = ({ formik, mode }) => {
   const [comment, setComment] = useState("");
@@ -29,9 +26,8 @@ export const Pg7 = ({ formik, mode }) => {
   const handleFileChange = (event, initialValuesName) => {
     const file = event.target.files[0];
     formik.setFieldValue(initialValuesName, file);
-    console.log(file)
+    console.log(file);
   };
-
 
   return (
     <>
@@ -41,7 +37,7 @@ export const Pg7 = ({ formik, mode }) => {
         </label>
         <p>
           Upload your proposed list of questions (e.g., questionnaires, photos,
-          interview questions, etc) in any format.
+          interreview questions, etc) in any format.
         </p>
         <input
           type="file"
@@ -49,18 +45,18 @@ export const Pg7 = ({ formik, mode }) => {
           className="form-control"
           id="ListofQuestions"
           onChange={(e) => handleFileChange(e, "ListofQuestions")}
-          disabled={mode === "view"}
+          disabled={mode === "review" || mode === "view"}
         />
-         {/* Comment component for the "ListofQuestions" field */}
-        {mode === "view" && (
-            <Comment
-              fieldName="ListofQuestions"
-              comment={formik.values.ListofQuestionsComment}
-              onCommentSave={(fieldName, comment) =>
-                formik.setFieldValue(`${fieldName}Comment`, comment)
-              }
-            />
-          )}
+        {/* Comment component for the "ListofQuestions" field */}
+        {mode === "review" && (
+          <Comment
+            fieldName="ListofQuestions"
+            comment={formik.values.ListofQuestionsComment}
+            onCommentSave={(fieldName, comment) =>
+              formik.setFieldValue(`${fieldName}Comment`, comment)
+            }
+          />
+        )}
         <Thumb file={formik.values.ListofQuestions} />
       </div>
 
@@ -69,23 +65,30 @@ export const Pg7 = ({ formik, mode }) => {
           Any additional forms /documents you need to submit (optional)
         </label>
 
-        <Dropzone style={dropzoneStyle} disabled={mode === "view"} onDrop={acceptedFiles => {
-          console.log(acceptedFiles);
+        <Dropzone
+          style={dropzoneStyle}
+          disabled={mode === "review" || mode === "view"}
+          onDrop={(acceptedFiles) => {
+            console.log(acceptedFiles);
 
-          if (acceptedFiles.length === 0) {
-            return;
-          }
+            if (acceptedFiles.length === 0) {
+              return;
+            }
 
-          formik.setFieldValue(
-            "AdditionalForms",
-            formik.values.AdditionalForms.concat(acceptedFiles)
-          );
-        }}>
+            formik.setFieldValue(
+              "AdditionalForms",
+              formik.values.AdditionalForms.concat(acceptedFiles)
+            );
+          }}
+        >
           {({ getRootProps, getInputProps }) => (
             <section>
               <div {...getRootProps()}>
                 <input {...getInputProps()} />
-                <p>Upload up to 10 files (e.g., questionnaires, photos, interview questions, etc) in any format.</p>
+                <p>
+                  Upload up to 10 files (e.g., questionnaires, photos,
+                  interreview questions, etc) in any format.
+                </p>
               </div>
             </section>
           )}
@@ -95,15 +98,15 @@ export const Pg7 = ({ formik, mode }) => {
           <Thumb key={i} file={file} />
         ))} */}
         {/* Comment component for the "AdditionalForms" field */}
-        {mode === "view" && (
-            <Comment
-              fieldName="AdditionalForms"
-              comment={formik.values.AdditionalFormsComment}
-              onCommentSave={(fieldName, comment) =>
-                formik.setFieldValue(`${fieldName}Comment`, comment)
-              }
-            />
-          )}
+        {mode === "review" && (
+          <Comment
+            fieldName="AdditionalForms"
+            comment={formik.values.AdditionalFormsComment}
+            onCommentSave={(fieldName, comment) =>
+              formik.setFieldValue(`${fieldName}Comment`, comment)
+            }
+          />
+        )}
       </div>
     </>
   );

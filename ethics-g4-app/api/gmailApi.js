@@ -31,27 +31,79 @@ function send_mail(recepient_name, recepient_email, status, user_role, applicati
     },
   });
 
-  let mailOptions;
+
+  let mailOptionsStaff, mailOptionsApplicant;
+
 
   if (status === "Approved by supervisor, pending reviewers addition") {
-    mailOptions = {
+    mailOptionsStaff = {
       from: "ethicsTeam <${process.env.USER}>",
       to: recepient_email,
       subject: `Pending reviewers addition for application ${application_id}`,
-      html: get_html_message_for_applicant(recepient_name, status, user_role),
+      html: html_message_reviewers_addition (recepient_name, status, user_role),
     };
-
-  } else {
-    // Default template for other recipients
-    mailOptions = {
+    
+    mailOptionsApplicant = {
       from: "ethicsTeam <${process.env.USER}>",
       to: recepient_email,
       subject: "Application status has been updated",
-      html: get_html_message_for_staff_members(recepient_name, status, user_role),
+      html: html_message_applicant_reviewers_addition (recepient_name, status, user_role),
     };
+
   }
 
-  transport.sendMail(mailOptions, function (error, result) {
+
+  if (status === "Reviewers assigned by Ethics Admin") {
+    mailOptionsStaff = {
+      from: "ethicsTeam <${process.env.USER}>",
+      to: recepient_email,
+      subject: `Pending reviewer's approval ${application_id}`,
+      html: html_message_reviewers_assigned (recepient_name, status, user_role),
+    };
+    mailOptionsApplicant = {
+      from: "ethicsTeam <${process.env.USER}>",
+      to: recepient_email,
+      subject: `Pending ethics admin's approval ${application_id}`,
+      html: html_message_applicant_reviewers_assigned (recepient_name, status, user_role),
+    };
+    
+  }
+
+
+  if (status === "Reviewer approval complete, pending ethics admin's approval") {
+    mailOptionsStaff = {
+      from: "ethicsTeam <${process.env.USER}>",
+      to: recepient_email,
+      subject: `Pending ethics admin's approval ${application_id}`,
+      html: html_message_ethics_approval (recepient_name, status, user_role),
+    };
+    mailOptionsApplicant = {
+      from: "ethicsTeam <${process.env.USER}>",
+      to: recepient_email,
+      subject: `Pending ethics admin's approval ${application_id}`,
+      html: html_message_applicant_ethics_approval (recepient_name, status, user_role),
+    };
+    
+  }
+
+
+  if (status === "Approved") {
+    mailOptionsStaff = {
+      from: "ethicsTeam <${process.env.USER}>",
+      to: recepient_email,
+      subject: `Pending ethics admin's approval ${application_id}`,
+      html: html_message_ethics_final_approval (recepient_name, status, user_role),
+    };
+    mailOptionsApplicant = {
+      from: "ethicsTeam <${process.env.USER}>",
+      to: recepient_email,
+      subject: `Your application ${application_id} has been approved`,
+      html: html_message_applicant_ethics_final_approval (recepient_name, status, user_role),
+    };
+    
+  }
+
+  transport.sendMail(mailOptionsStaff,mailOptionsApplicant, function (error, result) {
     if (error) {
       console.log("Error: ", error);
     } else {
@@ -61,27 +113,11 @@ function send_mail(recepient_name, recepient_email, status, user_role, applicati
   });
 }
 
-function get_html_message_for_applicant(recepient_name,status, user_role) {
-  return `
-        <h3> ${recepient_name}! Your application has been approved by ${user_role}</h3>
-        <p> Your application status has been updated to: ${status} </p>
-        <button id="checkApplicationsButton">Check Applications</button>
 
-        <script>
-        // Add an event listener to the button
-        document.getElementById('checkApplicationsButton').addEventListener('click', function() {
-            console.log('Button clicked!');
-            window.location.href = '../client/src/pages/Dashboard.jsx';
-          });
-        </script>
-        <!-- Add your customized HTML content here -->
-      `;
-}
-
-function get_html_message_for_staff_members(recepient_name,status, user_role) {
+function html_message_reviewers_addition(recepient_name,status, user_role,application_id) {
   return `
-        <h3> ${recepient_name}! The application has been approved by ${user_role} </h3>
-        <p> The next step is for <strong>you</strong> to approve it! </p>
+        <h3> Hello ${recepient_name}, the application: ${application_id} has been approved by ${user_role} </h3>
+        <p> The next step is for <strong>you</strong> to assign reviewer(s)! </p>
 
         <p> Press the button if you want to be transfered to your dashboard. </p>
         <a href="http://localhost:3000/dashboard"> Check dashboard </a>
@@ -89,6 +125,90 @@ function get_html_message_for_staff_members(recepient_name,status, user_role) {
 
       `;
 }
+
+
+function html_message_applicant_reviewers_addition(recepient_name,status, user_role,application_id) {
+  return `
+        <h3> Hello ${recepient_name}, your application: ${application_id} has been approved by ${user_role}</h3>
+        <p> Your application status has been updated to: ${status} </p>
+
+        <p> Press the button if you want to be transfered to MyApplications. </p>
+        <a href="http://localhost:3000/ MyApplications"> Check  MyApplications </a>
+        <!-- Add your customized HTML content here -->
+      `;
+}
+
+function html_message_reviewers_assigned(recepient_name,status, user_role,application_id) {
+  return `
+        <h3> Hello ${recepient_name}, You have been assgined as a reviewers to the application: ${application_id} </h3>
+        <p> The next step is for <strong>you</strong> to review the application! </p>
+
+        <p> Press the button if you want to be transfered to your dashboard. </p>
+        <a href="http://localhost:3000/dashboard"> Check dashboard </a>
+
+      `;
+}
+
+
+function html_message_applicant_reviewers_assigned(recepient_name,status, user_role,application_id) {
+  return `
+        <h3> Hello ${recepient_name}, reviewers have benn assigned to your application: ${application_id}</h3>
+        <p> Your application status has been updated to: ${status} </p>
+
+        <p> Press the button if you want to be transfered to MyApplications. </p>
+        <a href="http://localhost:3000/ MyApplications"> Check  MyApplications </a>
+        <!-- Add your customized HTML content here -->
+      `;
+}
+
+function html_message_ethics_approval(recepient_name,status, user_role,application_id) {
+  return `
+        <h3> Hello ${recepient_name}, You need to approve the application: ${application_id} </h3>
+        <p> This is the last step for the application to be Approved!!! </p>
+
+        <p> Press the button if you want to be transfered to your dashboard. </p>
+        <a href="http://localhost:3000/dashboard"> Check dashboard </a>
+
+      `;
+}
+
+
+function html_message_applicant_ethics_approval(recepient_name,status, user_role,application_id) {
+  return `
+        <h3> Hello ${recepient_name}, Ethics administrator needs to apporve your application: ${application_id}</h3>
+        <p> Your application status has been updated to: ${status} </p>
+        <p> This is the final step for the approval of your application </p>
+
+        <p> Press the button if you want to be transfered to MyApplications. </p>
+        <a href="http://localhost:3000/ MyApplications"> Check  MyApplications </a>
+        <!-- Add your customized HTML content here -->
+      `;
+}
+
+function html_message_ethics_final_approval(recepient_name,status, user_role,application_id) {
+  return `
+        <h3> Hello ${recepient_name}, the application: ${application_id} has been finally approved </h3>
+
+        <p> Press the button if you want to be transfered to your dashboard. </p>
+        <a href="http://localhost:3000/dashboard"> Check dashboard </a>
+
+      `;
+}
+
+
+function html_message_applicant_ethics_final_approval(recepient_name,status, user_role,application_id) {
+  return `
+        <h3> Hello ${recepient_name}, your application: ${application_id} has been Approved by everyone!!!</h3>
+        <p> Your application status has been updated to: ${status} </p>
+
+        <p> Press the button if you want to be transfered to MyApplications. </p>
+        <a href="http://localhost:3000/ MyApplications"> Check  MyApplications </a>
+        <!-- Add your customized HTML content here -->
+      `;
+}
+
+
+
 
 // Example usage:
 // send_mail('fpapa', 'pkaralis@york.citycollege.eu');

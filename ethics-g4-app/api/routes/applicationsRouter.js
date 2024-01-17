@@ -153,13 +153,12 @@ router.post("/applications/update-status/:id", async (req, res) => {
   const { id } = req.params;
   var status = req.body.status;
   const userID = req.body.user.id;
-
+ var recepient_name;
+ var recepient_email;
 
   try {
     
     //fetch status of application with id
-
-    
     const fetchStatusQuery = `
     SELECT status FROM applications WHERE id = $1
     `;
@@ -367,6 +366,17 @@ router.post("/applications/update-status/:id", async (req, res) => {
     if (userRole === "supervisor") {
       if (currentStatus === "Pending supervisor's admission") {
           status = "Approved by supervisor, pending reviewers addition";
+      //       const recepient_name = await pool.query(
+      //         `
+      // SELECT username FROM users WHERE role = 'admin'
+      // `);
+      //       const recepient_email = await pool.query(
+      //         `
+      // SELECT email FROM users WHERE role = 'admin'
+      // `
+      //       );
+       recepient_email = 'pkaralis@york.citycollege.eu'
+       recepient_name = 'Panagiotis Karalis'
       } else {
           return res.json({
             success: false,
@@ -405,7 +415,9 @@ router.post("/applications/update-status/:id", async (req, res) => {
     ]);
 
 
-    send_mail(recepient_name, recepient_email, status, userRole);
+  
+
+    send_mail(recepient_name, recepient_email, status, userRole, id);
 
     res.json({ success: true, message: "Successful Approval" });
   } catch (error) {

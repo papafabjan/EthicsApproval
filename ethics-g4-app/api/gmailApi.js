@@ -9,8 +9,14 @@ const OAuth2_client = new OAuth2(
 );
 OAuth2_client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN });
 
+function send_mail(recepient_name, recepient_email, status, user_role, application_id) {
+    // if(3 recepients)
+    // send_mail();
+    // send_mail();
+    // send_mail();
+}
 
-function send_mail(recepient_name, recepient_email, status, user_role) {
+function send_mail(recepient_name, recepient_email, status, user_role, application_id) {
   const accessToken = OAuth2_client.getAccessToken();
 
   const transport = nodemailer.createTransport({
@@ -27,20 +33,21 @@ function send_mail(recepient_name, recepient_email, status, user_role) {
 
   let mailOptions;
 
-  if (status) {
+  if (status === "Approved by supervisor, pending reviewers addition") {
     mailOptions = {
       from: "ethicsTeam <${process.env.USER}>",
       to: recepient_email,
-      subject: "Application status has been updated",
-      html: get_html_message_for_applicant(recepient_name),
+      subject: `Pending reviewers addition for application ${application_id}`,
+      html: get_html_message_for_applicant(recepient_name, status, user_role),
     };
+
   } else {
     // Default template for other recipients
     mailOptions = {
       from: "ethicsTeam <${process.env.USER}>",
       to: recepient_email,
       subject: "Application status has been updated",
-      html: get_html_message_for_staff_members(recepient_name),
+      html: get_html_message_for_staff_members(recepient_name, status, user_role),
     };
   }
 
@@ -54,10 +61,10 @@ function send_mail(recepient_name, recepient_email, status, user_role) {
   });
 }
 
-function get_html_message_for_applicant(recepient_name) {
+function get_html_message_for_applicant(recepient_name,status, user_role) {
   return `
-        <h3> ${recepient_name}! Your application has been approved by "user.role"</h3>
-        <p> Your application status has been updated to: ${Status} </p>
+        <h3> ${recepient_name}! Your application has been approved by ${user_role}</h3>
+        <p> Your application status has been updated to: ${status} </p>
         <button id="checkApplicationsButton">Check Applications</button>
 
         <script>
@@ -71,9 +78,9 @@ function get_html_message_for_applicant(recepient_name) {
       `;
 }
 
-function get_html_message_for_staff_members(recepient_name) {
+function get_html_message_for_staff_members(recepient_name,status, user_role) {
   return `
-        <h3> ${recepient_name}! The application has been approved by "user.role" </h3>
+        <h3> ${recepient_name}! The application has been approved by ${user_role} </h3>
         <p> The next step is for <strong>you</strong> to approve it! </p>
 
         <p> Press the button if you want to be transfered to your dashboard. </p>

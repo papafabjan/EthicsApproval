@@ -1,4 +1,4 @@
-
+import { useState } from "react";
 
 export const Pg5 = ({ formik, mode }) => {
   const [comment, setComment] = useState("");
@@ -51,7 +51,6 @@ export const Pg5 = ({ formik, mode }) => {
                 }
               />
             )}
-            
           </div>
 
           <div className="form-group">
@@ -85,7 +84,6 @@ export const Pg5 = ({ formik, mode }) => {
                 }
               />
             )}
-
           </div>
 
           <div className="form-group">
@@ -120,7 +118,6 @@ export const Pg5 = ({ formik, mode }) => {
                 }
               />
             )}
-
           </div>
 
           <div className="form-group">
@@ -151,7 +148,6 @@ export const Pg5 = ({ formik, mode }) => {
                 }
               />
             )}
-
           </div>
 
           <div className="form-group">
@@ -182,7 +178,6 @@ export const Pg5 = ({ formik, mode }) => {
                 }
               />
             )}
-
           </div>
         </>
       ) : formik.values.VulnerableParticipants === "YesAdultsMental" ? (
@@ -224,7 +219,6 @@ export const Pg5 = ({ formik, mode }) => {
                 }
               />
             )}
-
           </div>
 
           <div className="form-group">
@@ -260,7 +254,6 @@ export const Pg5 = ({ formik, mode }) => {
                 }
               />
             )}
-
           </div>
         </>
       ) : formik.values.VulnerableParticipants === "" ? (
@@ -334,7 +327,6 @@ export const Pg5 = ({ formik, mode }) => {
                 }
               />
             )}
-
           </div>
 
           <div className="form-group">
@@ -366,7 +358,6 @@ export const Pg5 = ({ formik, mode }) => {
                 }
               />
             )}
-            
           </div>
 
           <div className="form-group">
@@ -396,7 +387,6 @@ export const Pg5 = ({ formik, mode }) => {
                 }
               />
             )}
-
           </div>
         </>
       )}

@@ -1,3 +1,4 @@
+import { useState } from "react";
 
 export const Pg7 = ({ formik, mode }) => {
   const [comment, setComment] = useState("");
@@ -9,15 +10,12 @@ export const Pg7 = ({ formik, mode }) => {
       [fieldName]: comment,
     });
   };
-  
- 
+
   const handleFilesChange = (event, initialValuesName) => {
     const files = event.target.files;
     formik.setFieldValue(initialValuesName, files);
     console.log(files);
   };
-
-
 
   return (
     <>
@@ -48,7 +46,6 @@ export const Pg7 = ({ formik, mode }) => {
             }
           />
         )}
-
       </div>
 
       <div className="form-group">
@@ -75,7 +72,6 @@ export const Pg7 = ({ formik, mode }) => {
             }
           />
         )}
-
       </div>
     </>
   );

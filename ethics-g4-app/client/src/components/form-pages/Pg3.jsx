@@ -1,4 +1,4 @@
-
+import { useState } from "react";
 function Pg3({ formik, emphasizeFields, mode }) {
   const [comment, setComment] = useState("");
 
@@ -9,8 +9,8 @@ function Pg3({ formik, emphasizeFields, mode }) {
       [fieldName]: comment,
     });
   };
-  
-   const handleFilesChange = (event, initialValuesName) => {
+
+  const handleFilesChange = (event, initialValuesName) => {
     const files = event.target.files;
     formik.setFieldValue(initialValuesName, files);
     console.log(files);

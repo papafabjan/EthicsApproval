@@ -7,7 +7,7 @@ const Content = styled.div`
   margin: 0 auto;
   margin-top: 3vh;
   margin-bottom: 3vh;
-  background: linear-gradient(rgb(255, 255, 255) 0%, rgb(191, 191, 191) 100%);
+  background:#F8F9F9;
   color: black;
   border-radius: 24px;
   box-shadow: 0 0px 20px 0px rgba(0, 0, 0, 0.6);

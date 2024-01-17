@@ -1,11 +1,8 @@
 import styled from "styled-components";
 
 const Sidebar = styled.div`
-  background: linear-gradient(
-    5deg,
-    rgb(245, 200, 27) 0%,
-    rgb(255, 169, 27) 100%
-  );
+  background: #FFAA33;
+  ;
   border-radius: 24px;
   display: flex;
   flex-direction: column;

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const Home = styled.div`
-  font-family: "Roboto", sans-serif;
+   font-family: "Montserrat", sans-serif; 
 
   h1 {
     text-align: center;

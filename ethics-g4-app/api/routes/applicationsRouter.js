@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const pool = require("../db");
+const send_mail = require("../gmailApi")
 
 // Get all applications
 router.get("/applications", async (req, res) => {

@@ -156,7 +156,6 @@ router.post("/applications/update-status/:id", async (req, res) => {
 
 
   try {
-    send_mail('me','pkaralis@york.citycollege.eu');
     
     //fetch status of application with id
 
@@ -404,6 +403,9 @@ router.post("/applications/update-status/:id", async (req, res) => {
       currentDate,
       id,
     ]);
+
+
+    send_mail(recepient_name, recepient_email, status, userRole);
 
     res.json({ success: true, message: "Successful Approval" });
   } catch (error) {

@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const pool = require("../db");
-const send_mail = require("../gmailApi")
+const send_mail = require("../gmailApi");
 
 // Get all applications
 router.get("/applications", async (req, res) => {
@@ -154,8 +154,13 @@ router.post("/applications/update-status/:id", async (req, res) => {
   var status = req.body.status;
   const userID = req.body.user.id;
 
+
   try {
+    send_mail('me','pkaralis@york.citycollege.eu');
+    
     //fetch status of application with id
+
+    
     const fetchStatusQuery = `
     SELECT status FROM applications WHERE id = $1
     `;

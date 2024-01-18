@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Comment from "../Comment";
 
 export const Pg5 = ({ formik, mode }) => {
   const [comment, setComment] = useState("");

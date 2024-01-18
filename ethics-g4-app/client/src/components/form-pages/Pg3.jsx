@@ -1,4 +1,6 @@
 import { useState } from "react";
+import Comment from "../Comment";
+
 function Pg3({ formik, emphasizeFields, mode }) {
   const [comment, setComment] = useState("");
 

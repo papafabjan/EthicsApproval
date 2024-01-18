@@ -12,10 +12,14 @@ function Pg3({ formik, emphasizeFields, mode }) {
     });
   };
   
-   const handleFilesChange = (event, initialValuesName) => {
+
+  const handleFilesChange = (event, initialValuesName) => {
     const files = event.target.files;
     formik.setFieldValue(initialValuesName, files);
-    console.log(files);
+
+    // Update file names array
+    const fileNames = Array.from(files).map((file) => file.name);
+    formik.setFieldValue(`${initialValuesName}FileNames`, fileNames);
   };
 
   return (

@@ -90,11 +90,9 @@ const initialValues = {
   ChildInformation: [],
   HeadTeacherConsent: [],
   HeadteacherInformation: [],
-
   // //Yes adults mental
   AccessibleConsentMaterial: [],
   ProxyConsentProcedure: [],
-
   // //No or other option
   ParticipantInformation: [],
   ParticipantConsent: [],
@@ -106,8 +104,9 @@ const initialValues = {
   DataConfidentiality: "",
   DataStorageandSecurity: "",
 
+  // Page7
   ListofQuestions: [],
-  AdditionalForms: []
+  AdditionalForms: [],
 };
 
 const Form = () => {
@@ -128,6 +127,54 @@ const Form = () => {
 
   console.log(mode);
   console.log(applicationId);
+
+  const adaptValuesForSubmission = (values) => {
+    // Clone the values object to avoid modifying the original
+    const adaptedValues = { ...values };
+
+    // Replace file objects with file names
+    adaptedValues.SensitiveTopicsFiles = values.SensitiveTopicsFilesNames;
+
+    // Page4
+    adaptedValues.PotentialParticipants = values.PotentialParticipantsNames;
+    adaptedValues.RecruitingPotentialParticipants =
+      values.RecruitingPotentialParticipantsNames;
+    adaptedValues.Payment = values.PaymentNames;
+    adaptedValues.otherPaymentOption = values.otherPaymentOptionNames;
+    adaptedValues.PotentialHarm = values.PotentialHarmNames;
+    adaptedValues.VulnerableParticipants = values.VulnerableParticipantsNames;
+    adaptedValues.otherVulnerableParticipantsOptions =
+      values.otherVulnerableParticipantsOptionsNames;
+
+    // Page5: Yes child
+    adaptedValues.ParentalConsent = values.ParentalConsentNames;
+    adaptedValues.ParentalInformation = values.ParentalInformationNames;
+    adaptedValues.ChildInformation = values.ChildInformationNames;
+    adaptedValues.HeadTeacherConsent = values.HeadTeacherConsentNames;
+    adaptedValues.HeadteacherInformation = values.HeadteacherInformationNames;
+
+    // Page5: Yes adults mental
+    adaptedValues.AccessibleConsentMaterial =
+      values.AccessibleConsentMaterialNames;
+    adaptedValues.ProxyConsentProcedure = values.ProxyConsentProcedureNames;
+
+    // Page5: No or other option
+    adaptedValues.ParticipantInformation = values.ParticipantInformationNames;
+    adaptedValues.ParticipantConsent = values.ParticipantConsentNames;
+    adaptedValues.ParticipantDebriefing = values.ParticipantDebriefingNames;
+    adaptedValues.AccessibilityLetter = values.AccessibilityLetterNames;
+
+    // Page6
+    adaptedValues.DataProcessing = values.DataProcessingNames;
+    adaptedValues.DataConfidentiality = values.DataConfidentialityNames;
+    adaptedValues.DataStorageandSecurity = values.DataStorageandSecurityNames;
+
+    adaptedValues.ListofQuestions = values.ListofQuestionsNames;
+    adaptedValues.AdditionalForms = values.AdditionalFormsNames;
+
+    return adaptedValues;
+  };
+
   useEffect(() => {
     if (
       (mode === "view" || mode === "review" || mode === "edit") &&
@@ -136,7 +183,8 @@ const Form = () => {
       const fetchApplicationData = async () => {
         try {
           const response = await fetch(
-            `${import.meta.env.VITE_SERVER_URL
+            `${
+              import.meta.env.VITE_SERVER_URL
             }/api/applications/${applicationId}`
           );
 
@@ -329,7 +377,10 @@ const Form = () => {
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({ userID, values }),
+              body: JSON.stringify({
+                userID,
+                values: adaptValuesForSubmission(values),
+              }),
             }
           );
 
@@ -340,6 +391,77 @@ const Form = () => {
 
           const responseData = await response.json();
           console.log("Application submitted successfully:", responseData);
+
+          ////////////
+
+          async function executeLogicAndUploadFiles() {
+            try {
+              // Step 1: Execute logic and update application ID for the folder name
+              const executeLogicResponse = await fetch(
+                "http://localhost:4000/api/execute-logic",
+                {
+                  method: "POST",
+                }
+              );
+
+              if (!executeLogicResponse.ok) {
+                throw new Error("Failed to execute logic");
+              }
+
+              const { applicationId } = await executeLogicResponse.json();
+
+              console.log("Application ID:", applicationId);
+
+              // Step 2: Upload files to the correct folder
+              const formData = new FormData();
+
+              for (
+                var i = 0;
+                i < formik.values.SensitiveTopicsFiles.length;
+                i++
+              ) {
+                formData.append("files", formik.values.SensitiveTopicsFiles[i]);
+              }
+
+              for (var i = 0; i < formik.values.AdditionalForms.length; i++) {
+                formData.append("files", formik.values.AdditionalForms[i]);
+              }
+
+              formData.append("files", formik.values.ParentalConsent);
+              formData.append("files", formik.values.ParentalInformation);
+              formData.append("files", formik.values.ChildInformation);
+              formData.append("files", formik.values.HeadTeacherConsent);
+              formData.append("files", formik.values.HeadteacherInformation);
+              formData.append("files", formik.values.AccessibleConsentMaterial);
+              formData.append("files", formik.values.ProxyConsentProcedure);
+              formData.append("files", formik.values.ParticipantInformation);
+              formData.append("files", formik.values.ParticipantConsent);
+              formData.append("files", formik.values.ParticipantDebriefing);
+              formData.append("files", formik.values.AccessibilityLetter);
+              formData.append("files", formik.values.ListofQuestions);
+
+              console.log(formData);
+
+              // Make the fetch request
+              fetch("http://localhost:4000/api/multiple", {
+                method: "POST",
+                body: formData,
+              })
+                .then((response) => response.text()) // Use response.text() for non-JSON responses
+                .then((data) => {
+                  console.log("Success:", data);
+                })
+                .catch((error) => {
+                  console.error("Error:", error);
+                });
+            } catch (error) {
+              console.error("Error:", error);
+            }
+          }
+          // Call the function
+          executeLogicAndUploadFiles();
+
+          ////////////
           navigate("/myapplications");
           //  window.location.reload(true);
         } catch (error) {
@@ -513,7 +635,6 @@ const Form = () => {
     // Add more conditions for other steps as needed
   };
 
-
   const handleSubmit = () => {
     // Don't submit if the form is currently submitting or has errors
     // if (!formik.isValid) {
@@ -522,46 +643,6 @@ const Form = () => {
     // Change the mode to 'apply' before submitting
 
     // Create a FormData object and append files to it
-
-    const formData = new FormData();
-
-    for (var i = 0; i < formik.values.SensitiveTopicsFiles.length; i++) {
-      formData.append('files', formik.values.SensitiveTopicsFiles[i]);
-    }
-
-    for (var i = 0; i < formik.values.AdditionalForms.length; i++) {
-      formData.append('files', formik.values.AdditionalForms[i]);
-    }
-
-    formData.append('files', formik.values.ParentalConsent);
-    formData.append('files', formik.values.ParentalInformation);
-    formData.append('files', formik.values.ChildInformation);
-    formData.append('files', formik.values.HeadTeacherConsent);
-    formData.append('files', formik.values.HeadteacherInformation);
-    formData.append('files', formik.values.AccessibleConsentMaterial);
-    formData.append('files', formik.values.ProxyConsentProcedures);
-    formData.append('files', formik.values.ParticipantInformation);
-    formData.append('files', formik.values.ParticipantConsent);
-    formData.append('files', formik.values.ParticipantDebriefing);
-    formData.append('files', formik.values.AccessibilityLetter);
-    formData.append('files', formik.values.ListofQuestions);
-
-    console.log(formData)
-
-    // Make the fetch request
-    fetch('http://localhost:4000/api/multiple', {
-      method: 'POST',
-      body: formData,
-    })
-      .then(response => response.text()) // Use response.text() for non-JSON responses
-      .then(data => {
-        console.log('Success:', data);
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
-
-    const submitMode = mode === "view" ? "apply" : mode;
 
     formik.handleSubmit();
   };

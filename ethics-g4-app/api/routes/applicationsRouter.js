@@ -131,12 +131,17 @@ router.post("/applications/add", async (req, res) => {
           (Array.isArray(fieldValue) && fieldValue.length === 0)
         )
       ) {
+        // Use fieldValue directly for non-file fields
+        const fieldValueToStore = Array.isArray(fieldValue)
+          ? fieldValue.join(",") // For arrays (e.g., multiple files)
+          : fieldValue;
+
         await pool.query(
           `
-          INSERT INTO application_content (application_id, field_name, field_value) 
-          VALUES ($1, $2, $3);
-          `,
-          [applicationId, fieldName, fieldValue]
+      INSERT INTO application_content (application_id, field_name, field_value) 
+      VALUES ($1, $2, $3);
+      `,
+          [applicationId, fieldName, fieldValueToStore]
         );
       }
     }

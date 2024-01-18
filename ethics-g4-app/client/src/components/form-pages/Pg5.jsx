@@ -14,7 +14,9 @@ export const Pg5 = ({ formik, mode }) => {
   const handleFileChange = (event, initialValuesName) => {
     const file = event.target.files[0];
     formik.setFieldValue(initialValuesName, file);
-    console.log(file);
+
+    // Update file names array
+    formik.setFieldValue(`${initialValuesName}FileNames`, [file.name]);
   };
 
   return (

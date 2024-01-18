@@ -4,6 +4,7 @@ import Comment from "../Comment";
 export const Pg7 = ({ formik, mode }) => {
   const [comment, setComment] = useState("");
 
+  
   const handleCommentSave = (fieldName) => {
     // Save the comment to formik or perform any other actions as needed
     formik.setValues({
@@ -11,13 +12,23 @@ export const Pg7 = ({ formik, mode }) => {
       [fieldName]: comment,
     });
   };
-  
- 
-  const handleFilesChange = (event, initialValuesName) => {
-    const files = event.target.files;
-    formik.setFieldValue(initialValuesName, files);
-    console.log(files);
-  };
+
+const handleFileChange = (event, initialValuesName) => {
+  const file = event.target.files[0];
+  formik.setFieldValue(initialValuesName, file);
+
+  // Update file names array
+  formik.setFieldValue(`${initialValuesName}FileNames`, [file.name]);
+};
+
+const handleFilesChange = (event, initialValuesName) => {
+  const files = event.target.files;
+  formik.setFieldValue(initialValuesName, files);
+
+  // Update file names array
+  const fileNames = Array.from(files).map((file) => file.name);
+  formik.setFieldValue(`${initialValuesName}FileNames`, fileNames);
+};
 
 
 
@@ -50,7 +61,6 @@ export const Pg7 = ({ formik, mode }) => {
             }
           />
         )}
-
       </div>
 
       <div className="form-group">
@@ -77,7 +87,6 @@ export const Pg7 = ({ formik, mode }) => {
             }
           />
         )}
-
       </div>
     </>
   );

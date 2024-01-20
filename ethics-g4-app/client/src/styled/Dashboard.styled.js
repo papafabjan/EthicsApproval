@@ -1,20 +1,23 @@
 import styled from "styled-components";
 
-const Dashboard = styled.div`
+const StyledDashboard = styled.div`
   h1 {
     margin-bottom: 10px;
+  }
+
+  input {
+    padding: 10px;
+    margin-bottom: 16px;
+    border: 1px solid #FFA07A; /* Light Dark Orange */
+    border-radius: 4px;
+    outline: none; /* Remove default input focus outline */
   }
 
   .header {
     display: flex;
     justify-content: space-between;
-    flex-grow: 1;
     padding: 10px;
-    color: grey;
-  }
-
-  .table-container {
-    margin-top: 20px;
+    color: #888; /* Slightly muted color */
   }
 
   table {
@@ -29,39 +32,25 @@ const Dashboard = styled.div`
     align-items: center;
     padding: 10px;
     border: 1px solid #ccc;
+    margin-top: 8px;
   }
 
   .application,
   .date,
   .status,
   .actions {
-    flex-basis: 25%; /* Equal width for each column */
+    flex-basis: 25%;
     text-align: center;
   }
 
   .btn {
-    background-color: darkorange;
-    color: #fff;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-
-  .btn {
-    background-color: darkorange;
+    background-color: #FFA07A; /* Light Dark Orange */
     color: #fff;
     padding: 8px 16px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     margin: 3px;
-  }
-  input {
-    padding: 8px;
-    margin-bottom: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
   }
 
   @media (max-width: 768px) {
@@ -72,4 +61,4 @@ const Dashboard = styled.div`
   }
 `;
 
-export default Dashboard;
+export default StyledDashboard;

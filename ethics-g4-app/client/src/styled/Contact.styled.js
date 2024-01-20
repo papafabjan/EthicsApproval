@@ -8,7 +8,7 @@ const StyledContact = styled.div`
 
   h1 {
     color: #333;
-    font-size: 3px;
+    font-size: 35px;
     margin-bottom: 20px;
   }
 

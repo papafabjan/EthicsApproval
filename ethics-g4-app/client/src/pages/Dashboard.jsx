@@ -220,7 +220,7 @@ const Dashboard = () => {
           <div>
             <div className="header">
               <p className="application">Applicant Name</p>
-              <p className="date">Date of submission</p>
+              <p className="date">Submission Date</p>
               <p className="status">Status</p>
               <p className="actions">Actions</p>
             </div>

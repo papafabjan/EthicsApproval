@@ -3,18 +3,22 @@ import styled from "styled-components";
 const MyApplications = styled.div`
   h1 {
     margin-bottom: 10px;
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  input {
+    padding: 10px;
+    margin-bottom: 16px;
+    border: 1px solid #FFA07A; /* Light Dark Orange */
+    border-radius: 4px;
+    outline: none; 
   }
 
   .header {
     display: flex;
     justify-content: space-between;
-    flex-grow: 1;
     padding: 10px;
-    color: grey;
-  }
-
-  .table-container {
-    margin-top: 20px;
+    color: #888; /* Slightly muted color */
   }
 
   table {
@@ -29,31 +33,29 @@ const MyApplications = styled.div`
     align-items: center;
     padding: 10px;
     border: 1px solid #ccc;
+    margin-top: 8px;
+  }
+
+  .bold-text {
+    font-weight: bold;
   }
 
   .application,
   .date,
   .status,
   .actions {
-    flex-basis: 25%; /* Equal width for each column */
+    flex-basis: 25%;
     text-align: center;
   }
 
   .btn {
-    background-color: darkorange;
+    background-color: #FFA07A; /* Light Dark Orange */
     color: #fff;
     padding: 8px 16px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     margin: 3px;
-  }
-
-  input {
-    padding: 8px;
-    margin-bottom: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
   }
 
   @media (max-width: 768px) {

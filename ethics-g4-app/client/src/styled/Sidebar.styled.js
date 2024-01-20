@@ -2,36 +2,36 @@ import styled from "styled-components";
 
 const Sidebar = styled.div`
   background: #FFAA33;
-  ;
   border-radius: 24px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   padding: 2rem;
   gap: 2rem;
-  height: 100%;
-  max-width: 13%;
-  min-width: 13%;
-  float: left;
-  overflow: hidden;
+  height: 595px; 
+  width: 20vw; 
+  overflow: hidden; 
 
-  i {
-    margin-right: 8px;
-    vertical-align: middle;
-    align-items: left;
-  }
   .icon-title {
     display: flex;
-    align-items: right;
+    align-items: center;
     font-weight: bold;
     flex-direction: row;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
   }
 
   .icon-title > a {
-    color: #333; /* Dark gray for link color */
+    color: #333;
     text-decoration: none;
     position: relative;
     display: inline-block;
+    width: 100%;
+    max-width: 90%;
+    text-overflow: ellipsis;
+    text-align: justify;
+    white-space: normal;
   }
 
   .icon-title > a:before {
@@ -57,7 +57,5 @@ const Sidebar = styled.div`
     transform: scale(1.05);
   }
 `;
-
-
 
 export default Sidebar;

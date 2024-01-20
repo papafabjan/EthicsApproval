@@ -4,6 +4,7 @@ import styled from "styled-components";
 const Document_Templates = styled.div`
   h1 {
     color: #333;
+    font-size: 35px;
   }
 
   ul {

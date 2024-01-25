@@ -15,11 +15,16 @@ CREATE TABLE users (
 CREATE TABLE applications (
   id SERIAL PRIMARY KEY,
   status VARCHAR(255) NOT NULL,
-  -- supervisor VARCHAR(255) NOT NULL
-  -- reviewers  VARCHAR(255) ARRAY,
   date TIMESTAMP NOT NULL,
   applicant_id INT REFERENCES users(user_id) NOT NULL,
+  department_code VARCHAR(255) NOT NULL,
   remaining_approval INT[]
+);
+
+CREATE TABLE departments(
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  code VARCHAR(255) NOT NULL
 );
 
 

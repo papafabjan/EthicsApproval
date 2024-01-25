@@ -220,6 +220,47 @@ function Pg1({ formik, emphasizeFields, mode }) {
           )}
 
           <div className="form-group">
+            <label htmlFor="Department">
+              Department enrolled to <span style={{ color: "red" }}>*</span>
+            </label>
+            <select
+              id="Department"
+              name="Department"
+              className="form-control"
+              value={formik.values.Department}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              style={{
+                borderColor:
+                  emphasizeFields?.Department && formik.touched?.Department
+                    ? "red"
+                    : "",
+              }}
+              disabled={mode === "review" || mode === "view"}
+            >
+              <option value="" label="Select a Department" />
+              <option value="BAED" label="Business Studies" />
+              <option value="PSY" label="Psychology Studies" />
+              <option value="COM" label="Computer Studies" />
+              <option value="HUM" label="Humanities Studies" />
+            </select>
+            {formik.touched.Department && formik.errors.Department && (
+              <div style={{ color: "red" }}>{formik.errors.Department}</div>
+            )}
+          </div>
+        </div>
+        {/* Comment component for the "Department" field */}
+        {mode === "review" && (
+          <Comment
+            fieldName="Department"
+            comment={formik.values.DepartmentComment}
+            onCommentSave={(fieldName, comment) =>
+              formik.setFieldValue(`${fieldName}Comment`, comment)
+            }
+          />
+        )}
+        {formik.values.Department !== "" && (
+          <div className="form-group">
             <label htmlFor="programme">
               Programme enrolled to <span style={{ color: "red" }}>*</span>
             </label>
@@ -239,33 +280,39 @@ function Pg1({ formik, emphasizeFields, mode }) {
               disabled={mode === "review" || mode === "view"}
             >
               <option value="" label="Select a programme" />
-              <option
-                value="MBIT"
-                label="MSc Business Informatics and Management (MBIT)"
-              />
-              <option
-                value="MSc in Web and Mobile Development"
-                label="MSc in Web and Mobile Development"
-              />
-              <option
-                value="MSc in Software Development"
-                label="MSc in Software Development"
-              />
-              <option
-                value="MSc in AI and Data Science"
-                label="MSc in AI and Data Science"
-              />
-              <option
-                value="MSc in Advanced Software Engineering"
-                label="MSc in Advanced Software Engineering"
-              />
+              {formik.values.Department === "BAED" && (
+                <option
+                  value="MBIT"
+                  label="MSc Business Informatics and Management (MBIT)"
+                />
+              )}
+              {formik.values.Department === "COM" && (
+                <>
+                  <option
+                    value="MSc in Web and Mobile Development"
+                    label="MSc in Web and Mobile Development"
+                  />
+                  <option
+                    value="MSc in Software Development"
+                    label="MSc in Software Development"
+                  />
+                  <option
+                    value="MSc in AI and Data Science"
+                    label="MSc in AI and Data Science"
+                  />
+                  <option
+                    value="MSc in Advanced Software Engineering"
+                    label="MSc in Advanced Software Engineering"
+                  />
+                </>
+              )}
               <option value="BSc" label="BSc (any track)" />
             </select>
             {formik.touched.programme && formik.errors.programme && (
               <div style={{ color: "red" }}>{formik.errors.programme}</div>
             )}
           </div>
-        </div>
+        )}
         {/* Comment component for the "programme" field */}
         {mode === "review" && (
           <Comment
@@ -276,7 +323,6 @@ function Pg1({ formik, emphasizeFields, mode }) {
             }
           />
         )}
-
         <div className="form-group">
           <label htmlFor="supervisor">Your supervisor</label>
           <select

@@ -13,6 +13,7 @@ const commentsRoutes = require("./routes/commentsRouter");
 const fileSubmissionRouter = require("./routes/fileSubmissionRouter");
 const reviewerRoutes = require("./routes/reviewerRouter");
 const supervisorRoutes = require("./routes/supervisorRouter");
+const departmentsRoutes = require("./routes/departmentsRouter");
 
 
 app.use(express.json());
@@ -33,6 +34,7 @@ app.use("/api", commentsRoutes);
 app.use("/api", fileSubmissionRouter);
 app.use("/api", reviewerRoutes);
 app.use("/api", supervisorRoutes);
+app.use("/api", departmentsRoutes);
 
 app.use(
   session({

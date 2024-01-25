@@ -29,6 +29,7 @@ const validationSchema = yup.object({
   studentRegistration: yup
     .string()
     .required("Student registration number is required"),
+  Department: yup.string().required("Department selection is required"),
   programme: yup.string().required("Programme selection is required"),
 
   supervisor: yup.string().required("Supervisor selection is required"),
@@ -46,6 +47,7 @@ const initialValues = {
   lastName: "",
   email: "",
   studentRegistration: "",
+  Department: "",
   programme: "",
   supervisor: "",
 
@@ -780,7 +782,7 @@ const Form = () => {
                   ))}
                 </div>
               )}
-              <pre>{JSON.stringify(formik.values, null, 3)}</pre>
+              {/* <pre>{JSON.stringify(formik.values, null, 3)}</pre> */}
             </div>
           );
         } else {

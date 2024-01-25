@@ -13,8 +13,19 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [showAssignReviewers, setShowAssignReviewers] = useState(false);
   const [selectedApplicationId, setSelectedApplicationId] = useState(null);
-
+  const [departments, setDepartments] = useState([]);
+  const [selectedDepartment, setSelectedDepartment] = useState(null);
   const sessionUser = useContext(UserContext);
+
+  useEffect(() => {
+    if (sessionUser.loggedIn) {
+      // Fetch departments from API
+      fetch(`${import.meta.env.VITE_SERVER_URL}/api/departments`)
+        .then((response) => response.json())
+        .then((data) => setDepartments(data))
+        .catch((error) => console.error("Error fetching departments:", error));
+    }
+  }, []);
 
   if (sessionUser.role === "staff") {
     // Fetch applications from the API
@@ -195,20 +206,40 @@ const Dashboard = () => {
     setSearchTerm(event.target.value);
   };
 
-  // Filter applications based on search term
+  const handleDepartmentChange = (e) => {
+    setSelectedDepartment(e.target.value);
+  };
+
+  // Filter applications based on search term and selected department
   const filteredApplications = applications.filter((application) => {
     const applicantName = applicantNames[application.applicant_id];
+    console.log("Application Department:", application.department_code); // <-- Check department_code
+    console.log("Selected Department:", selectedDepartment);
     return (
+      (!selectedDepartment ||
+        application.department_code === selectedDepartment) &&
       applicantName &&
       applicantName.toLowerCase().includes(searchTerm.toLowerCase())
     );
   });
+
 
   return (
     <>
       <StyledDashboard>
         <div>
           <h1>Dashboard</h1>
+          {/* Display the options list under the dashboard title */}
+          {departments.length > 0 && (
+            <select className="form-control" onChange={handleDepartmentChange}>
+              <option value="">All Departments</option>
+              {departments.map((department) => (
+                <option key={department.id} value={department.code}>
+                  {department.name}
+                </option>
+              ))}
+            </select>
+          )}
           <input
             className="form-control me-2"
             type="text"
@@ -265,7 +296,7 @@ const Dashboard = () => {
                                 !(
                                   application.status ===
                                   "Approved by supervisor, pending reviewers addition"
-                                ) 
+                                )
                                 // &&
                                 // !(application.status === "Reviewers assigned by Ethics Admin")
                               }

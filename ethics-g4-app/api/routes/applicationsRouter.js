@@ -82,14 +82,17 @@ router.post("/applications/add", async (req, res) => {
     const { userID, values } = req.body;
     console.log("Received userID:", userID);
 
+    // Extract the department code from the values array
+    const departmentCode = values.Department;
+
     // Insert application
     const newApplication = await pool.query(
       `
-      INSERT INTO applications (status, date, applicant_id) 
-      VALUES ($1, $2, $3) 
+      INSERT INTO applications (status, date, applicant_id, department_code) 
+      VALUES ($1, $2, $3, $4) 
       RETURNING *;
       `,
-      ["Pending supervisor's admission", new Date(), userID]
+      ["Pending supervisor's admission", new Date(), userID, departmentCode]
     );
 
     const applicationId = newApplication.rows[0].id;

@@ -8,7 +8,7 @@ const StyledDashboard = styled.div`
   input {
     padding: 10px;
     margin-bottom: 16px;
-    border: 1px solid #FFA07A; /* Light Dark Orange */
+    border: 1px solid #ffa07a; /* Light Dark Orange */
     border-radius: 4px;
     outline: none; /* Remove default input focus outline */
   }
@@ -44,13 +44,39 @@ const StyledDashboard = styled.div`
   }
 
   .btn {
-    background-color: #FFA07A; /* Light Dark Orange */
+    background-color: #ffa07a; /* Light Dark Orange */
     color: #fff;
     padding: 8px 16px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     margin: 3px;
+    width: 75px;
+    height: fit-content;
+  }
+
+  .btn_appro {
+    background-color: #29a329;
+    color: #fff;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 3px;
+    width: 75px;
+    height: 40px;
+  }
+
+  .btn_delete {
+    background-color: #b30000;
+    color: #fff;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 3px;
+    width: 75px;
+    height: 40px;
   }
 
   @media (max-width: 768px) {

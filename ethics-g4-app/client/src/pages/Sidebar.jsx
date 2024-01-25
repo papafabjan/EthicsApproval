@@ -2,6 +2,8 @@
 import { Link } from "react-router-dom";
 import { UserContext } from "../components/UserContext";
 import React, { useContext } from "react";
+import styled from 'styled-components';
+import { cityTheme } from "../themes";
 
 const Sidebar = () => {
   const user = useContext(UserContext);

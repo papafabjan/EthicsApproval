@@ -36,6 +36,23 @@ const AdminDashboard = () => {
     department.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const deleteUser = (userId) => {
+    fetch(`${import.meta.env.VITE_SERVER_URL}/api/users/${userId}/delete/`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to delete user");
+        }
+        // Refresh the users list or handle UI update
+        setFetchTrigger((prev) => prev + 1);
+      })
+      .catch((error) => console.error("Error deleting user:", error));
+  };
+  
   // Function to update user role
   const updateUserRole = (userId, newRole) => {
     fetch(`${import.meta.env.VITE_SERVER_URL}/api/users/${userId}/edit-role/`, {
@@ -151,6 +168,10 @@ const AdminDashboard = () => {
                     >
                       Change to User
                     </button>
+                    <button
+                    className="btn"
+                    onClick={() => deleteUser(user.user_id)}
+                  > Delete User</button>
                   </div>
                 </li>
               ))}

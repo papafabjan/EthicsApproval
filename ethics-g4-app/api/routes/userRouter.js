@@ -103,4 +103,35 @@ router.put("/users/:userId/edit-role", async (req, res) => {
   }
 });
 
+  // Delete user by user-ID
+router.delete("/users/:userId/delete", async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const deleteUserRoles = await pool.query(
+      `
+      DELETE FROM user_roles
+      WHERE user_id = $1
+      RETURNING *;
+      `,
+      [userId]
+    );
+
+    const deleteUser = await pool.query(
+      "DELETE FROM users WHERE user_id = $1",
+      [userId]
+    );
+
+    if (deleteUser.rowCount === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ message: "User deleted successfully" });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+
 module.exports = router;

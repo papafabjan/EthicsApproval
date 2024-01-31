@@ -224,6 +224,30 @@ const Dashboard = () => {
   });
 
 
+  const getStatusPriority = (status) => {
+    switch (status) {
+      case "Pending supervisor's admission":
+        return 1;
+      case "Approved by supervisor, pending reviewers addition":
+        return 2;
+      case "Reviewers assigned by Ethics Admin":
+        return 3;
+      case "Reviewer approval complete, pending ethics admin's approval":
+        return 4;
+      default:
+        return 5; 
+    }
+  };
+
+  const sortedApplications = filteredApplications.sort((a, b) => {
+    const priorityA = getStatusPriority(a.status);
+    const priorityB = getStatusPriority(b.status);
+
+    // Sort in ascending order of priority
+    return priorityA - priorityB;
+  });
+
+
   return (
     <>
       <StyledDashboard>
@@ -257,7 +281,7 @@ const Dashboard = () => {
             </div>
             <table>
               <tbody>
-                {filteredApplications.map((application) => (
+                {sortedApplications.map((application) => (
                   <tr key={application.id}>
                     <td>
                       <div className="row">

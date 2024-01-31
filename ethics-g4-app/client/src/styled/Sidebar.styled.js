@@ -1,16 +1,21 @@
 import styled from "styled-components";
 
 const Sidebar = styled.div`
-  background: #FFAA33;
-  border-radius: 24px;
+  background: #ffaa33;
+  border-radius: 2rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   padding: 2rem;
   gap: 2rem;
-  height: 595px; 
-  width: 20vw; 
-  overflow: hidden; 
+  height: 100%;
+  width: 19vw;
+  overflow: hidden;
+
+  @media (max-width: 768px) {
+    /* Adjust styles for smaller screens */
+    width: 100%;
+  }
 
   .icon-title {
     display: flex;
@@ -20,6 +25,15 @@ const Sidebar = styled.div`
     width: 100%;
     white-space: nowrap;
     overflow: hidden;
+    margin-left: 10px;
+
+    /* Targeting specific icon classes for left margin */
+    .fa-solid,
+    .fa,
+    .fa-table-columns,
+    .fa-pen-to-square {
+      margin-right: 1.5rem; /* Use relative units for margin */
+    }
   }
 
   .icon-title > a {
@@ -42,7 +56,7 @@ const Sidebar = styled.div`
     right: 0;
     bottom: 0;
     background-color: darkorange;
-    height: 4px;
+    height: 0.2rem; /* Use relative units for height */
     width: 0;
     transition: transform 0.3s ease-out;
   }

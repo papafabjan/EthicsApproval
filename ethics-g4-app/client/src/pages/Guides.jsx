@@ -6,9 +6,7 @@ const Guides = () => {
     <>
       <StyledGuides>
         <h2>
-          This is the guides page where Applicants, Supervisors and Reviewers
-          are provided further information for their role regarding Ethics
-          Approval.
+         Guide with Ethics Approval Information for Applicants, Supervisors and Reviewers
         </h2>
 
         <div className="card w-50">

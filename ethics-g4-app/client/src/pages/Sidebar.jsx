@@ -27,10 +27,8 @@ const Sidebar = () => {
       {isAdmin && (
         <div className="icon-title">
           <Link to="/admindashboard">
-            <div className="icon">
               <i className="fa-solid fa-user"></i>
-            </div>
-            <div className="title">Admin Dashboard</div>
+          Admin Dashboard
           </Link>
         </div>
       )}

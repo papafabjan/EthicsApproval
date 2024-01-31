@@ -153,10 +153,27 @@ router.post("/applications/update-status/:id", async (req, res) => {
   const { id } = req.params;
   var status = req.body.status;
   const userID = req.body.user.id;
- var recepient_name;
- var recepient_email;
+ var recipientNames;
+ var recipientEmails;
+ var recipientTypes;
 
   try {
+
+    const applicantId = await pool.query(
+      `
+      SELECT applicant_id FROM applications WHERE id = $1;
+      `,
+      [id]
+    );
+      const applicantInfo = await pool.query(
+        `
+        SELECT username, email FROM users WHERE user_id = $1;
+        `,
+        [applicantId.rows[0].applicant_id] 
+      )
+              // Extracting names and emails from the query result for applicant
+              const applicantName = applicantInfo.rows[0].username;
+              const applicantEmail = applicantInfo.rows[0].email;
     
     //fetch status of application with id
     const fetchStatusQuery = `
@@ -365,24 +382,52 @@ router.post("/applications/update-status/:id", async (req, res) => {
 
     if (userRole === "supervisor") {
       if (currentStatus === "Pending supervisor's admission") {
+        try {
           status = "Approved by supervisor, pending reviewers addition";
-      //       const recepient_name = await pool.query(
-      //         `
-      // SELECT username FROM users WHERE role = 'admin'
-      // `);
-      //       const recepient_email = await pool.query(
-      //         `
-      // SELECT email FROM users WHERE role = 'admin'
-      // `
-      //       );
-       recepient_email = 'pkaralis@york.citycollege.eu'
-       recepient_name = 'Panagiotis Karalis'
-      } else {
+
+          const adminInfo = await pool.query(
+            `
+            SELECT username, email FROM users WHERE role = 'admin';
+            `
+          );
+
+          const userType = "supervisor";
+          
+          // Extracting names and emails from the query result
+          const adminNames = adminInfo.rows.map(user => user.username);
+          const adminEmails = adminInfo.rows.map(user => user.email);
+          
+
+          // Combine admin and applicant names and emails into single arrays
+           recipientNames = [...adminNames, applicantName];
+           recipientEmails = [...adminEmails, applicantEmail];
+           recipientTypes = [...userType];
+           
+
+
+        
+
+
+          console.log(recipientNames);
+          console.log(recipientEmails);
+    
           return res.json({
-            success: false,
-            message:
-              "Application is already approved by you, it's time for the reviewers to review.",
+            success: true,
+            message: "Emails sent successfully to admin users.",
           });
+        } catch (error) {
+          console.error("Error fetching admin users:", error);
+          return res.status(500).json({
+            success: false,
+            message: "An error occurred while fetching admin users.",
+          });
+        }
+      } else {
+        return res.json({
+          success: false,
+          message:
+            "Application is already approved by you, it's time for the reviewers to review.",
+        });
       }
     }
     if (userRole === "reviewer") {
@@ -414,10 +459,10 @@ router.post("/applications/update-status/:id", async (req, res) => {
       id,
     ]);
 
+    send_mail(recipientTypes,recipientNames, recipientEmails, status, userRole, id);
 
   
 
-    send_mail(recepient_name, recepient_email, status, userRole, id);
 
     res.json({ success: true, message: "Successful Approval" });
   } catch (error) {

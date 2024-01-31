@@ -9,20 +9,13 @@ const OAuth2_client = new OAuth2(
 );
 OAuth2_client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN });
 
-function send_mail(recepient_name, recepient_email, status, user_role, application_id) {
-    // if(3 recepients)
-    // send_mail();
-    // send_mail();
-    // send_mail();
-}
-
-function send_mail(recepient_name, recepient_email, status, user_role, application_id) {
+function send_mail(recipientTypes,recipient_names, recipient_emails, status, user_role, application_id) {
   const accessToken = OAuth2_client.getAccessToken();
 
   const transport = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      type: "Oauth2",
+      type: "OAuth2",
       user: process.env.USER,
       clientId: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
@@ -31,87 +24,46 @@ function send_mail(recepient_name, recepient_email, status, user_role, applicati
     },
   });
 
-
-  let mailOptionsStaff, mailOptionsApplicant;
-
-
-  if (status === "Approved by supervisor, pending reviewers addition") {
-    mailOptionsStaff = {
-      from: "ethicsTeam <${process.env.USER}>",
-      to: recepient_email,
-      subject: `Pending reviewers addition for application ${application_id}`,
-      html: html_message_reviewers_addition (recepient_name, status, user_role),
-    };
-    
-    mailOptionsApplicant = {
-      from: "ethicsTeam <${process.env.USER}>",
-      to: recepient_email,
-      subject: "Application status has been updated",
-      html: html_message_applicant_reviewers_addition (recepient_name, status, user_role),
-    };
-
-  }
-
-
-  if (status === "Reviewers assigned by Ethics Admin") {
-    mailOptionsStaff = {
-      from: "ethicsTeam <${process.env.USER}>",
-      to: recepient_email,
-      subject: `Pending reviewer's approval ${application_id}`,
-      html: html_message_reviewers_assigned (recepient_name, status, user_role),
-    };
-    mailOptionsApplicant = {
-      from: "ethicsTeam <${process.env.USER}>",
-      to: recepient_email,
-      subject: `Pending ethics admin's approval ${application_id}`,
-      html: html_message_applicant_reviewers_assigned (recepient_name, status, user_role),
-    };
-    
-  }
-
-
-  if (status === "Reviewer approval complete, pending ethics admin's approval") {
-    mailOptionsStaff = {
-      from: "ethicsTeam <${process.env.USER}>",
-      to: recepient_email,
-      subject: `Pending ethics admin's approval ${application_id}`,
-      html: html_message_ethics_approval (recepient_name, status, user_role),
-    };
-    mailOptionsApplicant = {
-      from: "ethicsTeam <${process.env.USER}>",
-      to: recepient_email,
-      subject: `Pending ethics admin's approval ${application_id}`,
-      html: html_message_applicant_ethics_approval (recepient_name, status, user_role),
-    };
-    
-  }
-
-
-  if (status === "Approved") {
-    mailOptionsStaff = {
-      from: "ethicsTeam <${process.env.USER}>",
-      to: recepient_email,
-      subject: `Pending ethics admin's approval ${application_id}`,
-      html: html_message_ethics_final_approval (recepient_name, status, user_role),
-    };
-    mailOptionsApplicant = {
-      from: "ethicsTeam <${process.env.USER}>",
-      to: recepient_email,
-      subject: `Your application ${application_id} has been approved`,
-      html: html_message_applicant_ethics_final_approval (recepient_name, status, user_role),
-    };
-    
-  }
-
-  transport.sendMail(mailOptionsStaff,mailOptionsApplicant, function (error, result) {
-    if (error) {
-      console.log("Error: ", error);
-    } else {
-      console.log("Success: ", result);
-    }
+  // Iterate over each recipient and send an email
+  Promise.all(
+    recipient_emails.map((email, index) => {
+      console.log("received",recipientTypes);
+      const mailOptions = {
+        from: `ethicsTeam <${process.env.USER}>`,
+        to: email,
+        subject: "asdfasdfa",
+        html: html_message_reviewers_addition(recipient_names[index], status, user_role, application_id),
+      };
+      console.log("email has been sent", email);
+      console.log(recipient_names[index])
+      // Sending both staff and applicant emails for each recipient
+      return Promise.all([
+        transport.sendMail(mailOptions),
+ 
+      ]);
+    })
+  )
+  .then(results => {
+    console.log("Success: ", results);
+    transport.close();
+  })
+  .catch(error => {
+    console.log("Error: ", error);
     transport.close();
   });
 }
+
+function pick_html_message(user_type, recepient_name, status, user_role, application_id){
+  // if(
+
+  // ){
+
+  // }else if()
+  // {
+
+  // }
+}
+
 function html_message_submit(recepient_name,status, user_role,application_id) {
   return `
         <h3> Dear ${recepient_name} </h3>

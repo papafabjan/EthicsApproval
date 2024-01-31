@@ -112,7 +112,33 @@ function send_mail(recepient_name, recepient_email, status, user_role, applicati
     transport.close();
   });
 }
+function html_message_submit(recepient_name,status, user_role,application_id) {
+  return `
+        <h3> Dear ${recepient_name} </h3>
+        <p> Student Doe has selected you as their supervisor for the project test. You need to review the application as supervisor before it is submitted for Ethics review.
+        Please read the attached application carefully following the instructions at the Ethics Application website / Guide for reviewers.
+        At the bottom of this email you will have two options:
+        Acknowledge receipt: Selecting this button if you completely agree with the application. This option will directly forward the application for ethics review.
+        Comment: Selecting this option will open a browser window where you can add a comment to the student. IMPORTANT: In this window you will again have two options (Acknowledge Receipt or Request More Info). Selecting Acknowledge Receipt, will also forward the application for ethics approval, but send your comments to the student. If you want the student to make changes before the submission you should press the Request More Info link to send the application back to the student. </p>
 
+        <p> Press the button if you want to be transfered to your dashboard. </p>
+        <a href="http://localhost:3000/dashboard"> Check dashboard </a>
+
+
+      `;
+}
+
+
+function html_message_applicant_submit_applicant(recepient_name,status, user_role,application_id) {
+  return `
+        <h3> Hello ${recepient_name}, your application: ${application_id} has been approved by ${user_role}</h3>
+        <p> Your application status has been updated to: ${status} </p>
+
+        <p> Press the button if you want to be transfered to MyApplications. </p>
+        <a href="http://localhost:3000/ MyApplications"> Check  MyApplications </a>
+        <!-- Add your customized HTML content here -->
+      `;
+}
 
 function html_message_reviewers_addition(recepient_name,status, user_role,application_id) {
   return `
@@ -140,8 +166,14 @@ function html_message_applicant_reviewers_addition(recepient_name,status, user_r
 
 function html_message_reviewers_assigned(recepient_name,status, user_role,application_id) {
   return `
-        <h3> Hello ${recepient_name}, You have been assgined as a reviewers to the application: ${application_id} </h3>
-        <p> The next step is for <strong>you</strong> to review the application! </p>
+        <h3> Dear ${recepient_name}, </h3>
+        <p> You have been assigned as a reviewer for the project A project title. Please read the attached application carefully following the instructions at the Ethics Application website / Guide for
+        reviewers.
+        Complete Task
+        Ethics Application System - T
+        At the bottom of the email you will have two options:
+        Complete Task: Selecting this button if you completely agree with the application. This option will directly approve it and no further steps will be needed from your part. No comments will send to the applicant.
+        Comment: Selecting this option will open a browser window where you can add a comment to the student. IMPORTANT: In this window you will again have two options (Confirm or Comment). Selecting Confirm, also will approve the application. but will also send your comments to the applicant. Selecting Comment, will send an email to the applicant with your comments, requesting changes to me made. The applicant will have to Edit the application and resubmit it. If you want the applicant to make changes before you accept the application, then you should use this option. </p>
 
         <p> Press the button if you want to be transfered to your dashboard. </p>
         <a href="http://localhost:3000/dashboard"> Check dashboard </a>

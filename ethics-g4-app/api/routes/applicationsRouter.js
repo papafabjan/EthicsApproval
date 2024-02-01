@@ -142,6 +142,50 @@ router.post("/applications/add", async (req, res) => {
       }
     }
 
+    console.log("began");
+
+    const applicantInfo = await pool.query(
+      `
+        SELECT username, email, user_id FROM users WHERE user_id = $1;
+        `,
+      [userID]
+    );
+
+
+    const supervisorInfo = await pool.query(
+      `
+        SELECT username FROM users WHERE email = $1;
+        `,
+      [supervisorEmail]
+    );
+
+ 
+
+    // Extracting names and emails from the query result for applicant
+    const applicantName = applicantInfo.rows[0].username;
+    const applicantEmail = applicantInfo.rows[0].email;
+    const supervisorName = supervisorInfo.rows[0].username;
+
+    
+    const recipientNames = [applicantName, supervisorName];
+    const recipientEmails = [applicantEmail, supervisorEmail];
+    const recipientTypes = ["applicant", "supervisor"];
+    const status = "Pending supervisor's admission";
+    var subjects = ["Your application has been submitted", "You have been assigned as a supervisor"]
+const applicant_id = applicantInfo.rows[0].user_id;
+    const applicationIdQuery = await pool.query(
+      `
+      SELECT id FROM applications WHERE applicant_id = $1 ORDER BY date DESC LIMIT 1
+      `,
+      [applicant_id]
+    );
+    const application_id = applicationIdQuery.rows[0].id;
+    var userRole = "supervisor";
+    send_mail(subjects, recipientTypes, recipientNames, recipientEmails, status, userRole, application_id);
+
+    console.log(recipientNames);
+    console.log(recipientEmails);
+
     res.json({ success: true, applicationId });
   } catch (error) {
     console.error(error.message);
@@ -153,9 +197,9 @@ router.post("/applications/update-status/:id", async (req, res) => {
   const { id } = req.params;
   var status = req.body.status;
   const userID = req.body.user.id;
- var recipientNames;
- var recipientEmails;
- var recipientTypes;
+  var recipientNames;
+  var recipientEmails;
+  var recipientTypes;
 
   try {
 
@@ -165,16 +209,21 @@ router.post("/applications/update-status/:id", async (req, res) => {
       `,
       [id]
     );
-      const applicantInfo = await pool.query(
-        `
+    const applicantInfo = await pool.query(
+      `
         SELECT username, email FROM users WHERE user_id = $1;
         `,
-        [applicantId.rows[0].applicant_id] 
-      )
-              // Extracting names and emails from the query result for applicant
-              const applicantName = applicantInfo.rows[0].username;
-              const applicantEmail = applicantInfo.rows[0].email;
-    
+      [applicantId.rows[0].applicant_id]
+    )
+   
+    // Extracting names and emails from the query result for applicant
+    const applicantName = applicantInfo.rows[0].username;
+    const applicantEmail = applicantInfo.rows[0].email;
+    const userType = ["applicant"];
+    recipientNames = [...applicantName];
+    recipientEmails = [...applicantEmail];
+    recipientTypes = [...userType];
+
     //fetch status of application with id
     const fetchStatusQuery = `
     SELECT status FROM applications WHERE id = $1
@@ -202,7 +251,7 @@ router.post("/applications/update-status/:id", async (req, res) => {
       if (fetchRole.rows.length > 1) { //if more than 1 roles for the same user on the same application he can only be a reviewer attempting to approve.
         userRole = "reviewer";
       } else {
-          userRole = roleFromDb;
+        userRole = roleFromDb;
       }
     }
     console.log(userRole);
@@ -226,76 +275,76 @@ router.post("/applications/update-status/:id", async (req, res) => {
 
 
 
-  if (userRole === "reviewer" && currentStatus.includes("by") && (currentStatus.includes("reviewers") || currentStatus.includes("Reviewers"))) {
-    
-    const reviewers = await pool.query(
-      "SELECT user_id FROM user_roles WHERE role = 'reviewer' AND application_id = $1",
-      [id]
+    if (userRole === "reviewer" && currentStatus.includes("by") && (currentStatus.includes("reviewers") || currentStatus.includes("Reviewers"))) {
+
+      const reviewers = await pool.query(
+        "SELECT user_id FROM user_roles WHERE role = 'reviewer' AND application_id = $1",
+        [id]
       );
-      
+
       const remainingApprovalQuery = await pool.query(
         `
       SELECT remaining_approval
       FROM applications
       WHERE id = $1
       `,
-      [id]
-    );
+        [id]
+      );
 
-    const remainingApprovalArray = remainingApprovalQuery.rows[0].remaining_approval;
-  
-    // Check if the current user has already approved the application
-    if (!remainingApprovalArray.includes(userId)) {
-      return res.json({
-        success: false,
-        message: "You already approved this application",
-      });
-    } else {
-      // Update the status based on the number of remaining approvals
-      const numReviewers = reviewers.rows.length;
-      const numApprovals = numReviewers - remainingApprovalArray.length + 1;
-      console.log(numReviewers, numApprovals);
-      if (numReviewers === numApprovals) {
-        status = "Reviewer approval complete, pending ethics admin's approval";
-      }
-      else{
-        status = `Approved by ${numApprovals} / ${numReviewers} reviewers`;
-      }
-  
-      // Update the status in the applications table
-      const updateStatusQuery = `
+      const remainingApprovalArray = remainingApprovalQuery.rows[0].remaining_approval;
+
+      // Check if the current user has already approved the application
+      if (!remainingApprovalArray.includes(userId)) {
+        return res.json({
+          success: false,
+          message: "You already approved this application",
+        });
+      } else {
+        // Update the status based on the number of remaining approvals
+        const numReviewers = reviewers.rows.length;
+        const numApprovals = numReviewers - remainingApprovalArray.length + 1;
+        console.log(numReviewers, numApprovals);
+        if (numReviewers === numApprovals) {
+          status = "Reviewer approval complete, pending ethics admin's approval";
+        }
+        else {
+          status = `Approved by ${numApprovals} / ${numReviewers} reviewers`;
+        }
+
+        // Update the status in the applications table
+        const updateStatusQuery = `
         UPDATE applications
         SET status = $1, date = $2
         WHERE id = $3
         RETURNING *;
       `;
-      const currentDate = new Date();
-      const updatedApplication = await pool.query(updateStatusQuery, [
-        status,
-        currentDate,
-        id,
-      ]);
+        const currentDate = new Date();
+        const updatedApplication = await pool.query(updateStatusQuery, [
+          status,
+          currentDate,
+          id,
+        ]);
 
-      // remove userId from remaining_approval array in applications
-      const removeReviewerFromRemainingApproval =await pool.query(
-        `
+        // remove userId from remaining_approval array in applications
+        const removeReviewerFromRemainingApproval = await pool.query(
+          `
         UPDATE applications
         SET remaining_approval = array_remove(remaining_approval, $1)
         WHERE id = $2
         `,
-        [userId, id]
-      )
-  
-      return res.json({
-        success: true,
-        message: "Successful Approval",
-      });
-    }
-  }
-  
-  // ...
+          [userId, id]
+        )
 
-    if (userRole === "none"){
+        return res.json({
+          success: true,
+          message: "Successful Approval",
+        });
+      }
+    }
+
+    // ...
+
+    if (userRole === "none") {
       if (
         currentStatus ===
         "Reviewer approval complete, pending ethics admin's approval"
@@ -351,33 +400,33 @@ router.post("/applications/update-status/:id", async (req, res) => {
     }
 
     if (userRole === "reviewer" && isAdmin) {
-        if (currentStatus === "Reviewers assigned by Ethics Admin") {
-          status = "Reviewer approval complete, pending ethics admin's approval";
+      if (currentStatus === "Reviewers assigned by Ethics Admin") {
+        status = "Reviewer approval complete, pending ethics admin's approval";
+      } else {
+        if (
+          currentStatus ===
+          "Reviewer approval complete, pending ethics admin's approval"
+        ) {
+          const updateStatusQuery =
+            "UPDATE applications SET status = $1, date = $2 WHERE id = $3 RETURNING *";
+          const currentDate = new Date();
+          const updatedApplication = await pool.query(updateStatusQuery, [
+            status,
+            currentDate,
+            id,
+          ]);
+          return res.json({
+            success: true,
+            message: "Successful Approval",
+          });
         } else {
-          if (
-            currentStatus ===
-            "Reviewer approval complete, pending ethics admin's approval"
-          ) {
-            const updateStatusQuery =
-              "UPDATE applications SET status = $1, date = $2 WHERE id = $3 RETURNING *";
-            const currentDate = new Date();
-            const updatedApplication = await pool.query(updateStatusQuery, [
-              status,
-              currentDate,
-              id,
-            ]);
-            return res.json({
-              success: true,
-              message: "Successful Approval",
-            });
-          } else {
-            return res.json({
-              success: false,
-              message:
-                "You cannot approve an application until it has gone through the correct process",
-            });
-          }
+          return res.json({
+            success: false,
+            message:
+              "You cannot approve an application until it has gone through the correct process",
+          });
         }
+      }
     }
 
     if (userRole === "supervisor") {
@@ -391,30 +440,35 @@ router.post("/applications/update-status/:id", async (req, res) => {
             `
           );
 
-          const userType = "supervisor";
-          
+          const userType = ["admin"];
+
           // Extracting names and emails from the query result
           const adminNames = adminInfo.rows.map(user => user.username);
           const adminEmails = adminInfo.rows.map(user => user.email);
-          
+
 
           // Combine admin and applicant names and emails into single arrays
-           recipientNames = [...adminNames, applicantName];
-           recipientEmails = [...adminEmails, applicantEmail];
-           recipientTypes = [...userType];
-           
+          recipientNames = [...adminNames];
+          recipientEmails = [...adminEmails];
+          recipientTypes = [...userType];
 
+          const subjectAdmin = ["You have to assign reviewers"];
+          const subjectApplicant = ["Reviewers have been assigned"];
 
-        
+          var subjects = [...subjectAdmin, ...subjectApplicant];
 
+          send_mail(subjects, recipientTypes, recipientNames, recipientEmails, status, userRole, id);
+
+          console.log(subjects);
 
           console.log(recipientNames);
           console.log(recipientEmails);
-    
-          return res.json({
-            success: true,
-            message: "Emails sent successfully to admin users.",
-          });
+          console.log("Hello user type", recipientTypes);
+
+          // return res.json({
+          //   success: true,
+          //   message: "Emails sent successfully to admin users.",
+          // });
         } catch (error) {
           console.error("Error fetching admin users:", error);
           return res.status(500).json({
@@ -432,7 +486,7 @@ router.post("/applications/update-status/:id", async (req, res) => {
     }
     if (userRole === "reviewer") {
       if (currentStatus === "Reviewers assigned by Ethics Admin") {
-          status = "Reviewer approval complete, pending ethics admin's approval";
+        status = "Reviewer approval complete, pending ethics admin's approval";
       }
       if (
         currentStatus ===
@@ -459,9 +513,8 @@ router.post("/applications/update-status/:id", async (req, res) => {
       id,
     ]);
 
-    send_mail(recipientTypes,recipientNames, recipientEmails, status, userRole, id);
 
-  
+
 
 
     res.json({ success: true, message: "Successful Approval" });
@@ -538,7 +591,7 @@ router.post("/applications/edit/:applicationId", async (req, res) => {
     const oldStatusQuery = await pool.query(`
     SELECT application_status FROM comments WHERE application_id = $1;
     `,
-    [applicationId]
+      [applicationId]
     );
     const oldStatus = oldStatusQuery.rows[0].application_status;
     console.log(oldStatus);

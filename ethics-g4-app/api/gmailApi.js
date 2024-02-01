@@ -9,7 +9,7 @@ const OAuth2_client = new OAuth2(
 );
 OAuth2_client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN });
 
-function send_mail(recipientTypes,recipient_names, recipient_emails, status, user_role, application_id) {
+function send_mail(subjects, recipientTypes, recipient_names, recipient_emails, status, user_role, application_id) {
   const accessToken = OAuth2_client.getAccessToken();
 
   const transport = nodemailer.createTransport({
@@ -24,47 +24,127 @@ function send_mail(recipientTypes,recipient_names, recipient_emails, status, use
     },
   });
 
+  let mailOptions;
+
   // Iterate over each recipient and send an email
   Promise.all(
     recipient_emails.map((email, index) => {
-      console.log("received",recipientTypes);
-      const mailOptions = {
+      mailOptions = {
         from: `ethicsTeam <${process.env.USER}>`,
         to: email,
-        subject: "asdfasdfa",
-        html: html_message_reviewers_addition(recipient_names[index], status, user_role, application_id),
+        subject: subjects[index],
+        html: pick_html_message(recipientTypes[index],recipient_names[index], status, user_role, application_id),
       };
       console.log("email has been sent", email);
       console.log(recipient_names[index])
       // Sending both staff and applicant emails for each recipient
       return Promise.all([
         transport.sendMail(mailOptions),
- 
+
       ]);
     })
   )
-  .then(results => {
-    console.log("Success: ", results);
-    transport.close();
-  })
-  .catch(error => {
-    console.log("Error: ", error);
-    transport.close();
-  });
+    .then(results => {
+      console.log("Success: ", results);
+      transport.close();
+    })
+    .catch(error => {
+      console.log("Error: ", error);
+      transport.close();
+    });
 }
 
-function pick_html_message(user_type, recepient_name, status, user_role, application_id){
-  // if(
-
-  // ){
-
-  // }else if()
-  // {
-
-  // }
+function pick_html_message(user_type, recipient_name, status, user_role, application_id) {
+  if (user_type === "admin") {
+    if (status === "Approved by supervisor, pending reviewers addition") {
+      return `
+        <h3>Hello ${recipient_name}, the application (${application_id}) has been approved by ${user_role}</h3>
+        <p>The next step is for you to assign reviewer(s)!</p>
+        <p>Press the button if you want to be transferred to your dashboard.</p>
+        <a href="http://localhost:3000/dashboard">Check dashboard</a>
+      `;
+    } else if (status === "Reviewer approval complete, pending ethics admin's approval") {
+      return `
+        <h3>Hello ${recipient_name}, the application (${application_id}) has been approved by ${user_role}</h3>
+        <p>The next step is for you approve it for the last time!</p>
+        <p>Press the button if you want to be transferred to your dashboard.</p>
+        <a href="http://localhost:3000/dashboard">Check dashboard</a>
+      `;
+    }
+  } else if (user_type === "applicant") {
+    if (status === "Pending supervisor's admission") {
+      return `
+        <h3>Hello ${recipient_name}, your application (${application_id}) has been submitted!!</h3>
+        <p>Your application status has been updated to: ${status}</p>
+        <p>Press the button if you want to be transferred to MyApplications.</p>
+        <a href="http://localhost:3000/MyApplications">Check MyApplications</a>
+      `;
+    } else if (status === "Approved by supervisor, pending reviewers addition") {
+      return `
+      <h3>Hello ${recipient_name}, your application (${application_id}) has been submitted!!</h3>
+      <p>Your application status has been updated to: ${status}</p>
+      <p>Press the button if you want to be transferred to MyApplications.</p>
+      <a href="http://localhost:3000/MyApplications">Check MyApplications</a>
+    `;
+    }
+    else if (status === "Reviewers assigned by Ethics Admin") {
+      return `
+      <h3>Hello ${recipient_name}, your application (${application_id}) has been submitted!!</h3>
+      <p>Your application status has been updated to: ${status}</p>
+      <p>Press the button if you want to be transferred to MyApplications.</p>
+      <a href="http://localhost:3000/MyApplications">Check MyApplications</a>
+    `;
+    }
+    else if (status === "Approved by X/Y reviewers") {
+      return `
+      <h3>Hello ${recipient_name}, your application (${application_id}) has been submitted!!</h3>
+      <p>Your application status has been updated to: ${status}</p>
+      <p>Press the button if you want to be transferred to MyApplications.</p>
+      <a href="http://localhost:3000/MyApplications">Check MyApplications</a>
+    `;
+    }
+    else if (status === "Reviewer approval complete, pending ethics admin's approval") {
+      return `
+      <h3>Hello ${recipient_name}, your application (${application_id}) has been submitted!!</h3>
+      <p>Your application status has been updated to: ${status}</p>
+      <p>Press the button if you want to be transferred to MyApplications.</p>
+      <a href="http://localhost:3000/MyApplications">Check MyApplications</a>
+    `;
+    }
+    else if (status === "Approved") {
+      return `
+      <h3>Hello ${recipient_name}, your application (${application_id}) has been submitted!!</h3>
+      <p>Your application status has been updated to: ${status}</p>
+      <p>Press the button if you want to be transferred to MyApplications.</p>
+      <a href="http://localhost:3000/MyApplications">Check MyApplications</a>
+    `;
+    }
+  } else if (user_type === "supervisor") {
+    if (status === "Pending supervisor's admission") {
+      return `
+        <h3>Hello ${recipient_name}, your application (${application_id}) has been submitted!!</h3>
+        <p>Your application status has been updated to: ${status}</p>
+        <p>Press the button if you want to be transferred to MyApplications.</p>
+        <a href="http://localhost:3000/MyApplications">Check MyApplications</a>
+      `;
+    }
+  } else if (user_type === "reviewer") {
+     if (status === "Reviewers assigned by Ethics Admin") {
+      return `
+      <h3>Hello ${recipient_name}, your application (${application_id}) has been submitted!!</h3>
+      <p>Your application status has been updated to: ${status}</p>
+      <p>Press the button if you want to be transferred to MyApplications.</p>
+      <a href="http://localhost:3000/MyApplications">Check MyApplications</a>
+    `;
+    }
+  }  else {
+    // Default empty message
+    return "";
+  }
+  return html_message;
 }
 
-function html_message_submit(recepient_name,status, user_role,application_id) {
+function html_message_submit(recepient_name, status, user_role, application_id) {
   return `
         <h3> Dear ${recepient_name} </h3>
         <p> Student Doe has selected you as their supervisor for the project test. You need to review the application as supervisor before it is submitted for Ethics review.
@@ -81,7 +161,7 @@ function html_message_submit(recepient_name,status, user_role,application_id) {
 }
 
 
-function html_message_applicant_submit_applicant(recepient_name,status, user_role,application_id) {
+function html_message_applicant_submit_applicant(recepient_name, status, user_role, application_id) {
   return `
         <h3> Hello ${recepient_name}, your application: ${application_id} has been approved by ${user_role}</h3>
         <p> Your application status has been updated to: ${status} </p>
@@ -92,7 +172,7 @@ function html_message_applicant_submit_applicant(recepient_name,status, user_rol
       `;
 }
 
-function html_message_reviewers_addition(recepient_name,status, user_role,application_id) {
+function html_message_reviewers_addition(recepient_name, status, user_role, application_id) {
   return `
         <h3> Hello ${recepient_name}, the application: ${application_id} has been approved by ${user_role} </h3>
         <p> The next step is for <strong>you</strong> to assign reviewer(s)! </p>
@@ -105,7 +185,7 @@ function html_message_reviewers_addition(recepient_name,status, user_role,applic
 }
 
 
-function html_message_applicant_reviewers_addition(recepient_name,status, user_role,application_id) {
+function html_message_applicant_reviewers_addition(recepient_name, status, user_role, application_id) {
   return `
         <h3> Hello ${recepient_name}, your application: ${application_id} has been approved by ${user_role}</h3>
         <p> Your application status has been updated to: ${status} </p>
@@ -116,7 +196,7 @@ function html_message_applicant_reviewers_addition(recepient_name,status, user_r
       `;
 }
 
-function html_message_reviewers_assigned(recepient_name,status, user_role,application_id) {
+function html_message_reviewers_assigned(recepient_name, status, user_role, application_id) {
   return `
         <h3> Dear ${recepient_name}, </h3>
         <p> You have been assigned as a reviewer for the project A project title. Please read the attached application carefully following the instructions at the Ethics Application website / Guide for
@@ -134,7 +214,7 @@ function html_message_reviewers_assigned(recepient_name,status, user_role,applic
 }
 
 
-function html_message_applicant_reviewers_assigned(recepient_name,status, user_role,application_id) {
+function html_message_applicant_reviewers_assigned(recepient_name, status, user_role, application_id) {
   return `
         <h3> Hello ${recepient_name}, reviewers have benn assigned to your application: ${application_id}</h3>
         <p> Your application status has been updated to: ${status} </p>
@@ -145,7 +225,7 @@ function html_message_applicant_reviewers_assigned(recepient_name,status, user_r
       `;
 }
 
-function html_message_ethics_approval(recepient_name,status, user_role,application_id) {
+function html_message_ethics_approval(recepient_name, status, user_role, application_id) {
   return `
         <h3> Hello ${recepient_name}, You need to approve the application: ${application_id} </h3>
         <p> This is the last step for the application to be Approved!!! </p>
@@ -157,7 +237,7 @@ function html_message_ethics_approval(recepient_name,status, user_role,applicati
 }
 
 
-function html_message_applicant_ethics_approval(recepient_name,status, user_role,application_id) {
+function html_message_applicant_ethics_approval(recepient_name, status, user_role, application_id) {
   return `
         <h3> Hello ${recepient_name}, Ethics administrator needs to apporve your application: ${application_id}</h3>
         <p> Your application status has been updated to: ${status} </p>
@@ -169,7 +249,7 @@ function html_message_applicant_ethics_approval(recepient_name,status, user_role
       `;
 }
 
-function html_message_ethics_final_approval(recepient_name,status, user_role,application_id) {
+function html_message_ethics_final_approval(recepient_name, status, user_role, application_id) {
   return `
         <h3> Hello ${recepient_name}, the application: ${application_id} has been finally approved </h3>
 
@@ -180,7 +260,7 @@ function html_message_ethics_final_approval(recepient_name,status, user_role,app
 }
 
 
-function html_message_applicant_ethics_final_approval(recepient_name,status, user_role,application_id) {
+function html_message_applicant_ethics_final_approval(recepient_name, status, user_role, application_id) {
   return `
         <h3> Hello ${recepient_name}, your application: ${application_id} has been Approved by everyone!!!</h3>
         <p> Your application status has been updated to: ${status} </p>

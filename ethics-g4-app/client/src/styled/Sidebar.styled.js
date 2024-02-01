@@ -10,11 +10,11 @@ const Sidebar = styled.div`
   gap: 2rem;
   height: 100%;
   width: 19vw;
+  min-width: 19vw;
   overflow: hidden;
 
   @media (max-width: 768px) {
-    /* Adjust styles for smaller screens */
-    width: 100%;
+    width: 50%;
   }
 
   .icon-title {
@@ -22,9 +22,9 @@ const Sidebar = styled.div`
     align-items: center;
     font-weight: bold;
     flex-direction: row;
-    width: 100%;
+    width: 200%;
+    height: 150%;
     white-space: nowrap;
-    overflow: hidden;
     margin-left: 10px;
 
     /* Targeting specific icon classes for left margin */
@@ -32,7 +32,7 @@ const Sidebar = styled.div`
     .fa,
     .fa-table-columns,
     .fa-pen-to-square {
-      margin-right: 1.5rem; /* Use relative units for margin */
+      margin-right: 1.5rem;
     }
   }
 

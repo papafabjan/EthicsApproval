@@ -8,6 +8,7 @@ import {
   faEye,
   faUsers,
   faCheck,
+  faPen,
   faTrashAlt
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -166,7 +167,7 @@ const MyApplications = () => {
                                 "Comments added, awaiting review by applicant"
                             }
                           >
-                            Edit Application
+                           <FontAwesomeIcon icon={faPen} size="lg" />
                           </button>
                         </div>
                       </div>

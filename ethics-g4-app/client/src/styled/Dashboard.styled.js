@@ -3,6 +3,25 @@ import styled from "styled-components";
 const StyledDashboard = styled.div`
   h1 {
     margin-bottom: 10px;
+    color: #333; /* Set the color to your desired text color */
+    position: relative;
+    display: inline-block;
+  }
+
+  h1::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: #ffa07a; /* Light Dark Orange */
+    bottom: 0;
+    left: 0;
+    opacity: 0.5; /* Adjust the opacity as needed */
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
   }
 
   input {

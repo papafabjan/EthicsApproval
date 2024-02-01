@@ -42,8 +42,15 @@ const AdminDashboard = () => {
   return (
     <div>
       <Link to={`${import.meta.env.VITE_SERVER_URL}/api/users`}>
-        <h1>Admin Dashboard</h1>
+        <h1 style={{
+           marginBottom: '10px',
+           color: '#333',  // Set the color to your desired text color
+           position: 'relative',
+           display: 'inline-block',
+        }}>Admin Dashboard
+      </h1>    
       </Link>
+      <div></div>
       <input
         type="text"
         placeholder="Search by username"

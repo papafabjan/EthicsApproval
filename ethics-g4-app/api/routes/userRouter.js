@@ -52,6 +52,24 @@ router.get("/users/userID/:userId", async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+router.get("/users/admin-department/:googleId", async (req, res) => {
+  const { googleId } = req.params;
+
+  try {
+    const department = await pool.query("SELECT admin_of_department FROM users WHERE google_id = $1", [
+      googleId,
+    ]);
+
+    if (department.rows.length === 0) {
+      return res.status(500).json({ error: "User not found" });
+    }
+
+    res.json(department.rows[0]);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server Error");
+  }
+});
 
 // Update user role
 router.put("/users/:userId/edit-role", async (req, res) => {

@@ -125,8 +125,8 @@ const AdminDashboard = () => {
         <h1>Admin Dashboard</h1>
       </Link>
       <div>
-        <button onClick={() => setCurrentView("users")}>Manage Users</button>
-        <button onClick={() => setCurrentView("departments")}>
+        <button className="btn" onClick={() => setCurrentView("users")}>Manage Users</button>
+        <button className="btn" onClick={() => setCurrentView("departments")}>
           Manage Departments
         </button>
       </div>

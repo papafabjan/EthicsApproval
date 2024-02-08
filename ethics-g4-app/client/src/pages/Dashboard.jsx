@@ -16,6 +16,7 @@ const Dashboard = () => {
   const [departments, setDepartments] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   const sessionUser = useContext(UserContext);
+  const [adminOfDepartment, setAdminOfDepartment] = useState(null);
 
   useEffect(() => {
     if (sessionUser.loggedIn) {
@@ -58,11 +59,21 @@ const Dashboard = () => {
           }
           const reviewerData = await reviewerResponse.json();
 
+          // Combine supervisor and reviewer applications while ensuring uniqueness
+          const combinedApplications = [
+            ...supervisorData,
+            ...reviewerData.filter(
+              (reviewerApp) =>
+                !supervisorData.some(
+                  (supervisorApp) => supervisorApp.id === reviewerApp.id
+                )
+            ),
+          ];
           // Update state with combined data
-          setApplications([...supervisorData, ...reviewerData]);
+          setApplications(combinedApplications);
 
-          // Fetch and store applicant names for the supervisor applications
-          const namesPromises = [...supervisorData, ...reviewerData].map(
+          // Fetch and store applicant names for the combined applications
+          const namesPromises = combinedApplications.map(
             async (application) => {
               const applicantName = await fetchApplicantName(
                 application.applicant_id
@@ -121,6 +132,26 @@ const Dashboard = () => {
         }
       };
 
+      const fetchAdminDepartment = async () => {
+        try {
+          const response = await fetch(
+            `${import.meta.env.VITE_SERVER_URL}/api/users/admin-department/${
+              sessionUser.id
+            }`
+          );
+          if (!response.ok) {
+            throw new Error(
+              `Error fetching applications: ${response.statusText}`
+            );
+          }
+          const data = await response.json();
+          setAdminOfDepartment(data);
+          console.log(data);
+        } catch (error) {
+          console.error(error.message);
+        }
+      };
+      fetchAdminDepartment();
       fetchApplications();
     }, [sessionUser.role, fetchTrigger]);
   }
@@ -223,7 +254,6 @@ const Dashboard = () => {
     );
   });
 
-
   const getStatusPriority = (status) => {
     switch (status) {
       case "Pending supervisor's admission":
@@ -235,7 +265,7 @@ const Dashboard = () => {
       case "Reviewer approval complete, pending ethics admin's approval":
         return 4;
       default:
-        return 5; 
+        return 5;
     }
   };
 
@@ -246,7 +276,6 @@ const Dashboard = () => {
     // Sort in ascending order of priority
     return priorityA - priorityB;
   });
-
 
   return (
     <>
@@ -281,8 +310,8 @@ const Dashboard = () => {
             </div>
             <table>
               <tbody>
-                {sortedApplications.map((application) => (
-                  <tr key={application.id}>
+                {sortedApplications.map((application, index) => (
+                  <tr key={index}>
                     <td>
                       <div className="row">
                         <div className="application">

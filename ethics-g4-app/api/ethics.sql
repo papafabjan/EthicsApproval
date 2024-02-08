@@ -7,7 +7,8 @@ CREATE TABLE users (
   img VARCHAR(255) NOT NULL,
   google_id VARCHAR(255) NOT NULL UNIQUE,
   email VARCHAR(255) NOT NULL UNIQUE,
-  role VARCHAR(255) NOT NULL
+  role VARCHAR(255) NOT NULL,
+  admin_of_department VARCHAR(255)
 );
 
 

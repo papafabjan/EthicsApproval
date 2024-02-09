@@ -417,32 +417,45 @@ const Form = () => {
               // Step 2: Upload files to the correct folder
               const formData = new FormData();
 
-              for (
-                var i = 0;
-                i < formik.values.SensitiveTopicsFiles.length;
-                i++
-              ) {
-                formData.append("files", formik.values.SensitiveTopicsFiles[i]);
+              // Loop over SensitiveTopicsFiles
+              for (let i = 0; i < formik.values.SensitiveTopicsFiles.length; i++) {
+                const file = formik.values.SensitiveTopicsFiles[i];
+                if (file && file instanceof File) { // Check if file exists and is a File object
+                  formData.append("files", file, `SensitiveTopicsFile_${i}`);
+                }
               }
-
-              for (var i = 0; i < formik.values.AdditionalForms.length; i++) {
-                formData.append("files", formik.values.AdditionalForms[i]);
+              
+              // Loop over AdditionalForms
+              for (let i = 0; i < formik.values.AdditionalForms.length; i++) {
+                const file = formik.values.AdditionalForms[i];
+                if (file && file instanceof File) { // Check if file exists and is a File object
+                  formData.append("files", file, `AdditionalForm_${i}`);
+                }
               }
-
-              formData.append("files", formik.values.ParentalConsent);
-              formData.append("files", formik.values.ParentalInformation);
-              formData.append("files", formik.values.ChildInformation);
-              formData.append("files", formik.values.HeadTeacherConsent);
-              formData.append("files", formik.values.HeadteacherInformation);
-              formData.append("files", formik.values.AccessibleConsentMaterial);
-              formData.append("files", formik.values.ProxyConsentProcedure);
-              formData.append("files", formik.values.ParticipantInformation);
-              formData.append("files", formik.values.ParticipantConsent);
-              formData.append("files", formik.values.ParticipantDebriefing);
-              formData.append("files", formik.values.AccessibilityLetter);
-              formData.append("files", formik.values.ListofQuestions);
-
+              
+              // Append other files with filenames if the corresponding formik value exists
+              function appendFileIfExists(file, name) {
+                if (file && file instanceof File) { // Check if file exists and is a File object
+                  formData.append("files", file, name);
+                }
+              }
+              
+              appendFileIfExists(formik.values.ParentalConsent, "ParentalConsent");
+              appendFileIfExists(formik.values.ParentalInformation, "ParentalInformation");
+              appendFileIfExists(formik.values.ChildInformation, "ChildInformation");
+              appendFileIfExists(formik.values.HeadTeacherConsent, "HeadTeacherConsent");
+              appendFileIfExists(formik.values.HeadteacherInformation, "HeadteacherInformation");
+              appendFileIfExists(formik.values.AccessibleConsentMaterial, "AccessibleConsentMaterial");
+              appendFileIfExists(formik.values.ProxyConsentProcedure, "ProxyConsentProcedure");
+              appendFileIfExists(formik.values.ParticipantInformation, "ParticipantInformation");
+              appendFileIfExists(formik.values.ParticipantConsent, "ParticipantConsent");
+              appendFileIfExists(formik.values.ParticipantDebriefing, "ParticipantDebriefing");
+              appendFileIfExists(formik.values.AccessibilityLetter, "AccessibilityLetter");
+              appendFileIfExists(formik.values.ListofQuestions, "ListofQuestions");
+              
               console.log(formData);
+              
+              
 
               // Make the fetch request
               fetch("http://localhost:4000/api/multiple", {

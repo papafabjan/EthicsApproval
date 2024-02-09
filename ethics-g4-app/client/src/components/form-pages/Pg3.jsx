@@ -11,7 +11,7 @@ function Pg3({ formik, emphasizeFields, mode }) {
       [fieldName]: comment,
     });
   };
-  
+
 
   const handleFilesChange = (event, initialValuesName) => {
     const files = event.target.files;
@@ -214,6 +214,10 @@ function Pg3({ formik, emphasizeFields, mode }) {
           id="SensitiveTopicsFiles"
           onChange={(e) => handleFilesChange(e, "SensitiveTopicsFiles")}
         />
+
+        {mode === "view" && (  
+          <p>bruh this works</p>
+        )}
 
         {/* Comment component for the "SensitiveMaterialFiles" field */}
         {mode === "review" && (

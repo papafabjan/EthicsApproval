@@ -21,7 +21,6 @@ const fileStorageEngine = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     cb(null, file.originalname);
-    // cb(null, field + file.originalname);
   },
 });
 
@@ -62,8 +61,6 @@ router.post("/multiple", upload.array("files"), async (req, res) => {
   if (!req.files || req.files.length === 0) {
     return res.status(400).send("No files were uploaded.");
   }
-
-
 
   console.log(req.files);
   res.send("Multiple Files Upload successful");

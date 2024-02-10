@@ -29,7 +29,7 @@ passport.use(
               account.picture,
               account.email,
               account.sub,
-              (account.role = "student"),
+              (account.role = "user"),
             ]
           );
 
@@ -51,7 +51,8 @@ passport.use(
             username: currentUserQuery.rows[0].username,
             img: currentUserQuery.rows[0].img,
             email: currentUserQuery.rows[0].email,
-            role: currentUserQuery.rows[0].role, // Include the email in the user object
+            role: currentUserQuery.rows[0].role, 
+            admin_of_department: currentUserQuery.rows[0]?.admin_of_department, 
           };
         }
         done(null, user);

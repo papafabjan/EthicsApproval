@@ -3,6 +3,7 @@ import Comment from "../Comment";
 
 function Pg3({ formik, emphasizeFields, mode }) {
   const [comment, setComment] = useState("");
+  const pdfPath = `/SensitiveTopicsFile_0.pdf`
 
   const handleCommentSave = (fieldName) => {
     // Save the comment to formik or perform any other actions as needed
@@ -215,8 +216,15 @@ function Pg3({ formik, emphasizeFields, mode }) {
           onChange={(e) => handleFilesChange(e, "SensitiveTopicsFiles")}
         />
 
-        {mode === "view" && (  
-          <p>bruh this works</p>
+        {mode === "view" && (
+          <>
+            <p>bruh this works</p>
+            <iframe
+              title="PDF Viewer"
+              src= {pdfPath}
+              style={{ width: '100%', height: '300px' }} // Adjust width and height as needed
+            ></iframe>
+          </>
         )}
 
         {/* Comment component for the "SensitiveMaterialFiles" field */}

@@ -2,17 +2,35 @@ import { useState } from "react";
 import Comment from "../Comment";
 import { useParams } from "react-router-dom";
 
-
 function Pg3({ formik, emphasizeFields, mode }) {
   const [comment, setComment] = useState("");
   const { applicationId } = useParams();
 
-  const pdfPath = applicationId
-    ? `${
-        import.meta.env.VITE_SERVER_URL
-      }/submitFiles/application_id_${applicationId}/SensitiveTopicsFile_0.pdf`
-    : "";
+  // Function to generate links for uploaded files
+  const generateFileLinks = (fileNames) => {
+    const links = fileNames.split(",").map((fileName, index) => (
+      <div key={index}>
+        <a
+          href={
+            applicationId
+              ? `${
+                  import.meta.env.VITE_SERVER_URL
+                }/submitFiles/application_id_${applicationId}/${fileName}`
+              : ""
+          }
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {fileName}
+        </a>
+      </div>
+    ));
+    return links;
+  };
 
+  // Get the file names from formik values
+  const sensitiveTopicsFilesFileNames =
+    formik.values.SensitiveTopicsFilesFileNames;
 
   const handleCommentSave = (fieldName) => {
     // Save the comment to formik or perform any other actions as needed
@@ -21,7 +39,6 @@ function Pg3({ formik, emphasizeFields, mode }) {
       [fieldName]: comment,
     });
   };
-  
 
   const handleFilesChange = (event, initialValuesName) => {
     const files = event.target.files;
@@ -227,10 +244,8 @@ function Pg3({ formik, emphasizeFields, mode }) {
 
         {mode === "view" && (
           <>
-            <p>bruh this works</p>
-            <a href={pdfPath} target="_blank" rel="noopener noreferrer">
-              View PDF
-            </a>
+            <p>Uploaded Files:</p>
+            {generateFileLinks(sensitiveTopicsFilesFileNames)}
           </>
         )}
 

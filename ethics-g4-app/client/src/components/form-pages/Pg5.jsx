@@ -1,9 +1,27 @@
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 import Comment from "../Comment";
 
 export const Pg5 = ({ formik, mode }) => {
   const [comment, setComment] = useState("");
-
+  const { applicationId } = useParams();
+  // Function to generate links for uploaded files
+  // HTML for it is missing someone else do it please. See Pg3 for my example.
+  const generateFileLinks = (fileName, initialValuesName) => {
+    return (
+      <div>
+        <a
+          href={`${
+            import.meta.env.VITE_SERVER_URL
+          }/submitFiles/application_id_${applicationId}/${fileName}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {fileName}
+        </a>
+      </div>
+    );
+  };
   const handleCommentSave = (fieldName) => {
     // Save the comment to formik or perform any other actions as needed
     formik.setValues({
@@ -54,7 +72,6 @@ export const Pg5 = ({ formik, mode }) => {
                 }
               />
             )}
-            
           </div>
 
           <div className="form-group">
@@ -88,7 +105,6 @@ export const Pg5 = ({ formik, mode }) => {
                 }
               />
             )}
-
           </div>
 
           <div className="form-group">
@@ -123,7 +139,6 @@ export const Pg5 = ({ formik, mode }) => {
                 }
               />
             )}
-
           </div>
 
           <div className="form-group">
@@ -154,7 +169,6 @@ export const Pg5 = ({ formik, mode }) => {
                 }
               />
             )}
-
           </div>
 
           <div className="form-group">
@@ -185,7 +199,6 @@ export const Pg5 = ({ formik, mode }) => {
                 }
               />
             )}
-
           </div>
         </>
       ) : formik.values.VulnerableParticipants === "YesAdultsMental" ? (
@@ -227,7 +240,6 @@ export const Pg5 = ({ formik, mode }) => {
                 }
               />
             )}
-
           </div>
 
           <div className="form-group">
@@ -263,7 +275,6 @@ export const Pg5 = ({ formik, mode }) => {
                 }
               />
             )}
-
           </div>
         </>
       ) : formik.values.VulnerableParticipants === "" ? (
@@ -337,7 +348,6 @@ export const Pg5 = ({ formik, mode }) => {
                 }
               />
             )}
-
           </div>
 
           <div className="form-group">
@@ -369,7 +379,6 @@ export const Pg5 = ({ formik, mode }) => {
                 }
               />
             )}
-            
           </div>
 
           <div className="form-group">
@@ -399,7 +408,6 @@ export const Pg5 = ({ formik, mode }) => {
                 }
               />
             )}
-
           </div>
         </>
       )}

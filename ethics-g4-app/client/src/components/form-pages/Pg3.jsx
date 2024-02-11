@@ -21,7 +21,7 @@ function Pg3({ formik, emphasizeFields, mode }) {
       [fieldName]: comment,
     });
   };
-
+  
 
   const handleFilesChange = (event, initialValuesName) => {
     const files = event.target.files;

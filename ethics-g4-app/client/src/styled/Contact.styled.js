@@ -1,5 +1,5 @@
 // Contact.styled.js
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const StyledContact = styled.div`
   max-width: 1000px;
@@ -15,17 +15,21 @@ const StyledContact = styled.div`
   .email-boxes {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: center; /* Center items on smaller screens */
 
     .email-box {
-      width: calc(33.333% - 20px);
+      width: calc(50% - 20px); /* Two columns on larger screens */
       margin-bottom: 20px;
       background-color: #f5f5f5;
       border-radius: 8px;
       box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
       padding: 20px;
-      box-sizing: border-box; /* Include padding in the box dimensions */
+      box-sizing: border-box;
       overflow: hidden;
+
+      @media (min-width: 768px) {
+        width: calc(33.333% - 20px); /* Three columns on larger screens */
+      }
 
       strong {
         display: block;
@@ -43,7 +47,7 @@ const StyledContact = styled.div`
         margin-top: 10px;
         font-size: 14px;
         color: #777;
-        max-height: none; 
+        max-height: none;
         overflow: auto;
         text-align: justify;
       }
@@ -52,4 +56,3 @@ const StyledContact = styled.div`
 `;
 
 export default StyledContact;
-

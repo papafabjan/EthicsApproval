@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import StyledDashboard from "../styled/Dashboard.styled";
 
 const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Fetch users from API
   useEffect(() => {
     fetch(`${import.meta.env.VITE_SERVER_URL}/api/users`)
       .then((response) => response.json())
@@ -13,12 +13,10 @@ const AdminDashboard = () => {
       .catch((error) => console.error("Error fetching users:", error));
   }, []);
 
-  // Filter users based on search term
   const filteredUsers = users.filter((user) =>
     user.username.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Function to update user role
   const updateUserRole = (userId, newRole) => {
     fetch(`${import.meta.env.VITE_SERVER_URL}/api/users/${userId}/edit-role/`, {
       method: "PUT",
@@ -29,7 +27,6 @@ const AdminDashboard = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        // Update the local state with the updated user data
         setUsers((prevUsers) =>
           prevUsers.map((user) =>
             user.user_id === userId ? { ...user, role: data.role } : user
@@ -40,26 +37,21 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div>
-      <Link to={`${import.meta.env.VITE_SERVER_URL}/api/users`}>
-        <h1 style={{
-           marginBottom: '10px',
-           color: '#333',  // Set the color to your desired text color
-           position: 'relative',
-           display: 'inline-block',
-        }}>Admin Dashboard
-      </h1>    
-      </Link>
-      <div></div>
-      <input
-        type="text"
-        placeholder="Search by username"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
+    <StyledDashboard>
+      <div className="header">
+        <Link to={`${import.meta.env.VITE_SERVER_URL}/api/users`}>
+          <h1>Admin Dashboard</h1>
+        </Link>
+        <input
+          type="text"
+          placeholder="Search by username"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
       <ul>
         {filteredUsers.map((user) => (
-          <li key={user.user_id}>
+          <li key={user.user_id} className="row">
             <div>
               <img
                 src={user.img}
@@ -68,29 +60,31 @@ const AdminDashboard = () => {
               />
               <p>{user.username}</p>
               <p>Role: {user.role}</p>
+            </div>
+            <div className="actions">
               <button
                 className="btn"
                 onClick={() => updateUserRole(user.user_id, "admin")}
               >
-                Change to Admin
+                Admin
               </button>
               <button
                 className="btn"
                 onClick={() => updateUserRole(user.user_id, "staff")}
               >
-                Change to Staff
+                Staff
               </button>
               <button
                 className="btn"
                 onClick={() => updateUserRole(user.user_id, "student")}
               >
-                Change to User
+                User
               </button>
             </div>
           </li>
         ))}
       </ul>
-    </div>
+    </StyledDashboard>
   );
 };
 

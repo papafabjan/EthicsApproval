@@ -6,10 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEye,
-  faUsers,
-  faCheck,
   faPen,
-  faTrashAlt
 } from "@fortawesome/free-solid-svg-icons";
 
 const MyApplications = () => {
@@ -24,7 +21,6 @@ const MyApplications = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Check if userId is truthy before attempting to fetch user data
         if (userId) {
           const userResponse = await fetch(
             `${import.meta.env.VITE_SERVER_URL}/api/users/${userId}`
@@ -92,12 +88,10 @@ const MyApplications = () => {
     }
   };
 
-  // Function to handle search term changes
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
 
-  // Filter applications based on search term
   const filteredApplications = applications.filter((application) => {
     const applicationTitle = applicationTitles[application.id];
     return (
@@ -125,57 +119,49 @@ const MyApplications = () => {
               <p className="status">Status</p>
               <p className="actions">Actions</p>
             </div>
-            <table>
-              <tbody>
-                {filteredApplications.map((application) => (
-                  <tr key={application.id}>
-                    <td>
-                      <div className="row">
-                        <div className="application">
-                          <p>{applicationTitles[application.id]}</p>
-                        </div>
-                        <div className="date">
-                          <p>
-                            {format(new Date(application.date), "dd/MM/yyyy")}
-                          </p>
-                        </div>
-                        <div className="status">
-                          <p>{application.status}</p>
-                        </div>
-                        <div className="actions">
-                          <button
-                            className="btn"
-                            onClick={() =>
-                              navigate(`/application/${application.id}`, {
-                                state: { mode: "view" },
-                              })
-                            }
-                          >
-                           <FontAwesomeIcon icon={faEye} size="lg" />
-                          </button>
-                          <button
-                            className="btn"
-                            onClick={() =>
-                              navigate(`/application/${application.id}`, {
-                                state: { mode: "edit" },
-                              })
-                            }
-                            disabled={
-                              application.status !==
-                                "Pending supervisor's admission" &&
-                              application.status !==
-                                "Comments added, awaiting review by applicant"
-                            }
-                          >
-                           <FontAwesomeIcon icon={faPen} size="lg" />
-                          </button>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <div>
+              {filteredApplications.map((application) => (
+                <div className="row" key={application.id}>
+                  <div className="application">
+                    <p>{applicationTitles[application.id]}</p>
+                  </div>
+                  <div className="date">
+                    <p>{format(new Date(application.date), "dd/MM/yyyy")}</p>
+                  </div>
+                  <div className="status">
+                    <p>{application.status}</p>
+                  </div>
+                  <div className="actions">
+                    <button
+                      className="btn"
+                      onClick={() =>
+                        navigate(`/application/${application.id}`, {
+                          state: { mode: "view" },
+                        })
+                      }
+                    >
+                      <FontAwesomeIcon icon={faEye} size="lg" />
+                    </button>
+                    <button
+                      className="btn"
+                      onClick={() =>
+                        navigate(`/application/${application.id}`, {
+                          state: { mode: "edit" },
+                        })
+                      }
+                      disabled={
+                        application.status !==
+                          "Pending supervisor's admission" &&
+                        application.status !==
+                          "Comments added, awaiting review by applicant"
+                      }
+                    >
+                      <FontAwesomeIcon icon={faPen} size="lg" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </StyledMyApplications>

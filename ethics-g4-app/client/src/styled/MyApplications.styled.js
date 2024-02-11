@@ -3,41 +3,29 @@ import styled from "styled-components";
 const MyApplications = styled.div`
   h1 {
     margin-bottom: 10px;
-    font-family: 'Montserrat', sans-serif;
+    font-family: "Montserrat", sans-serif;
   }
 
   input {
     padding: 10px;
     margin-bottom: 16px;
-    border: 1px solid #FFA07A; /* Light Dark Orange */
+    border: 1px solid #ffa07a; /* Light Dark Orange */
     border-radius: 4px;
-    outline: none; 
+    outline: none;
+    width: 100%; /* Make input full width */
   }
 
   .header {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    color: #888; /* Slightly muted color */
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+    display: none; /* Hide header on small screens */
   }
 
   .row {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column; /* Stack elements vertically on small screens */
     align-items: center;
     padding: 10px;
     border: 1px solid #ccc;
     margin-top: 8px;
-  }
-
-  .bold-text {
-    font-weight: bold;
   }
 
   .application,
@@ -49,7 +37,7 @@ const MyApplications = styled.div`
   }
 
   .btn {
-    background-color: #FFA07A; /* Light Dark Orange */
+    background-color: #ffa07a; /* Light Dark Orange */
     color: #fff;
     padding: 8px 16px;
     border: none;
@@ -58,10 +46,17 @@ const MyApplications = styled.div`
     margin: 3px;
   }
 
-  @media (max-width: 768px) {
+  @media (min-width: 768px) {
     .row {
-      flex-direction: column;
-      align-items: flex-start;
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      color: #888; /* Slightly muted color */
     }
   }
 `;

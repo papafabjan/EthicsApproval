@@ -5,6 +5,8 @@ const Document_Templates = styled.div`
   h1 {
     color: #333;
     font-size: 35px;
+    text-align: center;
+    margin-bottom: 20px;
   }
 
   ul {
@@ -14,11 +16,27 @@ const Document_Templates = styled.div`
 
     li {
       margin-top: 1rem;
-      display: flex;
-      align-items: center; /* Align text and button vertically */
+
+      div {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .btn {
+          margin-left: 1rem;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    li div {
+      flex-direction: column;
+      align-items: flex-start;
 
       .btn {
-        margin-left: 1rem;
+        margin-top: 1rem;
+        margin-left: 0;
       }
     }
   }

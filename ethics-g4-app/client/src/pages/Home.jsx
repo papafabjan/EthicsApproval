@@ -7,20 +7,17 @@ const Home = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        // Make a request to your Express endpoint
         const response = await fetch(
           `${import.meta.env.VITE_SERVER_URL}/account`,
           {
-            credentials: "include", // Include credentials (cookies) in the request
+            credentials: "include",
           }
         );
 
         if (response.ok) {
-          // If the request is successful, parse the JSON response
           const data = await response.json();
           setUserData(data);
         } else {
-          // Handle error cases
           console.error("Failed to fetch user data");
         }
       } catch (error) {
@@ -29,7 +26,7 @@ const Home = () => {
     };
 
     fetchUserData();
-  }, []); // Empty dependency array ensures the effect runs only once
+  }, []);
 
   return (
     <>
@@ -48,8 +45,6 @@ const Home = () => {
               <p>Email: {userData.email}</p>
               <p>Google-ID: {userData.id}</p>
               <p>Role: {userData.role}</p>
-
-              {/* Other user details */}
             </div>
           ) : (
             <>

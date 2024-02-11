@@ -16,14 +16,17 @@ const Dashboard = () => {
   const [departments, setDepartments] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   const sessionUser = useContext(UserContext);
-  const [adminOfDepartment, setAdminOfDepartment] = useState(null);
+  const adminOfDepartment = sessionUser?.admin_of_department;
 
   useEffect(() => {
     if (sessionUser.loggedIn) {
       // Fetch departments from API
       fetch(`${import.meta.env.VITE_SERVER_URL}/api/departments`)
         .then((response) => response.json())
-        .then((data) => setDepartments(data))
+        .then((data) => {
+          setDepartments(data)
+          setSelectedDepartment(adminOfDepartment ? adminOfDepartment : null);
+        })
         .catch((error) => console.error("Error fetching departments:", error));
     }
   }, []);
@@ -132,26 +135,6 @@ const Dashboard = () => {
         }
       };
 
-      const fetchAdminDepartment = async () => {
-        try {
-          const response = await fetch(
-            `${import.meta.env.VITE_SERVER_URL}/api/users/admin-department/${
-              sessionUser.id
-            }`
-          );
-          if (!response.ok) {
-            throw new Error(
-              `Error fetching applications: ${response.statusText}`
-            );
-          }
-          const data = await response.json();
-          setAdminOfDepartment(data);
-          console.log(data);
-        } catch (error) {
-          console.error(error.message);
-        }
-      };
-      fetchAdminDepartment();
       fetchApplications();
     }, [sessionUser.role, fetchTrigger]);
   }
@@ -284,7 +267,11 @@ const Dashboard = () => {
           <h1>Dashboard</h1>
           {/* Display the options list under the dashboard title */}
           {departments.length > 0 && (
-            <select className="form-control" onChange={handleDepartmentChange}>
+            <select
+              className="form-control"
+              onChange={handleDepartmentChange}
+              value={selectedDepartment}
+            >
               <option value="">All Departments</option>
               {departments.map((department) => (
                 <option key={department.id} value={department.code}>

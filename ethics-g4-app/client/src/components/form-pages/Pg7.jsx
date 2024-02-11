@@ -2,25 +2,20 @@ import { useState } from "react";
 import Comment from "../Comment";
 import { useParams } from "react-router-dom";
 
-export const Pg7 = ({ formik, mode }) => {
-  const [comment, setComment] = useState("");
+export const Pg7 = ({ formik, emphasizeFields, mode }) => {
   const { applicationId } = useParams();
-  const handleCommentSave = (fieldName) => {
-    // Save the comment to formik or perform any other actions as needed
-    formik.setValues({
-      ...formik.values,
-      [fieldName]: comment,
-    });
-  };
 
-  // Function to generate links for uploaded files
-  const generateFileLinks = (fileNames, initialValuesName) => {
-    return fileNames.map((fileName, index) => (
+  const generateFileLinks = (fileNames) => {
+    const links = fileNames.split(",").map((fileName, index) => (
       <div key={index}>
         <a
-          href={`${
-            import.meta.env.VITE_SERVER_URL
-          }/submitFiles/application_id_${applicationId}/${fileName}`}
+          href={
+            applicationId
+              ? `${
+                  import.meta.env.VITE_SERVER_URL
+                }/submitFiles/application_id_${applicationId}/${fileName}`
+              : ""
+          }
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -28,6 +23,7 @@ export const Pg7 = ({ formik, mode }) => {
         </a>
       </div>
     ));
+    return links;
   };
 
   const handleFileChange = (event, initialValuesName) => {
@@ -65,7 +61,12 @@ export const Pg7 = ({ formik, mode }) => {
           onChange={(e) => handleFileChange(e, "ListofQuestions")}
           disabled={mode === "review" || mode === "view"}
         />
-
+        {mode !== "apply" && formik.values.ListofQuestionsFileNames && (
+          <>
+            <h4>Uploaded Files:</h4>
+            {generateFileLinks(formik.values.ListofQuestionsFileNames)}
+          </>
+        )}
         {/* Comment component for the "ListofQuestions" field */}
         {mode === "review" && (
           <Comment
@@ -92,12 +93,13 @@ export const Pg7 = ({ formik, mode }) => {
           onChange={(e) => handleFilesChange(e, "AdditionalForms")}
           disabled={mode === "review" || mode === "view"}
         />
-        {mode === "view" &&
-          formik.values.AdditionalFormsFileNames &&
-          generateFileLinks(
-            formik.values.AdditionalFormsFileNames,
-            "AdditionalForms"
-          )}
+        {mode !== "apply" && formik.values.AdditionalFormsFileNames && (
+          <>
+            <h4>Uploaded Files:</h4>
+            {generateFileLinks(formik.values.AdditionalFormsFileNames)}
+          </>
+        )}
+
         {/* Comment component for the "AdditionalForms" field */}
         {mode === "review" && (
           <Comment

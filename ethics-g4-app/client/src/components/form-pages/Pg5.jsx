@@ -2,33 +2,30 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import Comment from "../Comment";
 
-export const Pg5 = ({ formik, mode }) => {
-  const [comment, setComment] = useState("");
+export const Pg5 = ({ formik, emphasizeFields, mode }) => {
   const { applicationId } = useParams();
   // Function to generate links for uploaded files
-  // HTML for it is missing someone else do it please. See Pg3 for my example.
-  const generateFileLinks = (fileName, initialValuesName) => {
-    return (
-      <div>
+  const generateFileLinks = (fileNames) => {
+    const links = fileNames.split(",").map((fileName, index) => (
+      <div key={index}>
         <a
-          href={`${
-            import.meta.env.VITE_SERVER_URL
-          }/submitFiles/application_id_${applicationId}/${fileName}`}
+          href={
+            applicationId
+              ? `${
+                  import.meta.env.VITE_SERVER_URL
+                }/submitFiles/application_id_${applicationId}/${fileName}`
+              : ""
+          }
           target="_blank"
           rel="noopener noreferrer"
         >
           {fileName}
         </a>
       </div>
-    );
+    ));
+    return links;
   };
-  const handleCommentSave = (fieldName) => {
-    // Save the comment to formik or perform any other actions as needed
-    formik.setValues({
-      ...formik.values,
-      [fieldName]: comment,
-    });
-  };
+
   const handleFileChange = (event, initialValuesName) => {
     const file = event.target.files[0];
     formik.setFieldValue(initialValuesName, file);
@@ -41,7 +38,7 @@ export const Pg5 = ({ formik, mode }) => {
     <>
       {formik.values.VulnerableParticipants === "YesChildren_adolescents" ? (
         <>
-          <h5>YesChildren got selected</h5>
+          <h5>Children or adolescents got selected</h5>
           <div className="form-group">
             <label htmlFor="ParentalConsent">
               <h2>
@@ -61,7 +58,12 @@ export const Pg5 = ({ formik, mode }) => {
               onChange={(e) => handleFileChange(e, "ParentalConsent")}
               disabled={mode === "review" || mode === "view"}
             />
-
+            {mode !== "apply" && formik.values.ParentalConsentFileNames && (
+              <>
+                <h3>Uploaded Files:</h3>
+                {generateFileLinks(formik.values.ParentalConsentFileNames)}
+              </>
+            )}
             {/* Comment component for the "ParentalConsent" field */}
             {mode === "review" && (
               <Comment
@@ -94,7 +96,12 @@ export const Pg5 = ({ formik, mode }) => {
               onChange={(e) => handleFileChange(e, "ParentalInformation")}
               disabled={mode === "review" || mode === "view"}
             />
-
+            {mode !== "apply" && formik.values.ParentalInformationFileNames && (
+              <>
+                <h3>Uploaded Files:</h3>
+                {generateFileLinks(formik.values.ParentalInformationFileNames)}
+              </>
+            )}
             {/* Comment component for the "ParentalInformation" field */}
             {mode === "review" && (
               <Comment
@@ -128,7 +135,12 @@ export const Pg5 = ({ formik, mode }) => {
               onChange={(e) => handleFileChange(e, "ChildInformation")}
               disabled={mode === "review" || mode === "view"}
             />
-
+            {mode !== "apply" && formik.values.ChildInformationFileNames && (
+              <>
+                <h3>Uploaded Files:</h3>
+                {generateFileLinks(formik.values.ChildInformationFileNames)}
+              </>
+            )}
             {/* Comment component for the "ChildInformation" field */}
             {mode === "review" && (
               <Comment
@@ -158,7 +170,12 @@ export const Pg5 = ({ formik, mode }) => {
               onChange={(e) => handleFileChange(e, "HeadTeacherConsent")}
               disabled={mode === "review" || mode === "view"}
             />
-
+            {mode !== "apply" && formik.values.HeadTeacherConsentFileNames && (
+              <>
+                <h3>Uploaded Files:</h3>
+                {generateFileLinks(formik.values.HeadTeacherConsentFileNames)}
+              </>
+            )}
             {/* Comment component for the "HeadTeacherConsent" field */}
             {mode === "review" && (
               <Comment
@@ -188,7 +205,15 @@ export const Pg5 = ({ formik, mode }) => {
               onChange={(e) => handleFileChange(e, "HeadteacherInformation")}
               disabled={mode === "review" || mode === "view"}
             />
-
+            {mode !== "apply" &&
+              formik.values.HeadteacherInformationFileNames && (
+                <>
+                  <h3>Uploaded Files:</h3>
+                  {generateFileLinks(
+                    formik.values.HeadteacherInformationFileNames
+                  )}
+                </>
+              )}
             {/* Comment component for the "HeadteacherInformation" field */}
             {mode === "review" && (
               <Comment
@@ -203,7 +228,7 @@ export const Pg5 = ({ formik, mode }) => {
         </>
       ) : formik.values.VulnerableParticipants === "YesAdultsMental" ? (
         <>
-          <h5>YesAdultsMental got selected</h5>
+          <h5>Adults with mental disabilities got selected</h5>
 
           <div className="form-group">
             <label htmlFor="AccessibleConsentMaterial">
@@ -229,7 +254,15 @@ export const Pg5 = ({ formik, mode }) => {
               onChange={(e) => handleFileChange(e, "AccessibleConsentMaterial")}
               disabled={mode === "review" || mode === "view"}
             />
-
+            {mode !== "apply" &&
+              formik.values.AccessibleConsentMaterialFileNames && (
+                <>
+                  <h3>Uploaded Files:</h3>
+                  {generateFileLinks(
+                    formik.values.AccessibleConsentMaterialFileNames
+                  )}
+                </>
+              )}
             {/* Comment component for the "AccessibleConsentMaterial" field */}
             {mode === "review" && (
               <Comment
@@ -264,7 +297,15 @@ export const Pg5 = ({ formik, mode }) => {
               onChange={(e) => handleFileChange(e, "ProxyConsentProcedures")}
               disabled={mode === "review" || mode === "view"}
             />
-
+            {mode !== "apply" &&
+              formik.values.ProxyConsentProceduresFileNames && (
+                <>
+                  <h3>Uploaded Files:</h3>
+                  {generateFileLinks(
+                    formik.values.ProxyConsentProceduresFileNames
+                  )}
+                </>
+              )}
             {/* Comment component for the "ProxyConsentProcedures" field */}
             {mode === "review" && (
               <Comment
@@ -281,7 +322,7 @@ export const Pg5 = ({ formik, mode }) => {
         <h1>You didn't select VulnerableParticipants</h1>
       ) : (
         <>
-          <h5>NoAdults/Other Participants got selected</h5>
+          <h5>Healthy adults or other participants got selected</h5>
 
           <div className="form-group">
             <label htmlFor="ParticipantInformation">
@@ -305,7 +346,15 @@ export const Pg5 = ({ formik, mode }) => {
               onChange={(e) => handleFileChange(e, "ParticipantInformation")}
               disabled={mode === "review" || mode === "view"}
             />
-
+            {mode !== "apply" &&
+              formik.values.ParticipantInformationFileNames && (
+                <>
+                  <h3>Uploaded Files:</h3>
+                  {generateFileLinks(
+                    formik.values.ParticipantInformationFileNames
+                  )}
+                </>
+              )}
             {/* Comment component for the "ParticipantInformation" field */}
             {mode === "review" && (
               <Comment
@@ -337,7 +386,12 @@ export const Pg5 = ({ formik, mode }) => {
               onChange={(e) => handleFileChange(e, "ParticipantConsent")}
               disabled={mode === "review" || mode === "view"}
             />
-
+            {mode !== "apply" && formik.values.ParticipantConsentFileNames && (
+              <>
+                <h3>Uploaded Files:</h3>
+                {generateFileLinks(formik.values.ParticipantConsentFileNames)}
+              </>
+            )}
             {/* Comment component for the "ParticipantConsent" field */}
             {mode === "review" && (
               <Comment
@@ -368,7 +422,15 @@ export const Pg5 = ({ formik, mode }) => {
               onChange={(e) => handleFileChange(e, "ParticipantDebriefing")}
               disabled={mode === "review" || mode === "view"}
             />
-
+            {mode !== "apply" &&
+              formik.values.ParticipantDebriefingFileNames && (
+                <>
+                  <h3>Uploaded Files:</h3>
+                  {generateFileLinks(
+                    formik.values.ParticipantDebriefingFileNames
+                  )}
+                </>
+              )}
             {/* Comment component for the "ParticipantDebriefing" field */}
             {mode === "review" && (
               <Comment
@@ -397,7 +459,12 @@ export const Pg5 = ({ formik, mode }) => {
               onChange={(e) => handleFileChange(e, "AccessibilityLetter")}
               disabled={mode === "review" || mode === "view"}
             />
-
+            {mode !== "apply" && formik.values.AccessibilityLetterFileNames && (
+              <>
+                <h3>Uploaded Files:</h3>
+                {generateFileLinks(formik.values.AccessibilityLetterFileNames)}
+              </>
+            )}
             {/* Comment component for the "AccessibilityLetter" field */}
             {mode === "review" && (
               <Comment

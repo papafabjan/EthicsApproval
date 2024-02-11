@@ -3,7 +3,6 @@ import Comment from "../Comment";
 import { useParams } from "react-router-dom";
 
 function Pg3({ formik, emphasizeFields, mode }) {
-  const [comment, setComment] = useState("");
   const { applicationId } = useParams();
 
   // Function to generate links for uploaded files
@@ -31,14 +30,6 @@ function Pg3({ formik, emphasizeFields, mode }) {
   // Get the file names from formik values
   const sensitiveTopicsFilesFileNames =
     formik.values.SensitiveTopicsFilesFileNames;
-
-  const handleCommentSave = (fieldName) => {
-    // Save the comment to formik or perform any other actions as needed
-    formik.setValues({
-      ...formik.values,
-      [fieldName]: comment,
-    });
-  };
 
   const handleFilesChange = (event, initialValuesName) => {
     const files = event.target.files;
@@ -240,11 +231,12 @@ function Pg3({ formik, emphasizeFields, mode }) {
           className="form-control"
           id="SensitiveTopicsFiles"
           onChange={(e) => handleFilesChange(e, "SensitiveTopicsFiles")}
+          disabled={mode === "review" || mode === "view"}
         />
 
-        {mode === "view" && (
+        {mode !== "apply" && (
           <>
-            <p>Uploaded Files:</p>
+            <h4>Uploaded Files:</h4>
             {generateFileLinks(sensitiveTopicsFilesFileNames)}
           </>
         )}

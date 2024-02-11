@@ -6,16 +6,6 @@ import { useContext } from "react";
 function Pg1({ formik, emphasizeFields, mode }) {
   const user = useContext(UserContext);
 
-  const [comment, setComment] = useState("");
-
-  const handleCommentSave = (fieldName) => {
-    // Save the comment to formik or perform any other actions as needed
-    formik.setValues({
-      ...formik.values,
-      [fieldName]: comment,
-    });
-  };
-
   function splitUsername(username) {
     const names = username.split(" ");
     // If there are 2 or more names, assume the first is the first name,

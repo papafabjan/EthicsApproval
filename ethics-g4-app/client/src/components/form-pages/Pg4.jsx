@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import Comment from "../Comment";
 export const Pg4 = ({ formik, emphasizeFields, mode }) => {
-  const [comment, setComment] = useState("");
-
   const handleRadioChange = (e, radio) => {
     formik.handleChange(e);
 
@@ -12,13 +10,6 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
     }
   };
 
-  const handleCommentSave = (fieldName) => {
-    // Save the comment to formik or perform any other actions as needed
-    formik.setValues({
-      ...formik.values,
-      [fieldName]: comment,
-    });
-  };
   return (
     <>
       <div className="form-group">

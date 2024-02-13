@@ -261,14 +261,14 @@ const Dashboard = () => {
                                 // Set fetchTrigger to trigger re-fetch when Assign Reviewers is clicked
                                 setFetchTrigger((prev) => prev + 1);
                               }}
-                              disabled={
-                                !(
-                                  application.status ===
-                                  "Approved by supervisor, pending reviewers addition"
-                                ) 
-                                // &&
-                                // !(application.status === "Reviewers assigned by Ethics Admin")
-                              }
+                              // disabled={
+                              //   !(
+                              //     application.status ===
+                              //     "Approved by supervisor, pending reviewers addition"
+                              //   ) 
+                              //   // &&
+                              //   // !(application.status === "Reviewers assigned by Ethics Admin")
+                              // }
                             >
                               Assign Reviewers
                             </button>

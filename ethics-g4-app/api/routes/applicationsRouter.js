@@ -83,14 +83,17 @@ router.post("/applications/add", async (req, res) => {
     const { userID, values } = req.body;
     console.log("Received userID:", userID);
 
+    // Extract the department code from the values array
+    const departmentCode = values.Department;
+
     // Insert application
     const newApplication = await pool.query(
       `
-      INSERT INTO applications (status, date, applicant_id) 
-      VALUES ($1, $2, $3) 
+      INSERT INTO applications (status, date, applicant_id, department_code) 
+      VALUES ($1, $2, $3, $4) 
       RETURNING *;
       `,
-      ["Pending supervisor's admission", new Date(), userID]
+      ["Pending supervisor's admission", new Date(), userID, departmentCode]
     );
 
     const applicationId = newApplication.rows[0].id;
@@ -132,12 +135,17 @@ router.post("/applications/add", async (req, res) => {
           (Array.isArray(fieldValue) && fieldValue.length === 0)
         )
       ) {
+        // Use fieldValue directly for non-file fields
+        const fieldValueToStore = Array.isArray(fieldValue)
+          ? fieldValue.join(",") // For arrays (e.g., multiple files)
+          : fieldValue;
+
         await pool.query(
           `
-          INSERT INTO application_content (application_id, field_name, field_value) 
-          VALUES ($1, $2, $3);
-          `,
-          [applicationId, fieldName, fieldValue]
+      INSERT INTO application_content (application_id, field_name, field_value) 
+      VALUES ($1, $2, $3);
+      `,
+          [applicationId, fieldName, fieldValueToStore]
         );
       }
     }
@@ -264,11 +272,13 @@ router.post("/applications/update-status/:id", async (req, res) => {
 `;
     const fetchRole = await pool.query(fetchUserRole, [userId, id]);
     var userRole = "none";
-
+    var isBoth = false;
     if (fetchRole.rows.length > 0) {
       const roleFromDb = fetchRole.rows[0].role;
-      if (fetchRole.rows.length > 1) { //if more than 1 roles for the same user on the same application he can only be a reviewer attempting to approve.
+      if (fetchRole.rows.length > 1) {
+        //if more than 1 roles for the same user on the same application he can only be a reviewer attempting to approve.
         userRole = "reviewer";
+        isBoth = true;
       } else {
         userRole = roleFromDb;
       }
@@ -293,9 +303,12 @@ router.post("/applications/update-status/:id", async (req, res) => {
     }
 
 
-
-    if (userRole === "reviewer" && currentStatus.includes("by") && (currentStatus.includes("reviewers") || currentStatus.includes("Reviewers"))) {
-      console.log("joined here when I approved");
+    if (
+      userRole === "reviewer" &&
+      currentStatus.includes("by") &&
+      (currentStatus.includes("reviewers") ||
+        currentStatus.includes("Reviewers"))
+    ) {
       const reviewers = await pool.query(
         "SELECT user_id FROM user_roles WHERE role = 'reviewer' AND application_id = $1",
         [id]
@@ -309,6 +322,7 @@ router.post("/applications/update-status/:id", async (req, res) => {
       `,
         [id]
       );
+
 
       const adminInfo = await pool.query(
         `
@@ -340,6 +354,7 @@ router.post("/applications/update-status/:id", async (req, res) => {
 
       const remainingApprovalArray = remainingApprovalQuery.rows[0].remaining_approval;
 
+
       // Check if the current user has already approved the application
       if (!remainingApprovalArray.includes(userId)) {
         return res.json({
@@ -349,32 +364,42 @@ router.post("/applications/update-status/:id", async (req, res) => {
       } else {
         // Update the status based on the number of remaining approvals
         const numReviewers = reviewers.rows.length;
-        const numApprovals = numReviewers - remainingApprovalArray.length + 1;
-        console.log(numReviewers, numApprovals);
-        if (numReviewers === numApprovals) {
-          status = "Reviewer approval complete, pending ethics admin's approval";
-        }
-        else {
-          status = `Approved by ${numApprovals} / ${numReviewers} reviewers`;
-        }
 
+        if (isBoth && numReviewers === 1) {
+          if (isAdmin) {
+            console.log("entered isadmin");
+            status = "Approved";
+          } else {
+            console.log("entered else");
+            status =
+              "Reviewer approval complete, pending ethics admin's approval";
+          }
+        } else {
+          const numApprovals = numReviewers - remainingApprovalArray.length + 1;
+          if (numReviewers === numApprovals) {
+            status =
+              "Reviewer approval complete, pending ethics admin's approval";
+          } else {
+            status = `Approved by ${numApprovals} / ${numReviewers} reviewers`;
+          }
+        }
         // Update the status in the applications table
         const updateStatusQuery = `
-        UPDATE applications
-        SET status = $1, date = $2
-        WHERE id = $3
-        RETURNING *;
-      `;
-        const currentDate = new Date();
+      UPDATE applications
+      SET status = $1
+      WHERE id = $2
+      RETURNING *;
+    `;
         const updatedApplication = await pool.query(updateStatusQuery, [
           status,
-          currentDate,
+
           id,
         ]);
 
         // remove userId from remaining_approval array in applications
         const removeReviewerFromRemainingApproval = await pool.query(
           `
+
         UPDATE applications
         SET remaining_approval = array_remove(remaining_approval, $1)
         WHERE id = $2
@@ -383,6 +408,7 @@ router.post("/applications/update-status/:id", async (req, res) => {
         )
               send_mail(subjects, recipientTypes, recipientNames, recipientEmails, status, userRole, projectTitle);
 
+
         return res.json({
           success: true,
           message: "Successful Approval",
@@ -390,7 +416,6 @@ router.post("/applications/update-status/:id", async (req, res) => {
       }
     }
 
-    // ...
 
     if (userRole === "none") {
       if (
@@ -398,11 +423,9 @@ router.post("/applications/update-status/:id", async (req, res) => {
         "Reviewer approval complete, pending ethics admin's approval"
       ) {
         const updateStatusQuery =
-          "UPDATE applications SET status = $1, date = $2 WHERE id = $3 RETURNING *";
-        const currentDate = new Date();
+          "UPDATE applications SET status = $1, WHERE id = $2 RETURNING *";
         const updatedApplication = await pool.query(updateStatusQuery, [
           status,
-          currentDate,
           id,
         ]);
         return res.json({
@@ -426,11 +449,9 @@ router.post("/applications/update-status/:id", async (req, res) => {
           "Reviewer approval complete, pending ethics admin's approval"
         ) {
           const updateStatusQuery =
-            "UPDATE applications SET status = $1, date = $2 WHERE id = $3 RETURNING *";
-          const currentDate = new Date();
+            "UPDATE applications SET status = $1, WHERE id = $2 RETURNING *";
           const updatedApplication = await pool.query(updateStatusQuery, [
             status,
-            currentDate,
             id,
           ]);
           return res.json({
@@ -448,12 +469,12 @@ router.post("/applications/update-status/:id", async (req, res) => {
     }
 
     if (userRole === "reviewer" && isAdmin) {
+
         if (
           currentStatus ===
           "Reviewer approval complete, pending ethics admin's approval"
         ) {
         
-
 
           // Combine admin and applicant names and emails into single arrays
           recipientNames = [...recipientNames];
@@ -481,6 +502,7 @@ router.post("/applications/update-status/:id", async (req, res) => {
           console.log(recipientEmails);
           console.log("Hello user type", recipientTypes);
           
+
           return res.json({
             success: true,
             message: "Successful Approval",
@@ -525,6 +547,7 @@ router.post("/applications/update-status/:id", async (req, res) => {
             message: "An error occurred while fetching admin users.",
           });
         }
+
       } else {
         return res.json({
           success: false,
@@ -553,6 +576,7 @@ router.post("/applications/update-status/:id", async (req, res) => {
         const subjectApplicant = ["Approved by reviewers, pending Admin's Approval"];
 
         var subjects = [...subjectApplicant, ...subjectAdmin];
+
       }
       if (
         currentStatus ===
@@ -568,14 +592,12 @@ router.post("/applications/update-status/:id", async (req, res) => {
 
     const updateStatusQuery = `
       UPDATE applications
-      SET status = $1, date = $2
-      WHERE id = $3
+      SET status = $1
+      WHERE id = $2
       RETURNING *;
       `;
-    const currentDate = new Date(); // Get the current date
     const updatedApplication = await pool.query(updateStatusQuery, [
       status,
-      currentDate,
       id,
     ]);
 
@@ -661,7 +683,8 @@ router.post("/applications/edit/:applicationId", async (req, res) => {
     const userID = req.body.user.id;
     const values = req.body.application;
 
-    const oldStatusQuery = await pool.query(`
+    const oldStatusQuery = await pool.query(
+      `
     SELECT application_status FROM comments WHERE application_id = $1;
     `,
       [applicationId]
@@ -791,7 +814,6 @@ router.post("/applications/edit/:applicationId", async (req, res) => {
     `,
       [applicationId]
     );
-
 
     res.json({ success: true, applicationId });
   } catch (error) {

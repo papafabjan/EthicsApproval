@@ -1,8 +1,6 @@
 import styled from "styled-components";
 
-const Form = styled.div`
-  
-`;
+const Form = styled.div``;
 
 export const NavigationButtons = styled.div`
   display: flex;

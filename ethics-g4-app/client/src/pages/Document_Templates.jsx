@@ -36,21 +36,21 @@ const Document_Templates = () => {
 
   return (
     <>
-      <div>
-        <StyledDocument_Templates>
-          <h1>Document Templates</h1>
-          <ul>
-            {documents.map((document, index) => (
-              <li key={index}>
+      <StyledDocument_Templates>
+        <h1>Document Templates</h1>
+        <ul>
+          {documents.map((document, index) => (
+            <li key={index}>
+              <div>
                 {document.name}
                 <Link to={document.url}>
                   <button className="btn">Open</button>
                 </Link>
-              </li>
-            ))}
-          </ul>
-        </StyledDocument_Templates>
-      </div>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </StyledDocument_Templates>
     </>
   );
 };

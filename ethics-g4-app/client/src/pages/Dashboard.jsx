@@ -4,6 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import AssignReviewers from "../components/AssignReviewers";
 import { UserContext } from "../components/UserContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faEye,
+  faUsers,
+  faCheck,
+  faTrashAlt
+} from "@fortawesome/free-solid-svg-icons";
 
 const Dashboard = () => {
   const [applications, setApplications] = useState([]);
@@ -13,8 +20,23 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [showAssignReviewers, setShowAssignReviewers] = useState(false);
   const [selectedApplicationId, setSelectedApplicationId] = useState(null);
-
+  const [departments, setDepartments] = useState([]);
+  const [selectedDepartment, setSelectedDepartment] = useState(null);
   const sessionUser = useContext(UserContext);
+  const adminOfDepartment = sessionUser?.admin_of_department;
+
+  useEffect(() => {
+    if (sessionUser.loggedIn) {
+      // Fetch departments from API
+      fetch(`${import.meta.env.VITE_SERVER_URL}/api/departments`)
+        .then((response) => response.json())
+        .then((data) => {
+          setDepartments(data)
+          setSelectedDepartment(adminOfDepartment ? adminOfDepartment : null);
+        })
+        .catch((error) => console.error("Error fetching departments:", error));
+    }
+  }, []);
 
   if (sessionUser.role === "staff") {
     // Fetch applications from the API
@@ -47,11 +69,21 @@ const Dashboard = () => {
           }
           const reviewerData = await reviewerResponse.json();
 
+          // Combine supervisor and reviewer applications while ensuring uniqueness
+          const combinedApplications = [
+            ...supervisorData,
+            ...reviewerData.filter(
+              (reviewerApp) =>
+                !supervisorData.some(
+                  (supervisorApp) => supervisorApp.id === reviewerApp.id
+                )
+            ),
+          ];
           // Update state with combined data
-          setApplications([...supervisorData, ...reviewerData]);
+          setApplications(combinedApplications);
 
-          // Fetch and store applicant names for the supervisor applications
-          const namesPromises = [...supervisorData, ...reviewerData].map(
+          // Fetch and store applicant names for the combined applications
+          const namesPromises = combinedApplications.map(
             async (application) => {
               const applicantName = await fetchApplicantName(
                 application.applicant_id
@@ -195,13 +227,44 @@ const Dashboard = () => {
     setSearchTerm(event.target.value);
   };
 
-  // Filter applications based on search term
+  const handleDepartmentChange = (e) => {
+    setSelectedDepartment(e.target.value);
+  };
+
+  // Filter applications based on search term and selected department
   const filteredApplications = applications.filter((application) => {
     const applicantName = applicantNames[application.applicant_id];
+    console.log("Application Department:", application.department_code); // <-- Check department_code
+    console.log("Selected Department:", selectedDepartment);
     return (
+      (!selectedDepartment ||
+        application.department_code === selectedDepartment) &&
       applicantName &&
       applicantName.toLowerCase().includes(searchTerm.toLowerCase())
     );
+  });
+
+  const getStatusPriority = (status) => {
+    switch (status) {
+      case "Pending supervisor's admission":
+        return 1;
+      case "Approved by supervisor, pending reviewers addition":
+        return 2;
+      case "Reviewers assigned by Ethics Admin":
+        return 3;
+      case "Reviewer approval complete, pending ethics admin's approval":
+        return 4;
+      default:
+        return 5;
+    }
+  };
+
+  const sortedApplications = filteredApplications.sort((a, b) => {
+    const priorityA = getStatusPriority(a.status);
+    const priorityB = getStatusPriority(b.status);
+
+    // Sort in ascending order of priority
+    return priorityA - priorityB;
   });
 
   return (
@@ -209,6 +272,21 @@ const Dashboard = () => {
       <StyledDashboard>
         <div>
           <h1>Dashboard</h1>
+          {/* Display the options list under the dashboard title */}
+          {departments.length > 0 && (
+            <select
+              className="form-control"
+              onChange={handleDepartmentChange}
+              value={selectedDepartment}
+            >
+              <option value="">All Departments</option>
+              {departments.map((department) => (
+                <option key={department.id} value={department.code}>
+                  {department.name}
+                </option>
+              ))}
+            </select>
+          )}
           <input
             className="form-control me-2"
             type="text"
@@ -220,14 +298,14 @@ const Dashboard = () => {
           <div>
             <div className="header">
               <p className="application">Applicant Name</p>
-              <p className="date">Date of submission</p>
+              <p className="date">Submission</p>
               <p className="status">Status</p>
               <p className="actions">Actions</p>
             </div>
             <table>
               <tbody>
-                {filteredApplications.map((application) => (
-                  <tr key={application.id}>
+                {sortedApplications.map((application, index) => (
+                  <tr key={index}>
                     <td>
                       <div className="row">
                         <div className="application">
@@ -250,7 +328,7 @@ const Dashboard = () => {
                               })
                             }
                           >
-                            View/Comment
+                           <FontAwesomeIcon icon={faEye} size="lg" />
                           </button>
                           {sessionUser.role === "admin" && (
                             <button
@@ -261,34 +339,36 @@ const Dashboard = () => {
                                 // Set fetchTrigger to trigger re-fetch when Assign Reviewers is clicked
                                 setFetchTrigger((prev) => prev + 1);
                               }}
-                              // disabled={
-                              //   !(
-                              //     application.status ===
-                              //     "Approved by supervisor, pending reviewers addition"
-                              //   ) 
-                              //   // &&
-                              //   // !(application.status === "Reviewers assigned by Ethics Admin")
-                              // }
+
+                              disabled={
+                                !(
+                                  application.status ===
+                                  "Approved by supervisor, pending reviewers addition"
+                                )
+                                // &&
+                                // !(application.status === "Reviewers assigned by Ethics Admin")
+                              }
+
                             >
-                              Assign Reviewers
+                              <FontAwesomeIcon icon={faUsers} size="lg" />
                             </button>
                           )}
                           <button
-                            className="btn"
+                            className="btn_appro"
                             onClick={() => approve(application.id)}
                             disabled={
                               application.status ===
                               "Comments added, awaiting review by applicant"
                             }
                           >
-                            Approve
+                          <FontAwesomeIcon icon={faCheck} size="lg" />
                           </button>
                           {sessionUser.role === "admin" && (
                             <button
-                              className="btn"
+                              className="btn_delete"
                               onClick={() => deleteApplication(application.id)}
                             >
-                              Delete Application
+                                <FontAwesomeIcon icon={faTrashAlt} size="lg" />
                             </button>
                           )}
                         </div>

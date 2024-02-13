@@ -1,19 +1,44 @@
 import { useState } from "react";
-function Pg3({ formik, emphasizeFields, mode }) {
-  const [comment, setComment] = useState("");
+import Comment from "../Comment";
+import { useParams } from "react-router-dom";
 
-  const handleCommentSave = (fieldName) => {
-    // Save the comment to formik or perform any other actions as needed
-    formik.setValues({
-      ...formik.values,
-      [fieldName]: comment,
-    });
+function Pg3({ formik, emphasizeFields, mode }) {
+  const { applicationId } = useParams();
+
+  // Function to generate links for uploaded files
+  const generateFileLinks = (fileNames) => {
+    const links = fileNames.split(",").map((fileName, index) => (
+      <div key={index}>
+        <a
+          href={
+            applicationId
+              ? `${
+                  import.meta.env.VITE_SERVER_URL
+                }/submitFiles/application_id_${applicationId}/${fileName}`
+              : ""
+          }
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {fileName}
+        </a>
+      </div>
+    ));
+    return links;
   };
+
+
+  // Get the file names from formik values
+  const sensitiveTopicsFilesFileNames =
+    formik.values.SensitiveTopicsFilesFileNames;
 
   const handleFilesChange = (event, initialValuesName) => {
     const files = event.target.files;
     formik.setFieldValue(initialValuesName, files);
-    console.log(files);
+
+    // Update file names array
+    const fileNames = Array.from(files).map((file) => file.name);
+    formik.setFieldValue(`${initialValuesName}FileNames`, fileNames);
   };
 
   return (
@@ -207,7 +232,15 @@ function Pg3({ formik, emphasizeFields, mode }) {
           className="form-control"
           id="SensitiveTopicsFiles"
           onChange={(e) => handleFilesChange(e, "SensitiveTopicsFiles")}
+          disabled={mode === "review" || mode === "view"}
         />
+
+        {mode !== "apply" && (
+          <>
+            <h4>Uploaded Files:</h4>
+            {generateFileLinks(sensitiveTopicsFilesFileNames)}
+          </>
+        )}
 
         {/* Comment component for the "SensitiveMaterialFiles" field */}
         {mode === "review" && (

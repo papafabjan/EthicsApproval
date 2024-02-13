@@ -2,15 +2,6 @@ import React, { useState } from "react";
 import Comment from "../Comment";
 
 function Pg2({ formik, emphasizeFields, mode }) {
-  const [comment, setComment] = useState("");
-
-  const handleCommentSave = (fieldName) => {
-    // Save the comment to formik or perform any other actions as needed
-    formik.setValues({
-      ...formik.values,
-      [fieldName]: comment,
-    });
-  };
   const handleRadioChange = (e, radio) => {
     formik.handleChange(e);
 

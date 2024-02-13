@@ -26,10 +26,26 @@ const StyledDashboard = styled.div`
 
   input {
     padding: 10px;
-    margin-bottom: 16px;
+    margin-bottom: 10px;
     border: 1px solid #fa9a00;
     border-radius: 4px;
     outline: none;
+  }
+
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    box-shadow: 0 0px 5px 0px rgba(0, 0, 0, 0.6);
+    margin-top: 8px;
+    border-radius: 10px;
   }
 
   .header {
@@ -38,22 +54,6 @@ const StyledDashboard = styled.div`
     padding: 10px;
     color: #888;
   }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-  }
-
-  .row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    border: 1px solid #ccc;
-    margin-top: 8px;
-  }
-
   .application,
   .date,
   .status,
@@ -75,27 +75,17 @@ const StyledDashboard = styled.div`
   }
 
   .btn_appro {
-    background-color: #29a329;
-    color: #fff;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin: 3px;
-    width: 75px;
-    height: 40px;
+    background-color: #29a329 !important;
+    &:hover {
+      background-color: #28d128 !important;
+    }
   }
 
   .btn_delete {
-    background-color: #b30000;
-    color: #fff;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin: 3px;
-    width: 75px;
-    height: 40px;
+    background-color: #b30000 !important;
+    &:hover {
+      background-color: #d40202 !important;
+    }
   }
 
   @media (max-width: 768px) {

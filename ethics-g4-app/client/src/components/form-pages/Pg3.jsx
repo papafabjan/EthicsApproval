@@ -225,15 +225,17 @@ function Pg3({ formik, emphasizeFields, mode }) {
           Sensitive Material/tools<span style={{ color: "red" }}>*</span>
         </label>
 
-        <input
-          type="file"
-          multiple
-          name="SensitiveTopicsFiles"
-          className="form-control"
-          id="SensitiveTopicsFiles"
-          onChange={(e) => handleFilesChange(e, "SensitiveTopicsFiles")}
-          disabled={mode === "review" || mode === "view"}
-        />
+        {(mode === "apply" || mode ==="edit") && (
+          <input
+            type="file"
+            multiple
+            name="SensitiveTopicsFiles"
+            className="form-control"
+            id="SensitiveTopicsFiles"
+            onChange={(e) => handleFilesChange(e, "SensitiveTopicsFiles")}
+            disabled={mode === "review" || mode === "view"}
+          />
+        )}
 
         {mode !== "apply" && (
           <>

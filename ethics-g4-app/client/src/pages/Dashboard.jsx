@@ -343,11 +343,11 @@ const Dashboard = () => {
                                 // !(application.status === "Reviewers assigned by Ethics Admin")
                               }
                             >
-                              <i class="fa-solid fa-pen"></i>
+                              <i className="fa-solid fa-users"></i>
                             </button>
                           )}
                           <button
-                            className="btn_appro"
+                            className="btn btn_appro"
                             onClick={() => approve(application.id)}
                             disabled={
                               application.status ===
@@ -358,7 +358,7 @@ const Dashboard = () => {
                           </button>
                           {sessionUser.role === "admin" && (
                             <button
-                              className="btn_delete"
+                              className="btn btn_delete"
                               onClick={() => deleteApplication(application.id)}
                             >
                               <i className="fa-solid fa-trash"></i>

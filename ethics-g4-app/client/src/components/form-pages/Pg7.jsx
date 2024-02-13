@@ -57,14 +57,17 @@ export const Pg7 = ({ formik, emphasizeFields, mode }) => {
           Upload your proposed list of questions (e.g., questionnaires, photos,
           interreview questions, etc) in any format.
         </p>
-        <input
-          type="file"
-          name="ListofQuestions"
-          className="form-control"
-          id="ListofQuestions"
-          onChange={(e) => handleFileChange(e, "ListofQuestions")}
-          disabled={mode === "review" || mode === "view"}
-        />
+        {(mode === "apply" || mode ==="edit") && (
+          <input
+            type="file"
+            name="ListofQuestions"
+            className="form-control"
+            id="ListofQuestions"
+            onChange={(e) => handleFileChange(e, "ListofQuestions")}
+            disabled={mode === "review" || mode === "view"}
+          />
+        )}
+
         {mode !== "apply" && formik.values.ListofQuestionsFileNames && (
           <>
             <h4>Uploaded Files:</h4>
@@ -87,16 +90,18 @@ export const Pg7 = ({ formik, emphasizeFields, mode }) => {
         <label htmlFor="AdditionalForms">
           Any additional forms /documents you need to submit (optional)
         </label>
+        {(mode === "apply" || mode ==="edit") && (
+          <input
+            type="file"
+            multiple
+            name="AdditionalForms"
+            className="form-control"
+            id="AdditionalForms"
+            onChange={(e) => handleFilesChange(e, "AdditionalForms")}
+            disabled={mode === "review" || mode === "view"}
+          />
+        )}
 
-        <input
-          type="file"
-          multiple
-          name="AdditionalForms"
-          className="form-control"
-          id="AdditionalForms"
-          onChange={(e) => handleFilesChange(e, "AdditionalForms")}
-          disabled={mode === "review" || mode === "view"}
-        />
         {mode !== "apply" && formik.values.AdditionalFormsFileNames && (
           <>
             <h4>Uploaded Files:</h4>

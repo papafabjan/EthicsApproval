@@ -20,7 +20,7 @@ const App = styled.div`
     transition: background-color 0.3s ease, transform 0.2s ease; /* Added transform transition */
 
     &:hover {
-      background-color: #ff6f3a; /* Adjusted hover color */
+      background-color: #fc9c00; /* Adjusted hover color */
       box-shadow: 0 0 11px rgba(33, 33, 33, 0.4);
       transform: scale(1.05); /* Scale the button on hover */
     }

@@ -17,7 +17,7 @@ const App = styled.div`
     background-color: darkorange;
     color: #fff;
     padding: 8px 16px;
-    margin-right: 8px;
+    margin: 5px;
     border: none;
     border-radius: 4px;
     cursor: pointer;

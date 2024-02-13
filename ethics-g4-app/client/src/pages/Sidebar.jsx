@@ -2,6 +2,8 @@
 import { Link } from "react-router-dom";
 import { UserContext } from "../components/UserContext";
 import React, { useContext } from "react";
+import styled from 'styled-components';
+import { cityTheme } from "../themes";
 
 const Sidebar = () => {
   const user = useContext(UserContext);
@@ -25,10 +27,8 @@ const Sidebar = () => {
       {isAdmin && (
         <div className="icon-title">
           <Link to="/admindashboard">
-            <div className="icon">
               <i className="fa-solid fa-user"></i>
-            </div>
-            <div className="title">Admin Dashboard</div>
+          Admin Dashboard
           </Link>
         </div>
       )}

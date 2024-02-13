@@ -1,40 +1,51 @@
 import styled from "styled-components";
 
 const Sidebar = styled.div`
-  background: linear-gradient(
-    5deg,
-    rgb(245, 200, 27) 0%,
-    rgb(255, 169, 27) 100%
-  );
-  border-radius: 24px;
+  background: #ffaa33;
+  border-radius: 2rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   padding: 2rem;
   gap: 2rem;
   height: 100%;
-  max-width: 13%;
-  min-width: 13%;
-  float: left;
+  width: 19vw;
+  min-width: 19vw;
   overflow: hidden;
 
-  i {
-    margin-right: 8px;
-    vertical-align: middle;
-    align-items: left;
+  @media (max-width: 768px) {
+    width: 50%;
   }
+
   .icon-title {
     display: flex;
-    align-items: right;
+    align-items: center;
     font-weight: bold;
     flex-direction: row;
+    width: 200%;
+    height: 150%;
+    white-space: nowrap;
+    margin-left: 10px;
+
+    /* Targeting specific icon classes for left margin */
+    .fa-solid,
+    .fa,
+    .fa-table-columns,
+    .fa-pen-to-square {
+      margin-right: 1.5rem;
+    }
   }
 
   .icon-title > a {
-    color: #333; /* Dark gray for link color */
+    color: #333;
     text-decoration: none;
     position: relative;
     display: inline-block;
+    width: 100%;
+    max-width: 90%;
+    text-overflow: ellipsis;
+    text-align: justify;
+    white-space: normal;
   }
 
   .icon-title > a:before {
@@ -45,7 +56,7 @@ const Sidebar = styled.div`
     right: 0;
     bottom: 0;
     background-color: darkorange;
-    height: 4px;
+    height: 0.2rem; /* Use relative units for height */
     width: 0;
     transition: transform 0.3s ease-out;
   }
@@ -60,7 +71,5 @@ const Sidebar = styled.div`
     transform: scale(1.05);
   }
 `;
-
-
 
 export default Sidebar;

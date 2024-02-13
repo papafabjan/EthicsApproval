@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const Home = styled.div`
-  font-family: "Roboto", sans-serif;
+  font-family: "Montserrat", sans-serif;
 
   h1 {
     text-align: center;
@@ -16,8 +16,9 @@ const Home = styled.div`
 
     img {
       border-radius: 50%;
-      width: 150px;
-      height: 150px;
+      width: 100%; /* Make the image width 100% of the container */
+      max-width: 150px; /* Set a maximum width to avoid stretching on larger screens */
+      height: auto; /* Maintain aspect ratio */
       object-fit: cover;
     }
 

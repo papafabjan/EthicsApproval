@@ -4,6 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import AssignReviewers from "../components/AssignReviewers";
 import { UserContext } from "../components/UserContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faEye,
+  faUsers,
+  faCheck,
+  faTrashAlt
+} from "@fortawesome/free-solid-svg-icons";
 
 const Dashboard = () => {
   const [applications, setApplications] = useState([]);
@@ -291,7 +298,7 @@ const Dashboard = () => {
           <div>
             <div className="header">
               <p className="application">Applicant Name</p>
-              <p className="date">Date of submission</p>
+              <p className="date">Submission</p>
               <p className="status">Status</p>
               <p className="actions">Actions</p>
             </div>
@@ -321,7 +328,7 @@ const Dashboard = () => {
                               })
                             }
                           >
-                            View/Comment
+                           <FontAwesomeIcon icon={faEye} size="lg" />
                           </button>
                           {sessionUser.role === "admin" && (
                             <button
@@ -341,25 +348,25 @@ const Dashboard = () => {
                                 // !(application.status === "Reviewers assigned by Ethics Admin")
                               }
                             >
-                              Assign Reviewers
+                              <FontAwesomeIcon icon={faUsers} size="lg" />
                             </button>
                           )}
                           <button
-                            className="btn"
+                            className="btn_appro"
                             onClick={() => approve(application.id)}
                             disabled={
                               application.status ===
                               "Comments added, awaiting review by applicant"
                             }
                           >
-                            Approve
+                          <FontAwesomeIcon icon={faCheck} size="lg" />
                           </button>
                           {sessionUser.role === "admin" && (
                             <button
-                              className="btn"
+                              className="btn_delete"
                               onClick={() => deleteApplication(application.id)}
                             >
-                              Delete Application
+                                <FontAwesomeIcon icon={faTrashAlt} size="lg" />
                             </button>
                           )}
                         </div>

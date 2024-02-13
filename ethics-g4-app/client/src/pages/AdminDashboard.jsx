@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import StyledDashboard from "../styled/Dashboard.styled";
 
 const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
@@ -71,7 +72,6 @@ const AdminDashboard = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        // Update the local state with the updated user data
         setUsers((prevUsers) =>
           prevUsers.map((user) =>
             user.user_id === userId ? { ...user, role: data.role } : user
@@ -150,7 +150,8 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div>
+    <StyledDashboard>
+      <div className="header">
       <Link to={`${import.meta.env.VITE_SERVER_URL}/api/users`}>
         <h1>Admin Dashboard</h1>
       </Link>
@@ -261,6 +262,7 @@ const AdminDashboard = () => {
         </>
       )}
     </div>
+   </StyledDashboard>
   );
 };
 

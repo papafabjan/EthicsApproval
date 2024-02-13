@@ -1,3 +1,4 @@
+// Guides.jsx
 import { Link } from "react-router-dom";
 import StyledGuides from "../styled/Guides.styled";
 
@@ -5,13 +6,9 @@ const Guides = () => {
   return (
     <>
       <StyledGuides>
-        <h2>
-          This is the guides page where Applicants, Supervisors and Reviewers
-          are provided further information for their role regarding Ethics
-          Approval.
-        </h2>
+        <h2>Guide with Ethics Approval Information for Applicants, Supervisors and Reviewers</h2>
 
-        <div className="card w-50">
+        <div className="card">
           <div className="card-body">
             <h5 className="card-title">Applicant</h5>
             <p className="card-text">
@@ -23,7 +20,7 @@ const Guides = () => {
           </div>
         </div>
 
-        <div className="card w-50">
+        <div className="card">
           <div className="card-body">
             <h5 className="card-title">Supervisor</h5>
             <p className="card-text">
@@ -35,7 +32,7 @@ const Guides = () => {
           </div>
         </div>
 
-        <div className="card w-50">
+        <div className="card">
           <div className="card-body">
             <h5 className="card-title">Reviewer</h5>
             <p className="card-text">

@@ -2,7 +2,7 @@ function Pg0({ formik }) {
   return (
     <>
       <div>
-        <h1 style={{ textAlign: "center" }}>
+        <h1>
           Computer Science Department Ethics Application Form
         </h1>
         <p>

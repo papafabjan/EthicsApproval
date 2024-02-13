@@ -7,14 +7,17 @@ function Pg3({ formik, emphasizeFields, mode }) {
 
   // Function to generate links for uploaded files
   const generateFileLinks = (fileNames) => {
+    // Check if fileNames is undefined or null
+    if (!fileNames) {
+      return null; // or handle the case in an appropriate way
+    }
+
     const links = fileNames.split(",").map((fileName, index) => (
       <div key={index}>
         <a
           href={
             applicationId
-              ? `${
-                  import.meta.env.VITE_SERVER_URL
-                }/submitFiles/application_id_${applicationId}/${fileName}`
+              ? `${import.meta.env.VITE_SERVER_URL}/submitFiles/application_id_${applicationId}/${fileName}`
               : ""
           }
           target="_blank"
@@ -225,7 +228,7 @@ function Pg3({ formik, emphasizeFields, mode }) {
           Sensitive Material/tools<span style={{ color: "red" }}>*</span>
         </label>
 
-        {(mode === "apply" || mode ==="edit") && (
+        {(mode === "apply" || mode === "edit") && (
           <input
             type="file"
             multiple
@@ -237,7 +240,7 @@ function Pg3({ formik, emphasizeFields, mode }) {
           />
         )}
 
-        {mode !== "apply" && (
+        {mode == "view" && (
           <>
             <h4>Uploaded Files:</h4>
             {generateFileLinks(sensitiveTopicsFilesFileNames)}

@@ -1,6 +1,8 @@
 import { useState } from "react";
+
 import Comment from "../Comment";
 import { useParams } from "react-router-dom";
+
 
 export const Pg7 = ({ formik, emphasizeFields, mode }) => {
   const { applicationId } = useParams();
@@ -38,9 +40,11 @@ export const Pg7 = ({ formik, emphasizeFields, mode }) => {
     const files = event.target.files;
     formik.setFieldValue(initialValuesName, files);
 
+
     // Update file names array
     const fileNames = Array.from(files).map((file) => file.name);
     formik.setFieldValue(`${initialValuesName}FileNames`, fileNames);
+
   };
 
   return (

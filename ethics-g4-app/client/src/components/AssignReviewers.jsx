@@ -481,6 +481,55 @@ function AssignReviewers({applicationId}) {
                 Fabian Price &lt;sgdzfab123@gmail.com&gt;
               </label>
             </div>
+
+
+            <div>
+              <label>
+                <input
+                  type="checkbox"
+                  value="okpanagiwths@gmail.com"
+                  checked={selectedReviewers.includes("okpanagiwths@gmail.com")}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setSelectedReviewers((prevReviewers) => {
+                      if (prevReviewers.includes(value)) {
+                        return prevReviewers.filter(
+                          (reviewer) => reviewer !== value
+                        );
+                      } else {
+                        return [...prevReviewers, value];
+                      }
+                    });
+                  }}
+                />{" "}
+                Panagiwths Karalis &lt;okpanagiwths@gmail.com&gt;
+              </label>
+            </div>
+
+
+
+            <div>
+              <label>
+                <input
+                  type="checkbox"
+                  value="pkaralis@york.citycollege.eu"
+                  checked={selectedReviewers.includes("pkaralis@york.citycollege.eu")}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setSelectedReviewers((prevReviewers) => {
+                      if (prevReviewers.includes(value)) {
+                        return prevReviewers.filter(
+                          (reviewer) => reviewer !== value
+                        );
+                      } else {
+                        return [...prevReviewers, value];
+                      }
+                    });
+                  }}
+                />{" "}
+                P karalis &lt;pkaralis@york.citycollege.eu&gt;
+              </label>
+            </div>
           </div>
         )}
         {riskLevel === "low" && (
@@ -551,6 +600,10 @@ function AssignReviewers({applicationId}) {
               <option
                 value="fpapa@york.citycollege.eu"
                 label="Fabian Papa <fpapa@york.citycollege.eu>"
+              />
+               <option
+                value="pkaralis@york.citycollege.eu"
+                label="Panagiotis Karalis <pkaralis@york.citycollege.eu>"
               />
             </select>
           </div>

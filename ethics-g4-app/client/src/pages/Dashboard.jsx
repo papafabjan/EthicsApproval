@@ -339,6 +339,7 @@ const Dashboard = () => {
                                 // Set fetchTrigger to trigger re-fetch when Assign Reviewers is clicked
                                 setFetchTrigger((prev) => prev + 1);
                               }}
+
                               disabled={
                                 !(
                                   application.status ===
@@ -347,6 +348,7 @@ const Dashboard = () => {
                                 // &&
                                 // !(application.status === "Reviewers assigned by Ethics Admin")
                               }
+
                             >
                               <FontAwesomeIcon icon={faUsers} size="lg" />
                             </button>

@@ -3,11 +3,7 @@ import { UserContext } from "../components/UserContext";
 import StyledMyApplications from "../styled/MyApplications.styled";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faEye,
-  faPen,
-} from "@fortawesome/free-solid-svg-icons";
+
 
 const MyApplications = () => {
   const [applications, setApplications] = useState([]);
@@ -140,7 +136,7 @@ const MyApplications = () => {
                         })
                       }
                     >
-                      <FontAwesomeIcon icon={faEye} size="lg" />
+                      <i className="fa-solid fa-eye"></i>
                     </button>
                     <button
                       className="btn"
@@ -156,7 +152,7 @@ const MyApplications = () => {
                           "Comments added, awaiting review by applicant"
                       }
                     >
-                      <FontAwesomeIcon icon={faPen} size="lg" />
+                      <i className="fa-solid fa-pen"></i>
                     </button>
                   </div>
                 </div>

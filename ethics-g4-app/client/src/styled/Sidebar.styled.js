@@ -1,11 +1,12 @@
 import styled from "styled-components";
 
 const Sidebar = styled.div`
-  background: #ffaa33;
-  border-radius: 2rem;
+  background: linear-gradient(45deg, #ffc003 0%, #ffaa33 100%);
+  /* background: #ffaa33; */
+  border-radius: 24px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center; /* Center content horizontally */
   padding: 2rem;
   gap: 2rem;
   height: 100%;
@@ -17,13 +18,31 @@ const Sidebar = styled.div`
     width: 50%;
   }
 
+  .logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    img {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  .container,
+  .icon-titles-container {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch; /* Stretch to fit the container horizontally */
+    justify-content: center; /* Center content vertically */
+    flex: 1; /* Take up remaining space */
+  }
+
   .icon-title {
     display: flex;
     align-items: center;
     font-weight: bold;
-    flex-direction: row;
-    width: 200%;
-    height: 150%;
+    height: 20%;
     white-space: nowrap;
     margin-left: 10px;
 

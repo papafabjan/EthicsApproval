@@ -45,16 +45,7 @@ const Navbar = () => {
       <nav className="navbar">
         <div className="container-fluid">
           <form className="d-flex" role="search">
-            <input
-              className="form-control me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-              name="searchSite"
-            />
-            <button className="btn" type="submit">
-              <i className="fa-solid fa-search" />
-            </button>
+          
           </form>
             {user?.admin_of_department && (
               <p style={{ color: "black" }}>Department: {user.admin_of_department}</p>

@@ -3,7 +3,7 @@ import styled from "styled-components";
 const StyledDashboard = styled.div`
   h1 {
     margin-bottom: 10px;
-    color: #333; /* Set the color to your desired text color */
+    color: #333;
     position: relative;
     display: inline-block;
   }
@@ -13,10 +13,10 @@ const StyledDashboard = styled.div`
     position: absolute;
     width: 100%;
     height: 2px;
-    background-color: #ffa07a; /* Light Dark Orange */
+    background-color: #fa9a00;
     bottom: 0;
     left: 0;
-    opacity: 0.5; /* Adjust the opacity as needed */
+    opacity: 0.5;
   }
 
   a {
@@ -27,16 +27,16 @@ const StyledDashboard = styled.div`
   input {
     padding: 10px;
     margin-bottom: 16px;
-    border: 1px solid #ffa07a; /* Light Dark Orange */
+    border: 1px solid #fa9a00;
     border-radius: 4px;
-    outline: none; /* Remove default input focus outline */
+    outline: none;
   }
 
   .header {
     display: flex;
     justify-content: space-between;
     padding: 10px;
-    color: #888; /* Slightly muted color */
+    color: #888;
   }
 
   table {
@@ -63,7 +63,7 @@ const StyledDashboard = styled.div`
   }
 
   .btn {
-    background-color: #ffa07a; /* Light Dark Orange */
+    background-color: #ffa07a;
     color: #fff;
     padding: 8px 16px;
     border: none;

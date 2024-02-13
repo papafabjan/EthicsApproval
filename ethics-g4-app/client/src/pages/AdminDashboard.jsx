@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import StyledDashboard from "../styled/Dashboard.styled";
+import StyledAdminDashboard from "../styled/AdminDashboard.styled";
 
 const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
@@ -150,7 +150,7 @@ const AdminDashboard = () => {
   };
 
   return (
-    <StyledDashboard>
+    <StyledAdminDashboard>
       <div className="header">
       <Link to={`${import.meta.env.VITE_SERVER_URL}/api/users`}>
         <h1>Admin Dashboard</h1>
@@ -262,7 +262,7 @@ const AdminDashboard = () => {
         </>
       )}
     </div>
-   </StyledDashboard>
+   </StyledAdminDashboard>
   );
 };
 

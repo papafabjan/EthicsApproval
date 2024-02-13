@@ -56,6 +56,9 @@ const Navbar = () => {
               <i className="fa-solid fa-search" />
             </button>
           </form>
+            {user?.admin_of_department && (
+              <p style={{ color: "black" }}>Department: {user.admin_of_department}</p>
+            )}
           <span className="navbar-text">
             {user?.loggedIn === null ? (
               ""

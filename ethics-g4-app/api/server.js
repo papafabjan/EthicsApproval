@@ -1,5 +1,5 @@
 const express = require("express");
-const multer = require('multer');
+const path = require("path");
 require("dotenv").config();
 const app = express();
 const cors = require("cors");
@@ -13,8 +13,10 @@ const commentsRoutes = require("./routes/commentsRouter");
 const fileSubmissionRouter = require("./routes/fileSubmissionRouter");
 const reviewerRoutes = require("./routes/reviewerRouter");
 const supervisorRoutes = require("./routes/supervisorRouter");
+const departmentsRoutes = require("./routes/departmentsRouter");
 
-
+// Serve static files from the 'submitFiles' directory
+app.use('/submitFiles', express.static(path.join(__dirname, 'submitFiles')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -33,6 +35,7 @@ app.use("/api", commentsRoutes);
 app.use("/api", fileSubmissionRouter);
 app.use("/api", reviewerRoutes);
 app.use("/api", supervisorRoutes);
+app.use("/api", departmentsRoutes);
 
 app.use(
   session({

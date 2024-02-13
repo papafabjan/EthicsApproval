@@ -1,16 +1,7 @@
 import React, { useState } from "react";
 import Comment from "../Comment";
 
-export const Pg6 = ({ formik, mode }) => {
-  const [comment, setComment] = useState("");
-
-  const handleCommentSave = (fieldName) => {
-    // Save the comment to formik or perform any other actions as needed
-    formik.setValues({
-      ...formik.values,
-      [fieldName]: comment,
-    });
-  };
+export const Pg6 = ({ formik, emphasizeFields, mode }) => {
   return (
     <>
       <div className="form-group">

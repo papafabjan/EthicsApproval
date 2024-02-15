@@ -3,7 +3,7 @@ import styled from "styled-components";
 const App = styled.div`
   min-height: 100vh;
   background: linear-gradient(45deg, #333333 0%, #454545 100%);
-  padding: 2rem;
+  padding: 2em;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   font-family: "Montserrat", sans-serif;
   font-weight: 300;

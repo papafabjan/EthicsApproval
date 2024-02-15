@@ -155,7 +155,7 @@ const AdminDashboard = () => {
         <Link to={`${import.meta.env.VITE_SERVER_URL}/api/users`}>
           <h1>Admin Dashboard</h1>
         </Link>
-        <div>
+        <div className="tabs">
           <button className="btn" onClick={() => setCurrentView("users")}>
             Manage Users
           </button>
@@ -200,7 +200,7 @@ const AdminDashboard = () => {
                           className="btn"
                           onClick={() => updateAdminRole(user.user_id)}
                         >
-                          Change to Admin
+                          Make Admin
                         </button>
                         <button
                           className="btn"
@@ -209,7 +209,7 @@ const AdminDashboard = () => {
                             updateUserRole(user.user_id, "staff", "")
                           }
                         >
-                          Change to Staff
+                          Make Staff
                         </button>
                         <button
                           className="btn"
@@ -218,10 +218,10 @@ const AdminDashboard = () => {
                             updateUserRole(user.user_id, "student", "")
                           }
                         >
-                          Change to User
+                          Make User
                         </button>
                         <button
-                          className="btn"
+                          className="btn btn_delete"
                           disabled={selectedUserId === user.user_id}
                           onClick={() => deleteUser(user.user_id)}
                         >
@@ -244,23 +244,24 @@ const AdminDashboard = () => {
         )}
         {currentView === "departments" && (
           <>
-            <h1> Departments</h1>
-            <input
-              type="text"
-              placeholder="Department name"
-              value={department_name}
-              onChange={(e) => setDepartmentName(e.target.value)}
-            />
-            <input
-              type="text"
-              placeholder="Department code"
-              value={department_code}
-              onChange={(e) => setDepartmentCode(e.target.value)}
-            />
-            <button className="btn" onClick={() => addDepartment()}>
-              Create a Department
-            </button>
-            <table>
+            <div className="create-departments">
+              <input
+                type="text"
+                placeholder="Department name"
+                value={department_name}
+                onChange={(e) => setDepartmentName(e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="Department code"
+                value={department_code}
+                onChange={(e) => setDepartmentCode(e.target.value)}
+              />
+              <button className="btn btn_appro" onClick={() => addDepartment()}>
+                Create Department
+              </button>
+            </div>
+            <table className="departments-table">
               <thead>
                 <tr>
                   <th>Department Name</th>

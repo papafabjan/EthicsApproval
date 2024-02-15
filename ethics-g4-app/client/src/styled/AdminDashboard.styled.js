@@ -60,7 +60,24 @@ const AdminDashboard = styled.div`
     flex-basis: 25%;
     text-align: center;
   }
-
+.tabs{
+  display: flex;
+  justify-content: space-between;
+}
+.create-departments{
+  display: flex;
+  justify-content: space-evenly;
+  margin: 20px;
+  align-items: center;
+  .btn{
+    width: 30%;
+  }
+}
+.departments-table{
+  thead tr{
+    box-shadow:none;
+  }
+}
   .btn {
     background-color: #ffa07a;
     color: #fff;
@@ -69,8 +86,7 @@ const AdminDashboard = styled.div`
     border-radius: 4px;
     cursor: pointer;
     margin: 3px;
-    width: 20%;
-    height: fit-content;
+    width: 100%;
   }
 `;
 

@@ -29,8 +29,20 @@ const Content = styled.div`
     left: 0;
     opacity: 0.5;
   }
-  
-  /* border: 5px solid purple; */
+
+  .btn_appro {
+    background-color: #29a329 !important;
+    &:hover {
+      background-color: #28d128 !important;
+    }
+  }
+
+  .btn_delete {
+    background-color: #b30000 !important;
+    &:hover {
+      background-color: #d40202 !important;
+    }
+  }
 
   /* width */
   &::-webkit-scrollbar {

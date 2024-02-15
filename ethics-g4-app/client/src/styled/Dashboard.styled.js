@@ -73,20 +73,6 @@ const StyledDashboard = styled.div`
     height: fit-content;
   }
 
-  .btn_appro {
-    background-color: #29a329 !important;
-    &:hover {
-      background-color: #28d128 !important;
-    }
-  }
-
-  .btn_delete {
-    background-color: #b30000 !important;
-    &:hover {
-      background-color: #d40202 !important;
-    }
-  }
-
   @media (max-width: 768px) {
     .row {
       flex-direction: column;

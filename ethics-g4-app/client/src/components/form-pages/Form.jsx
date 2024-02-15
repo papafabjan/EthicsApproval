@@ -337,138 +337,147 @@ const Form = () => {
         };
 
         sendCommentsToServer();
-      }
-      if (mode === "edit") {
-        try {
-          const response = await fetch(
-            `${
-              import.meta.env.VITE_SERVER_URL
-            }/api/applications/edit/${applicationId}`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                application: values,
-                user: sessionUser,
-              }),
-            }
-          );
-
-          if (!response.ok) {
-            console.log({ sessionUser, values });
-            throw new Error("Failed to edit application");
-          }
-
-          const responseData = await response.json();
-          console.log("Application edited successfully:", responseData);
-          navigate("/myapplications");
-          //  window.location.reload(true);
-        } catch (error) {
-          // Handle error or show notification to the user
-          console.error(error.message);
-        }
-      } else {
-        try {
-          const userID = userData.user_id;
-          const response = await fetch(
-            `${import.meta.env.VITE_SERVER_URL}/api/applications/add`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                userID,
-                values: adaptValuesForSubmission(values),
-              }),
-            }
-          );
-
-          if (!response.ok) {
-            console.log({ userID, values });
-            throw new Error("Failed to submit application");
-          }
-
-          const responseData = await response.json();
-          console.log("Application submitted successfully:", responseData);
-
-          ////////////
-
-          async function executeLogicAndUploadFiles() {
-            try {
-              // Step 1: Execute logic and update application ID for the folder name
-              const executeLogicResponse = await fetch(
-                "http://localhost:4000/api/execute-logic",
-                {
-                  method: "POST",
-                }
-              );
-
-              if (!executeLogicResponse.ok) {
-                throw new Error("Failed to execute logic");
-              }
-
-              const { applicationId } = await executeLogicResponse.json();
-
-              console.log("Application ID:", applicationId);
-
-              // Step 2: Upload files to the correct folder
-              const formData = new FormData();
-
-              for (
-                var i = 0;
-                i < formik.values.SensitiveTopicsFiles.length;
-                i++
-              ) {
-                formData.append("files", formik.values.SensitiveTopicsFiles[i]);
-              }
-
-              for (var i = 0; i < formik.values.AdditionalForms.length; i++) {
-                formData.append("files", formik.values.AdditionalForms[i]);
-              }
-
-              formData.append("files", formik.values.ParentalConsent);
-              formData.append("files", formik.values.ParentalInformation);
-              formData.append("files", formik.values.ChildInformation);
-              formData.append("files", formik.values.HeadTeacherConsent);
-              formData.append("files", formik.values.HeadteacherInformation);
-              formData.append("files", formik.values.AccessibleConsentMaterial);
-              formData.append("files", formik.values.ProxyConsentProcedure);
-              formData.append("files", formik.values.ParticipantInformation);
-              formData.append("files", formik.values.ParticipantConsent);
-              formData.append("files", formik.values.ParticipantDebriefing);
-              formData.append("files", formik.values.AccessibilityLetter);
-              formData.append("files", formik.values.ListofQuestions);
-
-              console.log(formData);
-
-              // Make the fetch request
-              fetch("http://localhost:4000/api/multiple", {
+      } else if (mode !== "review") {
+        if (mode === "edit" && applicationId) {
+          try {
+            const response = await fetch(
+              `${
+                import.meta.env.VITE_SERVER_URL
+              }/api/applications/edit/${applicationId}`,
+              {
                 method: "POST",
-                body: formData,
-              })
-                .then((response) => response.text()) // Use response.text() for non-JSON responses
-                .then((data) => {
-                  console.log("Success:", data);
-                })
-                .catch((error) => {
-                  console.error("Error:", error);
-                });
-            } catch (error) {
-              console.error("Error:", error);
-            }
-          }
-          // Call the function
-          executeLogicAndUploadFiles();
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  application: adaptValuesForSubmission(values),
+                  user: sessionUser,
+                }),
+              }
+            );
 
-          ////////////
-          navigate("/myapplications");
-          //  window.location.reload(true);
-        } catch (error) {
-          console.error("Error:", error.message);
+            if (!response.ok) {
+              console.log({ sessionUser, values });
+              throw new Error("Failed to edit application");
+            }
+
+            const responseData = await response.json();
+            console.log("Application edited successfully:", responseData);
+            navigate("/myapplications");
+            //  window.location.reload(true);
+          } catch (error) {
+            // Handle error or show notification to the user
+            console.error(error.message);
+          }
         }
+        if (mode === "apply") {
+          try {
+            const userID = userData.user_id;
+            const response = await fetch(
+              `${import.meta.env.VITE_SERVER_URL}/api/applications/add`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  userID,
+                  values: adaptValuesForSubmission(values),
+                }),
+              }
+            );
+
+            if (!response.ok) {
+              console.log({ userID, values });
+              throw new Error("Failed to submit application");
+            }
+
+            const responseData = await response.json();
+            console.log("Application submitted successfully:", responseData);
+          } catch (error) {
+            console.error("Error:", error.message);
+          }
+        }
+
+        ////////////
+console.log("executing logic");
+        async function executeLogicAndUploadFiles() {
+          try {
+            // Step 1: Execute logic and update application ID for the folder name
+            const executeLogicResponse = await fetch(
+              "http://localhost:4000/api/update-application-id",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  mode: mode,
+                  applicationId: applicationId,
+                }),
+              }
+            );
+
+            if (!executeLogicResponse.ok) {
+              throw new Error("Failed to execute logic");
+            }
+
+            const { receivedApplicationId } = await executeLogicResponse.json();
+
+            console.log("Received application ID:", receivedApplicationId);
+
+            // Step 2: Upload files to the correct folder
+            const formData = new FormData();
+
+            for (
+              var i = 0;
+              i < formik.values.SensitiveTopicsFiles.length;
+              i++
+            ) {
+              formData.append("files", formik.values.SensitiveTopicsFiles[i]);
+            }
+
+            for (var i = 0; i < formik.values.AdditionalForms.length; i++) {
+              formData.append("files", formik.values.AdditionalForms[i]);
+            }
+
+            formData.append("files", formik.values.ParentalConsent);
+            formData.append("files", formik.values.ParentalInformation);
+            formData.append("files", formik.values.ChildInformation);
+            formData.append("files", formik.values.HeadTeacherConsent);
+            formData.append("files", formik.values.HeadteacherInformation);
+            formData.append("files", formik.values.AccessibleConsentMaterial);
+            formData.append("files", formik.values.ProxyConsentProcedure);
+            formData.append("files", formik.values.ParticipantInformation);
+            formData.append("files", formik.values.ParticipantConsent);
+            formData.append("files", formik.values.ParticipantDebriefing);
+            formData.append("files", formik.values.AccessibilityLetter);
+            formData.append("files", formik.values.ListofQuestions);
+
+            console.log(formData);
+
+            // Make the fetch request
+            fetch("http://localhost:4000/api/multiple", {
+              method: "POST",
+              body: formData,
+            })
+              .then((response) => response.text()) // Use response.text() for non-JSON responses
+              .then((data) => {
+                console.log("Success:", data);
+              })
+              .catch((error) => {
+                console.error("Error:", error);
+              });
+          } catch (error) {
+            console.error("Error:", error);
+          }
+        }
+        // Call the function
+        executeLogicAndUploadFiles();
+
+        ////////////
+        navigate("/myapplications");
+        //  window.location.reload(true);
       }
     },
   });
@@ -692,7 +701,7 @@ const Form = () => {
                 <Button
                   className="btn"
                   onClick={handleSubmit}
-                  disabled={!formik.isValid}
+                  disabled={!formik.isValid || mode === "view"}
                   type="submit"
                 >
                   Submit

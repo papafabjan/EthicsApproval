@@ -1,11 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Comment from "../Comment";
 import { UserContext } from "../UserContext";
 import { useContext } from "react";
 
 function Pg1({ formik, emphasizeFields, mode }) {
   const user = useContext(UserContext);
-
+  const [departments, setDepartments] = useState([]);
+  
+  useEffect(() => {
+    if (user && user.loggedIn) {
+      // Fetch departments from API
+      fetch(`${import.meta.env.VITE_SERVER_URL}/api/departments`)
+        .then((response) => response.json())
+        .then((data) => {
+          setDepartments(data);
+        })
+        .catch((error) => console.error("Error fetching departments:", error));
+    }
+  }, []);
   function splitUsername(username) {
     const names = username.split(" ");
     // If there are 2 or more names, assume the first is the first name,
@@ -20,7 +32,6 @@ function Pg1({ formik, emphasizeFields, mode }) {
       return { firstName: username, middleName: "", lastName: "" };
     }
   }
-
   // Set the form data based on the user's information
   if (user && user.username) {
     const userNames = splitUsername(user.username);
@@ -213,27 +224,34 @@ function Pg1({ formik, emphasizeFields, mode }) {
             <label htmlFor="Department">
               Department enrolled to <span style={{ color: "red" }}>*</span>
             </label>
-            <select
-              id="Department"
-              name="Department"
-              className="form-control"
-              value={formik.values.Department}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              style={{
-                borderColor:
-                  emphasizeFields?.Department && formik.touched?.Department
-                    ? "red"
-                    : "",
-              }}
-              disabled={mode === "review" || mode === "view"}
-            >
-              <option value="" label="Select a Department" />
-              <option value="BAED" label="Business Studies" />
-              <option value="PSY" label="Psychology Studies" />
-              <option value="COM" label="Computer Studies" />
-              <option value="HUM" label="Humanities Studies" />
-            </select>
+            {departments.length > 0 ? (
+              <select
+                id="Department"
+                name="Department"
+                className="form-control"
+                value={formik.values.Department}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                style={{
+                  borderColor:
+                    emphasizeFields?.Department && formik.touched?.Department
+                      ? "red"
+                      : "",
+                }}
+                disabled={mode === "review" || mode === "view"}
+              >
+                <option value="" label="Select a Department" />
+                {departments.map((department) => (
+                  <option
+                    key={department.id}
+                    value={department.code}
+                    label={department.name}
+                  />
+                ))}
+              </select>
+            ) : (
+              <p>No departments found.</p>
+            )}
             {formik.touched.Department && formik.errors.Department && (
               <div style={{ color: "red" }}>{formik.errors.Department}</div>
             )}

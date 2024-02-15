@@ -323,7 +323,7 @@ const Dashboard = () => {
                               })
                             }
                           >
-                            <i class="fa-solid fa-eye"></i>
+                            <i className="fa-solid fa-eye"></i>
                           </button>
                           {sessionUser.role === "admin" && (
                             <button

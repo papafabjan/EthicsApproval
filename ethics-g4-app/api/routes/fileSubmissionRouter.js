@@ -63,7 +63,7 @@ router.post("/update-application-id", async (req, res) => {
       deleteAllFilesInFolder(folderPath);
     }
     // Send the application ID in the response
-    res.json({ applicationId: applicationId });
+    res.json({ success: true, message: "Updated application ID successfully" });
   } catch (error) {
     console.error("Error:", error);
     res.status(500).send("Internal Server Error");

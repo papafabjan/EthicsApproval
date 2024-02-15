@@ -1,10 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Comment from "../Comment";
 import { useParams } from "react-router-dom";
 
 function Pg3({ formik, emphasizeFields, mode }) {
   const { applicationId } = useParams();
+  // Get the file names from formik values
+ const [initialSensitiveTopicsFilesNames, setInitialSensitiveTopicsFilesNames] =
+   useState(null);
 
+    useEffect(() => {
+      // Set initial file names when component mounts
+      setInitialSensitiveTopicsFilesNames(
+        formik.values.SensitiveTopicsFilesFileNames
+      );
+    }, []);
   // Function to generate links for uploaded files
   const generateFileLinks = (fileNames) => {
     // Check if fileNames is undefined or null
@@ -17,7 +26,9 @@ function Pg3({ formik, emphasizeFields, mode }) {
         <a
           href={
             applicationId
-              ? `${import.meta.env.VITE_SERVER_URL}/submitFiles/application_id_${applicationId}/${fileName}`
+              ? `${
+                  import.meta.env.VITE_SERVER_URL
+                }/submitFiles/application_id_${applicationId}/${fileName}`
               : ""
           }
           target="_blank"
@@ -29,11 +40,6 @@ function Pg3({ formik, emphasizeFields, mode }) {
     ));
     return links;
   };
-
-
-  // Get the file names from formik values
-  const sensitiveTopicsFilesFileNames =
-    formik.values.SensitiveTopicsFilesFileNames;
 
   const handleFilesChange = (event, initialValuesName) => {
     const files = event.target.files;
@@ -240,10 +246,17 @@ function Pg3({ formik, emphasizeFields, mode }) {
           />
         )}
 
-        {mode == "view" && (
+        {mode !== "apply" && (
           <>
             <h4>Uploaded Files:</h4>
-            {generateFileLinks(sensitiveTopicsFilesFileNames)}
+            {mode === "edit" && (
+              <h6>
+                Keep in mind this is only a preview of what was uploaded
+                originally. Please re-upload the files using the file inputs if
+                you wish to modify your application
+              </h6>
+            )}
+            {generateFileLinks(initialSensitiveTopicsFilesNames)}
           </>
         )}
 

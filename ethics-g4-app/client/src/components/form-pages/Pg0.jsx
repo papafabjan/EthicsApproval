@@ -1,18 +1,8 @@
 function Pg0({ formik }) {
   return (
     <>
-      <div>
-        <h1>
-          Computer Science Department Ethics Application Form
-        </h1>
-        <p>
-          Use this form to apply for Ethics Approval.
-          <span className="underlined">
-            You need to include any additional documents attached to the
-            Application, so that they are also reviewed by the necessary
-            reviewers.
-          </span>
-        </p>
+      <div className="notes">
+        <h1>Ethics Application Form</h1>
         <p>
           This submission covers research projects conducted with Humans by
           taught students enrolled in undergraduate or postgraduate degrees
@@ -24,25 +14,44 @@ function Pg0({ formik }) {
           departmental ethics contact). Please check the following instructions
           before submitting:
         </p>
-        <ul>
-          <li>
-            If you are a student, make sure you have discussed the ethics issues
-            extensively with your supervisor.
-          </li>
-          <li>
+        <p>
+          If you are a student, make sure you have discussed the ethics issues
+          extensively with your supervisor.{" "}
+          <span className="underlined">
             Make sure that you have completed all the relevant documents
             attached to the Application, which are necessary for the Ethics
-            review process (e.g., Information sheet and Consent Form).
+            review process
+          </span>
+          (e.g., Information sheet and Consent Form). You can find the CITY
+          College ethics template forms at the{" "}
+          <a href="/document_templates"> Document Templates</a> page.
+        </p>
+
+        <strong>IMPORTANT NOTES:</strong>
+
+        <ul>
+          <li>
+            <p>
+              All future correspondence regarding the outcomes of the
+              application will be communicated to you using the email address of
+              the account you used during login. To avoid any confusion, please
+              ensure you use your academic email when using this application.
+            </p>
           </li>
           <li>
-            You can find the CITY College ethics template forms at the this link
+            <p>
+              You can edit your application immediately after submitting it.
+              However, during the review process, editing is only permitted if
+              mistakes are found.
+            </p>
+          </li>
+          <li>
+            <p>
+              When editing an application, make sure to re-upload the required
+              files as the previous ones are deleted.
+            </p>
           </li>
         </ul>
-        <strong>
-          IMPORTANT NOTE: All future correspondence of the results of the
-          application will be communicated to you using your college email,
-          which you will have to provide below:
-        </strong>
       </div>
     </>
   );

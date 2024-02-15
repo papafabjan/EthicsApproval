@@ -7,9 +7,9 @@ const App = styled.div`
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   font-family: "Montserrat", sans-serif;
   font-weight: 300;
-  color: #333; /* Dark grey text color */
+  color: #333; 
   button.btn {
-    background-color: #ff7518; /* Adjusted orange color */
+    background-color: #ff7518; 
     color: #fff;
     padding: 12px 24px;
     margin: 8px;
@@ -17,16 +17,16 @@ const App = styled.div`
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Added transform transition */
+    transition: background-color 0.3s ease, transform 0.2s ease; 
 
     &:hover {
-      background-color: #fc9c00; /* Adjusted hover color */
+      background-color: #fc9c00; 
       box-shadow: 0 0 11px rgba(33, 33, 33, 0.4);
-      transform: scale(1.05); /* Scale the button on hover */
+      transform: scale(1.05); 
     }
     &:focus {
       color: #fff;
-      background-color: #ff7518; /* Adjusted hover color */
+      background-color: #ff7518; 
     }
   }
 
@@ -37,7 +37,7 @@ const App = styled.div`
 
     li {
       font-size: 18px;
-      color: #333; /* Dark grey text color */
+      color: #333; 
       margin-bottom: 8px;
     }
   }

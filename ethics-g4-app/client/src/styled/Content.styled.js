@@ -42,9 +42,6 @@ const Content = styled.div`
     background: rgba(255, 183, 0, 0.841);
   }
 
-  .underlined {
-    text-decoration: underline;
-  }
 `;
 
 export default Content;

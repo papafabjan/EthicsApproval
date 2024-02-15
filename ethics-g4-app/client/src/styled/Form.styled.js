@@ -1,6 +1,24 @@
 import styled from "styled-components";
 
-const Form = styled.div``;
+const Form = styled.div`
+  .notes {
+    .underlined {
+      text-decoration: underline;
+    }
+    a {
+      text-decoration: none;
+      color: #e36402;
+    }
+    strong{
+      font-weight: 600;
+    }
+  }
+  .notes ul li {
+    margin: 0 auto;
+    font-size: 16px;
+    color: #000;
+  }
+`;
 
 export const NavigationButtons = styled.div`
   display: flex;

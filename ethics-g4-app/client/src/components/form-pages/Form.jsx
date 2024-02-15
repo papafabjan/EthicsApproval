@@ -6,6 +6,7 @@ import { UserContext } from "../UserContext";
 import * as yup from "yup";
 import { NavigationButtons } from "../../styled/Form.styled";
 import { Button } from "../../styled/Form.styled";
+import StyledForm from "../../styled/Form.styled";
 import Pg0 from "./Pg0";
 import Pg1 from "./Pg1";
 import Pg2 from "./Pg2";
@@ -400,7 +401,7 @@ const Form = () => {
         }
 
         ////////////
-console.log("executing logic");
+        console.log("executing logic");
         async function executeLogicAndUploadFiles() {
           try {
             // Step 1: Execute logic and update application ID for the folder name
@@ -421,10 +422,6 @@ console.log("executing logic");
             if (!executeLogicResponse.ok) {
               throw new Error("Failed to execute logic");
             }
-
-            const { receivedApplicationId } = await executeLogicResponse.json();
-
-            console.log("Received application ID:", receivedApplicationId);
 
             // Step 2: Upload files to the correct folder
             const formData = new FormData();
@@ -800,7 +797,11 @@ console.log("executing logic");
     }
   };
 
-  return <>{renderFormStep()}</>;
+  return (
+    <>
+      <StyledForm>{renderFormStep()}</StyledForm>
+    </>
+  );
 };
 
 export default Form;

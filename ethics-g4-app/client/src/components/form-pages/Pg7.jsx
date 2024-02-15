@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Comment from "../Comment";
 import { useParams } from "react-router-dom";
@@ -6,8 +6,21 @@ import { useParams } from "react-router-dom";
 
 export const Pg7 = ({ formik, emphasizeFields, mode }) => {
   const { applicationId } = useParams();
+  // Get the file names from formik values
+  const [initialListofQuestionsFileNames, setInitialListofQuestionsFileNames] =
+    useState(null);
+  const [initialAdditionalFormsFileNames, setInitialAdditionalFormsFileNames] =
+    useState(null);
 
+  useEffect(() => {
+    // Set initial file names when component mounts
+    setInitialListofQuestionsFileNames(formik.values.ListofQuestionsFileNames);
+    setInitialAdditionalFormsFileNames(formik.values.AdditionalFormsFileNames);
+  }, []);
   const generateFileLinks = (fileNames) => {
+     if (!fileNames) {
+       return null; 
+     }
     const links = fileNames.split(",").map((fileName, index) => (
       <div key={index}>
         <a
@@ -40,11 +53,9 @@ export const Pg7 = ({ formik, emphasizeFields, mode }) => {
     const files = event.target.files;
     formik.setFieldValue(initialValuesName, files);
 
-
     // Update file names array
     const fileNames = Array.from(files).map((file) => file.name);
     formik.setFieldValue(`${initialValuesName}FileNames`, fileNames);
-
   };
 
   return (
@@ -57,7 +68,7 @@ export const Pg7 = ({ formik, emphasizeFields, mode }) => {
           Upload your proposed list of questions (e.g., questionnaires, photos,
           interreview questions, etc) in any format.
         </p>
-        {(mode === "apply" || mode ==="edit") && (
+        {(mode === "apply" || mode === "edit") && (
           <input
             type="file"
             name="ListofQuestions"
@@ -71,7 +82,14 @@ export const Pg7 = ({ formik, emphasizeFields, mode }) => {
         {mode !== "apply" && formik.values.ListofQuestionsFileNames && (
           <>
             <h4>Uploaded Files:</h4>
-            {generateFileLinks(formik.values.ListofQuestionsFileNames)}
+            {mode === "edit" && (
+              <h6>
+                Keep in mind this is only a preview of what was uploaded
+                originally. Please re-upload the files using the file inputs if
+                you wish to modify your application
+              </h6>
+            )}
+            {generateFileLinks(initialListofQuestionsFileNames)}
           </>
         )}
         {/* Comment component for the "ListofQuestions" field */}
@@ -90,7 +108,7 @@ export const Pg7 = ({ formik, emphasizeFields, mode }) => {
         <label htmlFor="AdditionalForms">
           Any additional forms /documents you need to submit (optional)
         </label>
-        {(mode === "apply" || mode ==="edit") && (
+        {(mode === "apply" || mode === "edit") && (
           <input
             type="file"
             multiple
@@ -105,7 +123,14 @@ export const Pg7 = ({ formik, emphasizeFields, mode }) => {
         {mode !== "apply" && formik.values.AdditionalFormsFileNames && (
           <>
             <h4>Uploaded Files:</h4>
-            {generateFileLinks(formik.values.AdditionalFormsFileNames)}
+            {mode === "edit" && (
+              <h6>
+                Keep in mind this is only a preview of what was uploaded
+                originally. Please re-upload the files using the file inputs if
+                you wish to modify your application
+              </h6>
+            )}
+            {generateFileLinks(initialAdditionalFormsFileNames)}
           </>
         )}
 

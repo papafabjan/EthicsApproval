@@ -157,7 +157,6 @@ router.post("/applications/add", async (req, res) => {
       [userID]
     );
 
-
     const supervisorInfo = await pool.query(
       `
         SELECT username FROM users WHERE email = $1;
@@ -165,19 +164,19 @@ router.post("/applications/add", async (req, res) => {
       [supervisorEmail]
     );
 
-
-
     // Extracting names and emails from the query result for applicant
     const applicantName = applicantInfo.rows[0].username;
     const applicantEmail = applicantInfo.rows[0].email;
     const supervisorName = supervisorInfo.rows[0].username;
 
-
     const recipientNames = [applicantName, supervisorName];
     const recipientEmails = [applicantEmail, supervisorEmail];
     const recipientTypes = ["applicant", "supervisor"];
     const status = "Pending supervisor's admission";
-    var subjects = ["Your application has been submitted", "You have been assigned as a supervisor"]
+    var subjects = [
+      "Your application has been submitted",
+      "You have been assigned as a supervisor",
+    ];
     const applicant_id = applicantInfo.rows[0].user_id;
     const applicationIdQuery = await pool.query(
       `
@@ -197,7 +196,15 @@ router.post("/applications/add", async (req, res) => {
     );
     const projectTitle = projectTitleQuery.rows[0].field_value;
     var userRole = "supervisor";
-    send_mail(subjects, recipientTypes, recipientNames, recipientEmails, status, userRole, projectTitle);
+    send_mail(
+      subjects,
+      recipientTypes,
+      recipientNames,
+      recipientEmails,
+      status,
+      userRole,
+      projectTitle
+    );
 
     console.log(recipientNames);
     console.log(recipientEmails);
@@ -239,7 +246,7 @@ router.post("/applications/update-status/:id", async (req, res) => {
         SELECT username, email FROM users WHERE user_id = $1;
         `,
       [applicantId.rows[0].applicant_id]
-    )
+    );
 
     // Extracting names and emails from the query result for applicant
     const applicantName = applicantInfo.rows[0].username;
@@ -248,8 +255,8 @@ router.post("/applications/update-status/:id", async (req, res) => {
     recipientNames = [applicantName];
     recipientEmails = [applicantEmail];
     recipientTypes = [...userType];
-    console.log(recipientEmails)
-    console.log(recipientNames)
+    console.log(recipientEmails);
+    console.log(recipientNames);
 
     //fetch status of application with id
     const fetchStatusQuery = `
@@ -302,7 +309,6 @@ router.post("/applications/update-status/:id", async (req, res) => {
       });
     }
 
-
     if (
       userRole === "reviewer" &&
       currentStatus.includes("by") &&
@@ -323,7 +329,6 @@ router.post("/applications/update-status/:id", async (req, res) => {
         [id]
       );
 
-
       const adminInfo = await pool.query(
         `
         SELECT username, email FROM users WHERE role = 'admin';
@@ -333,9 +338,8 @@ router.post("/applications/update-status/:id", async (req, res) => {
       const userType = ["admin"];
 
       // Extracting names and emails from the query result
-      const adminNames = adminInfo.rows.map(user => user.username);
-      const adminEmails = adminInfo.rows.map(user => user.email);
-
+      const adminNames = adminInfo.rows.map((user) => user.username);
+      const adminEmails = adminInfo.rows.map((user) => user.email);
 
       // Combine admin and applicant names and emails into single arrays
       recipientNames = [...recipientNames, ...adminNames];
@@ -343,7 +347,9 @@ router.post("/applications/update-status/:id", async (req, res) => {
       recipientTypes = [...recipientTypes, ...userType];
 
       const subjectAdmin = ["You have to give the final approval"];
-      const subjectApplicant = ["Approved by reviewer, pending ethics' approval"];
+      const subjectApplicant = [
+        "Approved by reviewer, pending ethics' approval",
+      ];
 
       var subjects = [...subjectApplicant, ...subjectAdmin];
 
@@ -352,8 +358,8 @@ router.post("/applications/update-status/:id", async (req, res) => {
       console.log(recipientNames);
       console.log(recipientEmails);
 
-      const remainingApprovalArray = remainingApprovalQuery.rows[0].remaining_approval;
-
+      const remainingApprovalArray =
+        remainingApprovalQuery.rows[0].remaining_approval;
 
       // Check if the current user has already approved the application
       if (!remainingApprovalArray.includes(userId)) {
@@ -392,22 +398,27 @@ router.post("/applications/update-status/:id", async (req, res) => {
     `;
         const updatedApplication = await pool.query(updateStatusQuery, [
           status,
-
           id,
         ]);
 
         // remove userId from remaining_approval array in applications
         const removeReviewerFromRemainingApproval = await pool.query(
           `
-
         UPDATE applications
         SET remaining_approval = array_remove(remaining_approval, $1)
         WHERE id = $2
         `,
           [userId, id]
-        )
-              send_mail(subjects, recipientTypes, recipientNames, recipientEmails, status, userRole, projectTitle);
-
+        );
+        send_mail(
+          subjects,
+          recipientTypes,
+          recipientNames,
+          recipientEmails,
+          status,
+          userRole,
+          projectTitle
+        );
 
         return res.json({
           success: true,
@@ -415,23 +426,32 @@ router.post("/applications/update-status/:id", async (req, res) => {
         });
       }
     }
-
-
     if (userRole === "none") {
       if (
         currentStatus ===
         "Reviewer approval complete, pending ethics admin's approval"
       ) {
+        console.log("entered none");
+        // Use parameterized queries to avoid SQL injection
         const updateStatusQuery =
-          "UPDATE applications SET status = $1, WHERE id = $2 RETURNING *";
-        const updatedApplication = await pool.query(updateStatusQuery, [
-          status,
-          id,
-        ]);
-        return res.json({
-          success: true,
-          message: "Successful Approval",
-        });
+          "UPDATE applications SET status = $1 WHERE id = $2 RETURNING *";
+
+        try {
+          const updatedApplication = await pool.query(updateStatusQuery, [
+            status,
+            id,
+          ]);
+          return res.json({
+            success: true,
+            message: "Successful Approval",
+          });
+        } catch (error) {
+          console.error(error.message);
+          return res.status(500).json({
+            success: false,
+            message: "Server Error",
+          });
+        }
       } else {
         return res.json({
           success: false,
@@ -440,6 +460,7 @@ router.post("/applications/update-status/:id", async (req, res) => {
         });
       }
     }
+
     if (userRole === "supervisor" && isAdmin) {
       if (currentStatus === "Pending supervisor's admission") {
         status = "Approved by supervisor, pending reviewers addition";
@@ -448,12 +469,34 @@ router.post("/applications/update-status/:id", async (req, res) => {
           currentStatus ===
           "Reviewer approval complete, pending ethics admin's approval"
         ) {
+          const subjectApplicant = ["Your application has been approved"];
+
+          var subjects = [...subjectApplicant];
+
           const updateStatusQuery =
-            "UPDATE applications SET status = $1, WHERE id = $2 RETURNING *";
+            "UPDATE applications SET status = $1, date = $2 WHERE id = $3 RETURNING *";
+          const currentDate = new Date();
           const updatedApplication = await pool.query(updateStatusQuery, [
             status,
+            currentDate,
             id,
           ]);
+
+          send_mail(
+            subjects,
+            recipientTypes,
+            recipientNames,
+            recipientEmails,
+            status,
+            userRole,
+            projectTitle
+          );
+
+          console.log("subjects:", subjects);
+          console.log(projectTitle);
+          console.log(recipientNames);
+          console.log(recipientEmails);
+          console.log("Hello user type", recipientTypes);
           return res.json({
             success: true,
             message: "Successful Approval",
@@ -469,45 +512,44 @@ router.post("/applications/update-status/:id", async (req, res) => {
     }
 
     if (userRole === "reviewer" && isAdmin) {
+      if (
+        currentStatus ===
+        "Reviewer approval complete, pending ethics admin's approval"
+      ) {
+        const subjectApplicant = ["Your application has been approved"];
 
-        if (
-          currentStatus ===
-          "Reviewer approval complete, pending ethics admin's approval"
-        ) {
-        
+        var subjects = [...subjectApplicant];
 
-          // Combine admin and applicant names and emails into single arrays
-          recipientNames = [...recipientNames];
-          recipientEmails = [...recipientEmails];
-          recipientTypes = [...recipientTypes];
+        const updateStatusQuery =
+          "UPDATE applications SET status = $1, date = $2 WHERE id = $3 RETURNING *";
+        const currentDate = new Date();
+        const updatedApplication = await pool.query(updateStatusQuery, [
+          status,
+          currentDate,
+          id,
+        ]);
 
-          const subjectApplicant = ["Your application has been approved"];
+        send_mail(
+          subjects,
+          recipientTypes,
+          recipientNames,
+          recipientEmails,
+          status,
+          userRole,
+          projectTitle
+        );
 
-          var subjects = [...subjectApplicant];
+        console.log("subjects:", subjects);
+        console.log(projectTitle);
+        console.log(recipientNames);
+        console.log(recipientEmails);
+        console.log("Hello user type", recipientTypes);
 
-          const updateStatusQuery =
-            "UPDATE applications SET status = $1, date = $2 WHERE id = $3 RETURNING *";
-          const currentDate = new Date();
-          const updatedApplication = await pool.query(updateStatusQuery, [
-            status,
-            currentDate,
-            id,
-          ]);
-
-          send_mail(subjects, recipientTypes, recipientNames, recipientEmails, status, userRole, projectTitle);
-
-          console.log("subjects:", subjects);
-          console.log(projectTitle);
-          console.log(recipientNames);
-          console.log(recipientEmails);
-          console.log("Hello user type", recipientTypes);
-          
-
-          return res.json({
-            success: true,
-            message: "Successful Approval",
-          });
-        } 
+        return res.json({
+          success: true,
+          message: "Successful Approval",
+        });
+      }
     }
 
     if (userRole === "supervisor") {
@@ -524,9 +566,8 @@ router.post("/applications/update-status/:id", async (req, res) => {
           const userType = ["admin"];
 
           // Extracting names and emails from the query result
-          const adminNames = adminInfo.rows.map(user => user.username);
-          const adminEmails = adminInfo.rows.map(user => user.email);
-
+          const adminNames = adminInfo.rows.map((user) => user.username);
+          const adminEmails = adminInfo.rows.map((user) => user.email);
 
           // Combine admin and applicant names and emails into single arrays
           recipientNames = [...recipientNames, ...adminNames];
@@ -534,12 +575,11 @@ router.post("/applications/update-status/:id", async (req, res) => {
           recipientTypes = [...recipientTypes, ...userType];
 
           const subjectAdmin = ["You have to assign reviewers"];
-          const subjectApplicant = ["Approved by supervisor, pending reviewers addition"];
+          const subjectApplicant = [
+            "Approved by supervisor, pending reviewers addition",
+          ];
 
           var subjects = [...subjectApplicant, ...subjectAdmin];
-
-
-
         } catch (error) {
           console.error("Error fetching admin users:", error);
           return res.status(500).json({
@@ -547,7 +587,6 @@ router.post("/applications/update-status/:id", async (req, res) => {
             message: "An error occurred while fetching admin users.",
           });
         }
-
       } else {
         return res.json({
           success: false,
@@ -563,9 +602,8 @@ router.post("/applications/update-status/:id", async (req, res) => {
         const userType = ["admin"];
 
         // Extracting names and emails from the query result
-        const adminNames = adminInfo.rows.map(user => user.username);
-        const adminEmails = adminInfo.rows.map(user => user.email);
-
+        const adminNames = adminInfo.rows.map((user) => user.username);
+        const adminEmails = adminInfo.rows.map((user) => user.email);
 
         // Combine admin and applicant names and emails into single arrays
         recipientNames = [...recipientNames, ...adminNames];
@@ -573,10 +611,11 @@ router.post("/applications/update-status/:id", async (req, res) => {
         recipientTypes = [...recipientTypes, ...userType];
 
         const subjectAdmin = ["You have to do the final Approve"];
-        const subjectApplicant = ["Approved by reviewers, pending Admin's Approval"];
+        const subjectApplicant = [
+          "Approved by reviewers, pending Admin's Approval",
+        ];
 
         var subjects = [...subjectApplicant, ...subjectAdmin];
-
       }
       if (
         currentStatus ===
@@ -601,10 +640,16 @@ router.post("/applications/update-status/:id", async (req, res) => {
       id,
     ]);
 
-
-
     console.log(" I am calling send_mail now");
-    send_mail(subjects, recipientTypes, recipientNames, recipientEmails, status, userRole, projectTitle);
+    send_mail(
+      subjects,
+      recipientTypes,
+      recipientNames,
+      recipientEmails,
+      status,
+      userRole,
+      projectTitle
+    );
 
     console.log("subjects:", subjects);
     console.log(projectTitle);
@@ -682,14 +727,25 @@ router.post("/applications/edit/:applicationId", async (req, res) => {
     const { applicationId } = req.params;
     const userID = req.body.user.id;
     const values = req.body.application;
-
+    let oldStatus = ""; // Initialize oldStatus
     const oldStatusQuery = await pool.query(
       `
-    SELECT application_status FROM comments WHERE application_id = $1;
-    `,
+  SELECT application_status FROM comments WHERE application_id = $1;
+  `,
       [applicationId]
     );
-    const oldStatus = oldStatusQuery.rows[0].application_status;
+    const currentStatusQuery = await pool.query(
+      `
+      SELECT status FROM applications WHERE id = $1;
+      `,
+      [applicationId]
+    );
+    console.log("got current status", currentStatusQuery.rows[0].status);
+    if (oldStatusQuery.rows.length > 0) {
+      oldStatus = oldStatusQuery.rows[0].application_status;
+    } else {
+      oldStatus = currentStatusQuery.rows[0].status;
+    }
     console.log(oldStatus);
     const fetchUserIDQuery = `
       SELECT user_id from users WHERE google_id = $1
@@ -761,57 +817,61 @@ router.post("/applications/edit/:applicationId", async (req, res) => {
     const contentEntries = Object.entries(values);
 
     for (const [fieldName, fieldValue] of contentEntries) {
+      let fieldValueToStore;
       if (
         fieldValue === "" ||
         (Array.isArray(fieldValue) && fieldValue.length === 0)
       ) {
-        // Delete the field from the `application_content` table if the value is empty
+        // If the value is empty or an empty array, delete the field from the table
         await pool.query(
           `
-        DELETE FROM application_content
-        WHERE application_id = $1 AND field_name = $2;
-        `,
+      DELETE FROM application_content
+      WHERE application_id = $1 AND field_name = $2;
+      `,
           [applicationId, fieldName]
         );
       } else {
-        // Check if the field already exists in the `application_content` table
+        // Join array values with commas
+        fieldValueToStore = Array.isArray(fieldValue)
+          ? fieldValue.join(",")
+          : fieldValue;
+        // Check if the field already exists in the table
         const existingField = await pool.query(
           `
-        SELECT * FROM application_content
-        WHERE application_id = $1 AND field_name = $2;
-        `,
+      SELECT * FROM application_content
+      WHERE application_id = $1 AND field_name = $2;
+      `,
           [applicationId, fieldName]
         );
 
         if (existingField.rows.length === 0) {
-          // Insert the new field into the `application_content` table
+          // If the field does not exist, insert the new field into the table
           await pool.query(
             `
-          INSERT INTO application_content (application_id, field_name, field_value) 
-          VALUES ($1, $2, $3);
-          `,
-            [applicationId, fieldName, fieldValue]
+        INSERT INTO application_content (application_id, field_name, field_value) 
+        VALUES ($1, $2, $3);
+        `,
+            [applicationId, fieldName, fieldValueToStore]
           );
         } else {
-          // Update the existing field in the `application_content` table
+          // If the field exists, update the existing field in the table
           await pool.query(
             `
-    UPDATE application_content
-    SET field_value = $3
-    WHERE application_id = $1 AND field_name = $2;
-    `,
-            [applicationId, fieldName, fieldValue]
+        UPDATE application_content
+        SET field_value = $3
+        WHERE application_id = $1 AND field_name = $2;
+        `,
+            [applicationId, fieldName, fieldValueToStore]
           );
         }
       }
     }
-
     //delete existing comments for this application
     const deleteComments = await pool.query(
       `
-    DELETE FROM comments
-    WHERE application_id = $1;
-    `,
+DELETE FROM comments
+WHERE application_id = $1;
+`,
       [applicationId]
     );
 

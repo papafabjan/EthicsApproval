@@ -281,6 +281,7 @@ const Dashboard = () => {
                       {department.name}
                     </option>
                   ))}
+                  <i className="fa-solid fa-chevron-down"></i>
                 </select>
               )}
             </div>

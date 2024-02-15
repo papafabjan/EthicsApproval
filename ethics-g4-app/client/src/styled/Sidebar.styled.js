@@ -2,11 +2,10 @@ import styled from "styled-components";
 
 const Sidebar = styled.div`
   background: linear-gradient(45deg, #ffc003 0%, #ffaa33 100%);
-  /* background: #ffaa33; */
   border-radius: 24px;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Center content horizontally */
+  align-items: center; 
   padding: 2rem;
   gap: 2rem;
   height: 100%;

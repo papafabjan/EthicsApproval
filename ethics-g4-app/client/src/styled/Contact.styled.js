@@ -15,7 +15,7 @@ const StyledContact = styled.div`
   .email-boxes {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center; /* Center items on smaller screens */
+    justify-content: space-evenly; /* Center items on smaller screens */
 
     .email-box {
       width: calc(50% - 20px); /* Two columns on larger screens */

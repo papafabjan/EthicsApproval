@@ -21,7 +21,7 @@ const Container = () => {
           <Navbar />
         </StyledNavbar>
         <StyledContent>
-          {user.loggedIn ? <Outlet /> : <h1>Please sign in</h1>}
+          <Outlet />
         </StyledContent>
       </StyledContentContainer>
     </StyledContainer>

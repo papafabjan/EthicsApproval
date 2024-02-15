@@ -122,6 +122,15 @@ function pick_html_message(user_type, recipient_name, status, user_role, project
       <a href="http://localhost:3000/MyApplications">Check MyApplications</a>
     `;
     }
+    else if (status === "Comments added, awaiting review by applicant") {
+      return `
+      <h3>Dear ${recipient_name}, your application (${projectTitle}) has been commented.!!</h3>
+      <p>Your application status has been updated to: ${status}</p>
+      <p>You have to edit your application so it can proceed to the next step.</p>
+      <p>Press the button if you want to be transferred to MyApplications.</p>
+      <a href="http://localhost:3000/MyApplications">Check MyApplications</a>
+    `;
+    }
   } else if (user_type === "supervisor") {
     if (status === "Pending supervisor's admission") {
       return `

@@ -1,22 +1,22 @@
 import styled from "styled-components";
 
 const StyledDashboard = styled.div`
-  h1 {
-    margin-bottom: 10px;
-    color: #333;
-    position: relative;
-    display: inline-block;
+  .dashboard-container {
+    display: flex;
+    justify-content: space-between; /* Aligns items with space between them */
+    align-items: center;
   }
 
-  h1::after {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 2px;
-    background-color: #fa9a00;
-    bottom: 0;
-    left: 0;
-    opacity: 0.5;
+  .dashboard-title {
+    margin-right: auto; /* Pushes the title to the left as much as possible */
+  }
+
+  .options-container {
+    margin-left: 10px; /* Adjust spacing between title and selection */
+  }
+
+  .options-select {
+    width: auto;
   }
 
   a {
@@ -32,7 +32,6 @@ const StyledDashboard = styled.div`
     outline: none;
   }
 
-  
   table {
     width: 100%;
     border-collapse: collapse;

@@ -129,6 +129,7 @@ const MyApplications = () => {
                   </div>
                   <div className="actions">
                     <button
+                      title="View"
                       className="btn"
                       onClick={() =>
                         navigate(`/application/${application.id}`, {
@@ -139,6 +140,7 @@ const MyApplications = () => {
                       <i className="fa-solid fa-eye"></i>
                     </button>
                     <button
+                      title="Edit"
                       className="btn"
                       onClick={() =>
                         navigate(`/application/${application.id}`, {

@@ -156,10 +156,18 @@ const AdminDashboard = () => {
           <h1>Admin Dashboard</h1>
         </Link>
         <div className="tabs">
-          <button className="btn" onClick={() => setCurrentView("users")}>
+          <button
+            title="Switch tabs"
+            className="btn"
+            onClick={() => setCurrentView("users")}
+          >
             Manage Users
           </button>
-          <button className="btn" onClick={() => setCurrentView("departments")}>
+          <button
+            title="Switch tabs"
+            className="btn"
+            onClick={() => setCurrentView("departments")}
+          >
             Manage Departments
           </button>
         </div>
@@ -187,6 +195,7 @@ const AdminDashboard = () => {
                     <tr key={user.user_id}>
                       <td className="username">
                         <img
+                          title={user.username}
                           src={user.img}
                           alt={user.username}
                           referrerPolicy="no-referrer"
@@ -276,7 +285,7 @@ const AdminDashboard = () => {
                     <td>{department.code}</td>
                     <td>
                       <button
-                        className="btn"
+                        className="btn btn_delete"
                         onClick={() => deleteDepartment(department.id)}
                       >
                         Delete

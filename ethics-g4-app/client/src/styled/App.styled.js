@@ -22,7 +22,7 @@ const App = styled.div`
     &:hover {
       background-color: #fc9c00; 
       box-shadow: 0 0 11px rgba(33, 33, 33, 0.4);
-      transform: scale(1.05); 
+      transform: scale(1.03); 
     }
     &:focus {
       color: #fff;

@@ -270,6 +270,7 @@ const Dashboard = () => {
               {/* Display the options list under the dashboard title */}
               {departments.length > 0 && (
                 <select
+                  title="Filter through departments"
                   className="options-select form-control"
                   onChange={handleDepartmentChange}
                   value={selectedDepartment}
@@ -306,7 +307,9 @@ const Dashboard = () => {
                     <td>
                       <div className="row">
                         <div className="application">
-                          <p>{applicantNames[application.applicant_id]}</p>
+                          <p title={"Application ID: " + application.id}>
+                            {applicantNames[application.applicant_id]}
+                          </p>
                         </div>
                         <div className="date">
                           <p>
@@ -318,6 +321,7 @@ const Dashboard = () => {
                         </div>
                         <div className="actions">
                           <button
+                            title="View/Comment"
                             className="btn"
                             onClick={() =>
                               navigate(`/application/${application.id}`, {
@@ -329,6 +333,7 @@ const Dashboard = () => {
                           </button>
                           {sessionUser.role === "admin" && (
                             <button
+                              title="Assign Reviewers"
                               className="btn"
                               onClick={() => {
                                 setShowAssignReviewers((prev) => !prev);
@@ -349,6 +354,7 @@ const Dashboard = () => {
                             </button>
                           )}
                           <button
+                            title="Approve"
                             className="btn btn_appro"
                             onClick={() => approve(application.id)}
                             disabled={
@@ -360,6 +366,7 @@ const Dashboard = () => {
                           </button>
                           {sessionUser.role === "admin" && (
                             <button
+                              title="Delete"
                               className="btn btn_delete"
                               onClick={() => deleteApplication(application.id)}
                             >

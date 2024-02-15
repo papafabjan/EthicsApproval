@@ -151,118 +151,145 @@ const AdminDashboard = () => {
 
   return (
     <StyledAdminDashboard>
-      <div className="header">
-      <Link to={`${import.meta.env.VITE_SERVER_URL}/api/users`}>
-        <h1>Admin Dashboard</h1>
-      </Link>
       <div>
-        <button className="btn" onClick={() => setCurrentView("users")}>
-          Manage Users
-        </button>
-        <button className="btn" onClick={() => setCurrentView("departments")}>
-          Manage Departments
-        </button>
-      </div>
-      {currentView === "users" && (
-        <>
-          <div>
+        <Link to={`${import.meta.env.VITE_SERVER_URL}/api/users`}>
+          <h1>Admin Dashboard</h1>
+        </Link>
+        <div>
+          <button className="btn" onClick={() => setCurrentView("users")}>
+            Manage Users
+          </button>
+          <button className="btn" onClick={() => setCurrentView("departments")}>
+            Manage Departments
+          </button>
+        </div>
+        {currentView === "users" && (
+          <>
             <input
               type="text"
               placeholder="Search by username"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <ul>
-              {filteredUsers.map((user) => (
-                <li key={user.user_id}>
-                  <div>
-                    <img
-                      src={user.img}
-                      alt={user.username}
-                      referrerPolicy="no-referrer"
-                    />
-                    <p>{user.username}</p>
-                    <p>Role: {user.role}</p>
-                    {user?.admin_of_department && (
-                      <p>Department: {user.admin_of_department}</p>
+            <div>
+              <div className="header">
+                <p className="username">Username</p>
+                <p className="role">Role</p>
+                <p className="department">Department</p>
+                <p className="actions">Actions</p>
+                <p className="actions"></p>
+              </div>
+            </div>
+            <table>
+              <tbody>
+                {filteredUsers.map((user) => (
+                  <>
+                    <tr key={user.user_id}>
+                      <td className="username">
+                        <img
+                          src={user.img}
+                          alt={user.username}
+                          referrerPolicy="no-referrer"
+                        />
+                        {user.username}
+                      </td>
+                      <td className="role">{user.role}</td>
+                      <td className="department">{user.admin_of_department}</td>
+                      <td className="actions">
+                        <button
+                          className="btn"
+                          onClick={() => updateAdminRole(user.user_id)}
+                        >
+                          Change to Admin
+                        </button>
+                        <button
+                          className="btn"
+                          disabled={selectedUserId === user.user_id}
+                          onClick={() =>
+                            updateUserRole(user.user_id, "staff", "")
+                          }
+                        >
+                          Change to Staff
+                        </button>
+                        <button
+                          className="btn"
+                          disabled={selectedUserId === user.user_id}
+                          onClick={() =>
+                            updateUserRole(user.user_id, "student", "")
+                          }
+                        >
+                          Change to User
+                        </button>
+                        <button
+                          className="btn"
+                          disabled={selectedUserId === user.user_id}
+                          onClick={() => deleteUser(user.user_id)}
+                        >
+                          Delete User
+                        </button>
+                      </td>
+                    </tr>
+                    {selectedUserId === user.user_id && (
+                      <tr key={selectedUserId}>
+                        {selectedUserId !== null &&
+                          selectedUserId === user.user_id &&
+                          renderDepartmentButtons()}
+                      </tr>
                     )}
-                    <button
-                      className="btn"
-                      onClick={() => updateAdminRole(user.user_id)}
-                    >
-                      Change to Admin
-                    </button>
-                    <button
-                      className="btn"
-                      disabled={selectedUserId === user.user_id}
-                      onClick={() => updateUserRole(user.user_id, "staff", "")}
-                    >
-                      Change to Staff
-                    </button>
-                    <button
-                      className="btn"
-                      disabled={selectedUserId === user.user_id}
-                      onClick={() =>
-                        updateUserRole(user.user_id, "student", "")
-                      }
-                    >
-                      Change to User
-                    </button>
-                    <button
-                      className="btn"
-                      disabled={selectedUserId === user.user_id}
-                      onClick={() => deleteUser(user.user_id)}
-                    >
-                      Delete User
-                    </button>
-                  </div>
-                  {selectedUserId !== null &&
-                    selectedUserId === user.user_id &&
-                    renderDepartmentButtons()}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </>
-      )}
-      {currentView === "departments" && (
-        <>
-          <h1> Departments</h1>
-          <input
-            type="text"
-            placeholder="Department name"
-            value={department_name}
-            onChange={(e) => setDepartmentName(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Department code"
-            value={department_code}
-            onChange={(e) => setDepartmentCode(e.target.value)}
-          />
-          <button className="btn" onClick={() => addDepartment()}>
-            Create a Department
-          </button>
-          <ul>
-            {filteredDepartments.map((department) => (
-              <li key={department.id}>
-                <div>
-                  <p>{department.name}</p>
-                  <p>Code: {department.code}</p>
-                  <button
-                    className="btn"
-                    onClick={() => deleteDepartment(department.id)}
-                  >
-                    Delete
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </>
-      )}
-    </div>
-   </StyledAdminDashboard>
+                  </>
+                ))}
+              </tbody>
+            </table>
+          </>
+        )}
+        {currentView === "departments" && (
+          <>
+            <h1> Departments</h1>
+            <input
+              type="text"
+              placeholder="Department name"
+              value={department_name}
+              onChange={(e) => setDepartmentName(e.target.value)}
+            />
+            <input
+              type="text"
+              placeholder="Department code"
+              value={department_code}
+              onChange={(e) => setDepartmentCode(e.target.value)}
+            />
+            <button className="btn" onClick={() => addDepartment()}>
+              Create a Department
+            </button>
+            <table>
+              <thead>
+                <tr>
+                  <th>Department Name</th>
+                  <th>Department Code</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredDepartments.map((department) => (
+                  <tr key={department.id}>
+                    <td>{department.name}</td>
+                    <td>{department.code}</td>
+                    <td>
+                      <button
+                        className="btn"
+                        onClick={() => deleteDepartment(department.id)}
+                      >
+                        Delete
+                      </button>
+                      {/* Additional buttons */}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </>
+        )}
+      </div>
+    </StyledAdminDashboard>
   );
 };
 

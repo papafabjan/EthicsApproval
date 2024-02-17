@@ -268,7 +268,6 @@ const Dashboard = () => {
           <div className="dashboard-container">
             <h1 className="dashboard-title">Dashboard</h1>
             <div className="options-container">
-              {/* Display the options list under the dashboard title */}
               {departments.length > 0 && (
                 <>
                   <select
@@ -284,7 +283,6 @@ const Dashboard = () => {
                       </option>
                     ))}
                   </select>
-                  <i className="fa-solid fa-chevron-down"></i>
                 </>
               )}
             </div>
@@ -346,16 +344,17 @@ const Dashboard = () => {
                                 setFetchTrigger((prev) => prev + 1);
                               }}
                               disabled={
-                                !(
+                                (!(
                                   application.status ===
                                   "Approved by supervisor, pending reviewers addition"
-                                ) 
-                                &&
-                                !(application.status === "Reviewers assigned by Ethics Admin")
-                                || (
+                                ) &&
+                                  !(
+                                    application.status ===
+                                    "Reviewers assigned by Ethics Admin"
+                                  )) ||
                                 showHistory ||
                                 (selectedApplicationId !== application.id &&
-                                  showAssignReviewers))
+                                  showAssignReviewers)
                               }
                             >
                               <i className="fa-solid fa-users"></i>
@@ -371,7 +370,11 @@ const Dashboard = () => {
                                 // setFetchTrigger((prev) => prev + 1);
                                 console.log(selectedApplicationId);
                               }}
-                              disabled={showAssignReviewers}
+                              disabled={
+                                showAssignReviewers ||
+                                (selectedApplicationId !== application.id &&
+                                  showHistory)
+                              }
                             >
                               <i className="fa-solid fa-clock"></i>
                             </button>

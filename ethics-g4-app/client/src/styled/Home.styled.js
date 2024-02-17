@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import backgroundImage from "../../public/assets/images/welcome-bg.png";
+import backgroundImage from "/assets/images/welcome-bg.png";
 const Home = styled.div`
   font-family: "Montserrat", sans-serif;
   display: flex;

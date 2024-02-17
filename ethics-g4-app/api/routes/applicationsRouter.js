@@ -209,6 +209,14 @@ router.post("/applications/add", async (req, res) => {
     console.log(recipientNames);
     console.log(recipientEmails);
 
+    const updateHistory = await pool.query(
+      `
+    INSERT INTO application_history (application_id, date, status, actor_id)
+    VALUES ($1, $2, $3, $4);
+    `,
+      [applicationId, new Date(), "Application was created", userID]
+    );
+
     res.json({ success: true, applicationId });
   } catch (error) {
     console.error(error.message);
@@ -216,7 +224,7 @@ router.post("/applications/add", async (req, res) => {
   }
 });
 
-router.post("/applications/update-status/:id", async (req, res) => {
+router.post("/applications/approve/:id", async (req, res) => {
   const { id } = req.params;
   var status = req.body.status;
   const userID = req.body.user.id;
@@ -420,6 +428,16 @@ router.post("/applications/update-status/:id", async (req, res) => {
           projectTitle
         );
 
+        const updateHistory = await pool.query(
+          `
+        INSERT INTO application_history
+        (application_id, date, status, actor_id)
+        VALUES
+        ($1, $2, $3, $4);
+        `,
+          [id, new Date(), status, userId]
+        );
+
         return res.json({
           success: true,
           message: "Successful Approval",
@@ -469,16 +487,15 @@ router.post("/applications/update-status/:id", async (req, res) => {
           currentStatus ===
           "Reviewer approval complete, pending ethics admin's approval"
         ) {
+          // THIS IS THE FINAL APROVAL
           const subjectApplicant = ["Your application has been approved"];
 
           var subjects = [...subjectApplicant];
 
           const updateStatusQuery =
-            "UPDATE applications SET status = $1, date = $2 WHERE id = $3 RETURNING *";
-          const currentDate = new Date();
+            "UPDATE applications SET status = $1 WHERE id = $2 RETURNING *";
           const updatedApplication = await pool.query(updateStatusQuery, [
             status,
-            currentDate,
             id,
           ]);
 
@@ -492,11 +509,14 @@ router.post("/applications/update-status/:id", async (req, res) => {
             projectTitle
           );
 
-          console.log("subjects:", subjects);
-          console.log(projectTitle);
-          console.log(recipientNames);
-          console.log(recipientEmails);
-          console.log("Hello user type", recipientTypes);
+          const updateHistory = await pool.query(
+            `
+            INSERT INTO application_history (application_id, date, status, actor_id)
+            VALUES ($1, $2, $3, $4);
+          `,
+            [id, new Date(), status, userId]
+          );
+
           return res.json({
             success: true,
             message: "Successful Approval",
@@ -516,16 +536,15 @@ router.post("/applications/update-status/:id", async (req, res) => {
         currentStatus ===
         "Reviewer approval complete, pending ethics admin's approval"
       ) {
+        // THIS IS THE FINAL APROVAL
         const subjectApplicant = ["Your application has been approved"];
 
         var subjects = [...subjectApplicant];
 
         const updateStatusQuery =
-          "UPDATE applications SET status = $1, date = $2 WHERE id = $3 RETURNING *";
-        const currentDate = new Date();
+          "UPDATE applications SET status = $1 WHERE id = $2 RETURNING *";
         const updatedApplication = await pool.query(updateStatusQuery, [
           status,
-          currentDate,
           id,
         ]);
 
@@ -538,13 +557,13 @@ router.post("/applications/update-status/:id", async (req, res) => {
           userRole,
           projectTitle
         );
-
-        console.log("subjects:", subjects);
-        console.log(projectTitle);
-        console.log(recipientNames);
-        console.log(recipientEmails);
-        console.log("Hello user type", recipientTypes);
-
+        const updateHistory = await pool.query(
+          `
+            INSERT INTO application_history (application_id, date, status, actor_id)
+            VALUES ($1, $2, $3, $4);
+          `,
+          [id, new Date(), status, userId]
+        );
         return res.json({
           success: true,
           message: "Successful Approval",
@@ -651,16 +670,43 @@ router.post("/applications/update-status/:id", async (req, res) => {
       projectTitle
     );
 
-    console.log("subjects:", subjects);
-    console.log(projectTitle);
-    console.log(recipientNames);
-    console.log(recipientEmails);
-    console.log("Hello user type", recipientTypes);
+    const updateHistory = await pool.query(
+      `
+        INSERT INTO application_history (application_id, date, status, actor_id)
+        VALUES ($1, $2, $3, $4);
+      `,
+      [id, new Date(), status, userId]
+    );
 
     res.json({ success: true, message: "Successful Approval" });
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Server Error");
+  }
+});
+
+router.get("/applications/:applicationId/history", async (req, res) => {
+  try {
+    const { applicationId } = req.params;
+    console.log(applicationId);
+    const history = await pool.query(
+      `
+        SELECT * FROM application_history
+        WHERE application_id = $1
+        `,
+      [applicationId]
+    );
+    if (history.rows.length === 0) {
+      console.log("Application history not found");
+    }
+
+    if (history.rows.length > 0) {
+      res.json({ success: true, history: history.rows });
+    } else {
+      res.json({ success: false, message: "Application history not found" });
+    }
+  } catch (error) {
+    console.error(error.message);
   }
 });
 

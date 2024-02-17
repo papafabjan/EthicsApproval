@@ -3,11 +3,46 @@ const router = express.Router();
 const pool = require("../db");
 const send_mail = require("../gmailApi");
 
-
-// POST route to assign reviewers
 router.post("/reviewer/assign-reviewer", async (req, res) => {
   try {
-    const { applicationId, reviewers, role } = req.body;
+    const { applicationId, reviewers, role, actor_google_id } = req.body;
+
+    // Check if there are any existing reviewers for the application
+    const existingReviewersQuery = await pool.query(
+      "SELECT * FROM user_roles WHERE application_id = $1 AND role = 'reviewer'",
+      [applicationId]
+    );
+
+    if (existingReviewersQuery.rows.length > 0) {
+      // Remove all previous reviewers for the application
+      await pool.query(
+        `
+        DELETE FROM user_roles
+        WHERE application_id = $1 AND role = 'reviewer';
+        `,
+        [applicationId]
+      );
+
+      // Reset the remaining_approval array
+      await pool.query(
+        `
+        UPDATE applications
+        SET remaining_approval = '{}'
+        WHERE id = $1;
+        `,
+        [applicationId]
+      );
+
+      // Reset the application status
+      await pool.query(
+        `
+        UPDATE applications
+        SET status = 'Reviewers assigned by Ethics Admin'
+        WHERE id = $1;
+        `,
+        [applicationId]
+      );
+    }
 
     for (const reviewer of reviewers) {
       // Search for the user with the specified email in the users table
@@ -58,19 +93,11 @@ router.post("/reviewer/assign-reviewer", async (req, res) => {
       );
     }
 
-
     //Update the status of the application to Reviewers assigned by Ethics Admin
     await pool.query(
       "UPDATE applications SET status = 'Reviewers assigned by Ethics Admin' WHERE id = $1",
       [applicationId]
     );
-
-
-
-
-
-
-
 
     const userIDQuery = await pool.query(
       `
@@ -100,7 +127,7 @@ router.post("/reviewer/assign-reviewer", async (req, res) => {
         `,
         [reviewer]
       );
-      const reviewersNames = reviewerInfo.rows.map(user => user.username);
+      const reviewersNames = reviewerInfo.rows.map((user) => user.username);
       recipientNames = [...recipientNames, reviewersNames];
       subjects = [...subjects, "You have been assigned as a reviewer"];
       recipientEmails = [...recipientEmails, reviewer];
@@ -108,15 +135,7 @@ router.post("/reviewer/assign-reviewer", async (req, res) => {
       recipientTypes = [...recipientTypes, "reviewers"];
     }
 
-
-    // Extracting names and emails from the query result for applicant
-
-
-
-
-
     const status = "Reviewers assigned by Ethics Admin";
-
 
     const projectTitleQuery = await pool.query(
       `
@@ -129,16 +148,40 @@ router.post("/reviewer/assign-reviewer", async (req, res) => {
     );
     const projectTitle = projectTitleQuery.rows[0].field_value;
     var userRole = "reviewers";
-    send_mail(subjects, recipientTypes, recipientNames, recipientEmails, status, userRole, projectTitle);
+    send_mail(
+      subjects,
+      recipientTypes,
+      recipientNames,
+      recipientEmails,
+      status,
+      userRole,
+      projectTitle
+    );
 
     console.log(recipientNames);
     console.log(recipientEmails);
 
+    const actorIdQuery = await pool.query(
+      `
+  SELECT user_id FROM users WHERE google_id = $1;
+  `,
+      [actor_google_id]
+    );
 
+    const actor_id = actorIdQuery.rows[0].user_id;
 
-
-
-
+    const updateHistory = await pool.query(
+      `
+    INSERT INTO application_history (application_id, date, status, actor_id)
+    VALUES ($1, $2, $3, $4);
+    `,
+      [
+        applicationId,
+        new Date(),
+        `Reviewer(s): ${reviewers.join(", ")} were assigned`,
+        actor_id,
+      ]
+    );
 
     res.status(200).json({ message: "Reviewers assigned successfully" });
   } catch (error) {
@@ -146,7 +189,6 @@ router.post("/reviewer/assign-reviewer", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-
 
 // Endpoint to get existing reviewers for an application
 router.get("/reviewer/existing-reviewers", async (req, res) => {
@@ -226,5 +268,8 @@ router.get("/reviewer/applications/:googleUserId", async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+
+
+
 
 module.exports = router;

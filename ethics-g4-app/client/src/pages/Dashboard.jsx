@@ -3,6 +3,7 @@ import StyledDashboard from "../styled/Dashboard.styled";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import AssignReviewers from "../components/AssignReviewers";
+import ApplicationHistory from "../components/ApplicationHistory";
 import { UserContext } from "../components/UserContext";
 
 const Dashboard = () => {
@@ -11,12 +12,14 @@ const Dashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [fetchTrigger, setFetchTrigger] = useState(0); // New state to trigger fetch
   const navigate = useNavigate();
+  const [showHistory, setShowHistory] = useState(false);
   const [showAssignReviewers, setShowAssignReviewers] = useState(false);
   const [selectedApplicationId, setSelectedApplicationId] = useState(null);
   const [departments, setDepartments] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   const sessionUser = useContext(UserContext);
   const adminOfDepartment = sessionUser?.admin_of_department;
+  const userGoogleId = sessionUser?.id;
 
   useEffect(() => {
     if (sessionUser.loggedIn) {
@@ -173,7 +176,7 @@ const Dashboard = () => {
       if (!response.ok) {
         throw new Error(`Error deleting application: ${response.statusText}`);
       }
-      // Set fetchTrigger to trigger re-fetch when Approve is clicked
+      // Set fetchTrigger to trigger re-fetch when Delete is clicked
       setFetchTrigger((prev) => prev + 1);
     } catch (error) {
       console.error("Error deleting application:", error.message);
@@ -185,7 +188,7 @@ const Dashboard = () => {
       const response = await fetch(
         `${
           import.meta.env.VITE_SERVER_URL
-        }/api/applications/update-status/${applicationId}`,
+        }/api/applications/approve/${applicationId}`,
         {
           method: "POST",
           headers: {
@@ -227,8 +230,6 @@ const Dashboard = () => {
   // Filter applications based on search term and selected department
   const filteredApplications = applications.filter((application) => {
     const applicantName = applicantNames[application.applicant_id];
-    console.log("Application Department:", application.department_code); // <-- Check department_code
-    console.log("Selected Department:", selectedDepartment);
     return (
       (!selectedDepartment ||
         application.department_code === selectedDepartment) &&
@@ -269,20 +270,22 @@ const Dashboard = () => {
             <div className="options-container">
               {/* Display the options list under the dashboard title */}
               {departments.length > 0 && (
-                <select
-                  title="Filter through departments"
-                  className="options-select form-control"
-                  onChange={handleDepartmentChange}
-                  value={selectedDepartment}
-                >
-                  <option value="">All Departments</option>
-                  {departments.map((department) => (
-                    <option key={department.id} value={department.code}>
-                      {department.name}
-                    </option>
-                  ))}
+                <>
+                  <select
+                    title="Filter through departments"
+                    className="options-select form-control"
+                    onChange={handleDepartmentChange}
+                    value={selectedDepartment}
+                  >
+                    <option value="">All Departments</option>
+                    {departments.map((department) => (
+                      <option key={department.id} value={department.code}>
+                        {department.name}
+                      </option>
+                    ))}
+                  </select>
                   <i className="fa-solid fa-chevron-down"></i>
-                </select>
+                </>
               )}
             </div>
           </div>
@@ -346,12 +349,31 @@ const Dashboard = () => {
                                 !(
                                   application.status ===
                                   "Approved by supervisor, pending reviewers addition"
-                                )
-                                // &&
-                                // !(application.status === "Reviewers assigned by Ethics Admin")
+                                ) 
+                                &&
+                                !(application.status === "Reviewers assigned by Ethics Admin")
+                                || (
+                                showHistory ||
+                                (selectedApplicationId !== application.id &&
+                                  showAssignReviewers))
                               }
                             >
                               <i className="fa-solid fa-users"></i>
+                            </button>
+                          )}
+                          {sessionUser.role === "admin" && (
+                            <button
+                              title="Application History"
+                              className="btn"
+                              onClick={() => {
+                                setShowHistory((prev) => !prev);
+                                setSelectedApplicationId(application.id);
+                                // setFetchTrigger((prev) => prev + 1);
+                                console.log(selectedApplicationId);
+                              }}
+                              disabled={showAssignReviewers}
+                            >
+                              <i className="fa-solid fa-clock"></i>
                             </button>
                           )}
                           <button
@@ -379,7 +401,18 @@ const Dashboard = () => {
                       <div>
                         {showAssignReviewers &&
                           selectedApplicationId === application.id && (
-                            <AssignReviewers applicationId={application.id} />
+                            <AssignReviewers
+                              applicationId={application.id}
+                              userGoogleId={userGoogleId}
+                            />
+                          )}
+                      </div>
+                      <div>
+                        {showHistory &&
+                          selectedApplicationId === application.id && (
+                            <ApplicationHistory
+                              applicationId={application.id}
+                            />
                           )}
                       </div>
                     </td>

@@ -161,7 +161,7 @@ function pick_html_message(user_type, recipient_name, status, user_role, project
     // Default empty message
     return "";
   }
-  return html_message;
+  return "Bad code";
 }
 
 

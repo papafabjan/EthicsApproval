@@ -35,6 +35,13 @@ CREATE TABLE application_content (
   field_value TEXT
 );
 
+CREATE TABLE application_history (
+  id SERIAL PRIMARY KEY,
+  application_id INTEGER REFERENCES applications(id) NOT NULL,
+  date TIMESTAMP NOT NULL,
+  status VARCHAR(255) NOT NULL,
+  actor_id INTEGER REFERENCES users(user_id)
+);
 
 CREATE TABLE comments (
   id SERIAL PRIMARY KEY,

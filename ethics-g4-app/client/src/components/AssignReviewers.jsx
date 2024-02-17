@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-function AssignReviewers({applicationId}) {
+function AssignReviewers({applicationId, userGoogleId}) {
   const [selectedReviewers, setSelectedReviewers] = useState([]);
   const [riskLevel, setRiskLevel] = useState("");
   const [existingReviewers, setExistingReviewers] = useState([]);
@@ -41,6 +41,7 @@ function AssignReviewers({applicationId}) {
         applicationId: parseInt(applicationId), // Use the applicationId from useParams() and parse it as an INTEGER
         reviewers: selectedReviewers,
         role: "reviewer", // Add the fixed role since this component is for reviewers only
+        actor_google_id: userGoogleId,
       }),
     })
       .then((response) => response.json())
@@ -53,7 +54,7 @@ function AssignReviewers({applicationId}) {
         console.error(error);
       });
 
-    window.location.reload(true);
+    window.location.reload(true); 
   };
 
   useEffect(() => {

@@ -132,22 +132,11 @@ const Form = () => {
   console.log(applicationId);
 
   const adaptValuesForSubmission = (values) => {
-    // Clone the values object to avoid modifying the original
     const adaptedValues = { ...values };
 
-    // Replace file objects with file names
+    // Page3
     adaptedValues.SensitiveTopicsFiles = values.SensitiveTopicsFilesNames;
 
-    // Page4
-    adaptedValues.PotentialParticipants = values.PotentialParticipantsNames;
-    adaptedValues.RecruitingPotentialParticipants =
-      values.RecruitingPotentialParticipantsNames;
-    adaptedValues.Payment = values.PaymentNames;
-    adaptedValues.otherPaymentOption = values.otherPaymentOptionNames;
-    adaptedValues.PotentialHarm = values.PotentialHarmNames;
-    adaptedValues.VulnerableParticipants = values.VulnerableParticipantsNames;
-    adaptedValues.otherVulnerableParticipantsOptions =
-      values.otherVulnerableParticipantsOptionsNames;
 
     // Page5: Yes child
     adaptedValues.ParentalConsent = values.ParentalConsentNames;
@@ -167,7 +156,7 @@ const Form = () => {
     adaptedValues.ParticipantDebriefing = values.ParticipantDebriefingNames;
     adaptedValues.AccessibilityLetter = values.AccessibilityLetterNames;
 
-    // Page6
+    // Page7
     adaptedValues.DataProcessing = values.DataProcessingNames;
     adaptedValues.DataConfidentiality = values.DataConfidentialityNames;
     adaptedValues.DataStorageandSecurity = values.DataStorageandSecurityNames;

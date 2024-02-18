@@ -246,19 +246,20 @@ function Pg3({ formik, emphasizeFields, mode }) {
           />
         )}
 
-        {mode !== "apply" && (
-          <>
-            <h4>Uploaded Files:</h4>
-            {mode === "edit" && (
-              <h6>
-                Keep in mind this is only a preview of what was uploaded
-                originally. Please re-upload the files using the file inputs if
-                you wish to modify your application
-              </h6>
-            )}
-            {generateFileLinks(initialSensitiveTopicsFilesNames)}
-          </>
-        )}
+        {mode !== "apply" &&
+          initialSensitiveTopicsFilesNames && (
+            <>
+              <h4>Uploaded Files:</h4>
+              {mode === "edit" && (
+                <h6>
+                  Keep in mind this is only a preview of what was uploaded
+                  originally. Please re-upload the files using the file inputs
+                  if you wish to modify your application
+                </h6>
+              )}
+              {generateFileLinks(initialSensitiveTopicsFilesNames)}
+            </>
+          )}
 
         {/* Comment component for the "SensitiveMaterialFiles" field */}
         {mode === "review" && (

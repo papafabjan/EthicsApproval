@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import Comment from "../Comment";
 import { useParams } from "react-router-dom";
 
-
 export const Pg7 = ({ formik, emphasizeFields, mode }) => {
   const { applicationId } = useParams();
   // Get the file names from formik values
@@ -18,9 +17,9 @@ export const Pg7 = ({ formik, emphasizeFields, mode }) => {
     setInitialAdditionalFormsFileNames(formik.values.AdditionalFormsFileNames);
   }, []);
   const generateFileLinks = (fileNames) => {
-     if (!fileNames) {
-       return null; 
-     }
+    if (!fileNames) {
+      return null;
+    }
     const links = fileNames.split(",").map((fileName, index) => (
       <div key={index}>
         <a
@@ -79,7 +78,7 @@ export const Pg7 = ({ formik, emphasizeFields, mode }) => {
           />
         )}
 
-        {mode !== "apply" && formik.values.ListofQuestionsFileNames && (
+        {mode !== "apply" && initialListofQuestionsFileNames && (
           <>
             <h4>Uploaded Files:</h4>
             {mode === "edit" && (
@@ -120,19 +119,20 @@ export const Pg7 = ({ formik, emphasizeFields, mode }) => {
           />
         )}
 
-        {mode !== "apply" && formik.values.AdditionalFormsFileNames && (
-          <>
-            <h4>Uploaded Files:</h4>
-            {mode === "edit" && (
-              <h6>
-                Keep in mind this is only a preview of what was uploaded
-                originally. Please re-upload the files using the file inputs if
-                you wish to modify your application
-              </h6>
-            )}
-            {generateFileLinks(initialAdditionalFormsFileNames)}
-          </>
-        )}
+        {mode !== "apply" &&
+          initialAdditionalFormsFileNames && (
+            <>
+              <h4>Uploaded Files:</h4>
+              {mode === "edit" && (
+                <h6>
+                  Keep in mind this is only a preview of what was uploaded
+                  originally. Please re-upload the files using the file inputs
+                  if you wish to modify your application
+                </h6>
+              )}
+              {generateFileLinks(initialAdditionalFormsFileNames)}
+            </>
+          )}
 
         {/* Comment component for the "AdditionalForms" field */}
         {mode === "review" && (

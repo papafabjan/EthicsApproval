@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import backgroundImage from "/assets/images/welcome-bg.png";
+
 
 const Content = styled.div`
   overflow-y: scroll;
@@ -12,6 +14,30 @@ const Content = styled.div`
   border-radius: 24px;
   box-shadow: 0 0px 20px 0px rgba(0, 0, 0, 0.6);
   padding: 30px;
+  position: relative;
+  z-index: 1;
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background-image: ${(props) =>
+      props.background
+        ? `linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(255, 255, 255, 1) 100%
+      ),
+      url(${backgroundImage});`
+        : "none"};
+    background-size: cover;
+    background-repeat: no-repeat;
+    opacity: 0.4;
+    z-index: -1;
+  }
   h1 {
     margin-bottom: 10px;
     color: #333;

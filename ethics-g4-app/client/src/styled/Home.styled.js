@@ -1,16 +1,20 @@
 import styled from "styled-components";
-import backgroundImage from "/assets/images/welcome-bg.png";
+
 const Home = styled.div`
   font-family: "Montserrat", sans-serif;
   display: flex;
   justify-content: center;
-  align-items: center; /* Center vertically */
+  align-items: center;
   height: 100%;
+
   .welcome {
     text-align: left;
     margin-top: 1rem;
     font-size: 18px;
+    position: relative;
+    z-index: 2;
   }
+
   .container {
     display: flex;
     flex-direction: column;

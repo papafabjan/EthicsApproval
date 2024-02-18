@@ -1,19 +1,66 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Comment from "../Comment";
 
 export const Pg5 = ({ formik, emphasizeFields, mode }) => {
   const { applicationId } = useParams();
+
+
+  // Get the file names from formik values
+  const [initialParentalConsent, setInitialParentalConsent] =
+    useState(null);
+  const [initialParentalInformation, setInitialParentalInformation] =
+    useState(null);
+  const [initialChildInformation, setInitialChildInformation] =
+    useState(null);
+  const [initialHeadTeacherConsent, setInitialHeadTeacherConsent] =
+    useState(null);
+  const [initialHeadteacherInformation, setInitialHeadteacherInformation] =
+    useState(null);
+  const [initialAccessibleConsentMaterial, setInitialAccessibleConsentMaterial] =
+    useState(null);
+  const [initialProxyConsentProcedures, setInitialProxyConsentProcedures] =
+    useState(null);
+  const [initialParticipantInformation, setInitialParticipantInformation] =
+    useState(null);
+  const [initialParticipantConsent, setInitialParticipantConsent] =
+    useState(null);
+  const [initialParticipantDebriefing, setInitialParticipantDebriefing] =
+    useState(null);
+  const [initialAccessibilityLetter, setInitialAccessibilityLetter] =
+    useState(null);
+
+
+  useEffect(() => {
+    // Set initial file names when component mounts
+    setInitialParentalConsent(formik.values.ParentalConsentFileNames);
+    setInitialParentalInformation(formik.values.ParentalInformationFileNames);
+    setInitialChildInformation(formik.values.ChildInformationFileNames);
+    setInitialHeadTeacherConsent(formik.values.HeadTeacherConsentFileNames);
+    setInitialHeadteacherInformation(formik.values.HeadteacherInformationFileNames);
+    setInitialAccessibleConsentMaterial(formik.values.AccessibleConsentMaterialFileNames);
+    setInitialProxyConsentProcedures(formik.values.ProxyConsentProceduresFileNames);
+    setInitialParticipantInformation(formik.values.ParticipantInformationFileNames);
+    setInitialParticipantConsent(formik.values.ParticipantConsentFileNames);
+    setInitialParticipantDebriefing(formik.values.ParticipantDebriefingFileNames);
+    setInitialAccessibilityLetter(formik.values.AccessibilityLetterFileNames);
+  }, []);
+
   // Function to generate links for uploaded files
   const generateFileLinks = (fileNames) => {
+
+    // Check if fileNames is undefined or null
+    if (!fileNames) {
+      return null; // or handle the case in an appropriate way
+    }
+
     const links = fileNames.split(",").map((fileName, index) => (
       <div key={index}>
         <a
           href={
             applicationId
-              ? `${
-                  import.meta.env.VITE_SERVER_URL
-                }/submitFiles/application_id_${applicationId}/${fileName}`
+              ? `${import.meta.env.VITE_SERVER_URL
+              }/submitFiles/application_id_${applicationId}/${fileName}`
               : ""
           }
           target="_blank"
@@ -61,7 +108,14 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
             {mode !== "apply" && formik.values.ParentalConsentFileNames && (
               <>
                 <h3>Uploaded Files:</h3>
-                {generateFileLinks(formik.values.ParentalConsentFileNames)}
+                {mode === "edit" && (
+                  <h6>
+                    Keep in mind this is only a preview of what was uploaded
+                    originally. Please re-upload the files using the file inputs if
+                    you wish to modify your application
+                  </h6>
+                )}
+                {generateFileLinks(initialParentalConsent)}
               </>
             )}
             {/* Comment component for the "ParentalConsent" field */}
@@ -99,7 +153,14 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
             {mode !== "apply" && formik.values.ParentalInformationFileNames && (
               <>
                 <h3>Uploaded Files:</h3>
-                {generateFileLinks(formik.values.ParentalInformationFileNames)}
+                {mode === "edit" && (
+                  <h6>
+                    Keep in mind this is only a preview of what was uploaded
+                    originally. Please re-upload the files using the file inputs if
+                    you wish to modify your application
+                  </h6>
+                )}
+                {generateFileLinks(initialParentalInformation)}
               </>
             )}
             {/* Comment component for the "ParentalInformation" field */}
@@ -138,7 +199,14 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
             {mode !== "apply" && formik.values.ChildInformationFileNames && (
               <>
                 <h3>Uploaded Files:</h3>
-                {generateFileLinks(formik.values.ChildInformationFileNames)}
+                {mode === "edit" && (
+                  <h6>
+                    Keep in mind this is only a preview of what was uploaded
+                    originally. Please re-upload the files using the file inputs if
+                    you wish to modify your application
+                  </h6>
+                )}
+                {generateFileLinks(initialChildInformation)}
               </>
             )}
             {/* Comment component for the "ChildInformation" field */}
@@ -173,7 +241,7 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
             {mode !== "apply" && formik.values.HeadTeacherConsentFileNames && (
               <>
                 <h3>Uploaded Files:</h3>
-                {generateFileLinks(formik.values.HeadTeacherConsentFileNames)}
+                {/* {generateFileLinks(formik.values.HeadTeacherConsentFileNames)} */}
               </>
             )}
             {/* Comment component for the "HeadTeacherConsent" field */}
@@ -209,9 +277,9 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
               formik.values.HeadteacherInformationFileNames && (
                 <>
                   <h3>Uploaded Files:</h3>
-                  {generateFileLinks(
+                  {/* {generateFileLinks(
                     formik.values.HeadteacherInformationFileNames
-                  )}
+                  )} */}
                 </>
               )}
             {/* Comment component for the "HeadteacherInformation" field */}
@@ -258,9 +326,9 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
               formik.values.AccessibleConsentMaterialFileNames && (
                 <>
                   <h3>Uploaded Files:</h3>
-                  {generateFileLinks(
+                  {/* {generateFileLinks(
                     formik.values.AccessibleConsentMaterialFileNames
-                  )}
+                  )} */}
                 </>
               )}
             {/* Comment component for the "AccessibleConsentMaterial" field */}
@@ -301,9 +369,9 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
               formik.values.ProxyConsentProceduresFileNames && (
                 <>
                   <h3>Uploaded Files:</h3>
-                  {generateFileLinks(
+                  {/* {generateFileLinks(
                     formik.values.ProxyConsentProceduresFileNames
-                  )}
+                  )} */}
                 </>
               )}
             {/* Comment component for the "ProxyConsentProcedures" field */}
@@ -350,9 +418,9 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
               formik.values.ParticipantInformationFileNames && (
                 <>
                   <h3>Uploaded Files:</h3>
-                  {generateFileLinks(
+                  {/* {generateFileLinks(
                     formik.values.ParticipantInformationFileNames
-                  )}
+                  )} */}
                 </>
               )}
             {/* Comment component for the "ParticipantInformation" field */}
@@ -389,7 +457,7 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
             {mode !== "apply" && formik.values.ParticipantConsentFileNames && (
               <>
                 <h3>Uploaded Files:</h3>
-                {generateFileLinks(formik.values.ParticipantConsentFileNames)}
+                {/* {generateFileLinks(formik.values.ParticipantConsentFileNames)} */}
               </>
             )}
             {/* Comment component for the "ParticipantConsent" field */}
@@ -426,9 +494,9 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
               formik.values.ParticipantDebriefingFileNames && (
                 <>
                   <h3>Uploaded Files:</h3>
-                  {generateFileLinks(
+                  {/* {generateFileLinks(
                     formik.values.ParticipantDebriefingFileNames
-                  )}
+                  )} */}
                 </>
               )}
             {/* Comment component for the "ParticipantDebriefing" field */}
@@ -462,7 +530,7 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
             {mode !== "apply" && formik.values.AccessibilityLetterFileNames && (
               <>
                 <h3>Uploaded Files:</h3>
-                {generateFileLinks(formik.values.AccessibilityLetterFileNames)}
+                {/* {generateFileLinks(formik.values.AccessibilityLetterFileNames)} */}
               </>
             )}
             {/* Comment component for the "AccessibilityLetter" field */}

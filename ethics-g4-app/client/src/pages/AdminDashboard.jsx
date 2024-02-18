@@ -195,7 +195,7 @@ const AdminDashboard = () => {
                     <tr key={user.user_id}>
                       <td className="username">
                         <img
-                          title={user.username}
+                          title={"User ID: " +user.user_id}
                           src={user.img}
                           alt={user.username}
                           referrerPolicy="no-referrer"

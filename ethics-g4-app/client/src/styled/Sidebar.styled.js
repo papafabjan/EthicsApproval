@@ -5,7 +5,7 @@ const Sidebar = styled.div`
   border-radius: 24px;
   display: flex;
   flex-direction: column;
-  align-items: center; 
+  align-items: center;
   padding: 2rem;
   gap: 2rem;
   height: 100%;
@@ -32,9 +32,9 @@ const Sidebar = styled.div`
   .icon-titles-container {
     display: flex;
     flex-direction: column;
-    align-items: stretch; /* Stretch to fit the container horizontally */
-    justify-content: center; /* Center content vertically */
-    flex: 1; /* Take up remaining space */
+    align-items: stretch; 
+    justify-content: center; 
+    flex: 1; 
   }
 
   .icon-title {
@@ -45,7 +45,6 @@ const Sidebar = styled.div`
     white-space: nowrap;
     margin-left: 10px;
 
-    /* Targeting specific icon classes for left margin */
     .fa-solid,
     .fa,
     .fa-table-columns,
@@ -74,20 +73,31 @@ const Sidebar = styled.div`
     right: 0;
     bottom: 0;
     background-color: darkorange;
-    height: 0.2rem; /* Use relative units for height */
+    height: 0.2rem; 
     width: 0;
     transition: transform 0.3s ease-out;
   }
 
-  .icon-title > a:hover:before,
-  .icon-title > a:focus:before,
-  .icon-title > a:active:before {
+  .icon-title > a:focus:after,
+  .icon-title > a:hover:after {
     width: 100%;
+    left: 0%;
+  }
+  
+  .icon-title > a:after {
+    content: "";
+    pointer-events: none;
+    bottom: -2px;
+    left: 50%;
+    position: absolute;
+    width: 0%;
+    height: 3px;
+    background-color: darkorange;
+    transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition-duration: 400ms;
+    transition-property: width, left;
   }
 
-  .icon-title:hover > a {
-    transform: scale(1.05);
-  }
 `;
 
 export default Sidebar;

@@ -777,7 +777,6 @@ const Form = () => {
                   ))}
                 </div>
               )}
-              <pre>{JSON.stringify(formik.values, null, 3)}</pre>
             </div>
           );
         } else {

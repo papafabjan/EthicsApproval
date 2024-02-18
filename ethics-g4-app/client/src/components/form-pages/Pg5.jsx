@@ -105,7 +105,7 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
               onChange={(e) => handleFileChange(e, "ParentalConsent")}
               disabled={mode === "review" || mode === "view"}
             />
-            {mode !== "apply" && formik.values.ParentalConsentFileNames && (
+            {mode !== "apply" && initialParentalConsent && (
               <>
                 <h3>Uploaded Files:</h3>
                 {mode === "edit" && (
@@ -150,7 +150,7 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
               onChange={(e) => handleFileChange(e, "ParentalInformation")}
               disabled={mode === "review" || mode === "view"}
             />
-            {mode !== "apply" && formik.values.ParentalInformationFileNames && (
+            {mode !== "apply" && initialParentalInformation && (
               <>
                 <h3>Uploaded Files:</h3>
                 {mode === "edit" && (
@@ -196,7 +196,7 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
               onChange={(e) => handleFileChange(e, "ChildInformation")}
               disabled={mode === "review" || mode === "view"}
             />
-            {mode !== "apply" && formik.values.ChildInformationFileNames && (
+            {mode !== "apply" && initialChildInformation && (
               <>
                 <h3>Uploaded Files:</h3>
                 {mode === "edit" && (
@@ -238,7 +238,7 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
               onChange={(e) => handleFileChange(e, "HeadTeacherConsent")}
               disabled={mode === "review" || mode === "view"}
             />
-            {mode !== "apply" && formik.values.HeadTeacherConsentFileNames && (
+            {mode !== "apply" && initialHeadTeacherConsent && (
               <>
                 <h3>Uploaded Files:</h3>
                 {mode === "edit" && (
@@ -280,8 +280,7 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
               onChange={(e) => handleFileChange(e, "HeadteacherInformation")}
               disabled={mode === "review" || mode === "view"}
             />
-            {mode !== "apply" &&
-              formik.values.HeadteacherInformationFileNames && (
+            {mode !== "apply" && initialHeadteacherInformation && (
                 <>
                   <h3>Uploaded Files:</h3>
                   {mode === "edit" && (
@@ -334,8 +333,7 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
               onChange={(e) => handleFileChange(e, "AccessibleConsentMaterial")}
               disabled={mode === "review" || mode === "view"}
             />
-            {mode !== "apply" &&
-              formik.values.AccessibleConsentMaterialFileNames && (
+            {mode !== "apply" && initialAccessibleConsentMaterial && (
                 <>
                   <h3>Uploaded Files:</h3>
                   {mode === "edit" && (
@@ -382,8 +380,7 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
               onChange={(e) => handleFileChange(e, "ProxyConsentProcedures")}
               disabled={mode === "review" || mode === "view"}
             />
-            {mode !== "apply" &&
-              formik.values.ProxyConsentProceduresFileNames && (
+            {mode !== "apply" && initialProxyConsentProcedures && (
                 <>
                   <h3>Uploaded Files:</h3>
                   {mode === "edit" && (
@@ -436,8 +433,7 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
               onChange={(e) => handleFileChange(e, "ParticipantInformation")}
               disabled={mode === "review" || mode === "view"}
             />
-            {mode !== "apply" &&
-              formik.values.ParticipantInformationFileNames && (
+            {mode !== "apply" && initialParticipantInformation && (
                 <>
                   <h3>Uploaded Files:</h3>
                   {mode === "edit" && (
@@ -481,7 +477,7 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
               onChange={(e) => handleFileChange(e, "ParticipantConsent")}
               disabled={mode === "review" || mode === "view"}
             />
-            {mode !== "apply" && formik.values.ParticipantConsentFileNames && (
+            {mode !== "apply" && initialParticipantConsent && (
               <>
                 <h3>Uploaded Files:</h3>
                 {mode === "edit" && (
@@ -524,8 +520,7 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
               onChange={(e) => handleFileChange(e, "ParticipantDebriefing")}
               disabled={mode === "review" || mode === "view"}
             />
-            {mode !== "apply" &&
-              formik.values.ParticipantDebriefingFileNames && (
+            {mode !== "apply" && initialParticipantDebriefing && (
                 <>
                   <h3>Uploaded Files:</h3>
                   {mode === "edit" && (
@@ -566,7 +561,7 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
               onChange={(e) => handleFileChange(e, "AccessibilityLetter")}
               disabled={mode === "review" || mode === "view"}
             />
-            {mode !== "apply" && formik.values.AccessibilityLetterFileNames && (
+            {mode !== "apply" && initialAccessibilityLetter && (
               <>
                 <h3>Uploaded Files:</h3>
                 {mode === "edit" && (

@@ -241,7 +241,14 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
             {mode !== "apply" && formik.values.HeadTeacherConsentFileNames && (
               <>
                 <h3>Uploaded Files:</h3>
-                {/* {generateFileLinks(formik.values.HeadTeacherConsentFileNames)} */}
+                {mode === "edit" && (
+                  <h6>
+                    Keep in mind this is only a preview of what was uploaded
+                    originally. Please re-upload the files using the file inputs if
+                    you wish to modify your application
+                  </h6>
+                )}
+                {generateFileLinks(initialHeadTeacherConsent)}
               </>
             )}
             {/* Comment component for the "HeadTeacherConsent" field */}
@@ -277,9 +284,14 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
               formik.values.HeadteacherInformationFileNames && (
                 <>
                   <h3>Uploaded Files:</h3>
-                  {/* {generateFileLinks(
-                    formik.values.HeadteacherInformationFileNames
-                  )} */}
+                  {mode === "edit" && (
+                    <h6>
+                      Keep in mind this is only a preview of what was uploaded
+                      originally. Please re-upload the files using the file inputs if
+                      you wish to modify your application
+                    </h6>
+                  )}
+                  {generateFileLinks(initialHeadteacherInformation)}
                 </>
               )}
             {/* Comment component for the "HeadteacherInformation" field */}
@@ -326,9 +338,14 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
               formik.values.AccessibleConsentMaterialFileNames && (
                 <>
                   <h3>Uploaded Files:</h3>
-                  {/* {generateFileLinks(
-                    formik.values.AccessibleConsentMaterialFileNames
-                  )} */}
+                  {mode === "edit" && (
+                    <h6>
+                      Keep in mind this is only a preview of what was uploaded
+                      originally. Please re-upload the files using the file inputs if
+                      you wish to modify your application
+                    </h6>
+                  )}
+                  {generateFileLinks(initialAccessibleConsentMaterial)}
                 </>
               )}
             {/* Comment component for the "AccessibleConsentMaterial" field */}
@@ -369,9 +386,14 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
               formik.values.ProxyConsentProceduresFileNames && (
                 <>
                   <h3>Uploaded Files:</h3>
-                  {/* {generateFileLinks(
-                    formik.values.ProxyConsentProceduresFileNames
-                  )} */}
+                  {mode === "edit" && (
+                    <h6>
+                      Keep in mind this is only a preview of what was uploaded
+                      originally. Please re-upload the files using the file inputs if
+                      you wish to modify your application
+                    </h6>
+                  )}
+                  {generateFileLinks(initialProxyConsentProcedures)}
                 </>
               )}
             {/* Comment component for the "ProxyConsentProcedures" field */}
@@ -418,9 +440,14 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
               formik.values.ParticipantInformationFileNames && (
                 <>
                   <h3>Uploaded Files:</h3>
-                  {/* {generateFileLinks(
-                    formik.values.ParticipantInformationFileNames
-                  )} */}
+                  {mode === "edit" && (
+                    <h6>
+                      Keep in mind this is only a preview of what was uploaded
+                      originally. Please re-upload the files using the file inputs if
+                      you wish to modify your application
+                    </h6>
+                  )}
+                  {generateFileLinks(initialParticipantInformation)}
                 </>
               )}
             {/* Comment component for the "ParticipantInformation" field */}
@@ -457,7 +484,14 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
             {mode !== "apply" && formik.values.ParticipantConsentFileNames && (
               <>
                 <h3>Uploaded Files:</h3>
-                {/* {generateFileLinks(formik.values.ParticipantConsentFileNames)} */}
+                {mode === "edit" && (
+                  <h6>
+                    Keep in mind this is only a preview of what was uploaded
+                    originally. Please re-upload the files using the file inputs if
+                    you wish to modify your application
+                  </h6>
+                )}
+                {generateFileLinks(initialParticipantConsent)}
               </>
             )}
             {/* Comment component for the "ParticipantConsent" field */}
@@ -494,9 +528,14 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
               formik.values.ParticipantDebriefingFileNames && (
                 <>
                   <h3>Uploaded Files:</h3>
-                  {/* {generateFileLinks(
-                    formik.values.ParticipantDebriefingFileNames
-                  )} */}
+                  {mode === "edit" && (
+                    <h6>
+                      Keep in mind this is only a preview of what was uploaded
+                      originally. Please re-upload the files using the file inputs if
+                      you wish to modify your application
+                    </h6>
+                  )}
+                  {generateFileLinks(initialParticipantDebriefing)}
                 </>
               )}
             {/* Comment component for the "ParticipantDebriefing" field */}
@@ -530,7 +569,14 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
             {mode !== "apply" && formik.values.AccessibilityLetterFileNames && (
               <>
                 <h3>Uploaded Files:</h3>
-                {/* {generateFileLinks(formik.values.AccessibilityLetterFileNames)} */}
+                {mode === "edit" && (
+                  <h6>
+                    Keep in mind this is only a preview of what was uploaded
+                    originally. Please re-upload the files using the file inputs if
+                    you wish to modify your application
+                  </h6>
+                )}
+                {generateFileLinks(initialAccessibilityLetter)}
               </>
             )}
             {/* Comment component for the "AccessibilityLetter" field */}

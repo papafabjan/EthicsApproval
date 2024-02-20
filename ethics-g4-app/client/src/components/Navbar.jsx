@@ -48,7 +48,7 @@ const Navbar = () => {
           
           </form>
             {user?.admin_of_department && (
-              <p style={{ color: "black" }}>Department: {user.admin_of_department}</p>
+              <p style={{ color: "black" }}>Department code: {user.admin_of_department}</p>
             )}
           <span className="navbar-text">
             {user?.loggedIn === null ? (

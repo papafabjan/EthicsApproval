@@ -352,8 +352,9 @@ router.post("/applications/approve/:id", async (req, res) => {
 
       const adminInfo = await pool.query(
         `
-        SELECT username, email FROM users WHERE role = 'admin';
-        `
+        SELECT username, email FROM users WHERE role = 'admin' AND admin_of_department = $1;
+        `,
+        [department]
       );
 
       const userType = ["admin"];

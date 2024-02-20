@@ -275,6 +275,18 @@ router.post("/applications/approve/:id", async (req, res) => {
     const currentStatus = fetchStatus.rows[0].status; //100%
     console.log(currentStatus);
 
+    // Fetch the department of the application
+    const departmentQuery = await pool.query(
+      `
+  SELECT field_value 
+  FROM application_content 
+  WHERE application_id = $1
+  AND field_name = 'Department';
+  `,
+      [id]
+    );
+    const department = departmentQuery.rows[0].field_value;
+
     //fetch user role in application with user_id
     const fetchUserIDQuery = `
     SELECT user_id from users WHERE google_id = $1
@@ -576,11 +588,11 @@ router.post("/applications/approve/:id", async (req, res) => {
       if (currentStatus === "Pending supervisor's admission") {
         try {
           status = "Approved by supervisor, pending reviewers addition";
-
           const adminInfo = await pool.query(
             `
-            SELECT username, email FROM users WHERE role = 'admin';
-            `
+            SELECT username, email FROM users WHERE role = 'admin' AND admin_of_department = $1;
+            `,
+            [department]
           );
 
           const userType = ["admin"];
@@ -780,7 +792,6 @@ router.delete("/applications/delete/:applicationId", async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
-
 
 //edit application
 router.post("/applications/edit/:applicationId", async (req, res) => {

@@ -131,17 +131,26 @@ const AdminDashboard = () => {
     updateUserRole(selectedUserId, "admin", departmentCode);
   };
 
-  const renderDepartmentButtons = () => {
-    return departments.map((department) => (
-      <button
-        key={department.id}
-        className="btn"
-        onClick={() => handleDepartmentButtonClick(department.code)}
-      >
-        {department.name}
-      </button>
-    ));
-  };
+ const renderDepartmentButtons = () => {
+   const adminDepartments = users.reduce((departments, user) => {
+     if (user.role === "admin" && user.admin_of_department) {
+       departments.add(user.admin_of_department);
+     }
+     return departments;
+   }, new Set());
+
+   return departments.map((department) => (
+     <button
+       key={department.id}
+       className="btn"
+       disabled={adminDepartments.has(department.code)}
+       onClick={() => handleDepartmentButtonClick(department.code)}
+     >
+       {department.name}
+     </button>
+   ));
+ };
+
 
   const updateAdminRole = (user_id) => {
     setSelectedUserId((prevUserId) =>
@@ -290,7 +299,6 @@ const AdminDashboard = () => {
                       >
                         Delete
                       </button>
-                      {/* Additional buttons */}
                     </td>
                   </tr>
                 ))}

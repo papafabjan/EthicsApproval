@@ -13,6 +13,10 @@ const Home = styled.div`
     font-size: 18px;
     position: relative;
     z-index: 2;
+    a {
+      text-decoration: none;
+      color: #e36402;
+    }
   }
 
   .container {

@@ -394,7 +394,15 @@ const Dashboard = () => {
                             <button
                               title="Delete"
                               className="btn btn_delete"
-                              onClick={() => deleteApplication(application.id)}
+                              onClick={() => {
+                               const confirmDelete = window.confirm(
+                                 "Are you sure you want to delete this application?\n\nWARNING: This action is irreversible, and all data and files regarding this application will be lost. The only reference that can be tied to it will be found in the respective inboxes of the associated users' emails."
+                               );
+
+                                if (confirmDelete) {
+                                  deleteApplication(application.id);
+                                }
+                              }}
                             >
                               <i className="fa-solid fa-trash"></i>
                             </button>

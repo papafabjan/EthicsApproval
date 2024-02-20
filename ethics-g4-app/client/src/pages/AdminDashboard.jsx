@@ -227,7 +227,7 @@ const AdminDashboard = () => {
                             updateUserRole(user.user_id, "student", "")
                           }
                         >
-                          Make User
+                          Make Student
                         </button>
                         <button
                           className="btn btn_delete"

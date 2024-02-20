@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const pool = require("../db");
 const send_mail = require("../gmailApi");
+const fs = require("fs");
 
 // Get all applications
 router.get("/applications", async (req, res) => {
@@ -719,8 +720,7 @@ router.delete("/applications/delete/:applicationId", async (req, res) => {
     const deleteUserRoles = await pool.query(
       `
       DELETE FROM user_roles
-      WHERE application_id = $1
-      RETURNING *;
+      WHERE application_id = $1;
       `,
       [applicationId]
     );
@@ -738,11 +738,25 @@ router.delete("/applications/delete/:applicationId", async (req, res) => {
     const deleteComments = await pool.query(
       `
       DELETE FROM comments
-      WHERE application_id = $1
-      RETURNING *;
+      WHERE application_id = $1;
       `,
       [applicationId]
     );
+
+    // Delete application history
+    const deleteApplicationHistory = await pool.query(
+      `
+      DELETE FROM application_history
+      WHERE application_id = $1;
+      `,
+      [applicationId]
+    );
+
+    // Delete folder associated with application ID
+    const folderPath = `./submitFiles/application_id_${applicationId}`;
+    if (fs.existsSync(folderPath)) {
+      fs.rmdirSync(folderPath, { recursive: true });
+    }
 
     // Delete from applications
     const deleteApplication = await pool.query(
@@ -766,6 +780,7 @@ router.delete("/applications/delete/:applicationId", async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+
 
 //edit application
 router.post("/applications/edit/:applicationId", async (req, res) => {

@@ -168,11 +168,25 @@ function pick_html_message(user_type, recipient_name, status, user_role, project
         <a href="http://localhost:3000/dashboard">Check dashboard</a>
       `;
     }
-  } else if (user_type === "reviewers") {
+  } else if (user_type === "reviewer") {
      if (status === "Reviewers assigned by Ethics Admin") {
       return `
       <h3>Dear ${recipient_name},</h3>
       <p>You have been assigned as a reviewer for the project (${projectTitle}). Please read the attached application carefully following the instructions at the Ethics Application website / Guide for
+      reviewers.</p>
+      <p>   Inside the site you have two options:</p>
+      <p>   1. Approve the application
+            2. Comment on the application to ask for additional information</p>
+      <p>Press the button if you want to be transferred to Dashboard.</p>
+      <a href="http://localhost:3000/Dashboard">Check Dashboard</a>
+    `;
+    } else if (
+      status.includes("by") &&
+      (status.includes("reviewers") || status.includes("Reviewers"))
+    ) {
+      return `
+      <h3>Dear ${recipient_name},</h3>
+      <p>This is just a reminder that you have been assigned as a reviewer for the project (${projectTitle}). Please read the attached application carefully following the instructions at the Ethics Application website / Guide for
       reviewers.</p>
       <p>   Inside the site you have two options:</p>
       <p>   1. Approve the application

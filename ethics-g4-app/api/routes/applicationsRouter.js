@@ -372,6 +372,99 @@ router.post("/applications/approve/:id", async (req, res) => {
           if (isAdmin) {
             console.log("entered isadmin");
             status = "Approved";
+
+            const subjectApplicant = ["Your application has been approved"];
+
+            const supervisorIdQuery = await pool.query(
+              `
+               SELECT user_id FROM user_roles WHERE application_id=$1 AND role='supervisor' 
+                `,
+              [id]
+            );
+            const supervisorId = supervisorIdQuery.rows[0].user_id;
+            const supervisorInfo = await pool.query(
+              `
+               SELECT username, email FROM users WHERE user_id=$1
+                `,
+              [supervisorId]
+            );
+
+            const supervisorName = supervisorInfo.rows.map((user) => user.username);
+            const supervisorEmail = supervisorInfo.rows.map((user) => user.email);
+
+            const adminInfo = await pool.query(
+              `
+                SELECT username, email FROM users WHERE role = 'admin' AND admin_of_department = $1;
+                `,
+              [department]
+            );
+
+            const userTypeAdmin = ["admin"];
+            const userTypeSupervisor = ["supervisor"];
+
+            // Extracting names and emails from the query result
+            const adminName = adminInfo.rows.map((user) => user.username);
+            const adminEmail = adminInfo.rows.map((user) => user.email);
+
+            const subjectAdmin = [
+              `The application with the name: ${projectTitle} has been approved by everyone`,
+            ];
+            const subjectSupervisor = [
+              `The application with the name: ${projectTitle} has been approved by everyone`,
+            ];
+
+            var subjects = [...subjectApplicant];
+            recipientEmails = [
+              ...recipientEmails,
+              ...supervisorEmail,
+              ...adminEmail,
+            ];
+            recipientNames = [...recipientNames, ...supervisorName, ...adminName];
+            recipientTypes = [
+              ...recipientTypes,
+              ...userTypeAdmin,
+              ...userTypeSupervisor,
+            ];
+            subjects = [...subjects, ...subjectSupervisor, ...subjectAdmin];
+
+
+            // Update the status in the applications table
+            const updateStatusQuery = `
+            UPDATE applications
+            SET status = $1
+            WHERE id = $2
+            RETURNING *;
+            `;
+            const updatedApplication = await pool.query(updateStatusQuery, [
+              status,
+              id,
+            ]);
+
+            const updateHistory = await pool.query(
+              `
+              INSERT INTO application_history
+              (application_id, date, status, actor_id)
+              VALUES
+              ($1, $2, $3, $4);
+              `,
+              [id, new Date(), status, userId]
+            );
+
+            send_mail(
+              subjects,
+              recipientTypes,
+              recipientNames,
+              recipientEmails,
+              status,
+              userRole,
+              projectTitle
+            );
+
+            return res.json({
+              success: true,
+              message: "Successful Approval",
+            });
+
           } else {
             console.log("entered else");
             status =
@@ -802,18 +895,18 @@ router.post("/applications/approve/:id", async (req, res) => {
       }
     }
 
-     if (userRole === "reviewer") {
-       if (
-         currentStatus ===
-         "Reviewer approval complete, pending ethics admin's approval"
-       ) {
-         return res.json({
-           success: false,
-           message:
-             "Application is already approved by you, it's time for the admins to review.",
-         });
-       }
-     }
+    if (userRole === "reviewer") {
+      if (
+        currentStatus ===
+        "Reviewer approval complete, pending ethics admin's approval"
+      ) {
+        return res.json({
+          success: false,
+          message:
+            "Application is already approved by you, it's time for the admins to review.",
+        });
+      }
+    }
 
     const updateStatusQuery = `
       UPDATE applications
@@ -1110,11 +1203,11 @@ router.post("/applications/edit/:applicationId", async (req, res) => {
         `,
         [commenterId]
       );
-      
+
       const userRoleQuery = await pool.query(
         `
         SELECT role FROM user_roles WHERE user_id =$1
-        `,[commenterId]
+        `, [commenterId]
       )
       const commenterName = commenterInfoQuery.rows[0].username;
       const commenterEmail = commenterInfoQuery.rows[0].email;
@@ -1128,11 +1221,11 @@ router.post("/applications/edit/:applicationId", async (req, res) => {
         [applicationId]
       );
       var projectTitle = projectTitleQuery.rows[0].field_value;
-      
+
       console.log("Sending email to commenter:", commenterEmail);
 
       // Send email to the commenter
-      send_mail(subject,recipientTypes, recipientNames, recipientEmails, "comment", userRole, projectTitle);
+      send_mail(subject, recipientTypes, recipientNames, recipientEmails, "comment", userRole, projectTitle);
     }
     //delete existing comments for this application
     const deleteComments = await pool.query(
@@ -1142,7 +1235,7 @@ WHERE application_id = $1;
 `,
       [applicationId]
     );
-      
+
     res.json({ success: true, applicationId });
   } catch (error) {
     console.error(error.message);

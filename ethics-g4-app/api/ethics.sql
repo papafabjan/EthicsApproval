@@ -1,5 +1,13 @@
--- CREATE DATABASE ethics;
--- USE ethics;
+/*
+psql -U postgres;
+CREATE DATABASE ethics;
+CREATE USER root WITH PASSWORD 'rootpassword';
+GRANT ALL PRIVILEGES ON DATABASE ethics to root;
+ALTER AUTHORIZATION ON DATABASE::[ethics] TO [root];
+USE ethics;
+\q
+psql -U root -d ethics
+*/
 
 CREATE TABLE users (
   user_id SERIAL PRIMARY KEY,

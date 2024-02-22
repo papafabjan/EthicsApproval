@@ -504,14 +504,57 @@ router.post("/applications/approve/:id", async (req, res) => {
           // THIS IS THE FINAL APROVAL
           const subjectApplicant = ["Your application has been approved"];
 
-          var subjects = [...subjectApplicant];
+          const supervisorIdQuery = await pool.query(
+            `SELECT user_id FROM user_roles WHERE application_id=$1 AND role='supervisor' 
+            `,[id]
+          )
+          const supervisorId = supervisorIdQuery.rows[0].user_id;
+          const supervisorInfo = await pool.query(
+            `SELECT username,email FROM users WHERE user_id=$1'
+            `[supervisorId]
+          )
+          
 
+
+          const supervisorName = supervisorInfo.rows.map((user) => user.username);
+          const supervisorEmail = supervisorInfo.rows.map((user) => user.email);
+
+          const adminInfo = await pool.query(
+            `
+            SELECT username, email FROM users WHERE role = 'admin' AND admin_of_department = $1;
+            `,
+            [department]
+          );
+
+          const userTypeAdmin = ["admin"];
+          const userTypeSupervisor = ["supervisor"];
+
+          // Extracting names and emails from the query result
+          const adminName = adminInfo.rows.map((user) => user.username);
+          const adminEmail = adminInfo.rows.map((user) => user.email);
+
+          // Combine admin and applicant names and emails into single arrays
+          recipientNames = [...recipientNames, ...adminName];
+          recipientEmails = [...recipientEmails, ...adminEmail];
+          recipientTypes = [...recipientTypes, ...userTypeAdmin, ...userTypeSupervisor];
+          
+          
+          const subjectAdmin = [`The application with the name: ${projectTitle} has been approved by everyone`];
+          const subjectSupervisor = [`The application with the name: ${projectTitle} has been approved by everyone`];
+          
+          var subjects = [...subjectApplicant];
+          recipientEmails = [...recipientEmails, supervisorEmail, adminEmail ];
+          recipientNames = [...recipientNames, supervisorName, adminName ];
+          subjects = [...subjects, subjectSupervisor, subjectAdmin];
+          
           const updateStatusQuery =
             "UPDATE applications SET status = $1 WHERE id = $2 RETURNING *";
           const updatedApplication = await pool.query(updateStatusQuery, [
             status,
             id,
           ]);
+          console.log("Why are the subjects here?");
+          console.log(subjects);
 
           send_mail(
             subjects,

@@ -58,6 +58,14 @@ function send_mail(subjects, recipientTypes, recipient_names, recipient_emails, 
 }
 
 function pick_html_message(user_type, recipient_name, status, user_role, projectTitle, applicantName) {
+  if(status==="comment" ){
+    return `
+    <h3>Dear ${recipient_name}, the applicant has edited the project (${projectTitle}). </h3>
+    <p> You have to review the application</p>
+    <p>Press the button if you want to be transferred to Dashboard.</p>
+    <a href="http://localhost:3000/Dashboard">Check Dashboard</a>
+  `;
+  }
   if (user_type === "admin") {
     if (status === "Approved by supervisor, pending reviewers addition") {
       return `
@@ -154,7 +162,7 @@ function pick_html_message(user_type, recipient_name, status, user_role, project
     }
     else  if (status === "Approved") {
       return `
-        <h3>Dear ${recipient_name}, the application (${projectTitle}) has been approved</h3>
+        <h3>Dear ${recipient_name}, the application (${projectTitle}) where you were assigned as a Supervisor has been approved</h3>
         <p>The ethics approval process has been finalized!</p>
         <p>Press the button if you want to be transferred to your dashboard.</p>
         <a href="http://localhost:3000/dashboard">Check dashboard</a>
@@ -173,7 +181,8 @@ function pick_html_message(user_type, recipient_name, status, user_role, project
       <a href="http://localhost:3000/Dashboard">Check Dashboard</a>
     `;
     }
-  }  else {
+  } 
+  else {
     // Default empty message
     return "";
   }

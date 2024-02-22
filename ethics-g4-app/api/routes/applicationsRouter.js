@@ -330,6 +330,8 @@ router.post("/applications/approve/:id", async (req, res) => {
       });
     }
 
+
+
     if (
       userRole === "reviewer" &&
       currentStatus.includes("by") &&
@@ -982,6 +984,48 @@ router.post("/applications/edit/:applicationId", async (req, res) => {
         }
       }
     }
+
+
+    // Send automated emails based on who commented
+    const commentersQuery = await pool.query(
+      `
+      SELECT DISTINCT commenter_id FROM comments WHERE application_id = $1
+      `,
+      [applicationId]
+    );
+    const commenterIds = commentersQuery.rows.map((row) => row.commenter_id);
+
+    for (const commenterId of commenterIds) {
+      const commenterInfoQuery = await pool.query(
+        `
+        SELECT username, email FROM users WHERE user_id = $1
+        `,
+        [commenterId]
+      );
+      
+      const userRoleQuery = await pool.query(
+        `
+        SELECT role FROM user_roles WHERE user_id =$1
+        `,[commenterId]
+      )
+      const commenterName = commenterInfoQuery.rows[0].username;
+      const commenterEmail = commenterInfoQuery.rows[0].email;
+      var subject = ["Applicant has edited the application, review it"];
+      var recipientNames = [commenterName];
+      var recipientEmails = [commenterEmail];
+      var userRole = userRoleQuery.rows[0].role;
+      var recipientTypes = [userRole];
+      var projectTitleQuery = await pool.query(
+        "SELECT field_value FROM application_content WHERE application_id = $1 AND field_name = 'ResearchProject'",
+        [applicationId]
+      );
+      var projectTitle = projectTitleQuery.rows[0].field_value;
+      
+      console.log("Sending email to commenter:", commenterEmail);
+
+      // Send email to the commenter
+      send_mail(subject,recipientTypes, recipientNames, recipientEmails, "comment", userRole, projectTitle);
+    }
     //delete existing comments for this application
     const deleteComments = await pool.query(
       `
@@ -990,7 +1034,7 @@ WHERE application_id = $1;
 `,
       [applicationId]
     );
-
+      
     res.json({ success: true, applicationId });
   } catch (error) {
     console.error(error.message);

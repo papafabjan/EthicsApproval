@@ -330,6 +330,7 @@ router.post("/applications/approve/:id", async (req, res) => {
       });
     }
 
+    //// REVIEWERS IF
     if (
       userRole === "reviewer" &&
       currentStatus.includes("by") &&
@@ -349,36 +350,6 @@ router.post("/applications/approve/:id", async (req, res) => {
       `,
         [id]
       );
-
-      const adminInfo = await pool.query(
-        `
-        SELECT username, email FROM users WHERE role = 'admin' AND admin_of_department = $1;
-        `,
-        [department]
-      );
-
-      const userType = ["admin"];
-
-      // Extracting names and emails from the query result
-      const adminNames = adminInfo.rows.map((user) => user.username);
-      const adminEmails = adminInfo.rows.map((user) => user.email);
-
-      // Combine admin and applicant names and emails into single arrays
-      recipientNames = [...recipientNames, ...adminNames];
-      recipientEmails = [...recipientEmails, ...adminEmails];
-      recipientTypes = [...recipientTypes, ...userType];
-
-      const subjectAdmin = ["You have to give the final approval"];
-      const subjectApplicant = [
-        "Approved by reviewer, pending ethics' approval",
-      ];
-
-      var subjects = [...subjectApplicant, ...subjectAdmin];
-
-      console.log("subjects:", subjects);
-      console.log(projectTitle);
-      console.log(recipientNames);
-      console.log(recipientEmails);
 
       const remainingApprovalArray =
         remainingApprovalQuery.rows[0].remaining_approval;
@@ -401,46 +372,128 @@ router.post("/applications/approve/:id", async (req, res) => {
             console.log("entered else");
             status =
               "Reviewer approval complete, pending ethics admin's approval";
+
+            const adminInfo = await pool.query(
+              `
+        SELECT username, email FROM users WHERE role = 'admin' AND admin_of_department = $1;
+        `,
+              [department]
+            );
+
+            const userType = ["admin"];
+
+            // Extracting names and emails from the query result
+            const adminNames = adminInfo.rows.map((user) => user.username);
+            const adminEmails = adminInfo.rows.map((user) => user.email);
+
+            // Combine admin and applicant names and emails into single arrays
+            recipientNames = [...recipientNames, ...adminNames];
+            recipientEmails = [...recipientEmails, ...adminEmails];
+            recipientTypes = [...recipientTypes, ...userType];
+
+            const subjectAdmin = ["You have to give the final approval"];
+            const subjectApplicant = [
+              "Approved by reviewer(s), pending ethics' approval",
+            ];
+
+            var subjects = [...subjectApplicant, ...subjectAdmin];
+
+            console.log("subjects:", subjects);
+            console.log(projectTitle);
+            console.log(recipientNames);
+            console.log(recipientEmails);
           }
         } else {
           const numApprovals = numReviewers - remainingApprovalArray.length + 1;
           if (numReviewers === numApprovals) {
             status =
               "Reviewer approval complete, pending ethics admin's approval";
+            const adminInfo = await pool.query(
+              `
+        SELECT username, email FROM users WHERE role = 'admin' AND admin_of_department = $1;
+        `,
+              [department]
+            );
+
+            const userType = ["admin"];
+
+            // Extracting names and emails from the query result
+            const adminNames = adminInfo.rows.map((user) => user.username);
+            const adminEmails = adminInfo.rows.map((user) => user.email);
+
+            // Combine admin and applicant names and emails into single arrays
+            recipientNames = [...recipientNames, ...adminNames];
+            recipientEmails = [...recipientEmails, ...adminEmails];
+            recipientTypes = [...recipientTypes, ...userType];
+
+            const subjectAdmin = ["You have to give the final approval"];
+            const subjectApplicant = [
+              "Approved by reviewer(s), pending ethics' approval",
+            ];
+
+            var subjects = [...subjectApplicant, ...subjectAdmin];
+
+            console.log("subjects:", subjects);
+            console.log(projectTitle);
+            console.log(recipientNames);
+            console.log(recipientEmails);
           } else {
             status = `Approved by ${numApprovals} / ${numReviewers} reviewers`;
+            // remove userId from remaining_approval array in applications
+            const removeReviewerFromRemainingApproval = await pool.query(
+              `
+                UPDATE applications
+                SET remaining_approval = array_remove(remaining_approval, $1)
+                WHERE id = $2
+              `,
+              [userId, id]
+            );
+            const remainingReviewersQuery = await pool.query(
+              `
+              SELECT remaining_approval FROM applications WHERE id = $1
+              `,
+              [id]
+            );
+            const remainingApprovalArray =
+              remainingReviewersQuery.rows[0].remaining_approval;
+            const remainingReviewersInfo = await pool.query(
+              `
+            SELECT username, email FROM users WHERE user_id = ANY($1)
+            `,
+              [remainingApprovalArray]
+            );
+            // Extracting names, emails, and user types from the query result
+            const remainingReviewers = remainingReviewersInfo.rows;
+            const reviewerNames = remainingReviewers.map(
+              (user) => user.username
+            );
+            const reviewerEmails = remainingReviewers.map((user) => user.email);
+            const userType = Array(reviewerNames.length).fill("reviewer");
+            const subjectReviewer = Array(reviewerNames.length).fill(
+              `The application ${projectTitle} has been approved by ${numApprovals} / ${numReviewers} reviewers`
+            );
+            const subjectApplicant = [
+              `Your application ${projectTitle} has been approved by ${numApprovals} / ${numReviewers} reviewers`,
+            ];
+
+            // Combine reviewer names, emails, and user types into single arrays
+            recipientNames = [...recipientNames, ...reviewerNames];
+            recipientEmails = [...recipientEmails, ...reviewerEmails];
+            recipientTypes = [...recipientTypes, ...userType];
+            var subjects = [...subjectApplicant, ...subjectReviewer];
           }
         }
         // Update the status in the applications table
         const updateStatusQuery = `
-      UPDATE applications
-      SET status = $1
-      WHERE id = $2
-      RETURNING *;
-    `;
+          UPDATE applications
+          SET status = $1
+          WHERE id = $2
+          RETURNING *;
+        `;
         const updatedApplication = await pool.query(updateStatusQuery, [
           status,
           id,
         ]);
-
-        // remove userId from remaining_approval array in applications
-        const removeReviewerFromRemainingApproval = await pool.query(
-          `
-        UPDATE applications
-        SET remaining_approval = array_remove(remaining_approval, $1)
-        WHERE id = $2
-        `,
-          [userId, id]
-        );
-        send_mail(
-          subjects,
-          recipientTypes,
-          recipientNames,
-          recipientEmails,
-          status,
-          userRole,
-          projectTitle
-        );
 
         const updateHistory = await pool.query(
           `
@@ -450,6 +503,16 @@ router.post("/applications/approve/:id", async (req, res) => {
         ($1, $2, $3, $4);
         `,
           [id, new Date(), status, userId]
+        );
+
+        send_mail(
+          subjects,
+          recipientTypes,
+          recipientNames,
+          recipientEmails,
+          status,
+          userRole,
+          projectTitle
         );
 
         return res.json({
@@ -502,21 +565,25 @@ router.post("/applications/approve/:id", async (req, res) => {
           "Reviewer approval complete, pending ethics admin's approval"
         ) {
           // THIS IS THE FINAL APROVAL
+          console.log("ENTERED SUPERVISOR FINAL IF");
+
           const subjectApplicant = ["Your application has been approved"];
 
           const supervisorIdQuery = await pool.query(
             `SELECT user_id FROM user_roles WHERE application_id=$1 AND role='supervisor' 
-            `,[id]
-          )
+            `,
+            [id]
+          );
           const supervisorId = supervisorIdQuery.rows[0].user_id;
           const supervisorInfo = await pool.query(
-            `SELECT username,email FROM users WHERE user_id=$1'
-            `[supervisorId]
-          )
-          
+            `SELECT username, email FROM users WHERE user_id=$1
+            `,
+            [supervisorId]
+          );
 
-
-          const supervisorName = supervisorInfo.rows.map((user) => user.username);
+          const supervisorName = supervisorInfo.rows.map(
+            (user) => user.username
+          );
           const supervisorEmail = supervisorInfo.rows.map((user) => user.email);
 
           const adminInfo = await pool.query(
@@ -533,20 +600,27 @@ router.post("/applications/approve/:id", async (req, res) => {
           const adminName = adminInfo.rows.map((user) => user.username);
           const adminEmail = adminInfo.rows.map((user) => user.email);
 
-          // Combine admin and applicant names and emails into single arrays
-          recipientNames = [...recipientNames, ...adminName];
-          recipientEmails = [...recipientEmails, ...adminEmail];
-          recipientTypes = [...recipientTypes, ...userTypeAdmin, ...userTypeSupervisor];
-          
-          
-          const subjectAdmin = [`The application with the name: ${projectTitle} has been approved by everyone`];
-          const subjectSupervisor = [`The application with the name: ${projectTitle} has been approved by everyone`];
-          
+          const subjectAdmin = [
+            `The application with the name: ${projectTitle} has been approved by everyone`,
+          ];
+          const subjectSupervisor = [
+            `The application with the name: ${projectTitle} has been approved by everyone`,
+          ];
+
           var subjects = [...subjectApplicant];
-          recipientEmails = [...recipientEmails, supervisorEmail, adminEmail ];
-          recipientNames = [...recipientNames, supervisorName, adminName ];
-          subjects = [...subjects, subjectSupervisor, subjectAdmin];
-          
+          recipientEmails = [
+            ...recipientEmails,
+            ...supervisorEmail,
+            ...adminEmail,
+          ];
+          recipientNames = [...recipientNames, ...supervisorName, ...adminName];
+          recipientTypes = [
+            ...recipientTypes,
+            ...userTypeAdmin,
+            ...userTypeSupervisor,
+          ];
+          subjects = [...subjects, ...subjectSupervisor, ...subjectAdmin];
+
           const updateStatusQuery =
             "UPDATE applications SET status = $1 WHERE id = $2 RETURNING *";
           const updatedApplication = await pool.query(updateStatusQuery, [
@@ -594,9 +668,61 @@ router.post("/applications/approve/:id", async (req, res) => {
         "Reviewer approval complete, pending ethics admin's approval"
       ) {
         // THIS IS THE FINAL APROVAL
+        console.log("ENTERED REVIEWER FINAL IF");
+
         const subjectApplicant = ["Your application has been approved"];
 
+        const supervisorIdQuery = await pool.query(
+          `
+           SELECT user_id FROM user_roles WHERE application_id=$1 AND role='supervisor' 
+            `,
+          [id]
+        );
+        const supervisorId = supervisorIdQuery.rows[0].user_id;
+        const supervisorInfo = await pool.query(
+          `
+           SELECT username, email FROM users WHERE user_id=$1
+            `,
+          [supervisorId]
+        );
+
+        const supervisorName = supervisorInfo.rows.map((user) => user.username);
+        const supervisorEmail = supervisorInfo.rows.map((user) => user.email);
+
+        const adminInfo = await pool.query(
+          `
+            SELECT username, email FROM users WHERE role = 'admin' AND admin_of_department = $1;
+            `,
+          [department]
+        );
+
+        const userTypeAdmin = ["admin"];
+        const userTypeSupervisor = ["supervisor"];
+
+        // Extracting names and emails from the query result
+        const adminName = adminInfo.rows.map((user) => user.username);
+        const adminEmail = adminInfo.rows.map((user) => user.email);
+
+        const subjectAdmin = [
+          `The application with the name: ${projectTitle} has been approved by everyone`,
+        ];
+        const subjectSupervisor = [
+          `The application with the name: ${projectTitle} has been approved by everyone`,
+        ];
+
         var subjects = [...subjectApplicant];
+        recipientEmails = [
+          ...recipientEmails,
+          ...supervisorEmail,
+          ...adminEmail,
+        ];
+        recipientNames = [...recipientNames, ...supervisorName, ...adminName];
+        recipientTypes = [
+          ...recipientTypes,
+          ...userTypeAdmin,
+          ...userTypeSupervisor,
+        ];
+        subjects = [...subjects, ...subjectSupervisor, ...subjectAdmin];
 
         const updateStatusQuery =
           "UPDATE applications SET status = $1 WHERE id = $2 RETURNING *";
@@ -671,39 +797,19 @@ router.post("/applications/approve/:id", async (req, res) => {
         });
       }
     }
-    if (userRole === "reviewer") {
-      if (currentStatus === "Reviewers assigned by Ethics Admin") {
-        status = "Reviewer approval complete, pending ethics admin's approval";
 
-        const userType = ["admin"];
-
-        // Extracting names and emails from the query result
-        const adminNames = adminInfo.rows.map((user) => user.username);
-        const adminEmails = adminInfo.rows.map((user) => user.email);
-
-        // Combine admin and applicant names and emails into single arrays
-        recipientNames = [...recipientNames, ...adminNames];
-        recipientEmails = [...recipientEmails, ...adminEmails];
-        recipientTypes = [...recipientTypes, ...userType];
-
-        const subjectAdmin = ["You have to do the final Approve"];
-        const subjectApplicant = [
-          "Approved by reviewers, pending Admin's Approval",
-        ];
-
-        var subjects = [...subjectApplicant, ...subjectAdmin];
-      }
-      if (
-        currentStatus ===
-        "Reviewer approval complete, pending ethics admin's approval"
-      ) {
-        return res.json({
-          success: false,
-          message:
-            "Application is already approved by you, it's time for the admins to review.",
-        });
-      }
-    }
+     if (userRole === "reviewer") {
+       if (
+         currentStatus ===
+         "Reviewer approval complete, pending ethics admin's approval"
+       ) {
+         return res.json({
+           success: false,
+           message:
+             "Application is already approved by you, it's time for the admins to review.",
+         });
+       }
+     }
 
     const updateStatusQuery = `
       UPDATE applications

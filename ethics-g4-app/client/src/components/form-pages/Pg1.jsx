@@ -419,6 +419,10 @@ function Pg1({ formik, emphasizeFields, mode }) {
               value="scarimproved@gmail.com"
               label="Scar Polyie <scarimproved@gmail.com>"
             />
+            <option
+              value="okpanagiwths@gmail.com"
+              label="P karalis<okpanagiwths@gmail.com>"
+            />
           </select>
 
           {formik.touched.supervisor && formik.errors.supervisor && (

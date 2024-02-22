@@ -74,6 +74,14 @@ function pick_html_message(user_type, recipient_name, status, user_role, project
         <a href="http://localhost:3000/dashboard">Check dashboard</a>
       `;
     }
+      else  if (status === "Approved") {
+      return `
+        <h3>Dear ${recipient_name}, the application (${projectTitle}) has been approved</h3>
+        <p>The ethics approval process has been finalized!</p>
+        <p>Press the button if you want to be transferred to your dashboard.</p>
+        <a href="http://localhost:3000/dashboard">Check dashboard</a>
+      `;
+      }
   } else if (user_type === "applicant") {
     if (status === "Pending supervisor's admission") {
       return `
@@ -142,6 +150,14 @@ function pick_html_message(user_type, recipient_name, status, user_role, project
            2. Comment on the application to ask for additional information</p>
         <p>Press the button if you want to be transferred to Dashboard.</p>
         <a href="http://localhost:3000/Dashboard">Check Dashboard</a>
+      `;
+    }
+    else  if (status === "Approved") {
+      return `
+        <h3>Dear ${recipient_name}, the application (${projectTitle}) has been approved</h3>
+        <p>The ethics approval process has been finalized!</p>
+        <p>Press the button if you want to be transferred to your dashboard.</p>
+        <a href="http://localhost:3000/dashboard">Check dashboard</a>
       `;
     }
   } else if (user_type === "reviewers") {

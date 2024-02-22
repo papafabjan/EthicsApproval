@@ -128,8 +128,13 @@ const Form = () => {
 
   const totalSteps = 9;
 
-  console.log(mode);
-  console.log(applicationId);
+  // console.log(mode);
+  // console.log(applicationId);
+  useEffect(() => {
+    if (mode === "apply") {
+      formik.setValues(initialValues);
+    }
+  }, [mode]);
 
   const adaptValuesForSubmission = (values) => {
     const adaptedValues = { ...values };

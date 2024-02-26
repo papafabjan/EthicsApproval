@@ -1,0 +1,74 @@
+Table "users" {
+  "user_id" SERIAL [pk, increment]
+  "username" VARCHAR(255) [not null]
+  "img" VARCHAR(255) [not null]
+  "google_id" VARCHAR(255) [unique, not null]
+  "email" VARCHAR(255) [unique, not null]
+  "role" VARCHAR(255) [not null]
+  "admin_of_department" VARCHAR(255)
+
+Indexes {
+  admin_of_department [unique, name: "admin_department_unique"]
+}
+}
+
+Table "applications" {
+  "id" SERIAL [pk, increment]
+  "status" VARCHAR(255) [not null]
+  "date" TIMESTAMP [not null]
+  "applicant_id" INT [not null]
+  "department_code" VARCHAR(255) [not null]
+  "remaining_approval" "INT[]"
+}
+
+Table "departments" {
+  "id" SERIAL [pk, increment]
+  "name" VARCHAR(255) [not null]
+  "code" VARCHAR(255) [not null]
+}
+
+Table "application_content" {
+  "id" SERIAL [pk, increment]
+  "application_id" INTEGER [not null]
+  "field_name" VARCHAR(255) [not null]
+  "field_value" TEXT
+}
+
+Table "application_history" {
+  "id" SERIAL [pk, increment]
+  "application_id" INTEGER [not null]
+  "date" TIMESTAMP [not null]
+  "status" VARCHAR(255) [not null]
+  "actor_id" INTEGER
+}
+
+Table "comments" {
+  "id" SERIAL [pk, increment]
+  "commenter_id" INTEGER
+  "field" VARCHAR(255) [not null]
+  "content" VARCHAR(255) [not null]
+  "application_status" VARCHAR(255) [not null]
+  "application_id" INTEGER [not null]
+}
+
+Table "user_roles" {
+  "user_id" INTEGER
+  "role" VARCHAR(255) [not null]
+  "application_id" INTEGER
+}
+
+Ref:"users"."user_id" < "applications"."applicant_id"
+
+Ref:"applications"."id" < "application_content"."application_id"
+
+Ref:"applications"."id" < "application_history"."application_id"
+
+Ref:"users"."user_id" < "application_history"."actor_id"
+
+Ref:"users"."user_id" < "comments"."commenter_id"
+
+Ref:"applications"."id" < "comments"."application_id"
+
+Ref:"users"."user_id" < "user_roles"."user_id"
+
+Ref:"applications"."id" < "user_roles"."application_id"

@@ -67,6 +67,5 @@ CREATE TABLE comments (
 CREATE TABLE user_roles (
   user_id INTEGER REFERENCES users (user_id),
   role VARCHAR(255) NOT NULL,
-  application_id INTEGER  REFERENCES applications (id),
-  approved BOOLEAN DEFAULT false
+  application_id INTEGER  REFERENCES applications (id)
 );

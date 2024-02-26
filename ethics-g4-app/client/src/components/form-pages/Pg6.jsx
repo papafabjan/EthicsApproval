@@ -4,6 +4,8 @@ import Comment from "../Comment";
 export const Pg6 = ({ formik, emphasizeFields, mode }) => {
   return (
     <>
+    <div className="form-container">
+
       <div className="form-group">
         <label htmlFor="DataProcessing">
           Data Processing <span style={{ color: "red" }}>*</span>
@@ -105,6 +107,7 @@ export const Pg6 = ({ formik, emphasizeFields, mode }) => {
           />
         )}
       </div>
+    </div>
     </>
   );
 };

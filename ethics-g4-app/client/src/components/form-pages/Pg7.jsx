@@ -59,68 +59,68 @@ export const Pg7 = ({ formik, emphasizeFields, mode }) => {
 
   return (
     <>
-      <div className="form-group">
-        <label htmlFor="ListofQuestions">
-          List of questions <span style={{ color: "red" }}>*</span>
-        </label>
-        <p>
-          Upload your proposed list of questions (e.g., questionnaires, photos,
-          interreview questions, etc) in any format.
-        </p>
-        {(mode === "apply" || mode === "edit") && (
-          <input
-            type="file"
-            name="ListofQuestions"
-            className="form-control"
-            id="ListofQuestions"
-            onChange={(e) => handleFileChange(e, "ListofQuestions")}
-            disabled={mode === "review" || mode === "view"}
-          />
-        )}
+      <div className="form-container">
+        <div className="form-group">
+          <label htmlFor="ListofQuestions">
+            List of questions <span style={{ color: "red" }}>*</span>
+          </label>
+          <p>
+            Upload your proposed list of questions (e.g., questionnaires,
+            photos, interreview questions, etc) in any format.
+          </p>
+          {(mode === "apply" || mode === "edit") && (
+            <input
+              type="file"
+              name="ListofQuestions"
+              className="form-control"
+              id="ListofQuestions"
+              onChange={(e) => handleFileChange(e, "ListofQuestions")}
+              disabled={mode === "review" || mode === "view"}
+            />
+          )}
 
-        {mode !== "apply" && initialListofQuestionsFileNames && (
-          <>
-            <h4>Uploaded Files:</h4>
-            {mode === "edit" && (
-              <h6>
-                Keep in mind this is only a preview of what was uploaded
-                originally. Please re-upload the files using the file inputs if
-                you wish to modify your application
-              </h6>
-            )}
-            {generateFileLinks(initialListofQuestionsFileNames)}
-          </>
-        )}
-        {/* Comment component for the "ListofQuestions" field */}
-        {mode === "review" && (
-          <Comment
-            fieldName="ListofQuestions"
-            comment={formik.values.ListofQuestionsComment}
-            onCommentSave={(fieldName, comment) =>
-              formik.setFieldValue(`${fieldName}Comment`, comment)
-            }
-          />
-        )}
-      </div>
+          {mode !== "apply" && initialListofQuestionsFileNames && (
+            <>
+              <h4>Uploaded Files:</h4>
+              {mode === "edit" && (
+                <h6>
+                  Keep in mind this is only a preview of what was uploaded
+                  originally. Please re-upload the files using the file inputs
+                  if you wish to modify your application
+                </h6>
+              )}
+              {generateFileLinks(initialListofQuestionsFileNames)}
+            </>
+          )}
+          {/* Comment component for the "ListofQuestions" field */}
+          {mode === "review" && (
+            <Comment
+              fieldName="ListofQuestions"
+              comment={formik.values.ListofQuestionsComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
+        </div>
 
-      <div className="form-group">
-        <label htmlFor="AdditionalForms">
-          Any additional forms /documents you need to submit (optional)
-        </label>
-        {(mode === "apply" || mode === "edit") && (
-          <input
-            type="file"
-            multiple
-            name="AdditionalForms"
-            className="form-control"
-            id="AdditionalForms"
-            onChange={(e) => handleFilesChange(e, "AdditionalForms")}
-            disabled={mode === "review" || mode === "view"}
-          />
-        )}
+        <div className="form-group">
+          <label htmlFor="AdditionalForms">
+            Any additional forms /documents you need to submit (optional)
+          </label>
+          {(mode === "apply" || mode === "edit") && (
+            <input
+              type="file"
+              multiple
+              name="AdditionalForms"
+              className="form-control"
+              id="AdditionalForms"
+              onChange={(e) => handleFilesChange(e, "AdditionalForms")}
+              disabled={mode === "review" || mode === "view"}
+            />
+          )}
 
-        {mode !== "apply" &&
-          initialAdditionalFormsFileNames && (
+          {mode !== "apply" && initialAdditionalFormsFileNames && (
             <>
               <h4>Uploaded Files:</h4>
               {mode === "edit" && (
@@ -134,16 +134,17 @@ export const Pg7 = ({ formik, emphasizeFields, mode }) => {
             </>
           )}
 
-        {/* Comment component for the "AdditionalForms" field */}
-        {mode === "review" && (
-          <Comment
-            fieldName="AdditionalForms"
-            comment={formik.values.AdditionalFormsComment}
-            onCommentSave={(fieldName, comment) =>
-              formik.setFieldValue(`${fieldName}Comment`, comment)
-            }
-          />
-        )}
+          {/* Comment component for the "AdditionalForms" field */}
+          {mode === "review" && (
+            <Comment
+              fieldName="AdditionalForms"
+              comment={formik.values.AdditionalFormsComment}
+              onCommentSave={(fieldName, comment) =>
+                formik.setFieldValue(`${fieldName}Comment`, comment)
+              }
+            />
+          )}
+        </div>
       </div>
     </>
   );

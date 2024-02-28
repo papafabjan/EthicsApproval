@@ -69,3 +69,7 @@ CREATE TABLE user_roles (
   role VARCHAR(255) NOT NULL,
   application_id INTEGER  REFERENCES applications (id)
 );
+
+
+-- generate dbml file with:
+-- sql2dbml ethics.sql --postgres -o ethics.dbml

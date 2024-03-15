@@ -1014,7 +1014,7 @@ router.delete("/applications/delete/:applicationId", async (req, res) => {
     // Delete folder associated with application ID
     const folderPath = `./submitFiles/application_id_${applicationId}`;
     if (fs.existsSync(folderPath)) {
-      fs.rmdirSync(folderPath, { recursive: true });
+      fs.rm(folderPath, { recursive: true }); 
     }
 
     // Delete from applications

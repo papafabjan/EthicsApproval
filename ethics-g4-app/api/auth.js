@@ -10,7 +10,7 @@ passport.use(
       clientSecret: process.env.CLIENT_SECRET,
       callbackURL: process.env.GOOGLE_CALLBACK_URL,
     },
-    async (accessToken, __, profile, done) => {
+    async (accessToken, refreshToken, profile, done) => {
       const account = profile._json;
       let user = {};
 
@@ -22,17 +22,19 @@ passport.use(
 
         if (currentUserQuery.rows.length === 0) {
           // Create user
-          await pool.query(
-            "INSERT INTO users (username, img, email, google_id, role, access_token) VALUES ($1, $2, $3, $4, $5, $6)",
-            [
-              account.name,
-              account.picture,
-              account.email,
-              account.sub,
-              (account.role = "user"),
-              accessToken,
-            ]
-          );
+           await pool.query(
+             "INSERT INTO users (username, img, email, google_id, role, access_token, refresh_token) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+             [
+               account.name,
+               account.picture,
+               account.email,
+               account.sub,
+               "student", // Set a default value for role
+               accessToken,
+               refreshToken || "", // Set a default value for refresh_token
+             ]
+           );
+
 
           const id = await pool.query(
             "SELECT user_id FROM users WHERE google_id=$1",
@@ -45,6 +47,7 @@ passport.use(
             email: account.email, // Include the email in the user object
             role: account.role,
             accessToken,
+            refreshToken,
           };
         } else {
           // User exists
@@ -55,6 +58,7 @@ passport.use(
             email: currentUserQuery.rows[0].email,
             role: currentUserQuery.rows[0].role,
             accessToken,
+            refreshToken,
             admin_of_department: currentUserQuery.rows[0]?.admin_of_department,
           };
         }

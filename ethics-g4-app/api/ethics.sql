@@ -17,6 +17,7 @@ CREATE TABLE users (
   email VARCHAR(255) NOT NULL UNIQUE,
   role VARCHAR(255) NOT NULL,
   access_token VARCHAR(255) NOT NULL,
+  refresh_token VARCHAR(255) NOT NULL,
   admin_of_department VARCHAR(255),
   CONSTRAINT admin_department_unique UNIQUE (admin_of_department)
 -- If you don't have the constraint in your pre-existing table run the command below:
@@ -39,6 +40,13 @@ CREATE TABLE departments(
   name VARCHAR(255) NOT NULL,
   code VARCHAR(255) NOT NULL
 );
+
+INSERT INTO departments (name, code) VALUES 
+  ('Business & Economics', 'BAED'),
+  ('Computer Science', 'COM'),
+  ('Psychology Studies', 'PSY'),
+  ('Humanities Department', 'HUM');
+
 
 
 CREATE TABLE application_content (
@@ -70,6 +78,8 @@ CREATE TABLE user_roles (
   role VARCHAR(255) NOT NULL,
   application_id INTEGER  REFERENCES applications (id)
 );
+
+
 
 
 -- generate dbml file with:

@@ -6,18 +6,21 @@ import { useContext } from "react";
 function Pg1({ formik, emphasizeFields, mode }) {
   const user = useContext(UserContext);
   const [departments, setDepartments] = useState([]);
-
-  useEffect(() => {
-    if (user && user.loggedIn) {
-      // Fetch departments from API
-      fetch(`${import.meta.env.VITE_SERVER_URL}/api/departments`)
-        .then((response) => response.json())
-        .then((data) => {
-          setDepartments(data);
-        })
-        .catch((error) => console.error("Error fetching departments:", error));
-    }
-  }, []);
+  if (mode === "apply") {
+    useEffect(() => {
+      if (user && user.loggedIn) {
+        // Fetch departments from API
+        fetch(`${import.meta.env.VITE_SERVER_URL}/api/departments`)
+          .then((response) => response.json())
+          .then((data) => {
+            setDepartments(data);
+          })
+          .catch((error) =>
+            console.error("Error fetching departments:", error)
+          );
+      }
+    }, []);
+  }
   function splitUsername(username) {
     const names = username.split(" ");
     // If there are 2 or more names, assume the first is the first name,

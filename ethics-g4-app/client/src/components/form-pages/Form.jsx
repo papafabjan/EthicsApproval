@@ -39,6 +39,13 @@ const validationSchema = yup.object({
   // CoApplicantName: yup.string().required("CoApllicant's Name is required"),
   // CoApplicantEmail: yup.string().required("CoApllicant's Email is required"),
   // StartDate: yup.string().required("Start Date is required"),
+
+  //Page 3
+  AimsObjectives: yup.string().required("Aims and Objectives are required"),
+  Methodology: yup.string().required("Methodolgy is required"),
+  SafetyConcerns: yup.string().required("Safety Concerns are required"),
+  SensitiveTopics: yup.string().required("This Field is required"),
+  SensitiveTopicsFiles: yup.mixed().required("A file is required"),
 });
 
 const initialValues = {
@@ -554,13 +561,15 @@ const Form = () => {
         errors.AimsObjectives ||
         errors.Methodology ||
         errors.SafetyConcerns ||
-        errors.SensitiveTopics
+        errors.SensitiveTopics ||
+        errors.SensitiveTopicsFiles
       ) {
         // There are errors in the current step, handle them as needed
         errorMessage = "Incomplete: ";
         errorMessage += Object.values(errors).filter(Boolean).join(", ");
         console.error("Validation error:", errors);
-      } else {
+      }
+      else {
         // No errors, proceed to the next step
         setStep((prevStep) => prevStep + 1);
       }

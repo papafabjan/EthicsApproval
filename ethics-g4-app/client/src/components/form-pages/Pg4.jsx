@@ -164,6 +164,7 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
                         ? "red"
                         : "",
                   }}
+                  disabled={mode === "review" || mode === "view"}
                 />
               )}
               {formik.values.Payment === "Other" &&
@@ -272,7 +273,7 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
                   }
                   disabled={mode === "review" || mode === "view"}
                 />
-                Yes, it involve adults lacking mental capability
+                Yes, it involves adults lacking mental capability
               </label>
             </li>
             <li>
@@ -319,6 +320,7 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
                         ? "red"
                         : "",
                   }}
+                  disabled={mode === "review" || mode === "view"}
                 />
               )}
               {/* Comment component for the "VulnerableParticipants" field */}

@@ -9,9 +9,9 @@ const Form = styled.div`
       text-decoration: none;
       color: #e36402;
     }
-    strong {
-      font-weight: 600;
-    }
+  }
+  strong {
+    font-weight: 600;
   }
   .notes ul li {
     margin: 0 auto;

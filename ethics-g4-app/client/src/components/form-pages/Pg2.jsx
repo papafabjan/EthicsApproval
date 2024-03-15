@@ -227,6 +227,7 @@ function Pg2({ formik, emphasizeFields, mode }) {
               </label>
               {formik.values.Funding === "Other" && (
                 <input
+                  disabled={mode === "review" || mode === "view"}
                   type="text"
                   name="FundingOther"
                   placeholder="Enter other option"
@@ -470,6 +471,7 @@ function Pg2({ formik, emphasizeFields, mode }) {
                     placeholder="Enter other institution"
                     value={formik.values.AnotherInstitutionOther}
                     onChange={formik.handleChange}
+                    disabled={mode === "review" || mode === "view"}
                   />
                 )}
               </label>

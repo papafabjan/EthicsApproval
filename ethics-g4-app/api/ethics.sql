@@ -16,6 +16,7 @@ CREATE TABLE users (
   google_id VARCHAR(255) NOT NULL UNIQUE,
   email VARCHAR(255) NOT NULL UNIQUE,
   role VARCHAR(255) NOT NULL,
+  access_token VARCHAR(255) NOT NULL,
   admin_of_department VARCHAR(255),
   CONSTRAINT admin_department_unique UNIQUE (admin_of_department)
 -- If you don't have the constraint in your pre-existing table run the command below:

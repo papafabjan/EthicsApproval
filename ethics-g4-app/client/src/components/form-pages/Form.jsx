@@ -32,12 +32,9 @@ const validationSchema = yup.object({
     .required("Student registration number is required"),
   Department: yup.string().required("Department selection is required"),
   programme: yup.string().required("Programme selection is required"),
-
   supervisor: yup.string().required("Supervisor selection is required"),
   // Page 2
   ResearchProject: yup.string().required("ResearchProject is required"),
-  CoApplicantName: yup.string().required("CoApllicant's Name is required"),
-  CoApplicantEmail: yup.string().required("CoApllicant's Email is required"),
   StartDate: yup.string().required("Start Date is required"),
 });
 
@@ -642,9 +639,6 @@ const Form = () => {
     // if (!formik.isValid) {
     //   return;
     // }
-    // Change the mode to 'apply' before submitting
-
-    // Create a FormData object and append files to it
 
     formik.handleSubmit();
   };

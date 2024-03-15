@@ -40,12 +40,18 @@ const validationSchema = yup.object({
   // StartDate: yup.string().required("Start Date is required"),
 
   //Page 3
-  AimsObjectives: yup.string().required("Aims and Objectives are required"),
-  Methodology: yup.string().required("Methodolgy is required"),
-  SafetyConcerns: yup.string().required("Safety Concerns are required"),
-  SensitiveTopics: yup.string().required("This Field is required"),
-}).shape({
-  SensitiveTopicsFiles: yup.mixed().required("A file is required")
+  // AimsObjectives: yup.string().required("This Field is required"),
+  // Methodology: yup.string().required("This Field is required"),
+  // SafetyConcerns: yup.string().required("This Field is required"),
+  // SensitiveTopics: yup.string().required("This Field is required"),
+
+  //Page 4
+  PotentialParticipants: yup.string().required("This Field is required"),
+  RecruitingPotentialParticipants: yup.string().required("This Field is required"),
+  Payment: yup.string().required("This Field is required"),
+  PotentialHarm: yup.string().required("This Field is required"),
+  VulnerableParticipants: yup.string().required("This Field is required"),
+
 });
 
 const initialValues = {

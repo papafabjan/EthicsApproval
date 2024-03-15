@@ -27,7 +27,7 @@ export const Pg6 = ({ formik, emphasizeFields, mode }) => {
           value={formik.values.DataProcessing}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          placeholder="e.g. Ethics web-site"
+          placeholder="Write your answer"
           disabled={mode === "review" || mode === "view"}
         />
         {/* Comment component for the "DataProcessing" field */}
@@ -58,7 +58,7 @@ export const Pg6 = ({ formik, emphasizeFields, mode }) => {
           value={formik.values.DataConfidentiality}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          placeholder="e.g. Kostas Dimopoulos"
+          placeholder="Write your answer"
           disabled={mode === "review" || mode === "view"}
         />
         {/* Comment component for the "DataConfidentiality" field */}
@@ -93,7 +93,7 @@ export const Pg6 = ({ formik, emphasizeFields, mode }) => {
           value={formik.values.DataStorageandSecurity}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          placeholder="eg. kdimopoulos@york.citycollege.eu"
+          placeholder="Write your answer"
           disabled={mode === "review" || mode === "view"}
         />
         {/* Comment component for the "DataStorageandSecurity" field */}

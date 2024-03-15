@@ -4,6 +4,8 @@ import Comment from "../Comment";
 export const Pg6 = ({ formik, emphasizeFields, mode }) => {
   return (
     <>
+    <div className="form-container">
+
       <div className="form-group">
         <label htmlFor="DataProcessing">
           Data Processing <span style={{ color: "red" }}>*</span>
@@ -25,7 +27,7 @@ export const Pg6 = ({ formik, emphasizeFields, mode }) => {
           value={formik.values.DataProcessing}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          placeholder="e.g. Ethics web-site"
+          placeholder="Write your answer"
           disabled={mode === "review" || mode === "view"}
         />
         {/* Comment component for the "DataProcessing" field */}
@@ -56,7 +58,7 @@ export const Pg6 = ({ formik, emphasizeFields, mode }) => {
           value={formik.values.DataConfidentiality}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          placeholder="e.g. Kostas Dimopoulos"
+          placeholder="Write your answer"
           disabled={mode === "review" || mode === "view"}
         />
         {/* Comment component for the "DataConfidentiality" field */}
@@ -91,7 +93,7 @@ export const Pg6 = ({ formik, emphasizeFields, mode }) => {
           value={formik.values.DataStorageandSecurity}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          placeholder="eg. kdimopoulos@york.citycollege.eu"
+          placeholder="Write your answer"
           disabled={mode === "review" || mode === "view"}
         />
         {/* Comment component for the "DataStorageandSecurity" field */}
@@ -105,6 +107,7 @@ export const Pg6 = ({ formik, emphasizeFields, mode }) => {
           />
         )}
       </div>
+    </div>
     </>
   );
 };

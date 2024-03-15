@@ -49,6 +49,7 @@ const AdminDashboard = styled.div`
     display: flex;
     justify-content: space-between;
     padding: 10px;
+    margin-left: 40px;
     color: #888;
   }
 
@@ -57,8 +58,10 @@ const AdminDashboard = styled.div`
   .department,
   .role,
   .actions {
-    flex-basis: 25%;
+    position static;
+    flex: 1;
     text-align: center;
+
   }
 .tabs{
   display: flex;

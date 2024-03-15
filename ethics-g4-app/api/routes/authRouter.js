@@ -8,6 +8,7 @@ router.get(
     scope: ["profile", "email"],
   })
 );
+
 router.get(
   "/google/callback",
   passport.authenticate("google", { session: true }),

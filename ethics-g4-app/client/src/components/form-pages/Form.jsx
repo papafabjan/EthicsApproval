@@ -17,27 +17,34 @@ import Pg6 from "./Pg6";
 import Pg7 from "./Pg7";
 
 const validationSchema = yup.object({
-  // Page 1
-  firstName: yup.string().required("First Name is required"),
-  lastName: yup.string().required("Last Name is required"),
-  email: yup
-    .string()
-    .matches(
-      /^.+(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-      "Email is invalid."
-    )
-    .required("Email is required"),
-  studentRegistration: yup
-    .string()
-    .required("Student registration number is required"),
-  Department: yup.string().required("Department selection is required"),
-  programme: yup.string().required("Programme selection is required"),
+  // // Page 1
+  // firstName: yup.string().required("First Name is required"),
+  // lastName: yup.string().required("Last Name is required"),
+  // email: yup
+  //   .string()
+  //   .matches(
+  //     /^.+(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+  //     "Email is invalid."
+  //   )
+  //   .required("Email is required"),
+  // studentRegistration: yup
+  //   .string()
+  //   .required("Student registration number is required"),
+  // Department: yup.string().required("Department selection is required"),
+  // programme: yup.string().required("Programme selection is required"),
+  // supervisor: yup.string().required("Supervisor selection is required"),
+  // // Page 2
+  // ResearchProject: yup.string().required("ResearchProject is required"),
+  // // CoApplicantName: yup.string().required("CoApllicant's Name is required"),
+  // // CoApplicantEmail: yup.string().required("CoApllicant's Email is required"),
+  // // StartDate: yup.string().required("Start Date is required"),
 
-  supervisor: yup.string().required("Supervisor selection is required"),
-  // Page 2
-  ResearchProject: yup.string().required("ResearchProject is required"),
-  // CoApplicantName: yup.string().required("CoApllicant's Name is required"),
-  // CoApplicantEmail: yup.string().required("CoApllicant's Email is required"),
+  // //Page 3
+  // AimsObjectives: yup.string().required("Aims and Objectives are required"),
+  // Methodology: yup.string().required("Methodolgy is required"),
+  // SafetyConcerns: yup.string().required("Safety Concerns are required"),
+  // SensitiveTopics: yup.string().required("This Field is required"),
+  // SensitiveTopicsFiles: yup.mixed().required("A file is required"),
   // StartDate: yup.string().required("Start Date is required"),
 });
 
@@ -400,7 +407,7 @@ const Form = () => {
           try {
             // Step 1: Execute logic and update application ID for the folder name
             const executeLogicResponse = await fetch(
-              "http://localhost:4000/api/update-application-id",
+              `${import.meta.env.VITE_SERVER_URL}/api/update-application-id`,
               {
                 method: "POST",
                 headers: {
@@ -554,13 +561,15 @@ const Form = () => {
         errors.AimsObjectives ||
         errors.Methodology ||
         errors.SafetyConcerns ||
-        errors.SensitiveTopics
+        errors.SensitiveTopics ||
+        errors.SensitiveTopicsFiles
       ) {
         // There are errors in the current step, handle them as needed
         errorMessage = "Incomplete: ";
         errorMessage += Object.values(errors).filter(Boolean).join(", ");
         console.error("Validation error:", errors);
-      } else {
+      }
+      else {
         // No errors, proceed to the next step
         setStep((prevStep) => prevStep + 1);
       }
@@ -642,9 +651,6 @@ const Form = () => {
     // if (!formik.isValid) {
     //   return;
     // }
-    // Change the mode to 'apply' before submitting
-
-    // Create a FormData object and append files to it
 
     formik.handleSubmit();
   };
@@ -782,6 +788,7 @@ const Form = () => {
                   ))}
                 </div>
               )}
+            <pre>{JSON.stringify(formik.values, null, 2)}</pre>
             </div>
           );
         } else {

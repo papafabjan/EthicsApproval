@@ -84,6 +84,10 @@ const AdminDashboard = () => {
 
   const addDepartment = async () => {
     try {
+      if (!department_name || !department_code) {
+        throw new Error("Department name and code are required");
+      }
+  
       const response = await fetch(
         `${import.meta.env.VITE_SERVER_URL}/api/departments/add`,
         {
@@ -97,7 +101,7 @@ const AdminDashboard = () => {
           }),
         }
       );
-
+  
       if (!response.ok) {
         throw new Error("Failed to add department");
       }
@@ -105,9 +109,10 @@ const AdminDashboard = () => {
       setDepartmentName("");
       setDepartmentCode("");
     } catch (error) {
-      console.error("Error deleting department:", error.message);
+      console.error("Error adding department:", error.message);
     }
   };
+  
 
   const deleteDepartment = async (departmentId) => {
     try {

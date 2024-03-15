@@ -45,21 +45,26 @@ const AdminDashboard = () => {
   );
 
   const deleteUser = (userId) => {
-    fetch(`${import.meta.env.VITE_SERVER_URL}/api/users/${userId}/delete/`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to delete user");
-        }
-        // Refresh the users list or handle UI update
-        setFetchTrigger((prev) => prev + 1);
+    // Display confirmation dialog before deleting user
+    const confirmDelete = window.confirm("Are you sure you want to delete this user?");
+    if (confirmDelete) {
+      fetch(`${import.meta.env.VITE_SERVER_URL}/api/users/${userId}/delete/`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
       })
-      .catch((error) => console.error("Error deleting user:", error));
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Failed to delete user");
+          }
+          // Refresh the users list or handle UI update
+          setFetchTrigger((prev) => prev + 1);
+        })
+        .catch((error) => console.error("Error deleting user:", error));
+    }
   };
+  
 
   // Function to update user role
   const updateUserRole = (userId, newRole, departmentCode) => {
@@ -84,6 +89,10 @@ const AdminDashboard = () => {
 
   const addDepartment = async () => {
     try {
+      if (!department_name || !department_code) {
+        throw new Error("Department name and code are required");
+      }
+  
       const response = await fetch(
         `${import.meta.env.VITE_SERVER_URL}/api/departments/add`,
         {
@@ -97,7 +106,7 @@ const AdminDashboard = () => {
           }),
         }
       );
-
+  
       if (!response.ok) {
         throw new Error("Failed to add department");
       }
@@ -105,24 +114,29 @@ const AdminDashboard = () => {
       setDepartmentName("");
       setDepartmentCode("");
     } catch (error) {
-      console.error("Error deleting department:", error.message);
+      console.error("Error adding department:", error.message);
     }
   };
+  
 
   const deleteDepartment = async (departmentId) => {
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_SERVER_URL}/api/departments/${departmentId}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      setFetchTrigger((prev) => prev + 1);
-    } catch (error) {
-      console.error("Error deleting department:", error.message);
+    // Display confirmation dialog before deleting department
+    const confirmDelete = window.confirm("Are you sure you want to delete this department?");
+    if (confirmDelete) {
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_SERVER_URL}/api/departments/${departmentId}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        setFetchTrigger((prev) => prev + 1);
+      } catch (error) {
+        console.error("Error deleting department:", error.message);
+      }
     }
   };
 

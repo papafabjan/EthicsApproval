@@ -107,13 +107,17 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
                 please name the new document indicating the new version (e.g.,
                 title_v2.doc)
               </p>
-              <input
-                type="file"
-                className="form-control"
-                id="ParentalConsent"
-                onChange={(e) => handleFileChange(e, "ParentalConsent")}
-                disabled={mode === "review" || mode === "view"}
-              />
+
+              {(mode === "apply" || mode === "edit") && (
+                <input
+                  type="file"
+                  className="form-control"
+                  id="ParentalConsent"
+                  onChange={(e) => handleFileChange(e, "ParentalConsent")}
+                  disabled={mode === "review" || mode === "view"}
+                />
+              )}
+
               {mode !== "apply" && initialParentalConsent && (
                 <>
                   <h3>Uploaded Files:</h3>
@@ -152,13 +156,15 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
                 please name the new document indicating the new version (e.g.,
                 title_v2.doc)
               </p>
-              <input
-                type="file"
-                className="form-control"
-                id="ParentalInformation"
-                onChange={(e) => handleFileChange(e, "ParentalInformation")}
-                disabled={mode === "review" || mode === "view"}
-              />
+              {(mode === "apply" || mode === "edit") && (
+                <input
+                  type="file"
+                  className="form-control"
+                  id="ParentalInformation"
+                  onChange={(e) => handleFileChange(e, "ParentalInformation")}
+                  disabled={mode === "review" || mode === "view"}
+                />
+              )}
               {mode !== "apply" && initialParentalInformation && (
                 <>
                   <h3>Uploaded Files:</h3>
@@ -198,13 +204,15 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
                 you edit your response & resubmit please name the new document
                 indicating the new version (e.g., title_v2.doc)
               </p>
-              <input
-                type="file"
-                className="form-control"
-                id="ChildInformation"
-                onChange={(e) => handleFileChange(e, "ChildInformation")}
-                disabled={mode === "review" || mode === "view"}
-              />
+              {(mode === "apply" || mode === "edit") && (
+                <input
+                  type="file"
+                  className="form-control"
+                  id="ChildInformation"
+                  onChange={(e) => handleFileChange(e, "ChildInformation")}
+                  disabled={mode === "review" || mode === "view"}
+                />
+              )}
               {mode !== "apply" && initialChildInformation && (
                 <>
                   <h3>Uploaded Files:</h3>
@@ -240,13 +248,15 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
                 please name the new document indicating the new version (e.g.,
                 title_v2.doc)
               </p>
-              <input
-                type="file"
-                className="form-control"
-                id="HeadTeacherConsent"
-                onChange={(e) => handleFileChange(e, "HeadTeacherConsent")}
-                disabled={mode === "review" || mode === "view"}
-              />
+              {(mode === "apply" || mode === "edit") && (
+                <input
+                  type="file"
+                  className="form-control"
+                  id="HeadTeacherConsent"
+                  onChange={(e) => handleFileChange(e, "HeadTeacherConsent")}
+                  disabled={mode === "review" || mode === "view"}
+                />
+              )}
               {mode !== "apply" && initialHeadTeacherConsent && (
                 <>
                   <h3>Uploaded Files:</h3>
@@ -282,13 +292,17 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
                 response & resubmit please name the new document indicating the
                 new version (e.g., title_v2.doc)
               </p>
-              <input
-                type="file"
-                className="form-control"
-                id="HeadteacherInformation"
-                onChange={(e) => handleFileChange(e, "HeadteacherInformation")}
-                disabled={mode === "review" || mode === "view"}
-              />
+              {(mode === "apply" || mode === "edit") && (
+                <input
+                  type="file"
+                  className="form-control"
+                  id="HeadteacherInformation"
+                  onChange={(e) =>
+                    handleFileChange(e, "HeadteacherInformation")
+                  }
+                  disabled={mode === "review" || mode === "view"}
+                />
+              )}
               {mode !== "apply" && initialHeadteacherInformation && (
                 <>
                   <h3>Uploaded Files:</h3>
@@ -322,12 +336,12 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
             <div className="form-group">
               <label htmlFor="AccessibleConsentMaterial">
                 <h2>
-                  `Accessible` Consent and Information Material{" "}
+                  Accessible Consent and Information Material{" "}
                   <span style={{ color: "red" }}>*</span>
                 </h2>
               </label>
               <p>
-                Upload `accessible` consent and information material (e.g.,
+                Upload accessible consent and information material (e.g.,
                 videos, diagrams/pictures), in any format, explaining the
                 research for people who may struggle to understand some of the
                 vocabulary used by researchers in spoken explanations or may be
@@ -335,16 +349,18 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
                 response & resubmit please name the new document indicating the
                 new version (e.g., title_v2.doc)
               </p>
-              <input
-                type="file"
-                name="AccessibleConsentMaterial"
-                className="form-control"
-                id="AccessibleConsentMaterial"
-                onChange={(e) =>
-                  handleFileChange(e, "AccessibleConsentMaterial")
-                }
-                disabled={mode === "review" || mode === "view"}
-              />
+              {(mode === "apply" || mode === "edit") && (
+                <input
+                  type="file"
+                  name="AccessibleConsentMaterial"
+                  className="form-control"
+                  id="AccessibleConsentMaterial"
+                  onChange={(e) =>
+                    handleFileChange(e, "AccessibleConsentMaterial")
+                  }
+                  disabled={mode === "review" || mode === "view"}
+                />
+              )}
               {mode !== "apply" && initialAccessibleConsentMaterial && (
                 <>
                   <h3>Uploaded Files:</h3>
@@ -384,14 +400,18 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
                 response & resubmit please name the new document indicating the
                 new version (e.g., title_v2.doc)
               </p>
-              <input
-                type="file"
-                name="ProxyConsentProcedures"
-                className="form-control"
-                id="ProxyConsentProcedures"
-                onChange={(e) => handleFileChange(e, "ProxyConsentProcedures")}
-                disabled={mode === "review" || mode === "view"}
-              />
+              {(mode === "apply" || mode === "edit") && (
+                <input
+                  type="file"
+                  name="ProxyConsentProcedures"
+                  className="form-control"
+                  id="ProxyConsentProcedures"
+                  onChange={(e) =>
+                    handleFileChange(e, "ProxyConsentProcedures")
+                  }
+                  disabled={mode === "review" || mode === "view"}
+                />
+              )}
               {mode !== "apply" && initialProxyConsentProcedures && (
                 <>
                   <h3>Uploaded Files:</h3>
@@ -439,13 +459,17 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
                 please name the new document indicating the new version (e.g.,
                 title_v2.doc)
               </p>
-              <input
-                type="file"
-                className="form-control"
-                id="ParticipantInformation"
-                onChange={(e) => handleFileChange(e, "ParticipantInformation")}
-                disabled={mode === "review" || mode === "view"}
-              />
+              {(mode === "apply" || mode === "edit") && (
+                <input
+                  type="file"
+                  className="form-control"
+                  id="ParticipantInformation"
+                  onChange={(e) =>
+                    handleFileChange(e, "ParticipantInformation")
+                  }
+                  disabled={mode === "review" || mode === "view"}
+                />
+              )}
               {mode !== "apply" && initialParticipantInformation && (
                 <>
                   <h3>Uploaded Files:</h3>
@@ -484,13 +508,15 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
                 please name the new document indicating the new version (e.g.,
                 title_v2.doc)
               </p>
-              <input
-                type="file"
-                className="form-control"
-                id="ParticipantConsent"
-                onChange={(e) => handleFileChange(e, "ParticipantConsent")}
-                disabled={mode === "review" || mode === "view"}
-              />
+              {(mode === "apply" || mode === "edit") && (
+                <input
+                  type="file"
+                  className="form-control"
+                  id="ParticipantConsent"
+                  onChange={(e) => handleFileChange(e, "ParticipantConsent")}
+                  disabled={mode === "review" || mode === "view"}
+                />
+              )}
               {mode !== "apply" && initialParticipantConsent && (
                 <>
                   <h3>Uploaded Files:</h3>
@@ -527,13 +553,15 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
                 resubmit please name the new document indicating the new version
                 (e.g., title_v2.doc){" "}
               </p>
-              <input
+              {(mode === "apply" || mode === "edit") && (
+                <input
                 type="file"
                 className="form-control"
                 id="ParticipantDebriefing"
                 onChange={(e) => handleFileChange(e, "ParticipantDebriefing")}
                 disabled={mode === "review" || mode === "view"}
-              />
+                />
+                )}
               {mode !== "apply" && initialParticipantDebriefing && (
                 <>
                   <h3>Uploaded Files:</h3>
@@ -568,13 +596,15 @@ export const Pg5 = ({ formik, emphasizeFields, mode }) => {
                 your response & resubmit please name the new document indicating
                 the new version (e.g., title_v2.doc)
               </p>
-              <input
+              {(mode === "apply" || mode === "edit") && (
+                <input
                 type="file"
                 className="form-control"
                 id="AccessibilityLetter"
                 onChange={(e) => handleFileChange(e, "AccessibilityLetter")}
                 disabled={mode === "review" || mode === "view"}
-              />
+                />
+                )}
               {mode !== "apply" && initialAccessibilityLetter && (
                 <>
                   <h3>Uploaded Files:</h3>

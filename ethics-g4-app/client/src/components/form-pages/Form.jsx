@@ -32,7 +32,6 @@ const validationSchema = yup.object({
     .required("Student registration number is required"),
   Department: yup.string().required("Department selection is required"),
   programme: yup.string().required("Programme selection is required"),
-
   supervisor: yup.string().required("Supervisor selection is required"),
   // Page 2
   ResearchProject: yup.string().required("ResearchProject is required"),
@@ -46,6 +45,7 @@ const validationSchema = yup.object({
   SafetyConcerns: yup.string().required("Safety Concerns are required"),
   SensitiveTopics: yup.string().required("This Field is required"),
   SensitiveTopicsFiles: yup.mixed().required("A file is required"),
+  StartDate: yup.string().required("Start Date is required"),
 });
 
 const initialValues = {
@@ -651,9 +651,6 @@ const Form = () => {
     // if (!formik.isValid) {
     //   return;
     // }
-    // Change the mode to 'apply' before submitting
-
-    // Create a FormData object and append files to it
 
     formik.handleSubmit();
   };

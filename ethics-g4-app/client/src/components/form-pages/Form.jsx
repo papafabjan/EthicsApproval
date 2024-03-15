@@ -35,17 +35,17 @@ const validationSchema = yup.object({
   // supervisor: yup.string().required("Supervisor selection is required"),
   // // Page 2
   // ResearchProject: yup.string().required("ResearchProject is required"),
-  // // CoApplicantName: yup.string().required("CoApllicant's Name is required"),
-  // // CoApplicantEmail: yup.string().required("CoApllicant's Email is required"),
-  // // StartDate: yup.string().required("Start Date is required"),
-
-  // //Page 3
-  // AimsObjectives: yup.string().required("Aims and Objectives are required"),
-  // Methodology: yup.string().required("Methodolgy is required"),
-  // SafetyConcerns: yup.string().required("Safety Concerns are required"),
-  // SensitiveTopics: yup.string().required("This Field is required"),
-  // SensitiveTopicsFiles: yup.mixed().required("A file is required"),
+  // CoApplicantName: yup.string().required("CoApllicant's Name is required"),
+  // CoApplicantEmail: yup.string().required("CoApllicant's Email is required"),
   // StartDate: yup.string().required("Start Date is required"),
+
+  //Page 3
+  AimsObjectives: yup.string().required("Aims and Objectives are required"),
+  Methodology: yup.string().required("Methodolgy is required"),
+  SafetyConcerns: yup.string().required("Safety Concerns are required"),
+  SensitiveTopics: yup.string().required("This Field is required"),
+}).shape({
+  SensitiveTopicsFiles: yup.mixed().required("A file is required")
 });
 
 const initialValues = {
@@ -562,7 +562,7 @@ const Form = () => {
         errors.Methodology ||
         errors.SafetyConcerns ||
         errors.SensitiveTopics ||
-        errors.SensitiveTopicsFiles
+        formik.values.SensitiveTopicsFiles.length==0
       ) {
         // There are errors in the current step, handle them as needed
         errorMessage = "Incomplete: ";
@@ -593,14 +593,19 @@ const Form = () => {
       }
     } else if (step === 5) {
       if (
-        errors.ParentalConsent ||
-        errors.ParentalInformation ||
-        errors.HeadTeacherConsent ||
-        errors.HeadteacherInformation ||
-        errors.ParticipantInformationForm ||
-        errors.ParticipantConsentForm ||
-        errors.DebriefingForm ||
-        errors.AccessibilityLetter
+        (formik.values.ParentalConsent.length==0 ||
+        formik.values.ParentalInformation.length==0 ||
+        formik.values.HeadTeacherConsent.length==0 ||
+        formik.values.ChildInformation.length==0 ||
+        formik.values.HeadteacherInformation.length==0 ) && formik.values.VulnerableParticipants === "YesChildren_adolescents" ||
+        
+        (formik.values.AccessibleConsentMaterial.length==0 ||
+        formik.values.ProxyConsentProcedure.length==0 ) && formik.values.VulnerableParticipants === "YesAdultsMental" ||
+
+        (formik.values.ParticipantInformation.length==0||
+        formik.values.ParticipantConsent.length==0||
+        formik.values.ParticipantDebriefing.length==0 ||
+        formik.values.AccessibilityLetter.length==0)
       ) {
         // There are errors in the current step, handle them as needed
         errorMessage = "Incomplete: ";
@@ -626,13 +631,8 @@ const Form = () => {
       }
     } else if (step === 7) {
       if (
-        errors.ListofQuestions ||
-        errors.AdditionalForms ||
-        errors.test ||
-        errors.radioOption ||
-        errors.otherOption ||
-        errors.checkboxOption ||
-        errors.otherCheckboxOption
+        formik.values.ListofQuestions.length==0 ||
+        formik.values.AdditionalForms.length==0
       ) {
         // There are errors in the current step, handle them as needed
         errorMessage = "Incomplete: ";

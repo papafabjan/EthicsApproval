@@ -5,15 +5,15 @@ import { useParams } from "react-router-dom";
 function Pg3({ formik, emphasizeFields, mode }) {
   const { applicationId } = useParams();
   // Get the file names from formik values
- const [initialSensitiveTopicsFilesNames, setInitialSensitiveTopicsFilesNames] =
-   useState(null);
+  const [initialSensitiveTopicsFilesNames, setInitialSensitiveTopicsFilesNames] =
+    useState(null);
 
-    useEffect(() => {
-      // Set initial file names when component mounts
-      setInitialSensitiveTopicsFilesNames(
-        formik.values.SensitiveTopicsFilesFileNames
-      );
-    }, []);
+  useEffect(() => {
+    // Set initial file names when component mounts
+    setInitialSensitiveTopicsFilesNames(
+      formik.values.SensitiveTopicsFilesFileNames
+    );
+  }, []);
   // Function to generate links for uploaded files
   const generateFileLinks = (fileNames) => {
     // Check if fileNames is undefined or null
@@ -26,9 +26,8 @@ function Pg3({ formik, emphasizeFields, mode }) {
         <a
           href={
             applicationId
-              ? `${
-                  import.meta.env.VITE_SERVER_URL
-                }/submitFiles/application_id_${applicationId}/${fileName}`
+              ? `${import.meta.env.VITE_SERVER_URL
+              }/submitFiles/application_id_${applicationId}/${fileName}`
               : ""
           }
           target="_blank"
@@ -43,11 +42,22 @@ function Pg3({ formik, emphasizeFields, mode }) {
 
   const handleFilesChange = (event, initialValuesName) => {
     const files = event.target.files;
+
+    if (files.length === 0) {
+      // No files selected
+      console.log("No files selected");
+    } else {
+      // Files selected
+      console.log("Files selected:", files);
+    }
+
+
     formik.setFieldValue(initialValuesName, files);
 
     // Update file names array
     const fileNames = Array.from(files).map((file) => file.name);
     formik.setFieldValue(`${initialValuesName}FileNames`, fileNames);
+
   };
 
   return (
@@ -73,12 +83,17 @@ function Pg3({ formik, emphasizeFields, mode }) {
             style={{
               borderColor:
                 emphasizeFields?.AimsObjectives &&
-                formik.touched?.AimsObjectives
+                  formik.touched?.AimsObjectives
                   ? "red"
                   : "",
             }}
             disabled={mode === "review" || mode === "view"}
           />
+
+          {formik.touched.AimsObjectives && formik.errors.AimsObjectives && (
+            <div style={{ color: "red" }}>{formik.errors.AimsObjectives}</div>
+          )}
+
           {/* Comment component for the "AimsObjectives" field */}
           {mode === "review" && (
             <Comment
@@ -89,9 +104,7 @@ function Pg3({ formik, emphasizeFields, mode }) {
               }
             />
           )}
-          {formik.touched.AimsObjectives && formik.errors.AimsObjectives && (
-            <div style={{ color: "red" }}>{formik.errors.AimsObjectives}</div>
-          )}
+
         </div>
 
         <div className="form-group">
@@ -157,7 +170,7 @@ function Pg3({ formik, emphasizeFields, mode }) {
             style={{
               borderColor:
                 emphasizeFields?.SafetyConcerns &&
-                formik.touched?.SafetyConcerns
+                  formik.touched?.SafetyConcerns
                   ? "red"
                   : "",
             }}
@@ -274,12 +287,14 @@ function Pg3({ formik, emphasizeFields, mode }) {
             />
           )}
 
-          {formik.touched.SensitiveMaterialFiles &&
-            formik.errors.SensitiveMaterialFiles && (
+
+          {formik.touched.SensitiveTopicsFiles &&
+            formik.errors.SensitiveTopicsFiles && (
               <div style={{ color: "red" }}>
-                {formik.errors.SensitiveMaterialFiles}
+                {formik.errors.SensitiveTopicsFiles}
               </div>
             )}
+
         </div>
       </div>
     </>

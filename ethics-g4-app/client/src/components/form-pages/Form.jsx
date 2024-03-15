@@ -36,9 +36,9 @@ const validationSchema = yup.object({
   supervisor: yup.string().required("Supervisor selection is required"),
   // Page 2
   ResearchProject: yup.string().required("ResearchProject is required"),
-  // CoApplicantName: yup.string().required("CoApllicant's Name is required"),
-  // CoApplicantEmail: yup.string().required("CoApllicant's Email is required"),
-  // StartDate: yup.string().required("Start Date is required"),
+  CoApplicantName: yup.string().required("CoApllicant's Name is required"),
+  CoApplicantEmail: yup.string().required("CoApllicant's Email is required"),
+  StartDate: yup.string().required("Start Date is required"),
 });
 
 const initialValues = {

@@ -17,40 +17,78 @@ import Pg6 from "./Pg6";
 import Pg7 from "./Pg7";
 
 const validationSchema = yup.object({
-  // // Page 1
-  // firstName: yup.string().required("First Name is required"),
-  // lastName: yup.string().required("Last Name is required"),
-  // email: yup
-  //   .string()
-  //   .matches(
-  //     /^.+(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-  //     "Email is invalid."
-  //   )
-  //   .required("Email is required"),
-  // studentRegistration: yup
-  //   .string()
-  //   .required("Student registration number is required"),
-  // Department: yup.string().required("Department selection is required"),
-  // programme: yup.string().required("Programme selection is required"),
-  // supervisor: yup.string().required("Supervisor selection is required"),
-  // // Page 2
-  // ResearchProject: yup.string().required("ResearchProject is required"),
-  // CoApplicantName: yup.string().required("CoApllicant's Name is required"),
-  // CoApplicantEmail: yup.string().required("CoApllicant's Email is required"),
-  // StartDate: yup.string().required("Start Date is required"),
+
+  // Page 1
+
+  firstName: yup.string().required("First Name is required"),
+  lastName: yup.string().required("Last Name is required"),
+  email: yup
+    .string()
+    .matches(
+      /^.+(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      "Email is invalid."
+    )
+    .required("Email is required"),
+  studentRegistration: yup
+    .string()
+    .required("Student registration number is required"),
+  Department: yup.string().required("Department selection is required"),
+  programme: yup.string().required("Programme selection is required"),
+  supervisor: yup.string().required("Supervisor selection is required"),
+
+  // Page 2
+
+  ResearchProject: yup.string().required("ResearchProject is required"),
+  StartDate: yup.string().required("Start Date is required"),
+  EndDate: yup.string().required("End Date is required"),
+  Funding: yup.string().required("Funding is required"),
+  Country: yup.array().required("Country selection is required"),
+
+  HealthSocialCare: yup.string().required("Health or Social Care is required"),
+  AnotherInstitution: yup.string().required("Another Institution is required"),
+  HumanTissue: yup.string().required("Human Tissue is required"),
+  ClinicalMedical: yup.string().required("Clinical or Medical is required"),
+  SocialCareServices: yup.string().required("Social Care Services is required"),
 
   //Page 3
-  // AimsObjectives: yup.string().required("This Field is required"),
-  // Methodology: yup.string().required("This Field is required"),
-  // SafetyConcerns: yup.string().required("This Field is required"),
-  // SensitiveTopics: yup.string().required("This Field is required"),
+
+  AimsObjectives: yup.string().required("Aims and Objectives is required"),
+  Methodology: yup.string().required("Methodology is required"),
+  SafetyConcerns: yup.string().required("Safety Concerns is required"),
+  SensitiveTopics: yup.string().required("Sensitive Topics is required"),
 
   //Page 4
-  PotentialParticipants: yup.string().required("This Field is required"),
-  RecruitingPotentialParticipants: yup.string().required("This Field is required"),
-  Payment: yup.string().required("This Field is required"),
-  PotentialHarm: yup.string().required("This Field is required"),
+
+  PotentialParticipants: yup.string().required("Potential Participants is required"),
+  RecruitingPotentialParticipants: yup.string().required("Recruiting Potential Participants is required"),
+  Payment: yup.string().required("Payment is required"),
+  PotentialHarm: yup.string().required("Potential Harm to Participants is required"),
   VulnerableParticipants: yup.string().required("This Field is required"),
+
+  //Page 5 yes children
+
+  // ParentalConsent: yup.array().required("Parental Consent is required"),
+  // ParentalInformation: yup.array().required("Parental Information is required"),
+
+  //Page 5 yes mental adults
+
+  AccessibleConsentMaterial: yup.array().required("Accessible Consent Material is required"),
+  ProxyConsentProcedure: yup.array().required("Proxy Consent Procedure is required"),
+
+  //Page 5 no or other
+
+  ParticipantInformation: yup.array().required("Participant Information is required"),
+  ParticipantConsent: yup.array().required("Participant Consent is required"),
+
+  //Page 6
+
+  // DataProcessing: yup.string().required("Data Processing is required"),
+  // DataConfidentiality: yup.string().required("Data Confidentiality is required"),
+  // DataStorageandSecurity: yup.string().required("Data Storage and Security is required"),
+
+  //Page 7
+
+  ListofQuestions: yup.array().required("List of Questions is required"),
 
 });
 
@@ -75,7 +113,6 @@ const initialValues = {
   FundingOther: "",
   Country: [],
   OtherCountry: "",
-  ProjectPlace: "",
   HealthSocialCare: "",
   AnotherInstitution: "",
   AnotherInstitutionOther: "",
@@ -152,35 +189,70 @@ const Form = () => {
   const adaptValuesForSubmission = (values) => {
     const adaptedValues = { ...values };
 
-    // Page3
-    adaptedValues.SensitiveTopicsFiles = values.SensitiveTopicsFilesNames;
+    //Page 1
 
+    adaptedValues.firstName = values.firstName;
+    adaptedValues.middlename = values.middlename;
+    adaptedValues.lastName = values.lastName;
+    adaptedValues.email = values.email;
+    adaptedValues.studentRegistration = values.studentRegistration;
+    adaptedValues.Department = values.Department;
+    adaptedValues.programme = values.programme;
+    adaptedValues.supervisor = values.supervisor;
+
+    // Page 2
+
+    adaptedValues.ResearchProject = values.ResearchProject;
+    adaptedValues.StartDate = values.StartDate;
+    adaptedValues.EndDate = values.EndDate;
+    adaptedValues.Funding = values.Funding;
+    adaptedValues.Country = values.Country;
+    adaptedValues.HealthSocialCare = values.HealthSocialCare;
+    adaptedValues.AnotherInstitution = values.AnotherInstitution;
+    adaptedValues.HumanTissue = values.HumanTissue;
+    adaptedValues.ClinicalMedical = values.ClinicalMedical;
+    adaptedValues.SocialCareServices = values.SocialCareServices;
+
+    // Page 3
+
+    adaptedValues.AimsObjectives = values.AimsObjectives;
+    adaptedValues.Methodology = values.Methodology;
+    adaptedValues.SafetyConcerns = values.SafetyConcerns;
+    adaptedValues.SensitiveTopics = values.SensitiveTopics;
+    adaptedValues.SensitiveTopicsFiles = values.SensitiveTopicsFiles;
+
+    // Page 4
+
+    adaptedValues.PotentialParticipants = values.PotentialParticipants;
+    adaptedValues.RecruitingPotentialParticipants = values.RecruitingPotentialParticipants;
+    adaptedValues.Payment = values.Payment;
+    adaptedValues.PotentialHarm = values.PotentialHarm;
+    adaptedValues.VulnerableParticipants = values.VulnerableParticipants;
 
     // Page5: Yes child
-    adaptedValues.ParentalConsent = values.ParentalConsentNames;
-    adaptedValues.ParentalInformation = values.ParentalInformationNames;
-    adaptedValues.ChildInformation = values.ChildInformationNames;
-    adaptedValues.HeadTeacherConsent = values.HeadTeacherConsentNames;
-    adaptedValues.HeadteacherInformation = values.HeadteacherInformationNames;
+
+    adaptedValues.ParentalConsentFileNames = values.ParentalConsentFileNames;
+    adaptedValues.ParentalInformationFileNames = values.ParentalInformationFileNames;
 
     // Page5: Yes adults mental
-    adaptedValues.AccessibleConsentMaterial =
-      values.AccessibleConsentMaterialNames;
-    adaptedValues.ProxyConsentProcedure = values.ProxyConsentProcedureNames;
+
+    adaptedValues.AccessibleConsentMaterialFileNames = values.AccessibleConsentMaterialFileNames;
+    adaptedValues.ProxyConsentProcedureFileNames = values.ProxyConsentProcedureFileNames;
 
     // Page5: No or other option
-    adaptedValues.ParticipantInformation = values.ParticipantInformationNames;
-    adaptedValues.ParticipantConsent = values.ParticipantConsentNames;
-    adaptedValues.ParticipantDebriefing = values.ParticipantDebriefingNames;
-    adaptedValues.AccessibilityLetter = values.AccessibilityLetterNames;
+
+    adaptedValues.ParticipantInformationFileNames = values.ParticipantInformationFileNames;
+    adaptedValues.ParticipantConsentFileNames = values.ParticipantConsentFileNames;
+
+    //Page6
+
+    adaptedValues.DataProcessing = values.DataProcessing;
+    adaptedValues.DataConfidentiality = values.DataConfidentiality;
+    adaptedValues.DataStorageandSecurity = values.DataStorageandSecurity;
 
     // Page7
-    adaptedValues.DataProcessing = values.DataProcessingNames;
-    adaptedValues.DataConfidentiality = values.DataConfidentialityNames;
-    adaptedValues.DataStorageandSecurity = values.DataStorageandSecurityNames;
 
-    adaptedValues.ListofQuestions = values.ListofQuestionsNames;
-    adaptedValues.AdditionalForms = values.AdditionalFormsNames;
+    adaptedValues.ListofQuestionsFileNames = values.ListofQuestions;
 
     return adaptedValues;
   };
@@ -193,8 +265,7 @@ const Form = () => {
       const fetchApplicationData = async () => {
         try {
           const response = await fetch(
-            `${
-              import.meta.env.VITE_SERVER_URL
+            `${import.meta.env.VITE_SERVER_URL
             }/api/applications/${applicationId}`
           );
 
@@ -349,8 +420,7 @@ const Form = () => {
         if (mode === "edit" && applicationId) {
           try {
             const response = await fetch(
-              `${
-                import.meta.env.VITE_SERVER_URL
+              `${import.meta.env.VITE_SERVER_URL
               }/api/applications/edit/${applicationId}`,
               {
                 method: "POST",
@@ -539,17 +609,12 @@ const Form = () => {
     } else if (step === 2) {
       if (
         errors.ResearchProject ||
-        errors.CoApplicantName ||
-        errors.CoApplicantEmail ||
         errors.StartDate ||
         errors.EndDate ||
         errors.Funding ||
-        errors.FundingOther ||
         errors.Country ||
-        errors.ProjectPlace ||
         errors.HealthSocialCare ||
         errors.AnotherInstitution ||
-        errors.AnotherInstitutionOther ||
         errors.HumanTissue ||
         errors.ClinicalMedical ||
         errors.SocialCareServices
@@ -568,7 +633,7 @@ const Form = () => {
         errors.Methodology ||
         errors.SafetyConcerns ||
         errors.SensitiveTopics ||
-        formik.values.SensitiveTopicsFiles.length==0
+        formik.values.SensitiveTopicsFiles.length == 0
       ) {
         // There are errors in the current step, handle them as needed
         errorMessage = "Incomplete: ";
@@ -584,11 +649,8 @@ const Form = () => {
         errors.PotentialParticipants ||
         errors.RecruitingPotentialParticipants ||
         errors.Payment ||
-        errors.otherPaymentOption ||
         errors.PotentialHarm ||
-        errors.VulnerableParticipants ||
-        errors.otherVulnerableParticipantsOptions
-      ) {
+        errors.VulnerableParticipants) {
         // There are errors in the current step, handle them as needed
         errorMessage = "Incomplete: ";
         errorMessage += Object.values(errors).filter(Boolean).join(", ");
@@ -599,19 +661,15 @@ const Form = () => {
       }
     } else if (step === 5) {
       if (
-        (formik.values.ParentalConsent.length==0 ||
-        formik.values.ParentalInformation.length==0 ||
-        formik.values.HeadTeacherConsent.length==0 ||
-        formik.values.ChildInformation.length==0 ||
-        formik.values.HeadteacherInformation.length==0 ) && formik.values.VulnerableParticipants === "YesChildren_adolescents" ||
-        
-        (formik.values.AccessibleConsentMaterial.length==0 ||
-        formik.values.ProxyConsentProcedure.length==0 ) && formik.values.VulnerableParticipants === "YesAdultsMental" ||
+        (formik.values.ParentalConsent.length == 0 ||
+          formik.values.ParentalInformation.length == 0
+        ) && formik.values.VulnerableParticipants === "YesChildren_adolescents" ||
 
-        (formik.values.ParticipantInformation.length==0||
-        formik.values.ParticipantConsent.length==0||
-        formik.values.ParticipantDebriefing.length==0 ||
-        formik.values.AccessibilityLetter.length==0)
+        (formik.values.AccessibleConsentMaterial.length == 0 ||
+          formik.values.ProxyConsentProcedure.length == 0) && formik.values.VulnerableParticipants === "YesAdultsMental" ||
+
+        (formik.values.ParticipantInformation.length == 0 ||
+          formik.values.ParticipantConsent.length == 0)
       ) {
         // There are errors in the current step, handle them as needed
         errorMessage = "Incomplete: ";
@@ -637,8 +695,7 @@ const Form = () => {
       }
     } else if (step === 7) {
       if (
-        formik.values.ListofQuestions.length==0 ||
-        formik.values.AdditionalForms.length==0
+        formik.values.ListofQuestions.length == 0
       ) {
         // There are errors in the current step, handle them as needed
         errorMessage = "Incomplete: ";
@@ -794,7 +851,7 @@ const Form = () => {
                   ))}
                 </div>
               )}
-            <pre>{JSON.stringify(formik.values, null, 2)}</pre>
+              <pre>{JSON.stringify(formik.values, null, 2)}</pre>
             </div>
           );
         } else {

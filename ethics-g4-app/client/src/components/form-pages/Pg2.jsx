@@ -92,12 +92,6 @@ function Pg2({ formik, emphasizeFields, mode }) {
               }
             />
           )}
-          {formik.touched.ResearchProject && formik.errors.ResearchProject && (
-            <div style={{ color: "red" }}>{formik.errors.ResearchProject}</div>
-          )}
-          {formik.touched.CoApplicantName && formik.errors.CoApplicantName && (
-            <div style={{ color: "red" }}>{formik.errors.CoApplicantName}</div>
-          )}
         </div>
 
         <div className="form-group">
@@ -135,12 +129,7 @@ function Pg2({ formik, emphasizeFields, mode }) {
               }
             />
           )}
-          {formik.touched.CoApplicantEmail &&
-            formik.errors.CoApplicantEmail && (
-              <div style={{ color: "red" }}>
-                {formik.errors.CoApplicantName}
-              </div>
-            )}
+
         </div>
 
         <div className="form-group">
@@ -243,13 +232,7 @@ function Pg2({ formik, emphasizeFields, mode }) {
                   }}
                 />
               )}
-              {formik.values.Funding === "Other" &&
-                formik.touched.FundingOther &&
-                formik.errors.FundingOther && (
-                  <div style={{ color: "red" }}>
-                    {formik.errors.FundingOther}
-                  </div>
-                )}
+    
             </li>
             <li>
               <label>
@@ -360,13 +343,7 @@ function Pg2({ formik, emphasizeFields, mode }) {
                   }}
                 />
               )}
-              {formik.values.Country.includes("Other") &&
-                formik.touched.OtherCountry &&
-                formik.errors.OtherCountry && (
-                  <div style={{ color: "red" }}>
-                    {formik.errors.OtherCountry}
-                  </div>
-                )}
+             
             </li>
             {/* Comment component for the "Country" field */}
             {mode === "review" && (

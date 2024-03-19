@@ -71,7 +71,7 @@ function Pg3({ formik, emphasizeFields, mode }) {
             Try to explain this in very simple terms. Do not copy-paste your
             research proposal
           </p>
-          <input
+          <textarea
             type="text"
             className="form-control"
             name="AimsObjectives"
@@ -86,8 +86,11 @@ function Pg3({ formik, emphasizeFields, mode }) {
                   formik.touched?.AimsObjectives
                   ? "red"
                   : "",
+                  resize: "none"
             }}
             disabled={mode === "review" || mode === "view"}
+            rows={6} 
+            cols={50} 
           />
 
           {formik.touched.AimsObjectives && formik.errors.AimsObjectives && (
@@ -117,7 +120,7 @@ function Pg3({ formik, emphasizeFields, mode }) {
             typical testing session to last. If the study involves potentially
             sensitive materials make sure you attach them to your submission
           </p>
-          <input
+          <textarea
             type="text"
             name="Methodology"
             className="form-control"
@@ -131,8 +134,11 @@ function Pg3({ formik, emphasizeFields, mode }) {
                 emphasizeFields?.Methodology && formik.touched?.Methodology
                   ? "red"
                   : "",
+                  resize: "none"
             }}
             disabled={mode === "review" || mode === "view"}
+            rows={6} 
+            cols={50} 
           />
           {/* Comment component for the "Methodology" field */}
           {mode === "review" && (
@@ -158,7 +164,7 @@ function Pg3({ formik, emphasizeFields, mode }) {
             for the researcher/s? If yes, how will this be managed to ensure
             appropriate protection and well-being of the researcher/s?
           </p>
-          <input
+          <textarea
             type="text"
             className="form-control"
             name="SafetyConcerns"
@@ -173,8 +179,11 @@ function Pg3({ formik, emphasizeFields, mode }) {
                   formik.touched?.SafetyConcerns
                   ? "red"
                   : "",
+                  resize: "none"
             }}
             disabled={mode === "review" || mode === "view"}
+            rows={6} 
+            cols={50} 
           />
           {/* Comment component for the "SafetyConcerns" field */}
           {mode === "review" && (

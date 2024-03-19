@@ -22,7 +22,7 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
             participants do you plan to test, and what is the rationale for the
             intended sample size? (i.e., has a power analysis been carried out?)
           </p>
-          <input
+          <textarea
             type="text"
             name="PotentialParticipants"
             className="form-control"
@@ -37,8 +37,11 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
                 formik.touched?.PotentialParticipants
                   ? "red"
                   : "",
+                  resize: "none"
             }}
             disabled={mode === "review" || mode === "view"}
+            rows={6} 
+            cols={50} 
           />
           {/* Comment component for the "PotentialParticipants" field */}
           {mode === "review" && (
@@ -67,7 +70,7 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
             How will you find, approach and ask potential participants to take
             part at your research?
           </p>
-          <input
+          <textarea
             type="text"
             name="RecruitingPotentialParticipants"
             className="form-control"
@@ -82,8 +85,11 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
                 formik.touched?.RecruitingPotentialParticipants
                   ? "red"
                   : "",
+                  resize: "none"
             }}
             disabled={mode === "review" || mode === "view"}
+            rows={6} 
+            cols={50} 
           />
           {/* Comment component for the "RecruitingPotentialParticipants" field */}
           {mode === "review" && (
@@ -198,7 +204,7 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
             harm/distress to the participants? How will this be managed to
             ensure appropriate protection and well-being of the participants?
           </p>
-          <input
+          <textarea
             type="text"
             name="PotentialHarm"
             className="form-control"
@@ -212,8 +218,11 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
                 emphasizeFields?.PotentialHarm && formik.touched?.PotentialHarm
                   ? "red"
                   : "",
+                  resize: "none"
             }}
             disabled={mode === "review" || mode === "view"}
+            rows={6} 
+            cols={50} 
           />
           {/* Comment component for the "PotentialHarm" field */}
           {mode === "review" && (

@@ -333,7 +333,7 @@ function Pg1({ formik, emphasizeFields, mode }) {
             </div>
           )}
           <div className="form-group">
-            <label htmlFor="supervisor">Your supervisor</label>
+            <label htmlFor="supervisor">Your supervisor <span style={{ color: "red" }}>*</span></label>
             <select
               id="supervisor"
               name="supervisor"

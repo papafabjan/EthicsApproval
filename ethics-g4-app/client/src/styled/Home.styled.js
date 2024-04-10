@@ -2,23 +2,41 @@ import styled from "styled-components";
 
 const Home = styled.div`
   font-family: "Montserrat", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 
-  h1 {
-    text-align: center;
-    color: #333;
+  .welcome {
+    text-align: left;
+    margin-top: 1rem;
+    font-size: 18px;
+    position: relative;
+    z-index: 2;
+    a {
+      text-decoration: none;
+      color: #e36402;
+    }
   }
 
-  div {
-    margin-top: 2rem;
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+  }
+
+  .user-profile {
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
 
     img {
       border-radius: 50%;
-      width: 100%; /* Make the image width 100% of the container */
-      max-width: 150px; /* Set a maximum width to avoid stretching on larger screens */
-      height: auto; /* Maintain aspect ratio */
+      width: 100%;
+      max-width: 150px;
+      height: auto;
       object-fit: cover;
     }
 

@@ -12,13 +12,7 @@ const GlobalStyle = createGlobalStyle`
 
 body {
   
-  color: ${({ theme }) => theme.text};
   margin: 0;
-  background: linear-gradient(
-    45deg,
-    rgb(248, 94, 0) 0%,
-    rgb(249, 212, 35) 100%
-  );
   font-family: "Montserrat", 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fikura Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;

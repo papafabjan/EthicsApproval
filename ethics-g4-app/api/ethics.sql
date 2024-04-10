@@ -1,5 +1,13 @@
--- CREATE DATABASE ethics;
--- USE ethics;
+/*
+psql -U postgres;
+CREATE DATABASE ethics;
+CREATE USER root WITH PASSWORD 'rootpassword';
+GRANT ALL PRIVILEGES ON DATABASE ethics to root;
+ALTER AUTHORIZATION ON DATABASE::[ethics] TO [root];
+USE ethics;
+\q
+psql -U root -d ethics
+*/
 
 CREATE TABLE users (
   user_id SERIAL PRIMARY KEY,
@@ -8,8 +16,14 @@ CREATE TABLE users (
   google_id VARCHAR(255) NOT NULL UNIQUE,
   email VARCHAR(255) NOT NULL UNIQUE,
   role VARCHAR(255) NOT NULL,
-  admin_of_department VARCHAR(255)
+  access_token VARCHAR(255) NOT NULL,
+  refresh_token VARCHAR(255) NOT NULL,
+  admin_of_department VARCHAR(255),
+  CONSTRAINT admin_department_unique UNIQUE (admin_of_department)
+-- If you don't have the constraint in your pre-existing table run the command below:
+-- CREATE UNIQUE INDEX unique_admin_department ON users (admin_of_department) WHERE admin_of_department IS NOT NULL;
 );
+
 
 
 CREATE TABLE applications (
@@ -27,6 +41,13 @@ CREATE TABLE departments(
   code VARCHAR(255) NOT NULL
 );
 
+INSERT INTO departments (name, code) VALUES 
+  ('Business & Economics', 'BAED'),
+  ('Computer Science', 'COM'),
+  ('Psychology Studies', 'PSY'),
+  ('Humanities Department', 'HUM');
+
+
 
 CREATE TABLE application_content (
   id SERIAL PRIMARY KEY,
@@ -35,6 +56,13 @@ CREATE TABLE application_content (
   field_value TEXT
 );
 
+CREATE TABLE application_history (
+  id SERIAL PRIMARY KEY,
+  application_id INTEGER REFERENCES applications(id) NOT NULL,
+  date TIMESTAMP NOT NULL,
+  status VARCHAR(255) NOT NULL,
+  actor_id INTEGER REFERENCES users(user_id)
+);
 
 CREATE TABLE comments (
   id SERIAL PRIMARY KEY,
@@ -48,6 +76,11 @@ CREATE TABLE comments (
 CREATE TABLE user_roles (
   user_id INTEGER REFERENCES users (user_id),
   role VARCHAR(255) NOT NULL,
-  application_id INTEGER  REFERENCES applications (id),
-  approved BOOLEAN DEFAULT false
+  application_id INTEGER  REFERENCES applications (id)
 );
+
+
+
+
+-- generate dbml file with:
+-- sql2dbml ethics.sql --postgres -o ethics.dbml

@@ -1,32 +1,19 @@
 import styled from "styled-components";
 
-const StyledDashboard = styled.div`
-  .dashboard-container {
-    display: flex;
-    justify-content: space-between; /* Aligns items with space between them */
-    align-items: center;
-  }
-
-  .dashboard-title {
-    margin-right: auto; /* Pushes the title to the left as much as possible */
-  }
-
-  .options-container {
-    margin-left: 10px; /* Adjust spacing between title and selection */
-  }
-
-  .options-select {
-    width: auto;
-  }
-
+const AdminDashboard = styled.div`
+  /* AdminDashboard component styling */
   a {
     text-decoration: none;
     color: inherit;
   }
 
+  img {
+    margin-right: 20px;
+  }
+
   input {
     padding: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 16px;
     border: 1px solid #fa9a00;
     border-radius: 4px;
     outline: none;
@@ -37,7 +24,8 @@ const StyledDashboard = styled.div`
     border-collapse: collapse;
   }
 
-  .row {
+  /* Table rows */
+  tr {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -47,20 +35,52 @@ const StyledDashboard = styled.div`
     border-radius: 10px;
   }
 
+  /* Table cells */
+  td {
+    flex-basis: 25%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+  }
+
+  /* Table header */
   .header {
     display: flex;
     justify-content: space-between;
     padding: 10px;
+    margin-left: 40px;
     color: #888;
   }
-  .application,
-  .date,
-  .status,
-  .actions {
-    flex-basis: 25%;
-    text-align: center;
-  }
 
+  /* Specific column classes */
+  .username,
+  .department,
+  .role,
+  .actions {
+    position static;
+    flex: 1;
+    text-align: center;
+
+  }
+.tabs{
+  display: flex;
+  justify-content: space-between;
+}
+.create-departments{
+  display: flex;
+  justify-content: space-evenly;
+  margin: 20px;
+  align-items: center;
+  .btn{
+    width: 30%;
+  }
+}
+.departments-table{
+  thead tr{
+    box-shadow:none;
+  }
+}
   .btn {
     background-color: #ffa07a;
     color: #fff;
@@ -69,16 +89,8 @@ const StyledDashboard = styled.div`
     border-radius: 4px;
     cursor: pointer;
     margin: 3px;
-    width: 75px;
-    height: fit-content;
-  }
-
-  @media (max-width: 768px) {
-    .row {
-      flex-direction: column;
-      align-items: flex-start;
-    }
+    width: 100%;
   }
 `;
 
-export default StyledDashboard;
+export default AdminDashboard;

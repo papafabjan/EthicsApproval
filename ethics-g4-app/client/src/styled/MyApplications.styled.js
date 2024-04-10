@@ -9,23 +9,24 @@ const MyApplications = styled.div`
   input {
     padding: 10px;
     margin-bottom: 16px;
-    border: 1px solid #ffa07a; /* Light Dark Orange */
+    border: 1px solid #ffa07a; 
     border-radius: 4px;
     outline: none;
-    width: 100%; /* Make input full width */
+    width: 100%;
   }
 
   .header {
-    display: none; /* Hide header on small screens */
+    display: none; 
   }
 
   .row {
     display: flex;
-    flex-direction: column; /* Stack elements vertically on small screens */
+    justify-content: space-between;
     align-items: center;
     padding: 10px;
-    border: 1px solid #ccc;
+    box-shadow: 0 0px 5px 0px rgba(0, 0, 0, 0.6);
     margin-top: 8px;
+    border-radius: 10px;
   }
 
   .application,
@@ -37,7 +38,7 @@ const MyApplications = styled.div`
   }
 
   .btn {
-    background-color: #ffa07a; /* Light Dark Orange */
+    background-color: #ffa07a; 
     color: #fff;
     padding: 8px 16px;
     border: none;
@@ -56,7 +57,7 @@ const MyApplications = styled.div`
       display: flex;
       justify-content: space-between;
       padding: 10px;
-      color: #888; /* Slightly muted color */
+      color: #888; 
     }
   }
 `;

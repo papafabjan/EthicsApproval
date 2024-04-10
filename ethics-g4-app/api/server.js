@@ -8,7 +8,6 @@ const passport = require("passport");
 require("./auth.js");
 const userRoutes = require("./routes/userRouter");
 const applicationsRoutes = require("./routes/applicationsRouter");
-const testapplicationsRoutes = require("./routes/testapplicationsRouter");
 const commentsRoutes = require("./routes/commentsRouter");
 const fileSubmissionRouter = require("./routes/fileSubmissionRouter");
 const reviewerRoutes = require("./routes/reviewerRouter");
@@ -30,7 +29,6 @@ app.use(
 
 app.use("/api", userRoutes);
 app.use("/api", applicationsRoutes);
-app.use("/api", testapplicationsRoutes);
 app.use("/api", commentsRoutes);
 app.use("/api", fileSubmissionRouter);
 app.use("/api", reviewerRoutes);
@@ -43,6 +41,7 @@ app.use(
     cookie: {
       secure: process.env.NODE_ENV === "production" ? "true" : "auto",
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      maxAge: 24 * 60 * 60 * 1000,
     },
     resave: false,
     saveUninitialized: true,

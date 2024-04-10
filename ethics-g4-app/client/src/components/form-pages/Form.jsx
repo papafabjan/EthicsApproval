@@ -6,6 +6,7 @@ import { UserContext } from "../UserContext";
 import * as yup from "yup";
 import { NavigationButtons } from "../../styled/Form.styled";
 import { Button } from "../../styled/Form.styled";
+import StyledForm from "../../styled/Form.styled";
 import Pg0 from "./Pg0";
 import Pg1 from "./Pg1";
 import Pg2 from "./Pg2";
@@ -15,30 +16,81 @@ import Pg5 from "./Pg5";
 import Pg6 from "./Pg6";
 import Pg7 from "./Pg7";
 
-const validationSchema = yup.object({
-  // Page 1
-  firstName: yup.string().required("First Name is required"),
-  lastName: yup.string().required("Last Name is required"),
-  email: yup
-    .string()
-    .matches(
-      /^.+(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-      "Email is invalid."
-    )
-    .required("Email is required"),
-  studentRegistration: yup
-    .string()
-    .required("Student registration number is required"),
-  Department: yup.string().required("Department selection is required"),
-  programme: yup.string().required("Programme selection is required"),
+// const validationSchema = yup.object({
 
-  supervisor: yup.string().required("Supervisor selection is required"),
-  // Page 2
-  ResearchProject: yup.string().required("ResearchProject is required"),
-  // CoApplicantName: yup.string().required("CoApllicant's Name is required"),
-  // CoApplicantEmail: yup.string().required("CoApllicant's Email is required"),
-  // StartDate: yup.string().required("Start Date is required"),
-});
+//   // Page 1
+
+//   firstName: yup.string().required("First Name is required"),
+//   lastName: yup.string().required("Last Name is required"),
+//   email: yup
+//     .string()
+//     .matches(
+//       /^.+(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+//       "Email is invalid."
+//     )
+//     .required("Email is required"),
+//   studentRegistration: yup
+//     .string()
+//     .required("Student registration number is required"),
+//   Department: yup.string().required("Department selection is required"),
+//   programme: yup.string().required("Programme selection is required"),
+//   supervisor: yup.string().required("Supervisor selection is required"),
+
+//   // Page 2
+
+//   ResearchProject: yup.string().required("ResearchProject is required"),
+//   StartDate: yup.string().required("Start Date is required"),
+//   EndDate: yup.string().required("End Date is required"),
+//   Funding: yup.string().required("Funding is required"),
+//   Country: yup.array().required("Country selection is required"),
+
+//   HealthSocialCare: yup.string().required("Health or Social Care is required"),
+//   AnotherInstitution: yup.string().required("Another Institution is required"),
+//   HumanTissue: yup.string().required("Human Tissue is required"),
+//   ClinicalMedical: yup.string().required("Clinical or Medical is required"),
+//   SocialCareServices: yup.string().required("Social Care Services is required"),
+
+//   //Page 3
+
+//   AimsObjectives: yup.string().required("Aims and Objectives is required"),
+//   Methodology: yup.string().required("Methodology is required"),
+//   SafetyConcerns: yup.string().required("Safety Concerns is required"),
+//   SensitiveTopics: yup.string().required("Sensitive Topics is required"),
+
+//   //Page 4
+
+//   PotentialParticipants: yup.string().required("Potential Participants is required"),
+//   RecruitingPotentialParticipants: yup.string().required("Recruiting Potential Participants is required"),
+//   Payment: yup.string().required("Payment is required"),
+//   PotentialHarm: yup.string().required("Potential Harm to Participants is required"),
+//   VulnerableParticipants: yup.string().required("This Field is required"),
+
+//   //Page 5 yes children
+
+//   // ParentalConsent: yup.array().required("Parental Consent is required"),
+//   // ParentalInformation: yup.array().required("Parental Information is required"),
+
+//   //Page 5 yes mental adults
+
+//   AccessibleConsentMaterial: yup.array().required("Accessible Consent Material is required"),
+//   ProxyConsentProcedure: yup.array().required("Proxy Consent Procedure is required"),
+
+//   //Page 5 no or other
+
+//   ParticipantInformation: yup.array().required("Participant Information is required"),
+//   ParticipantConsent: yup.array().required("Participant Consent is required"),
+
+//   //Page 6
+
+//   // DataProcessing: yup.string().required("Data Processing is required"),
+//   // DataConfidentiality: yup.string().required("Data Confidentiality is required"),
+//   // DataStorageandSecurity: yup.string().required("Data Storage and Security is required"),
+
+//   //Page 7
+
+//   ListofQuestions: yup.array().required("List of Questions is required"),
+
+// });
 
 const initialValues = {
   // Page 1
@@ -61,7 +113,6 @@ const initialValues = {
   FundingOther: "",
   Country: [],
   OtherCountry: "",
-  ProjectPlace: "",
   HealthSocialCare: "",
   AnotherInstitution: "",
   AnotherInstitutionOther: "",
@@ -127,52 +178,81 @@ const Form = () => {
 
   const totalSteps = 9;
 
-  console.log(mode);
-  console.log(applicationId);
+  // console.log(mode);
+  // console.log(applicationId);
+  useEffect(() => {
+    if (mode === "apply") {
+      formik.setValues(initialValues);
+    }
+  }, [mode]);
 
   const adaptValuesForSubmission = (values) => {
-    // Clone the values object to avoid modifying the original
     const adaptedValues = { ...values };
 
-    // Replace file objects with file names
-    adaptedValues.SensitiveTopicsFiles = values.SensitiveTopicsFilesNames;
+    //Page 1
 
-    // Page4
-    adaptedValues.PotentialParticipants = values.PotentialParticipantsNames;
-    adaptedValues.RecruitingPotentialParticipants =
-      values.RecruitingPotentialParticipantsNames;
-    adaptedValues.Payment = values.PaymentNames;
-    adaptedValues.otherPaymentOption = values.otherPaymentOptionNames;
-    adaptedValues.PotentialHarm = values.PotentialHarmNames;
-    adaptedValues.VulnerableParticipants = values.VulnerableParticipantsNames;
-    adaptedValues.otherVulnerableParticipantsOptions =
-      values.otherVulnerableParticipantsOptionsNames;
+    adaptedValues.firstName = values.firstName;
+    adaptedValues.middlename = values.middlename;
+    adaptedValues.lastName = values.lastName;
+    adaptedValues.email = values.email;
+    adaptedValues.studentRegistration = values.studentRegistration;
+    adaptedValues.Department = values.Department;
+    adaptedValues.programme = values.programme;
+    adaptedValues.supervisor = values.supervisor;
+
+    // Page 2
+
+    adaptedValues.ResearchProject = values.ResearchProject;
+    adaptedValues.StartDate = values.StartDate;
+    adaptedValues.EndDate = values.EndDate;
+    adaptedValues.Funding = values.Funding;
+    adaptedValues.Country = values.Country;
+    adaptedValues.HealthSocialCare = values.HealthSocialCare;
+    adaptedValues.AnotherInstitution = values.AnotherInstitution;
+    adaptedValues.HumanTissue = values.HumanTissue;
+    adaptedValues.ClinicalMedical = values.ClinicalMedical;
+    adaptedValues.SocialCareServices = values.SocialCareServices;
+
+    // Page 3
+
+    adaptedValues.AimsObjectives = values.AimsObjectives;
+    adaptedValues.Methodology = values.Methodology;
+    adaptedValues.SafetyConcerns = values.SafetyConcerns;
+    adaptedValues.SensitiveTopics = values.SensitiveTopics;
+    adaptedValues.SensitiveTopicsFiles = values.SensitiveTopicsFiles;
+
+    // Page 4
+
+    adaptedValues.PotentialParticipants = values.PotentialParticipants;
+    adaptedValues.RecruitingPotentialParticipants = values.RecruitingPotentialParticipants;
+    adaptedValues.Payment = values.Payment;
+    adaptedValues.PotentialHarm = values.PotentialHarm;
+    adaptedValues.VulnerableParticipants = values.VulnerableParticipants;
 
     // Page5: Yes child
-    adaptedValues.ParentalConsent = values.ParentalConsentNames;
-    adaptedValues.ParentalInformation = values.ParentalInformationNames;
-    adaptedValues.ChildInformation = values.ChildInformationNames;
-    adaptedValues.HeadTeacherConsent = values.HeadTeacherConsentNames;
-    adaptedValues.HeadteacherInformation = values.HeadteacherInformationNames;
+
+    adaptedValues.ParentalConsentFileNames = values.ParentalConsentFileNames;
+    adaptedValues.ParentalInformationFileNames = values.ParentalInformationFileNames;
 
     // Page5: Yes adults mental
-    adaptedValues.AccessibleConsentMaterial =
-      values.AccessibleConsentMaterialNames;
-    adaptedValues.ProxyConsentProcedure = values.ProxyConsentProcedureNames;
+
+    adaptedValues.AccessibleConsentMaterialFileNames = values.AccessibleConsentMaterialFileNames;
+    adaptedValues.ProxyConsentProcedureFileNames = values.ProxyConsentProcedureFileNames;
 
     // Page5: No or other option
-    adaptedValues.ParticipantInformation = values.ParticipantInformationNames;
-    adaptedValues.ParticipantConsent = values.ParticipantConsentNames;
-    adaptedValues.ParticipantDebriefing = values.ParticipantDebriefingNames;
-    adaptedValues.AccessibilityLetter = values.AccessibilityLetterNames;
 
-    // Page6
-    adaptedValues.DataProcessing = values.DataProcessingNames;
-    adaptedValues.DataConfidentiality = values.DataConfidentialityNames;
-    adaptedValues.DataStorageandSecurity = values.DataStorageandSecurityNames;
+    adaptedValues.ParticipantInformationFileNames = values.ParticipantInformationFileNames;
+    adaptedValues.ParticipantConsentFileNames = values.ParticipantConsentFileNames;
 
-    adaptedValues.ListofQuestions = values.ListofQuestionsNames;
-    adaptedValues.AdditionalForms = values.AdditionalFormsNames;
+    //Page6
+
+    adaptedValues.DataProcessing = values.DataProcessing;
+    adaptedValues.DataConfidentiality = values.DataConfidentiality;
+    adaptedValues.DataStorageandSecurity = values.DataStorageandSecurity;
+
+    // Page7
+
+    adaptedValues.ListofQuestionsFileNames = values.ListofQuestions;
 
     return adaptedValues;
   };
@@ -185,8 +265,7 @@ const Form = () => {
       const fetchApplicationData = async () => {
         try {
           const response = await fetch(
-            `${
-              import.meta.env.VITE_SERVER_URL
+            `${import.meta.env.VITE_SERVER_URL
             }/api/applications/${applicationId}`
           );
 
@@ -257,7 +336,7 @@ const Form = () => {
 
   const formik = useFormik({
     initialValues,
-    validationSchema,
+    // validationSchema,
     onSubmit: async (values) => {
       if (mode === "review" && applicationId) {
         //get user_id through the google_id stored in session
@@ -337,138 +416,142 @@ const Form = () => {
         };
 
         sendCommentsToServer();
-      }
-      if (mode === "edit") {
-        try {
-          const response = await fetch(
-            `${
-              import.meta.env.VITE_SERVER_URL
-            }/api/applications/edit/${applicationId}`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                application: values,
-                user: sessionUser,
-              }),
-            }
-          );
-
-          if (!response.ok) {
-            console.log({ sessionUser, values });
-            throw new Error("Failed to edit application");
-          }
-
-          const responseData = await response.json();
-          console.log("Application edited successfully:", responseData);
-          navigate("/myapplications");
-          //  window.location.reload(true);
-        } catch (error) {
-          // Handle error or show notification to the user
-          console.error(error.message);
-        }
-      } else {
-        try {
-          const userID = userData.user_id;
-          const response = await fetch(
-            `${import.meta.env.VITE_SERVER_URL}/api/applications/add`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                userID,
-                values: adaptValuesForSubmission(values),
-              }),
-            }
-          );
-
-          if (!response.ok) {
-            console.log({ userID, values });
-            throw new Error("Failed to submit application");
-          }
-
-          const responseData = await response.json();
-          console.log("Application submitted successfully:", responseData);
-
-          ////////////
-
-          async function executeLogicAndUploadFiles() {
-            try {
-              // Step 1: Execute logic and update application ID for the folder name
-              const executeLogicResponse = await fetch(
-                "http://localhost:4000/api/execute-logic",
-                {
-                  method: "POST",
-                }
-              );
-
-              if (!executeLogicResponse.ok) {
-                throw new Error("Failed to execute logic");
-              }
-
-              const { applicationId } = await executeLogicResponse.json();
-
-              console.log("Application ID:", applicationId);
-
-              // Step 2: Upload files to the correct folder
-              const formData = new FormData();
-
-              for (
-                var i = 0;
-                i < formik.values.SensitiveTopicsFiles.length;
-                i++
-              ) {
-                formData.append("files", formik.values.SensitiveTopicsFiles[i]);
-              }
-
-              for (var i = 0; i < formik.values.AdditionalForms.length; i++) {
-                formData.append("files", formik.values.AdditionalForms[i]);
-              }
-
-              formData.append("files", formik.values.ParentalConsent);
-              formData.append("files", formik.values.ParentalInformation);
-              formData.append("files", formik.values.ChildInformation);
-              formData.append("files", formik.values.HeadTeacherConsent);
-              formData.append("files", formik.values.HeadteacherInformation);
-              formData.append("files", formik.values.AccessibleConsentMaterial);
-              formData.append("files", formik.values.ProxyConsentProcedure);
-              formData.append("files", formik.values.ParticipantInformation);
-              formData.append("files", formik.values.ParticipantConsent);
-              formData.append("files", formik.values.ParticipantDebriefing);
-              formData.append("files", formik.values.AccessibilityLetter);
-              formData.append("files", formik.values.ListofQuestions);
-
-              console.log(formData);
-
-              // Make the fetch request
-              fetch("http://localhost:4000/api/multiple", {
+      } else if (mode !== "review") {
+        if (mode === "edit" && applicationId) {
+          try {
+            const response = await fetch(
+              `${import.meta.env.VITE_SERVER_URL
+              }/api/applications/edit/${applicationId}`,
+              {
                 method: "POST",
-                body: formData,
-              })
-                .then((response) => response.text()) // Use response.text() for non-JSON responses
-                .then((data) => {
-                  console.log("Success:", data);
-                })
-                .catch((error) => {
-                  console.error("Error:", error);
-                });
-            } catch (error) {
-              console.error("Error:", error);
-            }
-          }
-          // Call the function
-          executeLogicAndUploadFiles();
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  application: adaptValuesForSubmission(values),
+                  user: sessionUser,
+                }),
+              }
+            );
 
-          ////////////
-          navigate("/myapplications");
-          //  window.location.reload(true);
-        } catch (error) {
-          console.error("Error:", error.message);
+            if (!response.ok) {
+              console.log({ sessionUser, values });
+              throw new Error("Failed to edit application");
+            }
+
+            const responseData = await response.json();
+            console.log("Application edited successfully:", responseData);
+            navigate("/myapplications");
+            //  window.location.reload(true);
+          } catch (error) {
+            // Handle error or show notification to the user
+            console.error(error.message);
+          }
         }
+        if (mode === "apply") {
+          try {
+            const userID = userData.user_id;
+            const response = await fetch(
+              `${import.meta.env.VITE_SERVER_URL}/api/applications/add`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  userID,
+                  values: adaptValuesForSubmission(values),
+                }),
+              }
+            );
+
+            if (!response.ok) {
+              console.log({ userID, values });
+              throw new Error("Failed to submit application");
+            }
+
+            const responseData = await response.json();
+            console.log("Application submitted successfully:", responseData);
+          } catch (error) {
+            console.error("Error:", error.message);
+          }
+        }
+
+        ////////////
+        console.log("executing logic");
+        async function executeLogicAndUploadFiles() {
+          try {
+            // Step 1: Execute logic and update application ID for the folder name
+            const executeLogicResponse = await fetch(
+              `${import.meta.env.VITE_SERVER_URL}/api/update-application-id`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  mode: mode,
+                  applicationId: applicationId,
+                }),
+              }
+            );
+
+            if (!executeLogicResponse.ok) {
+              throw new Error("Failed to execute logic");
+            }
+
+            // Step 2: Upload files to the correct folder
+            const formData = new FormData();
+
+            for (
+              var i = 0;
+              i < formik.values.SensitiveTopicsFiles.length;
+              i++
+            ) {
+              formData.append("files", formik.values.SensitiveTopicsFiles[i]);
+            }
+
+            for (var i = 0; i < formik.values.AdditionalForms.length; i++) {
+              formData.append("files", formik.values.AdditionalForms[i]);
+            }
+
+            formData.append("files", formik.values.ParentalConsent);
+            formData.append("files", formik.values.ParentalInformation);
+            formData.append("files", formik.values.ChildInformation);
+            formData.append("files", formik.values.HeadTeacherConsent);
+            formData.append("files", formik.values.HeadteacherInformation);
+            formData.append("files", formik.values.AccessibleConsentMaterial);
+            formData.append("files", formik.values.ProxyConsentProcedure);
+            formData.append("files", formik.values.ParticipantInformation);
+            formData.append("files", formik.values.ParticipantConsent);
+            formData.append("files", formik.values.ParticipantDebriefing);
+            formData.append("files", formik.values.AccessibilityLetter);
+            formData.append("files", formik.values.ListofQuestions);
+
+            console.log(formData);
+
+            // Make the fetch request
+            fetch("http://localhost:4000/api/multiple", {
+              method: "POST",
+              body: formData,
+            })
+              .then((response) => response.text()) // Use response.text() for non-JSON responses
+              .then((data) => {
+                console.log("Success:", data);
+              })
+              .catch((error) => {
+                console.error("Error:", error);
+              });
+          } catch (error) {
+            console.error("Error:", error);
+          }
+        }
+        // Call the function
+        executeLogicAndUploadFiles();
+
+        ////////////
+        navigate("/myapplications");
+        //  window.location.reload(true);
       }
     },
   });
@@ -499,137 +582,133 @@ const Form = () => {
     // Check for errors in the current step
     if (step === 1) {
       // Validate a specific field (e.g., firstName)
-      try {
-        await yup
-          .reach(validationSchema, `firstName`)
-          .validate(formik.values.firstName, { abortEarly: false });
-      } catch (error) {
-        // Handle the validation error
-        console.error("Validation error for firstName:", error.message);
-      }
-      if (
-        errors.firstName ||
-        errors.lastName ||
-        errors.email ||
-        errors.studentRegistration ||
-        errors.programme ||
-        errors.supervisor
-      ) {
-        // There are errors in the current step, handle them as needed
-        errorMessage = "Incomplete: ";
-        errorMessage += Object.values(errors).filter(Boolean).join(", ");
-        console.error("Validation error:", errors);
-      } else {
+      // try {
+      //   await yup
+      //     // .reach(validationSchema, `firstName`)
+      //     // .validate(formik.values.firstName, { abortEarly: false });
+      // } catch (error) {
+      //   // Handle the validation error
+      //   console.error("Validation error for firstName:", error.message);
+      // }
+      // if (
+      //   errors.firstName ||
+      //   errors.lastName ||
+      //   errors.email ||
+      //   errors.studentRegistration ||
+      //   errors.programme ||
+      //   errors.supervisor
+      // ) {
+      //   // There are errors in the current step, handle them as needed
+      //   errorMessage = "Incomplete: ";
+      //   errorMessage += Object.values(errors).filter(Boolean).join(", ");
+      //   console.error("Validation error:", errors);
+      // 
+    {
         // No errors, proceed to the next step
         setStep((prevStep) => prevStep + 1);
       }
     } else if (step === 2) {
-      if (
-        errors.ResearchProject ||
-        errors.CoApplicantName ||
-        errors.CoApplicantEmail ||
-        errors.StartDate ||
-        errors.EndDate ||
-        errors.Funding ||
-        errors.FundingOther ||
-        errors.Country ||
-        errors.ProjectPlace ||
-        errors.HealthSocialCare ||
-        errors.AnotherInstitution ||
-        errors.AnotherInstitutionOther ||
-        errors.HumanTissue ||
-        errors.ClinicalMedical ||
-        errors.SocialCareServices
-      ) {
-        // There are errors in the current step, handle them as needed
-        errorMessage = "Incomplete: ";
-        errorMessage += Object.values(errors).filter(Boolean).join(", ");
-        console.error("Validation error:", errors);
-      } else {
+      // if (
+      //   errors.ResearchProject ||
+      //   errors.StartDate ||
+      //   errors.EndDate ||
+      //   errors.Funding ||
+      //   errors.Country ||
+      //   errors.HealthSocialCare ||
+      //   errors.AnotherInstitution ||
+      //   errors.HumanTissue ||
+      //   errors.ClinicalMedical ||
+      //   errors.SocialCareServices
+      // ) {
+      //   // There are errors in the current step, handle them as needed
+      //   errorMessage = "Incomplete: ";
+      //   errorMessage += Object.values(errors).filter(Boolean).join(", ");
+      //   console.error("Validation error:", errors);
+      // } else 
+      {
         // No errors, proceed to the next step
         setStep((prevStep) => prevStep + 1);
       }
     } else if (step === 3) {
-      if (
-        errors.AimsObjectives ||
-        errors.Methodology ||
-        errors.SafetyConcerns ||
-        errors.SensitiveTopics
-      ) {
-        // There are errors in the current step, handle them as needed
-        errorMessage = "Incomplete: ";
-        errorMessage += Object.values(errors).filter(Boolean).join(", ");
-        console.error("Validation error:", errors);
-      } else {
+      // if (
+      //   errors.AimsObjectives ||
+      //   errors.Methodology ||
+      //   errors.SafetyConcerns ||
+      //   errors.SensitiveTopics ||
+      //   formik.values.SensitiveTopicsFiles.length == 0
+      // ) {
+      //   // There are errors in the current step, handle them as needed
+      //   errorMessage = "Incomplete: ";
+      //   errorMessage += Object.values(errors).filter(Boolean).join(", ");
+      //   console.error("Validation error:", errors);
+      // }
+      // else 
+      {
         // No errors, proceed to the next step
         setStep((prevStep) => prevStep + 1);
       }
     } else if (step === 4) {
-      if (
-        errors.PotentialParticipants ||
-        errors.RecruitingPotentialParticipants ||
-        errors.Payment ||
-        errors.otherPaymentOption ||
-        errors.PotentialHarm ||
-        errors.VulnerableParticipants ||
-        errors.otherVulnerableParticipantsOptions
-      ) {
-        // There are errors in the current step, handle them as needed
-        errorMessage = "Incomplete: ";
-        errorMessage += Object.values(errors).filter(Boolean).join(", ");
-        console.error("Validation error:", errors);
-      } else {
+      // if (
+      //   errors.PotentialParticipants ||
+      //   errors.RecruitingPotentialParticipants ||
+      //   errors.Payment ||
+      //   errors.PotentialHarm ||
+      //   errors.VulnerableParticipants) {
+      //   // There are errors in the current step, handle them as needed
+      //   errorMessage = "Incomplete: ";
+      //   errorMessage += Object.values(errors).filter(Boolean).join(", ");
+      //   console.error("Validation error:", errors);
+      // } else 
+      {
         // No errors, proceed to the next step
         setStep((prevStep) => prevStep + 1);
       }
     } else if (step === 5) {
-      if (
-        errors.ParentalConsent ||
-        errors.ParentalInformation ||
-        errors.HeadTeacherConsent ||
-        errors.HeadteacherInformation ||
-        errors.ParticipantInformationForm ||
-        errors.ParticipantConsentForm ||
-        errors.DebriefingForm ||
-        errors.AccessibilityLetter
-      ) {
-        // There are errors in the current step, handle them as needed
-        errorMessage = "Incomplete: ";
-        errorMessage += Object.values(errors).filter(Boolean).join(", ");
-        console.error("Validation error:", errors);
-      } else {
+      // if (
+      //   (formik.values.ParentalConsent.length == 0 ||
+      //     formik.values.ParentalInformation.length == 0
+      //   ) && formik.values.VulnerableParticipants === "YesChildren_adolescents" ||
+
+      //   (formik.values.AccessibleConsentMaterial.length == 0 ||
+      //     formik.values.ProxyConsentProcedure.length == 0) && formik.values.VulnerableParticipants === "YesAdultsMental" ||
+
+      //   (formik.values.ParticipantInformation.length == 0 ||
+      //     formik.values.ParticipantConsent.length == 0)
+      // ) {
+      //   // There are errors in the current step, handle them as needed
+      //   errorMessage = "Incomplete: ";
+      //   errorMessage += Object.values(errors).filter(Boolean).join(", ");
+      //   console.error("Validation error:", errors);
+      // } else 
+      {
         // No errors, proceed to the next step
         setStep((prevStep) => prevStep + 1);
       }
     } else if (step === 6) {
-      if (
-        errors.DataProcessing ||
-        errors.DataConfidentiality ||
-        errors.DataStorageandSecurity
-      ) {
-        // There are errors in the current step, handle them as needed
-        errorMessage = "Incomplete: ";
-        errorMessage += Object.values(errors).filter(Boolean).join(", ");
-        console.error("Validation error:", errors);
-      } else {
+      // if (
+      //   errors.DataProcessing ||
+      //   errors.DataConfidentiality ||
+      //   errors.DataStorageandSecurity
+      // ) {
+      //   // There are errors in the current step, handle them as needed
+      //   errorMessage = "Incomplete: ";
+      //   errorMessage += Object.values(errors).filter(Boolean).join(", ");
+      //   console.error("Validation error:", errors);
+      // } else 
+      {
         // No errors, proceed to the next step
         setStep((prevStep) => prevStep + 1);
       }
     } else if (step === 7) {
-      if (
-        errors.ListofQuestions ||
-        errors.AdditionalForms ||
-        errors.test ||
-        errors.radioOption ||
-        errors.otherOption ||
-        errors.checkboxOption ||
-        errors.otherCheckboxOption
-      ) {
-        // There are errors in the current step, handle them as needed
-        errorMessage = "Incomplete: ";
-        errorMessage += Object.values(errors).filter(Boolean).join(", ");
-        console.error("Validation error:", errors);
-      } else {
+      // if (
+      //   formik.values.ListofQuestions.length == 0
+      // ) {
+      //   // There are errors in the current step, handle them as needed
+      //   errorMessage = "Incomplete: ";
+      //   errorMessage += Object.values(errors).filter(Boolean).join(", ");
+      //   console.error("Validation error:", errors);
+      // } else 
+      {
         // No errors, proceed to the next step
         setStep((prevStep) => prevStep + 1);
       }
@@ -642,9 +721,6 @@ const Form = () => {
     // if (!formik.isValid) {
     //   return;
     // }
-    // Change the mode to 'apply' before submitting
-
-    // Create a FormData object and append files to it
 
     formik.handleSubmit();
   };
@@ -692,7 +768,7 @@ const Form = () => {
                 <Button
                   className="btn"
                   onClick={handleSubmit}
-                  disabled={!formik.isValid}
+                  disabled={!formik.isValid || mode === "view"}
                   type="submit"
                 >
                   Submit
@@ -782,7 +858,7 @@ const Form = () => {
                   ))}
                 </div>
               )}
-              <pre>{JSON.stringify(formik.values, null, 3)}</pre>
+              {/* <pre>{JSON.stringify(formik.values, null, 2)}</pre> */}
             </div>
           );
         } else {
@@ -791,7 +867,11 @@ const Form = () => {
     }
   };
 
-  return <>{renderFormStep()}</>;
+  return (
+    <>
+      <StyledForm>{renderFormStep()}</StyledForm>
+    </>
+  );
 };
 
 export default Form;

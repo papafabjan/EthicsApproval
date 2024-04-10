@@ -10,7 +10,7 @@ passport.use(
       clientSecret: process.env.CLIENT_SECRET,
       callbackURL: process.env.GOOGLE_CALLBACK_URL,
     },
-    async (_, __, profile, done) => {
+    async (accessToken, refreshToken, profile, done) => {
       const account = profile._json;
       let user = {};
 
@@ -22,16 +22,19 @@ passport.use(
 
         if (currentUserQuery.rows.length === 0) {
           // Create user
-          await pool.query(
-            "INSERT INTO users (username, img, email, google_id, role) VALUES ($1, $2, $3, $4, $5)",
-            [
-              account.name,
-              account.picture,
-              account.email,
-              account.sub,
-              (account.role = "user"),
-            ]
-          );
+           await pool.query(
+             "INSERT INTO users (username, img, email, google_id, role, access_token, refresh_token) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+             [
+               account.name,
+               account.picture,
+               account.email,
+               account.sub,
+               "student", // Set a default value for role
+               accessToken,
+               refreshToken || "", // Set a default value for refresh_token
+             ]
+           );
+
 
           const id = await pool.query(
             "SELECT user_id FROM users WHERE google_id=$1",
@@ -43,6 +46,8 @@ passport.use(
             img: account.picture,
             email: account.email, // Include the email in the user object
             role: account.role,
+            accessToken,
+            refreshToken,
           };
         } else {
           // User exists
@@ -51,8 +56,10 @@ passport.use(
             username: currentUserQuery.rows[0].username,
             img: currentUserQuery.rows[0].img,
             email: currentUserQuery.rows[0].email,
-            role: currentUserQuery.rows[0].role, 
-            admin_of_department: currentUserQuery.rows[0]?.admin_of_department, 
+            role: currentUserQuery.rows[0].role,
+            accessToken,
+            refreshToken,
+            admin_of_department: currentUserQuery.rows[0]?.admin_of_department,
           };
         }
         done(null, user);

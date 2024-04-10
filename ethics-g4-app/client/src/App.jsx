@@ -33,18 +33,18 @@ function App() {
           <Router>
             <Routes>
               <Route path="/" element={<Container />}>
-                <Route index element={<Home />} />
-                {isAdmin && (
-                  <Route path="admindashboard" element={<AdminDashboard />} />
-                )}
+                <Route path="application" element={<Form />} />
                 <Route path="contact" element={<Contact />} />
                 <Route path="guides" element={<Guides />} />
-                <Route path="application" element={<Form />} />
-                <Route path="/application/:applicationId" element={<Form />} />
                 <Route
                   path="document_templates"
                   element={<Document_Templates />}
                 />
+                <Route index element={<Home />} />
+                {isAdmin && (
+                  <Route path="admindashboard" element={<AdminDashboard />} />
+                )}
+                <Route path="/application/:applicationId" element={<Form />} />
                 <Route path="guides/applicant" element={<Applicant />} />
                 <Route path="guides/supervisor" element={<Supervisor />} />
                 <Route path="guides/reviewer" element={<Reviewer />} />
@@ -63,15 +63,5 @@ function App() {
     </>
   );
 }
-
-// {user?.loggedIn === null ? (
-//             ""
-//           ) : user?.loggedIn === true ? (
-//           ) : (
-//             <>
-//               <h1>Please sign in</h1>
-//               <PleaseSignIn />
-//             </>
-//           )}
 
 export default App;

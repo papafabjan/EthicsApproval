@@ -4,6 +4,8 @@ import Comment from "../Comment";
 export const Pg6 = ({ formik, emphasizeFields, mode }) => {
   return (
     <>
+    <div className="form-container">
+
       <div className="form-group">
         <label htmlFor="DataProcessing">
           Data Processing <span style={{ color: "red" }}>*</span>
@@ -17,7 +19,7 @@ export const Pg6 = ({ formik, emphasizeFields, mode }) => {
           video recordings) then further details on what will be recorded and
           how they will be managed are required.
         </p>
-        <input
+        <textarea
           type="text"
           name="DataProcessing"
           className="form-control"
@@ -25,8 +27,17 @@ export const Pg6 = ({ formik, emphasizeFields, mode }) => {
           value={formik.values.DataProcessing}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          placeholder="e.g. Ethics web-site"
-          disabled={mode === "review" || mode === "view"}
+          placeholder="Write your answer"
+          // style={{
+          //     borderColor:
+          //       emphasizeFields?.DataProcessing && formik.touched?.DataProcessing
+          //         ? "red"
+          //         : "",
+          //         resize: "none"
+          //   }}
+            disabled={mode === "review" || mode === "view"}
+            rows={6} 
+            cols={50} 
         />
         {/* Comment component for the "DataProcessing" field */}
         {mode === "review" && (
@@ -48,7 +59,7 @@ export const Pg6 = ({ formik, emphasizeFields, mode }) => {
           What measures will be put in place to ensure confidentiality of
           personal data, where appropriate?{" "}
         </p>
-        <input
+        <textarea
           type="text"
           name="DataConfidentiality"
           className="form-control"
@@ -56,8 +67,17 @@ export const Pg6 = ({ formik, emphasizeFields, mode }) => {
           value={formik.values.DataConfidentiality}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          placeholder="e.g. Kostas Dimopoulos"
-          disabled={mode === "review" || mode === "view"}
+          placeholder="Write your answer"
+          // style={{
+          //     borderColor:
+          //       emphasizeFields?.DataConfidentiality && formik.touched?.DataConfidentiality
+          //         ? "red"
+          //         : "",
+          //         resize: "none"
+          //   }}
+            disabled={mode === "review" || mode === "view"}
+            rows={6} 
+            cols={50} 
         />
         {/* Comment component for the "DataConfidentiality" field */}
         {mode === "review" && (
@@ -83,7 +103,7 @@ export const Pg6 = ({ formik, emphasizeFields, mode }) => {
           in this form? Indicate if, and when, all identifiable personal data
           will be destroyed once the project has ended.
         </p>
-        <input
+        <textarea
           type="text"
           name="DataStorageandSecurity"
           className="form-control"
@@ -91,8 +111,17 @@ export const Pg6 = ({ formik, emphasizeFields, mode }) => {
           value={formik.values.DataStorageandSecurity}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          placeholder="eg. kdimopoulos@york.citycollege.eu"
-          disabled={mode === "review" || mode === "view"}
+          placeholder="Write your answer"
+          // style={{
+          //     borderColor:
+          //       emphasizeFields?.DataStorageandSecurity && formik.touched?.DataStorageandSecurity
+          //         ? "red"
+          //         : "",
+          //         resize: "none"
+          //   }}
+            disabled={mode === "review" || mode === "view"}
+            rows={6} 
+            cols={50} 
         />
         {/* Comment component for the "DataStorageandSecurity" field */}
         {mode === "review" && (
@@ -105,6 +134,7 @@ export const Pg6 = ({ formik, emphasizeFields, mode }) => {
           />
         )}
       </div>
+    </div>
     </>
   );
 };

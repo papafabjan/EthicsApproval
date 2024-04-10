@@ -3,14 +3,8 @@ import StyledDashboard from "../styled/Dashboard.styled";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import AssignReviewers from "../components/AssignReviewers";
+import ApplicationHistory from "../components/ApplicationHistory";
 import { UserContext } from "../components/UserContext";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faEye,
-  faUsers,
-  faCheck,
-  faTrashAlt
-} from "@fortawesome/free-solid-svg-icons";
 
 const Dashboard = () => {
   const [applications, setApplications] = useState([]);
@@ -18,12 +12,14 @@ const Dashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [fetchTrigger, setFetchTrigger] = useState(0); // New state to trigger fetch
   const navigate = useNavigate();
+  const [showHistory, setShowHistory] = useState(false);
   const [showAssignReviewers, setShowAssignReviewers] = useState(false);
   const [selectedApplicationId, setSelectedApplicationId] = useState(null);
   const [departments, setDepartments] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   const sessionUser = useContext(UserContext);
   const adminOfDepartment = sessionUser?.admin_of_department;
+  const userGoogleId = sessionUser?.id;
 
   useEffect(() => {
     if (sessionUser.loggedIn) {
@@ -31,7 +27,7 @@ const Dashboard = () => {
       fetch(`${import.meta.env.VITE_SERVER_URL}/api/departments`)
         .then((response) => response.json())
         .then((data) => {
-          setDepartments(data)
+          setDepartments(data);
           setSelectedDepartment(adminOfDepartment ? adminOfDepartment : null);
         })
         .catch((error) => console.error("Error fetching departments:", error));
@@ -180,7 +176,7 @@ const Dashboard = () => {
       if (!response.ok) {
         throw new Error(`Error deleting application: ${response.statusText}`);
       }
-      // Set fetchTrigger to trigger re-fetch when Approve is clicked
+      // Set fetchTrigger to trigger re-fetch when Delete is clicked
       setFetchTrigger((prev) => prev + 1);
     } catch (error) {
       console.error("Error deleting application:", error.message);
@@ -192,7 +188,7 @@ const Dashboard = () => {
       const response = await fetch(
         `${
           import.meta.env.VITE_SERVER_URL
-        }/api/applications/update-status/${applicationId}`,
+        }/api/applications/approve/${applicationId}`,
         {
           method: "POST",
           headers: {
@@ -234,8 +230,6 @@ const Dashboard = () => {
   // Filter applications based on search term and selected department
   const filteredApplications = applications.filter((application) => {
     const applicantName = applicantNames[application.applicant_id];
-    console.log("Application Department:", application.department_code); // <-- Check department_code
-    console.log("Selected Department:", selectedDepartment);
     return (
       (!selectedDepartment ||
         application.department_code === selectedDepartment) &&
@@ -271,22 +265,28 @@ const Dashboard = () => {
     <>
       <StyledDashboard>
         <div>
-          <h1>Dashboard</h1>
-          {/* Display the options list under the dashboard title */}
-          {departments.length > 0 && (
-            <select
-              className="form-control"
-              onChange={handleDepartmentChange}
-              value={selectedDepartment}
-            >
-              <option value="">All Departments</option>
-              {departments.map((department) => (
-                <option key={department.id} value={department.code}>
-                  {department.name}
-                </option>
-              ))}
-            </select>
-          )}
+          <div className="dashboard-container">
+            <h1 className="dashboard-title">Dashboard</h1>
+            <div className="options-container">
+              {departments.length > 0 && (
+                <>
+                  <select
+                    title="Filter through departments"
+                    className="options-select form-control"
+                    onChange={handleDepartmentChange}
+                    value={selectedDepartment}
+                  >
+                    <option value="">All Departments</option>
+                    {departments.map((department) => (
+                      <option key={department.id} value={department.code}>
+                        {department.name}
+                      </option>
+                    ))}
+                  </select>
+                </>
+              )}
+            </div>
+          </div>
           <input
             className="form-control me-2"
             type="text"
@@ -309,7 +309,9 @@ const Dashboard = () => {
                     <td>
                       <div className="row">
                         <div className="application">
-                          <p>{applicantNames[application.applicant_id]}</p>
+                          <p title={"Application ID: " + application.id}>
+                            {applicantNames[application.applicant_id]}
+                          </p>
                         </div>
                         <div className="date">
                           <p>
@@ -321,6 +323,7 @@ const Dashboard = () => {
                         </div>
                         <div className="actions">
                           <button
+                            title="View/Comment"
                             className="btn"
                             onClick={() =>
                               navigate(`/application/${application.id}`, {
@@ -328,10 +331,11 @@ const Dashboard = () => {
                               })
                             }
                           >
-                           <FontAwesomeIcon icon={faEye} size="lg" />
+                            <i className="fa-solid fa-eye"></i>
                           </button>
                           {sessionUser.role === "admin" && (
                             <button
+                              title="Assign Reviewers"
                               className="btn"
                               onClick={() => {
                                 setShowAssignReviewers((prev) => !prev);
@@ -339,36 +343,68 @@ const Dashboard = () => {
                                 // Set fetchTrigger to trigger re-fetch when Assign Reviewers is clicked
                                 setFetchTrigger((prev) => prev + 1);
                               }}
-
                               disabled={
-                                !(
+                                (!(
                                   application.status ===
                                   "Approved by supervisor, pending reviewers addition"
-                                )
-                                // &&
-                                // !(application.status === "Reviewers assigned by Ethics Admin")
+                                ) &&
+                                  !(
+                                    application.status ===
+                                    "Reviewers assigned by Ethics Admin"
+                                  )) ||
+                                showHistory ||
+                                (selectedApplicationId !== application.id &&
+                                  showAssignReviewers)
                               }
-
                             >
-                              <FontAwesomeIcon icon={faUsers} size="lg" />
+                              <i className="fa-solid fa-users"></i>
+                            </button>
+                          )}
+                          {sessionUser.role === "admin" && (
+                            <button
+                              title="Application History"
+                              className="btn"
+                              onClick={() => {
+                                setShowHistory((prev) => !prev);
+                                setSelectedApplicationId(application.id);
+                                // setFetchTrigger((prev) => prev + 1);
+                                console.log(selectedApplicationId);
+                              }}
+                              disabled={
+                                showAssignReviewers ||
+                                (selectedApplicationId !== application.id &&
+                                  showHistory)
+                              }
+                            >
+                              <i className="fa-solid fa-clock"></i>
                             </button>
                           )}
                           <button
-                            className="btn_appro"
+                            title="Approve"
+                            className="btn btn_appro"
                             onClick={() => approve(application.id)}
                             disabled={
                               application.status ===
                               "Comments added, awaiting review by applicant"
                             }
                           >
-                          <FontAwesomeIcon icon={faCheck} size="lg" />
+                            <i className="fa-solid fa-check"></i>
                           </button>
                           {sessionUser.role === "admin" && (
                             <button
-                              className="btn_delete"
-                              onClick={() => deleteApplication(application.id)}
+                              title="Delete"
+                              className="btn btn_delete"
+                              onClick={() => {
+                               const confirmDelete = window.confirm(
+                                 "Are you sure you want to delete this application?\n\nWARNING: This action is irreversible, and all data and files regarding this application will be lost. The only reference that will remain tied to it will be found in the respective inboxes of the associated users' emails."
+                               );
+
+                                if (confirmDelete) {
+                                  deleteApplication(application.id);
+                                }
+                              }}
                             >
-                                <FontAwesomeIcon icon={faTrashAlt} size="lg" />
+                              <i className="fa-solid fa-trash"></i>
                             </button>
                           )}
                         </div>
@@ -376,7 +412,18 @@ const Dashboard = () => {
                       <div>
                         {showAssignReviewers &&
                           selectedApplicationId === application.id && (
-                            <AssignReviewers applicationId={application.id} />
+                            <AssignReviewers
+                              applicationId={application.id}
+                              userGoogleId={userGoogleId}
+                            />
+                          )}
+                      </div>
+                      <div>
+                        {showHistory &&
+                          selectedApplicationId === application.id && (
+                            <ApplicationHistory
+                              applicationId={application.id}
+                            />
                           )}
                       </div>
                     </td>

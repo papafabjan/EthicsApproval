@@ -58,35 +58,51 @@ function send_mail(subjects, recipientTypes, recipient_names, recipient_emails, 
 }
 
 function pick_html_message(user_type, recipient_name, status, user_role, projectTitle, applicantName) {
+  if(status==="comment" ){
+    return `
+    <h3>Dear ${recipient_name}, the applicant has edited the project (${projectTitle}). </h3>
+    <p> You have to review the application</p>
+    <p>Press the link below if you want to be transferred to Dashboard.</p>
+    <a href="http://localhost:3000/Dashboard">Check Dashboard</a>
+  `;
+  }
   if (user_type === "admin") {
     if (status === "Approved by supervisor, pending reviewers addition") {
       return `
         <h3>Dear ${recipient_name}, the application (${projectTitle}) has been approved by ${user_role}</h3>
         <p>The next step is for you to assign reviewer(s)!</p>
-        <p>Press the button if you want to be transferred to your dashboard.</p>
+        <p>Press the link below if you want to be transferred to your dashboard.</p>
         <a href="http://localhost:3000/dashboard">Check dashboard</a>
       `;
     } else if (status === "Reviewer approval complete, pending ethics admin's approval") {
       return `
         <h3>Dear ${recipient_name}, the application (${projectTitle}) has been approved by ${user_role}</h3>
         <p>The next step is for you approve it for the last time!</p>
-        <p>Press the button if you want to be transferred to your dashboard.</p>
+        <p>Press the link below if you want to be transferred to your dashboard.</p>
         <a href="http://localhost:3000/dashboard">Check dashboard</a>
       `;
     }
+      else  if (status === "Approved") {
+      return `
+        <h3>Dear ${recipient_name}, the application (${projectTitle}) has been approved</h3>
+        <p>The ethics approval process has been finalized!</p>
+        <p>Press the link below if you want to be transferred to your dashboard.</p>
+        <a href="http://localhost:3000/dashboard">Check dashboard</a>
+      `;
+      }
   } else if (user_type === "applicant") {
     if (status === "Pending supervisor's admission") {
       return `
         <h3>Dear ${recipient_name}, your application (${projectTitle}) has been submitted!!</h3>
         <p>Your application status has been updated to: ${status}</p>
-        <p>Press the button if you want to be transferred to MyApplications.</p>
+        <p>Press the link below if you want to be transferred to MyApplications.</p>
         <a href="http://localhost:3000/MyApplications">Check MyApplications</a>
       `;
     } else if (status === "Approved by supervisor, pending reviewers addition") {
       return `
       <h3>Dear ${recipient_name}, your application (${projectTitle}) has been approved by the supervisor!!</h3>
       <p>Your application status has been updated to: ${status}</p>
-      <p>Press the button if you want to be transferred to MyApplications.</p>
+      <p>Press the link below if you want to be transferred to MyApplications.</p>
       <a href="http://localhost:3000/MyApplications">Check MyApplications</a>
     `;
     }
@@ -94,7 +110,7 @@ function pick_html_message(user_type, recipient_name, status, user_role, project
       return `
       <h3>Dear ${recipient_name}, Reviewers have been assigned to you application (${projectTitle}) !!</h3>
       <p>Your application status has been updated to: ${status}</p>
-      <p>Press the button if you want to be transferred to MyApplications.</p>
+      <p>Press the link below if you want to be transferred to MyApplications.</p>
       <a href="http://localhost:3000/MyApplications">Check MyApplications</a>
     `;
     }
@@ -102,7 +118,7 @@ function pick_html_message(user_type, recipient_name, status, user_role, project
       return `
       <h3>Dear ${recipient_name}, your application (${projectTitle}) has been approved by a reviewer!!</h3>
       <p>Your application status has been updated to: ${status}</p>
-      <p>Press the button if you want to be transferred to MyApplications.</p>
+      <p>Press the link below if you want to be transferred to MyApplications.</p>
       <a href="http://localhost:3000/MyApplications">Check MyApplications</a>
     `;
     }
@@ -110,7 +126,7 @@ function pick_html_message(user_type, recipient_name, status, user_role, project
       return `
       <h3>Dear ${recipient_name}, your application (${projectTitle}) has been approved by the reviewer(s). Now it is time for the ethics administrator to approve it. !!</h3>
       <p>Your application status has been updated to: ${status}</p>
-      <p>Press the button if you want to be transferred to MyApplications.</p>
+      <p>Press the link below if you want to be transferred to MyApplications.</p>
       <a href="http://localhost:3000/MyApplications">Check MyApplications</a>
     `;
     }
@@ -118,7 +134,16 @@ function pick_html_message(user_type, recipient_name, status, user_role, project
       return `
       <h3>Dear ${recipient_name}, your application (${projectTitle}) has been finally approved by everyone!!</h3>
       <p>Your application status has been updated to: ${status}</p>
-      <p>Press the button if you want to be transferred to MyApplications.</p>
+      <p>Press the link below if you want to be transferred to MyApplications.</p>
+      <a href="http://localhost:3000/MyApplications">Check MyApplications</a>
+    `;
+    }
+    else if (status === "Comments added, awaiting review by applicant") {
+      return `
+      <h3>Dear ${recipient_name}, your application (${projectTitle}) has been commented.!!</h3>
+      <p>Your application status has been updated to: ${status}</p>
+      <p>You have to edit your application so it can proceed to the next step.</p>
+      <p>Press the link below if you want to be transferred to MyApplications.</p>
       <a href="http://localhost:3000/MyApplications">Check MyApplications</a>
     `;
     }
@@ -131,11 +156,19 @@ function pick_html_message(user_type, recipient_name, status, user_role, project
         Inside the site you have two options:</p>
         <p>1. Approve the application
            2. Comment on the application to ask for additional information</p>
-        <p>Press the button if you want to be transferred to Dashboard.</p>
+        <p>Press the link below if you want to be transferred to Dashboard.</p>
         <a href="http://localhost:3000/Dashboard">Check Dashboard</a>
       `;
     }
-  } else if (user_type === "reviewers") {
+    else  if (status === "Approved") {
+      return `
+        <h3>Dear ${recipient_name}, the application (${projectTitle}) where you were assigned as a Supervisor has been approved</h3>
+        <p>The ethics approval process has been finalized!</p>
+        <p>Press the link below if you want to be transferred to your dashboard.</p>
+        <a href="http://localhost:3000/dashboard">Check dashboard</a>
+      `;
+    }
+  } else if (user_type === "reviewer") {
      if (status === "Reviewers assigned by Ethics Admin") {
       return `
       <h3>Dear ${recipient_name},</h3>
@@ -144,15 +177,30 @@ function pick_html_message(user_type, recipient_name, status, user_role, project
       <p>   Inside the site you have two options:</p>
       <p>   1. Approve the application
             2. Comment on the application to ask for additional information</p>
-      <p>Press the button if you want to be transferred to Dashboard.</p>
+      <p>Press the link below if you want to be transferred to Dashboard.</p>
+      <a href="http://localhost:3000/Dashboard">Check Dashboard</a>
+    `;
+    } else if (
+      status.includes("by") &&
+      (status.includes("reviewers") || status.includes("Reviewers"))
+    ) {
+      return `
+      <h3>Dear ${recipient_name},</h3>
+      <p>This is just a reminder that you have been assigned as a reviewer for the project (${projectTitle}). Please read the attached application carefully following the instructions at the Ethics Application website / Guide for
+      reviewers.</p>
+      <p>   Inside the site you have two options:</p>
+      <p>   1. Approve the application
+            2. Comment on the application to ask for additional information</p>
+      <p>Press the link below if you want to be transferred to Dashboard.</p>
       <a href="http://localhost:3000/Dashboard">Check Dashboard</a>
     `;
     }
-  }  else {
+  } 
+  else {
     // Default empty message
     return "";
   }
-  return html_message;
+  return "Bad code";
 }
 
 

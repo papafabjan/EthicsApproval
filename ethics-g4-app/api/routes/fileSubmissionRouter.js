@@ -4,24 +4,27 @@ const multer = require("multer");
 const fs = require("fs");
 const pool = require("../db");
 
-let application_id;
+let applicationId;
+let mode;
 
-const updateApplicationId = (applicationId) =>{
-    application_id = applicationId;
-    console.log("update ",applicationId);
-}
+const updateApplicationId = (appId, m) => {
+  applicationId = appId;
+  mode = m; // Update mode globally
+  console.log("Mode", mode);
+
+  console.log("Update Application ID:", applicationId);
+};
 
 const fileStorageEngine = multer.diskStorage({
   destination: (req, file, cb) => {
-    const folderName = `application_id_${application_id}`;
-    // const folderName = `${application_id}submission_${globalFolderCounter}`;
+    const folderName = `application_id_${applicationId}`;
     const folderPath = `./submitFiles/${folderName}`;
     createFolderIfNotExists(folderPath);
+
     cb(null, folderPath);
   },
   filename: (req, file, cb) => {
     cb(null, file.originalname);
-    // cb(null, field + file.originalname);
   },
 });
 
@@ -35,21 +38,32 @@ const upload = multer({
   fileFilter: fileFilter,
 });
 
-
-router.post("/execute-logic", async (req, res) => {
+router.post("/update-application-id", async (req, res) => {
+  const mode = req.body.mode;
+  applicationId = req.body?.applicationId;
+  console.log("Mode", mode);
   try {
-    // Perform logic to obtain the application ID
-    const application_id = await pool.query(
-      "SELECT id FROM applications ORDER BY id DESC LIMIT 1"
-    );
+    if (mode === "apply") {
+      // Perform logic to obtain the application ID
+      const application = await pool.query(
+        "SELECT id FROM applications ORDER BY id DESC LIMIT 1"
+      );
 
-    // Update application ID or perform other logic
-    updateApplicationId(application_id.rows[0].id);
-
-    console.log(application_id.rows[0].id);
-
+      // Update application ID or perform other logic
+      updateApplicationId(application.rows[0].id, mode);
+      console.log(application.rows[0].id);
+    } else if (mode === "edit") {
+      updateApplicationId(applicationId, mode);
+      console.log(applicationId);
+    }
+    const folderName = `application_id_${applicationId}`;
+    const folderPath = `./submitFiles/${folderName}`;
+    // If mode is edit, delete all previous files in the folder
+    if (mode === "edit") {
+      deleteAllFilesInFolder(folderPath);
+    }
     // Send the application ID in the response
-    res.json({ applicationId: application_id.rows[0].id });
+    res.json({ success: true, message: "Updated application ID successfully" });
   } catch (error) {
     console.error("Error:", error);
     res.status(500).send("Internal Server Error");
@@ -63,9 +77,9 @@ router.post("/multiple", upload.array("files"), async (req, res) => {
     return res.status(400).send("No files were uploaded.");
   }
 
+  // Log uploaded files
+  console.log("Uploaded files:", req.files);
 
-
-  console.log(req.files);
   res.send("Multiple Files Upload successful");
 });
 
@@ -73,6 +87,28 @@ function createFolderIfNotExists(folderPath) {
   if (!fs.existsSync(folderPath)) {
     fs.mkdirSync(folderPath, { recursive: true });
   }
+}
+
+function deleteAllFilesInFolder(folderPath) {
+  fs.readdir(folderPath, (err, files) => {
+    if (err) {
+      console.error("Error reading directory:", err);
+      return;
+    }
+
+    console.log("Deleting files in folder:", folderPath); // Log folder path
+
+    files.forEach((file) => {
+      const filePath = `${folderPath}/${file}`;
+      fs.unlink(filePath, (err) => {
+        if (err) {
+          console.error("Error deleting file:", err);
+          return;
+        }
+        console.log("Deleted file:", file); // Log deleted file
+      });
+    });
+  });
 }
 
 module.exports = router;

@@ -35,13 +35,13 @@ function Pg2({ formik, emphasizeFields, mode }) {
             value={formik.values.ResearchProject}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            style={{
-              borderColor:
-                emphasizeFields?.ResearchProject &&
-                formik.touched?.ResearchProject
-                  ? "red"
-                  : "",
-            }}
+            // style={{
+            //   borderColor:
+            //     emphasizeFields?.ResearchProject &&
+            //     formik.touched?.ResearchProject
+            //       ? "red"
+            //       : "",
+            // }}
             disabled={mode === "review" || mode === "view"}
           />
           {/* Comment component for the "ResearchProject" field */}
@@ -54,9 +54,9 @@ function Pg2({ formik, emphasizeFields, mode }) {
               }
             />
           )}
-          {formik.touched.ResearchProject && formik.errors.ResearchProject && (
+          {/* {formik.touched.ResearchProject && formik.errors.ResearchProject && (
             <div style={{ color: "red" }}>{formik.errors.ResearchProject}</div>
-          )}
+          )} */}
         </div>
 
         <div className="form-group">
@@ -73,13 +73,13 @@ function Pg2({ formik, emphasizeFields, mode }) {
             value={formik.values.CoApplicantName}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            style={{
-              borderColor:
-                emphasizeFields?.CoApplicantName &&
-                formik.touched?.CoApplicantName
-                  ? "red"
-                  : "",
-            }}
+            // style={{
+            //   borderColor:
+            //     emphasizeFields?.CoApplicantName &&
+            //     formik.touched?.CoApplicantName
+            //       ? "red"
+            //       : "",
+            // }}
             disabled={mode === "review" || mode === "view"}
           />
           {/* Comment component for the "CoApplicantName" field */}
@@ -110,13 +110,13 @@ function Pg2({ formik, emphasizeFields, mode }) {
             value={formik.values.CoApplicantEmail}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            style={{
-              borderColor:
-                emphasizeFields?.CoApplicantEmail &&
-                formik.touched?.CoApplicantEmail
-                  ? "red"
-                  : "",
-            }}
+            // style={{
+            //   borderColor:
+            //     emphasizeFields?.CoApplicantEmail &&
+            //     formik.touched?.CoApplicantEmail
+            //       ? "red"
+            //       : "",
+            // }}
             disabled={mode === "review" || mode === "view"}
           />
           {/* Comment component for the "CoApplicantEmail" field */}
@@ -144,12 +144,12 @@ function Pg2({ formik, emphasizeFields, mode }) {
             value={formik.values.StartDate}
             onChange={formik.handleChange}
             name="StartDate"
-            style={{
-              borderColor:
-                emphasizeFields?.StartDate && formik.touched?.StartDate
-                  ? "red"
-                  : "",
-            }}
+            // style={{
+            //   borderColor:
+            //     emphasizeFields?.StartDate && formik.touched?.StartDate
+            //       ? "red"
+            //       : "",
+            // }}
             disabled={mode === "review" || mode === "view"}
           />
           {/* Comment component for the "StartDate" field */}
@@ -162,9 +162,9 @@ function Pg2({ formik, emphasizeFields, mode }) {
               }
             />
           )}
-          {formik.touched.StartDate && formik.errors.StartDate && (
+          {/* {formik.touched.StartDate && formik.errors.StartDate && (
             <div style={{ color: "red" }}>{formik.errors.StartDate}</div>
-          )}
+          )} */}
         </div>
 
         <div className="form-group">
@@ -223,13 +223,13 @@ function Pg2({ formik, emphasizeFields, mode }) {
                   value={formik.values.FundingOther}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  style={{
-                    borderColor:
-                      emphasizeFields?.FundingOther &&
-                      formik.touched?.FundingOther
-                        ? "red"
-                        : "",
-                  }}
+                  // style={{
+                  //   borderColor:
+                  //     emphasizeFields?.FundingOther &&
+                  //     formik.touched?.FundingOther
+                  //       ? "red"
+                  //       : "",
+                  // }}
                 />
               )}
     
@@ -334,13 +334,13 @@ function Pg2({ formik, emphasizeFields, mode }) {
                   value={formik.values.OtherCountry}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  style={{
-                    borderColor:
-                      emphasizeFields?.OtherCountry &&
-                      formik.touched?.OtherCountry
-                        ? "red"
-                        : "",
-                  }}
+                  // style={{
+                  //   borderColor:
+                  //     emphasizeFields?.OtherCountry &&
+                  //     formik.touched?.OtherCountry
+                  //       ? "red"
+                  //       : "",
+                  // }}
                 />
               )}
              
@@ -606,12 +606,12 @@ function Pg2({ formik, emphasizeFields, mode }) {
               />
             )}
           </ul>
-          {formik.touched.SocialCareServices &&
+          {/* {formik.touched.SocialCareServices &&
             formik.errors.SocialCareServices && (
               <div style={{ color: "red" }}>
                 {formik.errors.SocialCareServices}
               </div>
-            )}
+            )} */}
         </div>
       </div>
     </>

@@ -80,22 +80,22 @@ function Pg3({ formik, emphasizeFields, mode }) {
             value={formik.values.AimsObjectives}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            style={{
-              borderColor:
-                emphasizeFields?.AimsObjectives &&
-                  formik.touched?.AimsObjectives
-                  ? "red"
-                  : "",
-                  resize: "none"
-            }}
+            // style={{
+            //   borderColor:
+            //     emphasizeFields?.AimsObjectives &&
+            //       formik.touched?.AimsObjectives
+            //       ? "red"
+            //       : "",
+            //       resize: "none"
+            // }}
             disabled={mode === "review" || mode === "view"}
             rows={6} 
             cols={50} 
           />
 
-          {formik.touched.AimsObjectives && formik.errors.AimsObjectives && (
+          {/* {formik.touched.AimsObjectives && formik.errors.AimsObjectives && (
             <div style={{ color: "red" }}>{formik.errors.AimsObjectives}</div>
-          )}
+          )} */}
 
           {/* Comment component for the "AimsObjectives" field */}
           {mode === "review" && (
@@ -129,13 +129,13 @@ function Pg3({ formik, emphasizeFields, mode }) {
             value={formik.values.Methodology}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            style={{
-              borderColor:
-                emphasizeFields?.Methodology && formik.touched?.Methodology
-                  ? "red"
-                  : "",
-                  resize: "none"
-            }}
+            // style={{
+            //   borderColor:
+            //     emphasizeFields?.Methodology && formik.touched?.Methodology
+            //       ? "red"
+            //       : "",
+            //       resize: "none"
+            // }}
             disabled={mode === "review" || mode === "view"}
             rows={6} 
             cols={50} 
@@ -150,9 +150,9 @@ function Pg3({ formik, emphasizeFields, mode }) {
               }
             />
           )}
-          {formik.touched.Methodology && formik.errors.Methodology && (
+          {/* {formik.touched.Methodology && formik.errors.Methodology && (
             <div style={{ color: "red" }}>{formik.errors.Methodology}</div>
-          )}
+          )} */}
         </div>
 
         <div className="form-group">
@@ -173,14 +173,14 @@ function Pg3({ formik, emphasizeFields, mode }) {
             value={formik.values.SafetyConcerns}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            style={{
-              borderColor:
-                emphasizeFields?.SafetyConcerns &&
-                  formik.touched?.SafetyConcerns
-                  ? "red"
-                  : "",
-                  resize: "none"
-            }}
+            // style={{
+            //   borderColor:
+            //     emphasizeFields?.SafetyConcerns &&
+            //       formik.touched?.SafetyConcerns
+            //       ? "red"
+            //       : "",
+            //       resize: "none"
+            // }}
             disabled={mode === "review" || mode === "view"}
             rows={6} 
             cols={50} 
@@ -195,9 +195,9 @@ function Pg3({ formik, emphasizeFields, mode }) {
               }
             />
           )}
-          {formik.touched.SafetyConcerns && formik.errors.SafetyConcerns && (
+          {/* {formik.touched.SafetyConcerns && formik.errors.SafetyConcerns && (
             <div style={{ color: "red" }}>{formik.errors.SafetyConcerns}</div>
-          )}
+          )} */}
         </div>
 
         <div className="form-group">
@@ -249,9 +249,9 @@ function Pg3({ formik, emphasizeFields, mode }) {
               />
             )}
           </ul>
-          {formik.touched.SensitiveTopics && formik.errors.SensitiveTopics && (
+          {/* {formik.touched.SensitiveTopics && formik.errors.SensitiveTopics && (
             <div style={{ color: "red" }}>{formik.errors.SensitiveTopics}</div>
-          )}
+          )} */}
         </div>
 
         <div className="form-group">
@@ -297,12 +297,12 @@ function Pg3({ formik, emphasizeFields, mode }) {
           )}
 
 
-          {formik.touched.SensitiveTopicsFiles &&
+          {/* {formik.touched.SensitiveTopicsFiles &&
             formik.errors.SensitiveTopicsFiles && (
               <div style={{ color: "red" }}>
                 {formik.errors.SensitiveTopicsFiles}
               </div>
-            )}
+            )} */}
 
         </div>
       </div>

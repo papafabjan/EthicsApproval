@@ -16,81 +16,81 @@ import Pg5 from "./Pg5";
 import Pg6 from "./Pg6";
 import Pg7 from "./Pg7";
 
-const validationSchema = yup.object({
+// const validationSchema = yup.object({
 
-  // Page 1
+//   // Page 1
 
-  firstName: yup.string().required("First Name is required"),
-  lastName: yup.string().required("Last Name is required"),
-  email: yup
-    .string()
-    .matches(
-      /^.+(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-      "Email is invalid."
-    )
-    .required("Email is required"),
-  studentRegistration: yup
-    .string()
-    .required("Student registration number is required"),
-  Department: yup.string().required("Department selection is required"),
-  programme: yup.string().required("Programme selection is required"),
-  supervisor: yup.string().required("Supervisor selection is required"),
+//   firstName: yup.string().required("First Name is required"),
+//   lastName: yup.string().required("Last Name is required"),
+//   email: yup
+//     .string()
+//     .matches(
+//       /^.+(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+//       "Email is invalid."
+//     )
+//     .required("Email is required"),
+//   studentRegistration: yup
+//     .string()
+//     .required("Student registration number is required"),
+//   Department: yup.string().required("Department selection is required"),
+//   programme: yup.string().required("Programme selection is required"),
+//   supervisor: yup.string().required("Supervisor selection is required"),
 
-  // Page 2
+//   // Page 2
 
-  ResearchProject: yup.string().required("ResearchProject is required"),
-  StartDate: yup.string().required("Start Date is required"),
-  EndDate: yup.string().required("End Date is required"),
-  Funding: yup.string().required("Funding is required"),
-  Country: yup.array().required("Country selection is required"),
+//   ResearchProject: yup.string().required("ResearchProject is required"),
+//   StartDate: yup.string().required("Start Date is required"),
+//   EndDate: yup.string().required("End Date is required"),
+//   Funding: yup.string().required("Funding is required"),
+//   Country: yup.array().required("Country selection is required"),
 
-  HealthSocialCare: yup.string().required("Health or Social Care is required"),
-  AnotherInstitution: yup.string().required("Another Institution is required"),
-  HumanTissue: yup.string().required("Human Tissue is required"),
-  ClinicalMedical: yup.string().required("Clinical or Medical is required"),
-  SocialCareServices: yup.string().required("Social Care Services is required"),
+//   HealthSocialCare: yup.string().required("Health or Social Care is required"),
+//   AnotherInstitution: yup.string().required("Another Institution is required"),
+//   HumanTissue: yup.string().required("Human Tissue is required"),
+//   ClinicalMedical: yup.string().required("Clinical or Medical is required"),
+//   SocialCareServices: yup.string().required("Social Care Services is required"),
 
-  //Page 3
+//   //Page 3
 
-  AimsObjectives: yup.string().required("Aims and Objectives is required"),
-  Methodology: yup.string().required("Methodology is required"),
-  SafetyConcerns: yup.string().required("Safety Concerns is required"),
-  SensitiveTopics: yup.string().required("Sensitive Topics is required"),
+//   AimsObjectives: yup.string().required("Aims and Objectives is required"),
+//   Methodology: yup.string().required("Methodology is required"),
+//   SafetyConcerns: yup.string().required("Safety Concerns is required"),
+//   SensitiveTopics: yup.string().required("Sensitive Topics is required"),
 
-  //Page 4
+//   //Page 4
 
-  PotentialParticipants: yup.string().required("Potential Participants is required"),
-  RecruitingPotentialParticipants: yup.string().required("Recruiting Potential Participants is required"),
-  Payment: yup.string().required("Payment is required"),
-  PotentialHarm: yup.string().required("Potential Harm to Participants is required"),
-  VulnerableParticipants: yup.string().required("This Field is required"),
+//   PotentialParticipants: yup.string().required("Potential Participants is required"),
+//   RecruitingPotentialParticipants: yup.string().required("Recruiting Potential Participants is required"),
+//   Payment: yup.string().required("Payment is required"),
+//   PotentialHarm: yup.string().required("Potential Harm to Participants is required"),
+//   VulnerableParticipants: yup.string().required("This Field is required"),
 
-  //Page 5 yes children
+//   //Page 5 yes children
 
-  // ParentalConsent: yup.array().required("Parental Consent is required"),
-  // ParentalInformation: yup.array().required("Parental Information is required"),
+//   // ParentalConsent: yup.array().required("Parental Consent is required"),
+//   // ParentalInformation: yup.array().required("Parental Information is required"),
 
-  //Page 5 yes mental adults
+//   //Page 5 yes mental adults
 
-  AccessibleConsentMaterial: yup.array().required("Accessible Consent Material is required"),
-  ProxyConsentProcedure: yup.array().required("Proxy Consent Procedure is required"),
+//   AccessibleConsentMaterial: yup.array().required("Accessible Consent Material is required"),
+//   ProxyConsentProcedure: yup.array().required("Proxy Consent Procedure is required"),
 
-  //Page 5 no or other
+//   //Page 5 no or other
 
-  ParticipantInformation: yup.array().required("Participant Information is required"),
-  ParticipantConsent: yup.array().required("Participant Consent is required"),
+//   ParticipantInformation: yup.array().required("Participant Information is required"),
+//   ParticipantConsent: yup.array().required("Participant Consent is required"),
 
-  //Page 6
+//   //Page 6
 
-  // DataProcessing: yup.string().required("Data Processing is required"),
-  // DataConfidentiality: yup.string().required("Data Confidentiality is required"),
-  // DataStorageandSecurity: yup.string().required("Data Storage and Security is required"),
+//   // DataProcessing: yup.string().required("Data Processing is required"),
+//   // DataConfidentiality: yup.string().required("Data Confidentiality is required"),
+//   // DataStorageandSecurity: yup.string().required("Data Storage and Security is required"),
 
-  //Page 7
+//   //Page 7
 
-  ListofQuestions: yup.array().required("List of Questions is required"),
+//   ListofQuestions: yup.array().required("List of Questions is required"),
 
-});
+// });
 
 const initialValues = {
   // Page 1
@@ -336,7 +336,7 @@ const Form = () => {
 
   const formik = useFormik({
     initialValues,
-    validationSchema,
+    // validationSchema,
     onSubmit: async (values) => {
       if (mode === "review" && applicationId) {
         //get user_id through the google_id stored in session
@@ -582,126 +582,133 @@ const Form = () => {
     // Check for errors in the current step
     if (step === 1) {
       // Validate a specific field (e.g., firstName)
-      try {
-        await yup
-          .reach(validationSchema, `firstName`)
-          .validate(formik.values.firstName, { abortEarly: false });
-      } catch (error) {
-        // Handle the validation error
-        console.error("Validation error for firstName:", error.message);
-      }
-      if (
-        errors.firstName ||
-        errors.lastName ||
-        errors.email ||
-        errors.studentRegistration ||
-        errors.programme ||
-        errors.supervisor
-      ) {
-        // There are errors in the current step, handle them as needed
-        errorMessage = "Incomplete: ";
-        errorMessage += Object.values(errors).filter(Boolean).join(", ");
-        console.error("Validation error:", errors);
-      } else {
+      // try {
+      //   await yup
+      //     // .reach(validationSchema, `firstName`)
+      //     // .validate(formik.values.firstName, { abortEarly: false });
+      // } catch (error) {
+      //   // Handle the validation error
+      //   console.error("Validation error for firstName:", error.message);
+      // }
+      // if (
+      //   errors.firstName ||
+      //   errors.lastName ||
+      //   errors.email ||
+      //   errors.studentRegistration ||
+      //   errors.programme ||
+      //   errors.supervisor
+      // ) {
+      //   // There are errors in the current step, handle them as needed
+      //   errorMessage = "Incomplete: ";
+      //   errorMessage += Object.values(errors).filter(Boolean).join(", ");
+      //   console.error("Validation error:", errors);
+      // 
+    {
         // No errors, proceed to the next step
         setStep((prevStep) => prevStep + 1);
       }
     } else if (step === 2) {
-      if (
-        errors.ResearchProject ||
-        errors.StartDate ||
-        errors.EndDate ||
-        errors.Funding ||
-        errors.Country ||
-        errors.HealthSocialCare ||
-        errors.AnotherInstitution ||
-        errors.HumanTissue ||
-        errors.ClinicalMedical ||
-        errors.SocialCareServices
-      ) {
-        // There are errors in the current step, handle them as needed
-        errorMessage = "Incomplete: ";
-        errorMessage += Object.values(errors).filter(Boolean).join(", ");
-        console.error("Validation error:", errors);
-      } else {
+      // if (
+      //   errors.ResearchProject ||
+      //   errors.StartDate ||
+      //   errors.EndDate ||
+      //   errors.Funding ||
+      //   errors.Country ||
+      //   errors.HealthSocialCare ||
+      //   errors.AnotherInstitution ||
+      //   errors.HumanTissue ||
+      //   errors.ClinicalMedical ||
+      //   errors.SocialCareServices
+      // ) {
+      //   // There are errors in the current step, handle them as needed
+      //   errorMessage = "Incomplete: ";
+      //   errorMessage += Object.values(errors).filter(Boolean).join(", ");
+      //   console.error("Validation error:", errors);
+      // } else 
+      {
         // No errors, proceed to the next step
         setStep((prevStep) => prevStep + 1);
       }
     } else if (step === 3) {
-      if (
-        errors.AimsObjectives ||
-        errors.Methodology ||
-        errors.SafetyConcerns ||
-        errors.SensitiveTopics ||
-        formik.values.SensitiveTopicsFiles.length == 0
-      ) {
-        // There are errors in the current step, handle them as needed
-        errorMessage = "Incomplete: ";
-        errorMessage += Object.values(errors).filter(Boolean).join(", ");
-        console.error("Validation error:", errors);
-      }
-      else {
+      // if (
+      //   errors.AimsObjectives ||
+      //   errors.Methodology ||
+      //   errors.SafetyConcerns ||
+      //   errors.SensitiveTopics ||
+      //   formik.values.SensitiveTopicsFiles.length == 0
+      // ) {
+      //   // There are errors in the current step, handle them as needed
+      //   errorMessage = "Incomplete: ";
+      //   errorMessage += Object.values(errors).filter(Boolean).join(", ");
+      //   console.error("Validation error:", errors);
+      // }
+      // else 
+      {
         // No errors, proceed to the next step
         setStep((prevStep) => prevStep + 1);
       }
     } else if (step === 4) {
-      if (
-        errors.PotentialParticipants ||
-        errors.RecruitingPotentialParticipants ||
-        errors.Payment ||
-        errors.PotentialHarm ||
-        errors.VulnerableParticipants) {
-        // There are errors in the current step, handle them as needed
-        errorMessage = "Incomplete: ";
-        errorMessage += Object.values(errors).filter(Boolean).join(", ");
-        console.error("Validation error:", errors);
-      } else {
+      // if (
+      //   errors.PotentialParticipants ||
+      //   errors.RecruitingPotentialParticipants ||
+      //   errors.Payment ||
+      //   errors.PotentialHarm ||
+      //   errors.VulnerableParticipants) {
+      //   // There are errors in the current step, handle them as needed
+      //   errorMessage = "Incomplete: ";
+      //   errorMessage += Object.values(errors).filter(Boolean).join(", ");
+      //   console.error("Validation error:", errors);
+      // } else 
+      {
         // No errors, proceed to the next step
         setStep((prevStep) => prevStep + 1);
       }
     } else if (step === 5) {
-      if (
-        (formik.values.ParentalConsent.length == 0 ||
-          formik.values.ParentalInformation.length == 0
-        ) && formik.values.VulnerableParticipants === "YesChildren_adolescents" ||
+      // if (
+      //   (formik.values.ParentalConsent.length == 0 ||
+      //     formik.values.ParentalInformation.length == 0
+      //   ) && formik.values.VulnerableParticipants === "YesChildren_adolescents" ||
 
-        (formik.values.AccessibleConsentMaterial.length == 0 ||
-          formik.values.ProxyConsentProcedure.length == 0) && formik.values.VulnerableParticipants === "YesAdultsMental" ||
+      //   (formik.values.AccessibleConsentMaterial.length == 0 ||
+      //     formik.values.ProxyConsentProcedure.length == 0) && formik.values.VulnerableParticipants === "YesAdultsMental" ||
 
-        (formik.values.ParticipantInformation.length == 0 ||
-          formik.values.ParticipantConsent.length == 0)
-      ) {
-        // There are errors in the current step, handle them as needed
-        errorMessage = "Incomplete: ";
-        errorMessage += Object.values(errors).filter(Boolean).join(", ");
-        console.error("Validation error:", errors);
-      } else {
+      //   (formik.values.ParticipantInformation.length == 0 ||
+      //     formik.values.ParticipantConsent.length == 0)
+      // ) {
+      //   // There are errors in the current step, handle them as needed
+      //   errorMessage = "Incomplete: ";
+      //   errorMessage += Object.values(errors).filter(Boolean).join(", ");
+      //   console.error("Validation error:", errors);
+      // } else 
+      {
         // No errors, proceed to the next step
         setStep((prevStep) => prevStep + 1);
       }
     } else if (step === 6) {
-      if (
-        errors.DataProcessing ||
-        errors.DataConfidentiality ||
-        errors.DataStorageandSecurity
-      ) {
-        // There are errors in the current step, handle them as needed
-        errorMessage = "Incomplete: ";
-        errorMessage += Object.values(errors).filter(Boolean).join(", ");
-        console.error("Validation error:", errors);
-      } else {
+      // if (
+      //   errors.DataProcessing ||
+      //   errors.DataConfidentiality ||
+      //   errors.DataStorageandSecurity
+      // ) {
+      //   // There are errors in the current step, handle them as needed
+      //   errorMessage = "Incomplete: ";
+      //   errorMessage += Object.values(errors).filter(Boolean).join(", ");
+      //   console.error("Validation error:", errors);
+      // } else 
+      {
         // No errors, proceed to the next step
         setStep((prevStep) => prevStep + 1);
       }
     } else if (step === 7) {
-      if (
-        formik.values.ListofQuestions.length == 0
-      ) {
-        // There are errors in the current step, handle them as needed
-        errorMessage = "Incomplete: ";
-        errorMessage += Object.values(errors).filter(Boolean).join(", ");
-        console.error("Validation error:", errors);
-      } else {
+      // if (
+      //   formik.values.ListofQuestions.length == 0
+      // ) {
+      //   // There are errors in the current step, handle them as needed
+      //   errorMessage = "Incomplete: ";
+      //   errorMessage += Object.values(errors).filter(Boolean).join(", ");
+      //   console.error("Validation error:", errors);
+      // } else 
+      {
         // No errors, proceed to the next step
         setStep((prevStep) => prevStep + 1);
       }
@@ -851,7 +858,7 @@ const Form = () => {
                   ))}
                 </div>
               )}
-              <pre>{JSON.stringify(formik.values, null, 2)}</pre>
+              {/* <pre>{JSON.stringify(formik.values, null, 2)}</pre> */}
             </div>
           );
         } else {

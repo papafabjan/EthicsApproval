@@ -31,14 +31,14 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             placeholder="Your answer"
-            style={{
-              borderColor:
-                emphasizeFields?.PotentialParticipants &&
-                formik.touched?.PotentialParticipants
-                  ? "red"
-                  : "",
-                  resize: "none"
-            }}
+            // style={{
+            //   borderColor:
+            //     emphasizeFields?.PotentialParticipants &&
+            //     formik.touched?.PotentialParticipants
+            //       ? "red"
+            //       : "",
+            //       resize: "none"
+            // }}
             disabled={mode === "review" || mode === "view"}
             rows={6} 
             cols={50} 
@@ -53,12 +53,12 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
               }
             />
           )}
-          {formik.touched.PotentialParticipants &&
+          {/* {formik.touched.PotentialParticipants &&
             formik.errors.PotentialParticipants && (
               <div style={{ color: "red" }}>
                 {formik.errors.PotentialParticipants}
               </div>
-            )}
+            )} */}
         </div>
 
         <div className="form-group">
@@ -79,14 +79,14 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             placeholder="Your answer"
-            style={{
-              borderColor:
-                emphasizeFields?.RecruitingPotentialParticipants &&
-                formik.touched?.RecruitingPotentialParticipants
-                  ? "red"
-                  : "",
-                  resize: "none"
-            }}
+            // style={{
+            //   borderColor:
+            //     emphasizeFields?.RecruitingPotentialParticipants &&
+            //     formik.touched?.RecruitingPotentialParticipants
+            //       ? "red"
+            //       : "",
+            //       resize: "none"
+            // }}
             disabled={mode === "review" || mode === "view"}
             rows={6} 
             cols={50} 
@@ -101,12 +101,12 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
               }
             />
           )}
-          {formik.touched.RecruitingPotentialParticipants &&
+          {/* {formik.touched.RecruitingPotentialParticipants &&
             formik.errors.RecruitingPotentialParticipants && (
               <div style={{ color: "red" }}>
                 {formik.errors.RecruitingPotentialParticipants}
               </div>
-            )}
+            )} */}
         </div>
 
         <div className="form-group">
@@ -163,23 +163,23 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
                   value={formik.values.otherPaymentOption}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  style={{
-                    borderColor:
-                      emphasizeFields?.otherPaymentOption &&
-                      formik.touched?.otherPaymentOption
-                        ? "red"
-                        : "",
-                  }}
+                  // style={{
+                  //   borderColor:
+                  //     emphasizeFields?.otherPaymentOption &&
+                  //     formik.touched?.otherPaymentOption
+                  //       ? "red"
+                  //       : "",
+                  // }}
                   disabled={mode === "review" || mode === "view"}
                 />
               )}
-              {formik.values.Payment === "Other" &&
+              {/* {formik.values.Payment === "Other" &&
                 formik.touched.otherPaymentOption &&
                 formik.errors.otherPaymentOption && (
                   <div style={{ color: "red" }}>
                     {formik.errors.otherPaymentOption}
                   </div>
-                )}
+                )} */}
             </li>
             {/* Comment component for the "Payment" field */}
             {mode === "review" && (
@@ -213,13 +213,13 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
             value={formik.values.PotentialHarm}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            style={{
-              borderColor:
-                emphasizeFields?.PotentialHarm && formik.touched?.PotentialHarm
-                  ? "red"
-                  : "",
-                  resize: "none"
-            }}
+            // style={{
+            //   borderColor:
+            //     emphasizeFields?.PotentialHarm && formik.touched?.PotentialHarm
+            //       ? "red"
+            //       : "",
+            //       resize: "none"
+            // }}
             disabled={mode === "review" || mode === "view"}
             rows={6} 
             cols={50} 
@@ -234,9 +234,9 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
               }
             />
           )}
-          {formik.touched.PotentialHarm && formik.errors.PotentialHarm && (
+          {/* {formik.touched.PotentialHarm && formik.errors.PotentialHarm && (
             <div style={{ color: "red" }}>{formik.errors.PotentialHarm}</div>
-          )}
+          )} */}
         </div>
 
         <div className="form-group">
@@ -322,13 +322,13 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
                   value={formik.values.otherVulnerableParticipantsOptions}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  style={{
-                    borderColor:
-                      emphasizeFields?.otherVulnerableParticipantsOptions &&
-                      formik.touched?.otherVulnerableParticipantsOptions
-                        ? "red"
-                        : "",
-                  }}
+                  // style={{
+                  //   borderColor:
+                  //     emphasizeFields?.otherVulnerableParticipantsOptions &&
+                  //     formik.touched?.otherVulnerableParticipantsOptions
+                  //       ? "red"
+                  //       : "",
+                  // }}
                   disabled={mode === "review" || mode === "view"}
                 />
               )}
@@ -342,13 +342,13 @@ export const Pg4 = ({ formik, emphasizeFields, mode }) => {
                   }
                 />
               )}
-              {formik.values.Payment === "Other" &&
+              {/* {formik.values.Payment === "Other" &&
                 formik.touched.otherVulnerableParticipantsOptions &&
                 formik.errors.otherVulnerableParticipantsOptions && (
                   <div style={{ color: "red" }}>
                     {formik.errors.otherVulnerableParticipantsOptions}
                   </div>
-                )}
+                )} */}
             </li>
           </ul>
         </div>

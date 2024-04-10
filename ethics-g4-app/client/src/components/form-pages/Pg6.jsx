@@ -28,13 +28,13 @@ export const Pg6 = ({ formik, emphasizeFields, mode }) => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           placeholder="Write your answer"
-          style={{
-              borderColor:
-                emphasizeFields?.DataProcessing && formik.touched?.DataProcessing
-                  ? "red"
-                  : "",
-                  resize: "none"
-            }}
+          // style={{
+          //     borderColor:
+          //       emphasizeFields?.DataProcessing && formik.touched?.DataProcessing
+          //         ? "red"
+          //         : "",
+          //         resize: "none"
+          //   }}
             disabled={mode === "review" || mode === "view"}
             rows={6} 
             cols={50} 
@@ -68,13 +68,13 @@ export const Pg6 = ({ formik, emphasizeFields, mode }) => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           placeholder="Write your answer"
-          style={{
-              borderColor:
-                emphasizeFields?.DataConfidentiality && formik.touched?.DataConfidentiality
-                  ? "red"
-                  : "",
-                  resize: "none"
-            }}
+          // style={{
+          //     borderColor:
+          //       emphasizeFields?.DataConfidentiality && formik.touched?.DataConfidentiality
+          //         ? "red"
+          //         : "",
+          //         resize: "none"
+          //   }}
             disabled={mode === "review" || mode === "view"}
             rows={6} 
             cols={50} 
@@ -112,13 +112,13 @@ export const Pg6 = ({ formik, emphasizeFields, mode }) => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           placeholder="Write your answer"
-          style={{
-              borderColor:
-                emphasizeFields?.DataStorageandSecurity && formik.touched?.DataStorageandSecurity
-                  ? "red"
-                  : "",
-                  resize: "none"
-            }}
+          // style={{
+          //     borderColor:
+          //       emphasizeFields?.DataStorageandSecurity && formik.touched?.DataStorageandSecurity
+          //         ? "red"
+          //         : "",
+          //         resize: "none"
+          //   }}
             disabled={mode === "review" || mode === "view"}
             rows={6} 
             cols={50} 

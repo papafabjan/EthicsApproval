@@ -55,18 +55,18 @@ function Pg1({ formik, emphasizeFields, mode }) {
               value={formik.values.firstName}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              style={{
-                borderColor:
-                  emphasizeFields?.firstName && formik.touched?.firstName
-                    ? "red"
-                    : "",
-              }}
+              // style={{
+              //   borderColor:
+              //     emphasizeFields?.firstName && formik.touched?.firstName
+              //       ? "red"
+              //       : "",
+              // }}
               disabled={mode === "review" || mode === "view"}
             />
 
-            {formik.touched.firstName && formik.errors.firstName && (
+            {/* {formik.touched.firstName && formik.errors.firstName && (
               <div style={{ color: "red" }}>{formik.errors.firstName}</div>
-            )}
+            )} */}
             {/* Comment component for the "firstName" field */}
             {mode === "review" && (
               <Comment
@@ -93,12 +93,12 @@ function Pg1({ formik, emphasizeFields, mode }) {
                 value={formik.values.middleName}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                style={{
-                  borderColor:
-                    emphasizeFields?.middleName && formik.touched?.middleName
-                      ? "red"
-                      : "",
-                }}
+                // style={{
+                //   borderColor:
+                //     emphasizeFields?.middleName && formik.touched?.middleName
+                //       ? "red"
+                //       : "",
+                // }}
                 disabled={mode === "review" || mode === "view"}
               />
               {/* Comment component for the "middleName" field */}
@@ -111,9 +111,9 @@ function Pg1({ formik, emphasizeFields, mode }) {
                   }
                 />
               )}
-              {formik.touched.middleName && formik.errors.middleName && (
+              {/* {formik.touched.middleName && formik.errors.middleName && (
                 <div style={{ color: "red" }}>{formik.errors.middleName}</div>
-              )}
+              )} */}
             </div>
           )}
 
@@ -130,17 +130,17 @@ function Pg1({ formik, emphasizeFields, mode }) {
               value={formik.values.lastName}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              style={{
-                borderColor:
-                  emphasizeFields?.lastName && formik.touched?.lastName
-                    ? "red"
-                    : "",
-              }}
+              // style={{
+              //   borderColor:
+              //     emphasizeFields?.lastName && formik.touched?.lastName
+              //       ? "red"
+              //       : "",
+              // }}
               disabled={mode === "review" || mode === "view"}
             />
-            {formik.touched.lastName && formik.errors.lastName && (
+            {/* {formik.touched.lastName && formik.errors.lastName && (
               <div style={{ color: "red" }}>{formik.errors.lastName}</div>
-            )}
+            )} */}
             {/* Comment component for the "lastName" field */}
             {mode === "review" && (
               <Comment
@@ -166,15 +166,15 @@ function Pg1({ formik, emphasizeFields, mode }) {
               value={formik.values.email}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              style={{
-                borderColor:
-                  emphasizeFields?.email && formik.touched?.email ? "red" : "",
-              }}
+              // style={{
+              //   borderColor:
+              //     emphasizeFields?.email && formik.touched?.email ? "red" : "",
+              // }}
               disabled={mode === "review" || mode === "view"}
             />
-            {formik.touched.email && formik.errors.email && (
+            {/* {formik.touched.email && formik.errors.email && (
               <div style={{ color: "red" }}>{formik.errors.email}</div>
-            )}
+            )} */}
             {/* Comment component for the "email" field */}
             {mode === "review" && (
               <Comment
@@ -201,13 +201,13 @@ function Pg1({ formik, emphasizeFields, mode }) {
               value={formik.values.studentRegistration}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              style={{
-                borderColor:
-                  emphasizeFields?.studentRegistration &&
-                  formik.touched?.studentRegistration
-                    ? "red"
-                    : "",
-              }}
+              // style={{
+              //   borderColor:
+              //     emphasizeFields?.studentRegistration &&
+              //     formik.touched?.studentRegistration
+              //       ? "red"
+              //       : "",
+              // }}
               disabled={mode === "review" || mode === "view"}
             />
             {/* Comment component for the "studentRegistration" field */}
@@ -234,12 +234,12 @@ function Pg1({ formik, emphasizeFields, mode }) {
                 value={formik.values.Department}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                style={{
-                  borderColor:
-                    emphasizeFields?.Department && formik.touched?.Department
-                      ? "red"
-                      : "",
-                }}
+                // style={{
+                //   borderColor:
+                //     emphasizeFields?.Department && formik.touched?.Department
+                //       ? "red"
+                //       : "",
+                // }}
                 disabled={mode === "review" || mode === "view"}
               >
                 <option value="" label="Select a Department" />
@@ -254,9 +254,9 @@ function Pg1({ formik, emphasizeFields, mode }) {
             ) : (
               <p>No departments found.</p>
             )}
-            {formik.touched.Department && formik.errors.Department && (
+            {/* {formik.touched.Department && formik.errors.Department && (
               <div style={{ color: "red" }}>{formik.errors.Department}</div>
-            )}
+            )} */}
             {/* Comment component for the "Department" field */}
             {mode === "review" && (
               <Comment
@@ -280,12 +280,12 @@ function Pg1({ formik, emphasizeFields, mode }) {
                 value={formik.values.programme}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                style={{
-                  borderColor:
-                    emphasizeFields?.programme && formik.touched?.programme
-                      ? "red"
-                      : "",
-                }}
+                // style={{
+                //   borderColor:
+                //     emphasizeFields?.programme && formik.touched?.programme
+                //       ? "red"
+                //       : "",
+                // }}
                 disabled={mode === "review" || mode === "view"}
               >
                 <option value="" label="Select a programme" />
@@ -317,9 +317,9 @@ function Pg1({ formik, emphasizeFields, mode }) {
                 )}
                 <option value="BSc" label="BSc (any track)" />
               </select>
-              {formik.touched.programme && formik.errors.programme && (
+              {/* {formik.touched.programme && formik.errors.programme && (
                 <div style={{ color: "red" }}>{formik.errors.programme}</div>
-              )}
+              )} */}
               {/* Comment component for the "programme" field */}
               {mode === "review" && (
                 <Comment
@@ -426,9 +426,9 @@ function Pg1({ formik, emphasizeFields, mode }) {
               />
             </select>
 
-            {formik.touched.supervisor && formik.errors.supervisor && (
+            {/* {formik.touched.supervisor && formik.errors.supervisor && (
               <div style={{ color: "red" }}>{formik.errors.supervisor}</div>
-            )}
+            )} */}
             {/* Comment section for Supervisor */}
             {mode === "review" && (
               <Comment

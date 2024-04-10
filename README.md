@@ -1,3 +1,4 @@
+
 # ETHICS WEB APPLICATION
 
 This is a web application developed for our costumer, developed with the purpose of making the review process for the user easier and more understandable as well as making the approval process more straightforward and easy for the administrators and reviewers. The developed app allows administrators to have much more control over the process while also leaving the ability for the admins to change parts of the process easily and clearly with the use of a simple UI. It also provides a better experience to any user of the system either a student/user or a teacher/reviewer/admin by providing a clear UI for everything that needs to be done in an ethics application review.
@@ -69,3 +70,4 @@ The idea for the Ethics Web Application was introduced to us by **Mr. Dranidis a
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
+
